@@ -21,13 +21,13 @@ def load_env_manually(path):
                 val_clean = val.strip().strip("'").strip('"')
                 os.environ[key.strip()] = val_clean
 
-env_path = os.path.join(os.path.dirname(__file__), "backend", ".env")
+env_path = os.path.join(os.path.dirname(__file__), ".env")
 load_env_manually(env_path)
 
 CLERK_SECRET_KEY = os.getenv("CLERK_SECRET_KEY")
 
 if not CLERK_SECRET_KEY:
-    print("❌ Error: CLERK_SECRET_KEY not found in backend/.env")
+    print("❌ Error: CLERK_SECRET_KEY not found in .env")
     sys.exit(1)
 
 def make_request(url, method="GET", payload=None):
