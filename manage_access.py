@@ -201,6 +201,87 @@ def unban(email):
     else:
         print(f"❌ Failed to unban user: {status} - {json.dumps(res)}")
 
+# ── Waitlist management methods ──────────────────────────────────────────────
+
+def list_waitlist():
+    print("⏳ Fetching waitlist entries...")
+    url = "https://api.clerk.com/v1/waitlist_entries"
+    status, res = make_request(url, method="GET")
+    if status == 200:
+        entries = res.get("data", []) if isinstance(res, dict) else res
+        if not entries:
+            print("ℹ️ No waitlist entries found.")
+            return
+            
+        pending_entries = [e for e in entries if e.get("status") == "pending"]
+        if not pending_entries:
+            print("ℹ️ No pending waitlist entries found.")
+            return
+            
+        print(f"\n{ 'Email Address':<35} | { 'Status':<10} | { 'ID':<30}")
+        print("-" * 81)
+        for e in pending_entries:
+            email = e.get("email_address") or (e.get("identifier") if "identifier" in e else "—")
+            print(f"{email:<35} | {e.get('status'):<10} | {e.get('id'):<30}")
+    else:
+        print(f"❌ Failed to list waitlist entries: {status} - {json.dumps(res)}")
+
+def approve_waitlist(email):
+    print(f"⏳ Searching waitlist for email: {email}...")
+    url = "https://api.clerk.com/v1/waitlist_entries"
+    status, res = make_request(url, method="GET")
+    if status != 200:
+        print(f"❌ Failed to query waitlist: {status} - {json.dumps(res)}")
+        return
+        
+    entries = res.get("data", []) if isinstance(res, dict) else res
+    target_id = None
+    for e in entries:
+        curr_email = e.get("email_address") or (e.get("identifier") if "identifier" in e else "")
+        if curr_email == email and e.get("status") == "pending":
+            target_id = e.get("id")
+            break
+            
+    if not target_id:
+        print(f"❌ Error: No pending waitlist entry found for {email}.")
+        return
+        
+    print(f"⏳ Approving & inviting waitlist entry {target_id}...")
+    approve_url = f"https://api.clerk.com/v1/waitlist_entries/{target_id}/invite"
+    status, res = make_request(approve_url, method="POST")
+    if status == 200:
+        print(f"✅ Waitlist entry for {email} has been approved and invited!")
+    else:
+        print(f"❌ Failed to approve waitlist entry: {status} - {json.dumps(res)}")
+
+def reject_waitlist(email):
+    print(f"⏳ Searching waitlist for email: {email}...")
+    url = "https://api.clerk.com/v1/waitlist_entries"
+    status, res = make_request(url, method="GET")
+    if status != 200:
+        print(f"❌ Failed to query waitlist: {status} - {json.dumps(res)}")
+        return
+        
+    entries = res.get("data", []) if isinstance(res, dict) else res
+    target_id = None
+    for e in entries:
+        curr_email = e.get("email_address") or (e.get("identifier") if "identifier" in e else "")
+        if curr_email == email and e.get("status") == "pending":
+            target_id = e.get("id")
+            break
+            
+    if not target_id:
+        print(f"❌ Error: No pending waitlist entry found for {email}.")
+        return
+        
+    print(f"⏳ Rejecting waitlist entry {target_id}...")
+    reject_url = f"https://api.clerk.com/v1/waitlist_entries/{target_id}/reject"
+    status, res = make_request(reject_url, method="POST")
+    if status == 200:
+        print(f"✅ Waitlist entry for {email} has been rejected.")
+    else:
+        print(f"❌ Failed to reject waitlist entry: {status} - {json.dumps(res)}")
+
 def main():
     if len(sys.argv) < 2:
         print("🛠️  GrindOS Access Control Admin CLI (Clerk)")
@@ -212,6 +293,10 @@ def main():
         print("  python3 manage_access.py revoke <email>        Revoke a pending invitation")
         print("  python3 manage_access.py ban <email>           Ban an existing registered user")
         print("  python3 manage_access.py unban <email>         Unban a banned user")
+        print("\nWaitlist Mode Commands:")
+        print("  python3 manage_access.py list-waitlist         List pending waitlist sign-ups")
+        print("  python3 manage_access.py approve-waitlist <e>  Approve & invite a user on the waitlist")
+        print("  python3 manage_access.py reject-waitlist <e>   Reject a user on the waitlist")
         sys.exit(0)
         
     cmd = sys.argv[1]
@@ -242,6 +327,18 @@ def main():
             print("❌ Error: Please specify the email to unban.")
             sys.exit(1)
         unban(sys.argv[2])
+    elif cmd == "list-waitlist":
+        list_waitlist()
+    elif cmd == "approve-waitlist":
+        if len(sys.argv) < 3:
+            print("❌ Error: Please specify the email to approve.")
+            sys.exit(1)
+        approve_waitlist(sys.argv[2])
+    elif cmd == "reject-waitlist":
+        if len(sys.argv) < 3:
+            print("❌ Error: Please specify the email to reject.")
+            sys.exit(1)
+        reject_waitlist(sys.argv[2])
     else:
         print(f"❌ Unknown command: {cmd}")
         sys.exit(1)
