@@ -1770,6 +1770,12 @@
 
   // Restore waitlist count from localStorage and check Clerk auth state
   window.addEventListener('DOMContentLoaded', () => {
+    // Auto-open waitlist modal if URL parameter is present
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('join_waitlist') === 'true') {
+      setTimeout(openWaitlistModalDirect, 400);
+    }
+
     // Topbar scroll listener
     const topbar = document.querySelector('.topbar');
     const handleScroll = () => {

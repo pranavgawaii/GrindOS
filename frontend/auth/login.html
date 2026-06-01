@@ -285,12 +285,12 @@
           heading.textContent = 'Create your account';
           desc.textContent = 'Sign up to start tracking your interview prep.';
           title.textContent = 'Sign Up — GrindOS';
-          switchEl.innerHTML = 'Already have an account? <a href="?mode=signin">Sign in</a>';
+          switchEl.innerHTML = 'Already have an account? <a href="?mode=signin">Sign in</a> &nbsp;·&nbsp; <a href="../index.html?join_waitlist=true" style="color: var(--brand); font-weight: 700;">Join Waitlist</a>';
         } else {
           heading.textContent = 'Welcome back';
           desc.textContent = 'Sign in to access your prep dashboard.';
           title.textContent = 'Sign In — GrindOS';
-          switchEl.innerHTML = 'New to GrindOS? <a href="?mode=signup">Create an account</a>';
+          switchEl.innerHTML = 'New to GrindOS? <a href="../index.html?join_waitlist=true" style="color: var(--brand); font-weight: 700;">Join the Waitlist</a>';
         }
 
         const container = document.getElementById('clerk-auth-container');
