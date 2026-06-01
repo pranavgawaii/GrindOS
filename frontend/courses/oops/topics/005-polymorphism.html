@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+  (function() {
+    const saved = localStorage.getItem('GrindOS-theme');
+    if (saved) {
+      document.documentElement.classList.add(saved);
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.documentElement.classList.add('dark');
+    }
+  })();
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Polymorphism — Method Overriding vs Overloading, Duck Typing — Object-Oriented Programming — GrindOS</title>
+<link rel="stylesheet" href="../../../assets/style.css?v=13">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+  <link rel="icon" type="image/png" href="../../../logo.png">
+  
+  <link rel="apple-touch-icon" href="../../../logo.png">
+</head>
+<body>
+
+<div id="reading-progress"></div>
+
+<header class="topbar">
+  <button class="icon-btn menu-toggle" id="menu-toggle" aria-label="Menu">☰</button>
+  <a href="dashboard.html" class="topbar-brand">
+    <img src="../../../logo.png" alt="GrindOS Logo" class="brand-logo" style="width: 34px; height: 34px; object-fit: contain; border-radius: 4px; flex-shrink: 0; display: inline-block; vertical-align: middle;">
+    <span class="brand-wordmark">GrindOS</span>
+  </a>
+  <nav class="topbar-nav">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="dashboard.html" class="active">📦 Object-Oriented Programming</a>
+    <a href="../../../interview-prep/index.html" class="nav-cta">🎯 Interview Prep</a>
+  </nav>
+  <div class="topbar-right">
+    <button class="icon-btn" id="theme-toggle" aria-label="Toggle theme"><span class="theme-icon">☾</span></button>
+  </div>
+</header>
+
+<div class="page-layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-course-label"><span class="course-emoji">📦</span>Object-Oriented Programming</div>
+    </div>
+    <div class="sidebar-progress">
+      <div class="progress-label-row">
+        <span>Progress</span>
+        <span class="progress-count">5 / 15</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" style="width:33%"></div></div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-search">
+        <input type="text" id="sidebar-search" placeholder="Search topics…  /" autocomplete="off">
+        <span class="sidebar-search-icon">⌕</span>
+      </div>
+      <details class="chapter-group" open>
+        <summary class="chapter-summary"><span>Fundamentals</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item "><a href="../../../courses/oops/topics/001-introduction-to-oops.html"><span class="topic-num">001</span>Introduction to OOPs</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/002-classes-and-objects.html"><span class="topic-num">002</span>Classes and Objects</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/003-encapsulation.html"><span class="topic-num">003</span>Encapsulation</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/004-inheritance.html"><span class="topic-num">004</span>Inheritance</a></li>
+          <li class="topic-item active"><a href="../../../courses/oops/topics/005-polymorphism.html"><span class="topic-num">005</span>Polymorphism</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/006-abstraction.html"><span class="topic-num">006</span>Abstraction</a></li>
+        </ul>
+      </details>
+      <details class="chapter-group" >
+        <summary class="chapter-summary"><span>Advanced Concepts</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item "><a href="../../../courses/oops/topics/007-constructors-in-python.html"><span class="topic-num">007</span>Constructors in Python</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/008-dunder-magic-methods.html"><span class="topic-num">008</span>Dunder Magic Methods</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/009-static-and-class-methods.html"><span class="topic-num">009</span>Static and Class Methods</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/010-composition-vs-inheritance.html"><span class="topic-num">010</span>Composition vs Inheritance</a></li>
+        </ul>
+      </details>
+      <details class="chapter-group" >
+        <summary class="chapter-summary"><span>Design Patterns</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item "><a href="../../../courses/oops/topics/011-singleton-pattern.html"><span class="topic-num">011</span>Singleton Pattern</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/012-factory-pattern.html"><span class="topic-num">012</span>Factory Pattern</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/013-observer-pattern.html"><span class="topic-num">013</span>Observer Pattern</a></li>
+        </ul>
+      </details>
+      <details class="chapter-group" >
+        <summary class="chapter-summary"><span>Interview Special</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item "><a href="../../../courses/oops/topics/014-oops-interview-questions.html"><span class="topic-num">014</span>OOPs Interview Qs</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/015-oops-in-python-vs-java.html"><span class="topic-num">015</span>OOPs Python vs Java</a></li>
+        </ul>
+      </details>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    <div class="breadcrumb">
+      <a href="dashboard.html">Dashboard</a>
+      <span class="breadcrumb-sep">/</span>
+      <a href="dashboard.html">Object-Oriented Programming</a>
+      <span class="breadcrumb-sep">/</span>
+      <span>Fundamentals</span>
+    </div>
+
+    <div class="topic-meta">
+      <div class="topic-meta-chip">📂 Fundamentals</div>
+      <div class="topic-meta-chip">📄 Topic 5</div>
+      <div class="topic-meta-chip" id="reading-time">…</div>
+    </div>
+
+    <article class="topic-article">
+      <div class="editorial-content max-w-3xl px-4 mt-2">
+        <div class="coreSubject dark:text-zinc-300">
+          <br/>
+          
+<h2>1. What is Polymorphism?</h2>
+<p><strong>Polymorphism</strong> (Greek for "many forms") is the ability of different object classes to respond to the identical method signature call in unique ways, making APIs uniform.</p>
+
+<hr class="line-break"/>
+
+<h2>2. Method Overriding vs. Method Overloading</h2>
+<table border="1" cellpadding="8" style="width:100%;">
+  <thead>
+    <tr>
+      <th>Dimension</th>
+      <th>Method Overriding (Runtime)</th>
+      <th>Method Overloading (Compile-time)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Definition</strong></td>
+      <td>A child class redefines a parent method with the identical signature.</td>
+      <td>Defining multiple methods in a class with the same name but different parameters.</td>
+    </tr>
+    <tr>
+      <td><strong>Python Support</strong></td>
+      <td>Fully supported. Native child mapping resolves this at runtime.</td>
+      <td>**Not supported natively**. If defined twice, Python only recognizes the latest definition.</td>
+    </tr>
+    <tr>
+      <td><strong>Python Workaround</strong></td>
+      <td>Use normal inheritance overriding, optionally using the `@override` decorator in Python 3.12.</td>
+      <td>Achieved using **Default Arguments** or variable argument pointers (`*args`, `**kwargs`).</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3>Overloading Workaround in Python</h3>
+<pre><code class="language-python">class Calculator:
+    def add(self, a, b, c=0): # Handle variable parameter lists
+        return a + b + c</code></pre>
+
+<hr class="line-break"/>
+
+<h2>3. Duck Typing</h2>
+<p>Python utilizes <strong>Duck Typing</strong> (a form of dynamic polymorphism). Scopes determine object compatibility based on the methods they contain, rather than explicit parent inheritance hierarchies:</p>
+<div class="alert alert-note">
+  <em>"If it walks like a duck and quacks like a duck, it is a duck."</em>
+</div>
+<pre><code class="language-python">class Duck:
+    def fly(self): print("Flap flap")
+class Airplane:
+    def fly(self): print("Jet engines roaring")
+
+def let_it_fly(obj):
+    obj.fly() # Dynamic polymorphism; works for both without inheritance!</code></pre>
+
+          
+<div class="interview-qna">
+  <h3>🎯 Topic Q&A</h3>
+  <div class="qna-item">
+    <strong>Q1: Why doesn't Python support traditional method overloading?</strong>
+    <p>Because Python is a dynamically typed language. Variable declarations don't require static type definitions, and method routing is done dynamically by resolving the method name inside the object's dictionary namespace (`__dict__`).</p>
+  </div>
+  <div class="qna-item">
+    <strong>Q2: How do we simulate method overloading in Python?</strong>
+    <p>We simulate it by using default parameter values (e.g., `c=None`) or by accepting variable argument tuples/dictionaries (`*args`, `**kwargs`) and parsing their contents inside the method.</p>
+  </div>
+  <div class="qna-item">
+    <strong>Q3: Explain the concept of Duck Typing.</strong>
+    <p>Duck typing is a dynamic polymorphism concept where an object's suitability is determined by the presence of specific methods (its interface), rather than its explicit class inheritance hierarchy.</p>
+  </div>
+  <div class="qna-item">
+    <strong>Q4: What is the difference between compile-time and runtime polymorphism?</strong>
+    <p>Compile-time polymorphism (overloading) resolves method routing during code compilation. Runtime polymorphism (overriding) resolves method calls during execution based on the dynamic type of the object.</p>
+  </div>
+  <div class="qna-item">
+    <strong>Q5: Write a Python function showing how `*args` handles variable inputs.</strong>
+    <pre><code class="language-python">def sum_all(*args):
+    return sum(args)
+print(sum_all(1, 2))    # 3
+print(sum_all(1, 2, 3)) # 6</code></pre>
+  </div>
+</div>
+
+        </div>
+      </div>
+    </article>
+
+    <div class="topic-nav"><a href="004-inheritance.html" class="nav-btn nav-prev"><span class="nav-btn-label">← Previous</span><span class="nav-btn-title">Inheritance</span></a><a href="006-abstraction.html" class="nav-btn nav-next"><span class="nav-btn-label">Next →</span><span class="nav-btn-title">Abstraction</span></a></div>
+  </main>
+</div>
+
+<button id="back-to-top" aria-label="Back to top">↑</button>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="../../../assets/script.js?v=12"></script>
+</body>
+</html>

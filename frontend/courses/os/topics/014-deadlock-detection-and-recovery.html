@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+  (function() {
+    const saved = localStorage.getItem('GrindOS-theme');
+    if (saved) {
+      document.documentElement.classList.add(saved);
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.documentElement.classList.add('dark');
+    }
+  })();
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Deadlock Detection — Resource Allocation Graphs, Recovery — Operating Systems — GrindOS</title>
+<link rel="stylesheet" href="../../../assets/style.css?v=13">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+  <link rel="icon" type="image/png" href="../../../logo.png">
+  
+  <link rel="apple-touch-icon" href="../../../logo.png">
+</head>
+<body>
+
+<div id="reading-progress"></div>
+
+<header class="topbar">
+  <button class="icon-btn menu-toggle" id="menu-toggle" aria-label="Menu">☰</button>
+  <a href="dashboard.html" class="topbar-brand">
+    <img src="../../../logo.png" alt="GrindOS Logo" class="brand-logo" style="width: 34px; height: 34px; object-fit: contain; border-radius: 4px; flex-shrink: 0; display: inline-block; vertical-align: middle;">
+    <span class="brand-wordmark">GrindOS</span>
+  </a>
+  <nav class="topbar-nav">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="dashboard.html" class="active">💻 Operating Systems</a>
+    <a href="../../../interview-prep/index.html" class="nav-cta">🎯 Interview Prep</a>
+  </nav>
+  <div class="topbar-right">
+    <button class="icon-btn" id="theme-toggle" aria-label="Toggle theme"><span class="theme-icon">☾</span></button>
+  </div>
+</header>
+
+<div class="page-layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-course-label"><span class="course-emoji">💻</span>Operating Systems</div>
+    </div>
+    <div class="sidebar-progress">
+      <div class="progress-label-row">
+        <span>Progress</span>
+        <span class="progress-count">14 / 17</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" style="width:82%"></div></div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-search">
+        <input type="text" id="sidebar-search" placeholder="Search topics…  /" autocomplete="off">
+        <span class="sidebar-search-icon">⌕</span>
+      </div>
+      <details class="chapter-group" >
+        <summary class="chapter-summary"><span>Processes and CPU Scheduling</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item "><a href="../../../courses/os/topics/001-process-vs-thread.html"><span class="topic-num">001</span>Process vs Thread</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/002-cpu-scheduling-algorithms-fcfs-sjf-rr.html"><span class="topic-num">002</span>CPU Scheduling Algorithms</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/003-context-switching-and-dispatcher.html"><span class="topic-num">003</span>Context Switching & Dispatcher</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/004-multilevel-queue-scheduling.html"><span class="topic-num">004</span>Multilevel Queue Scheduling</a></li>
+        </ul>
+      </details>
+      <details class="chapter-group" >
+        <summary class="chapter-summary"><span>Memory Management</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item "><a href="../../../courses/os/topics/005-paging-and-page-tables.html"><span class="topic-num">005</span>Paging and Page Tables</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/006-segmentation.html"><span class="topic-num">006</span>Segmentation</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/007-virtual-memory-and-demand-paging.html"><span class="topic-num">007</span>Virtual Memory & Demand Paging</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/008-page-replacement-algorithms.html"><span class="topic-num">008</span>Page Replacement Algorithms</a></li>
+        </ul>
+      </details>
+      <details class="chapter-group" >
+        <summary class="chapter-summary"><span>Process Synchronization</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item "><a href="../../../courses/os/topics/009-critical-section-problem.html"><span class="topic-num">009</span>Critical Section Problem</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/010-mutex-vs-semaphore-vs-monitor.html"><span class="topic-num">010</span>Mutex vs Semaphore vs Monitor</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/011-classic-synchronisation-problems.html"><span class="topic-num">011</span>Classic Synchronisation Problems</a></li>
+        </ul>
+      </details>
+      <details class="chapter-group" open>
+        <summary class="chapter-summary"><span>Deadlocks</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item "><a href="../../../courses/os/topics/012-deadlock-conditions-and-prevention.html"><span class="topic-num">012</span>Deadlock Conditions & Prevention</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/013-deadlock-avoidance-bankers-algorithm.html"><span class="topic-num">013</span>Deadlock Avoidance & Banker's Algorithm</a></li>
+          <li class="topic-item active"><a href="../../../courses/os/topics/014-deadlock-detection-and-recovery.html"><span class="topic-num">014</span>Deadlock Detection & Recovery</a></li>
+        </ul>
+      </details>
+      <details class="chapter-group" >
+        <summary class="chapter-summary"><span>File Systems & Disk Scheduling</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item "><a href="../../../courses/os/topics/015-file-system-concepts.html"><span class="topic-num">015</span>File System Concepts</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/016-directory-structure-and-inode.html"><span class="topic-num">016</span>Directory Structure and Inode</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/017-disk-scheduling-algorithms.html"><span class="topic-num">017</span>Disk Scheduling Algorithms</a></li>
+        </ul>
+      </details>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    <div class="breadcrumb">
+      <a href="dashboard.html">Dashboard</a>
+      <span class="breadcrumb-sep">/</span>
+      <a href="dashboard.html">Operating Systems</a>
+      <span class="breadcrumb-sep">/</span>
+      <span>Deadlocks</span>
+    </div>
+
+    <div class="topic-meta">
+      <div class="topic-meta-chip">📂 Deadlocks</div>
+      <div class="topic-meta-chip">📄 Topic 14</div>
+      <div class="topic-meta-chip" id="reading-time">…</div>
+    </div>
+
+    <article class="topic-article">
+      <div class="editorial-content max-w-3xl px-4 mt-2">
+        <div class="coreSubject dark:text-zinc-300">
+          <br/>
+          
+<h2>1. Deadlock Detection</h2>
+<p>If a system does not implement deadlock prevention or avoidance, deadlocks can occur. In this case, the operating system must run background **Deadlock Detection** algorithms to identify active circular wait blocks.</p>
+
+<h3>Wait-For Graph (WFG)</h3>
+<p>For systems where all resources have only single instances, the Resource Allocation Graph (RAG) is simplified into a **Wait-For Graph (WFG)** by removing resource nodes and drawing direct edges from P<sub>i</sub> &rarr; P<sub>j</sub> if process P<sub>i</sub> is waiting for resource held by P<sub>j</sub>.</p>
+<ul>
+  <li>The OS periodically runs cycle-detection algorithms (like Depth-First Search) on the Wait-For Graph.</li>
+  <li><strong>Cycle Rule:</strong> If a cycle is detected in a single-instance Wait-For Graph, a deadlock exists.</li>
+</ul>
+
+<hr class="line-break"/>
+
+<h2>2. Deadlock Recovery Methods</h2>
+<p>Once a deadlock is detected, the OS recovers using two main strategies:</p>
+
+<h3>A. Process Termination</h3>
+<ul>
+  <li><strong>Abort all deadlocked processes:</strong> Guaranteed to break the deadlock, but extremely expensive as all computational progress is lost.</li>
+  <li><strong>Abort processes one-by-one:</strong> Abort one process, re-run the detection algorithm, and repeat until the deadlock is resolved. (High CPU overhead).</li>
+</ul>
+
+<h3>B. Resource Preemption</h3>
+<p>Forcibly reclaim a resource from one process and allocate it to another:</p>
+<ol>
+  <li><strong>Selecting a Victim:</strong> Choose the process that is cheap to abort or holds the most resources.</li>
+  <li><strong>Rollback:</strong> Return the victim process to a safe checkpoint state, resuming execution from that point.</li>
+  <li><strong>Starvation Prevention:</strong> Ensure a process isn't repeatedly selected as a victim by incorporating a "preemption counter" in selection logic.</li>
+</ol>
+
+          
+<div class="interview-qna">
+  <h3>🎯 Topic Q&A</h3>
+  <div class="qna-item">
+    <strong>Q1: What is a Wait-For Graph?</strong>
+    <p>A Wait-For Graph is a simplified directed graph used for deadlock detection in systems with single-instance resources, created by removing resource nodes from the RAG and mapping direct edges from waiting process to holding process.</p>
+  </div>
+  <div class="qna-item">
+    <strong>Q2: How does the OS detect a deadlock if resources have multiple instances?</strong>
+    <p>The OS executes an algorithm similar to the Banker's safety check. It assumes all unfinished processes will request their remaining resources, simulates completion, and if any processes remain uncompleted, those processes are deadlocked.</p>
+  </div>
+  <div class="qna-item">
+    <strong>Q3: How does process termination recover a system from deadlock?</strong>
+    <p>By aborting one or more blocked processes, forcing them to release their allocated resources back to the pool, thereby breaking the circular wait chain.</p>
+  </div>
+  <div class="qna-item">
+    <strong>Q4: Explain resource preemption rollback in deadlock recovery.</strong>
+    <p>Rollback is the mechanism of returning a process to a previously saved checkpoint state in its execution history, letting the OS reclaim its resources temporarily without completely aborting the process.</p>
+  </div>
+  <div class="qna-item">
+    <strong>Q5: What is the ostrich algorithm in deadlock handling?</strong>
+    <p>The ostrich algorithm is a strategy of ignoring deadlocks completely (putting your head in the sand). It is used when deadlocks are extremely rare and the cost of prevention, avoidance, or detection is too high (used in general-purpose OSs like Windows and Linux).</p>
+  </div>
+</div>
+
+        </div>
+      </div>
+    </article>
+
+    <div class="topic-nav"><a href="013-deadlock-avoidance-bankers-algorithm.html" class="nav-btn nav-prev"><span class="nav-btn-label">← Previous</span><span class="nav-btn-title">Deadlock Avoidance & Banker's Algorithm</span></a><a href="015-file-system-concepts.html" class="nav-btn nav-next"><span class="nav-btn-label">Next →</span><span class="nav-btn-title">File System Concepts</span></a></div>
+  </main>
+</div>
+
+<button id="back-to-top" aria-label="Back to top">↑</button>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="../../../assets/script.js?v=12"></script>
+</body>
+</html>

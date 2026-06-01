@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+  (function() {
+    const saved = localStorage.getItem('GrindOS-theme');
+    if (saved) {
+      document.documentElement.classList.add(saved);
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.documentElement.classList.add('dark');
+    }
+  })();
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Data, Information & Database — Database Management Systems — GrindOS</title>
+<link rel="stylesheet" href="../../../assets/style.css?v=13">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+  
+  <link rel="icon" type="image/png" href="../../../logo.png">
+  
+  <link rel="apple-touch-icon" href="../../../logo.png">
+</head>
+<body>
+
+<div id="reading-progress"></div>
+
+<header class="topbar">
+  <button class="icon-btn menu-toggle" id="menu-toggle" aria-label="Menu">☰</button>
+  <a href="dashboard.html" class="topbar-brand">
+    <img src="../../../logo.png" alt="GrindOS Logo" class="brand-logo" style="width: 34px; height: 34px; object-fit: contain; border-radius: 4px; flex-shrink: 0; display: inline-block; vertical-align: middle;">
+    <span class="brand-wordmark">GrindOS</span>
+  </a>
+  <nav class="topbar-nav">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="dashboard.html" class="active">🗄️ Database Management Systems</a>
+    <a href="../../../interview-prep/index.html" class="nav-cta">🎯 Interview Prep</a>
+  </nav>
+  <div class="topbar-right">
+    <button class="icon-btn" id="theme-toggle" aria-label="Toggle theme"><span class="theme-icon">☾</span></button>
+  </div>
+</header>
+
+<div class="page-layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-course-label"><span class="course-emoji">🗄️</span>Database Management Systems</div>
+    </div>
+    <div class="sidebar-progress">
+      <div class="progress-label-row">
+        <span>Progress</span>
+        <span class="progress-count">1 / 94</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" style="width:1%"></div></div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-search">
+<input type="text" id="sidebar-search" placeholder="Search topics…  /" autocomplete="off">
+<span class="sidebar-search-icon">⌕</span></div>
+<details class="chapter-group"open>
+<summary class="chapter-summary"><span>Introduction to DBMS</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item active"><a href="../../../courses/dbms/topics/001-data-information-database.html"><span class="topic-num">001</span>Data, Information & Database</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/002-types-of-databases.html"><span class="topic-num">002</span>Types of Databases</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/003-database-management-system.html"><span class="topic-num">003</span>Database Management System</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/004-need-advantages-and-disadvantages-of-dbms.html"><span class="topic-num">004</span>Need, Advantages and Disadvantages of DBMS</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/005-data-abstraction-in-dbms.html"><span class="topic-num">005</span>Data Abstraction in DBMS</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/006-dbms-architecture.html"><span class="topic-num">006</span>DBMS Architecture</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/007-database-users-and-interactions.html"><span class="topic-num">007</span>Database Users and Interactions</a></li>
+</ul></details>
+<details class="chapter-group">
+<summary class="chapter-summary"><span>Data Models and ER Models</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/dbms/topics/008-dbms-interfaces.html"><span class="topic-num">008</span>DBMS Interfaces</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/009-data-models-and-their-types.html"><span class="topic-num">009</span>Data Models and Their Types</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/010-er-model-and-its-components.html"><span class="topic-num">010</span>ER Model and its Components</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/011-types-of-relationships-in-dbms.html"><span class="topic-num">011</span>Types of Relationships in DBMS</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/012-extended-er-features.html"><span class="topic-num">012</span>Extended ER Features</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/013-types-of-inheritance.html"><span class="topic-num">013</span>Types of Inheritance</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/014-entity-relationship-diagram.html"><span class="topic-num">014</span>Entity-Relationship Diagram</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/015-create-er-diagram.html"><span class="topic-num">015</span>Create ER Diagram</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/016-relationships-in-er-diagram.html"><span class="topic-num">016</span>Relationships in ER Diagram</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/017-relational-models.html"><span class="topic-num">017</span>Relational Models</a></li>
+</ul></details>
+<details class="chapter-group">
+<summary class="chapter-summary"><span>Relational Model and Normalization</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/dbms/topics/018-intension-and-extension.html"><span class="topic-num">018</span>Intension and Extension</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/019-keys-in-dbms.html"><span class="topic-num">019</span>Keys in DBMS</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/020-data-normalization.html"><span class="topic-num">020</span>Data Normalization</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/021-functional-dependency.html"><span class="topic-num">021</span>Functional Dependency</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/022-armstrongs-axioms.html"><span class="topic-num">022</span>Armstrong's Axioms</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/023-inference-rules.html"><span class="topic-num">023</span>Inference Rules</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/024-closure-in-functional-dependencies.html"><span class="topic-num">024</span>Closure in Functional Dependencies</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/025-denormalisation.html"><span class="topic-num">025</span>Denormalisation</a></li>
+</ul></details>
+<details class="chapter-group">
+<summary class="chapter-summary"><span>SQL and Query Optimization</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/dbms/topics/026-database-languages.html"><span class="topic-num">026</span>Database Languages</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/027-sql-operators.html"><span class="topic-num">027</span>SQL Operators</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/028-aggregates-in-sql.html"><span class="topic-num">028</span>Aggregates in SQL</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/029-sql-clauses.html"><span class="topic-num">029</span>SQL Clauses</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/030-sql-joins.html"><span class="topic-num">030</span>SQL Joins</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/031-sql-joins.html"><span class="topic-num">031</span>SQL Joins</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/032-sql-joins.html"><span class="topic-num">032</span>SQL Joins</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/033-views-in-sql.html"><span class="topic-num">033</span>Views in SQL</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/034-advanced-views-in-sql.html"><span class="topic-num">034</span>Advanced Views in SQL</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/035-indexed-views.html"><span class="topic-num">035</span>Indexed Views</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/036-sql-subqueries.html"><span class="topic-num">036</span>SQL Subqueries</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/037-types-of-sql-subqueries.html"><span class="topic-num">037</span>Types of SQL Subqueries</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/038-query-processing.html"><span class="topic-num">038</span>Query Processing</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/039-query-optimization.html"><span class="topic-num">039</span>Query Optimization</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/040-advanced-query-optimization.html"><span class="topic-num">040</span>Advanced Query Optimization</a></li>
+</ul></details>
+<details class="chapter-group">
+<summary class="chapter-summary"><span>NoSQL Databases</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/dbms/topics/041-nosql-databases.html"><span class="topic-num">041</span>NoSQL Databases</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/042-base-properties.html"><span class="topic-num">042</span>BASE Properties</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/043-nosql-languages.html"><span class="topic-num">043</span>NoSQL Languages</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/044-graph-databases.html"><span class="topic-num">044</span>Graph Databases</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/045-in-memory-databases.html"><span class="topic-num">045</span>In-Memory Databases</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/046-partitioning-in-databases.html"><span class="topic-num">046</span>Partitioning in Databases</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/047-types-of-partitioning.html"><span class="topic-num">047</span>Types of Partitioning</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/048-sharding-in-dbms.html"><span class="topic-num">048</span>Sharding in DBMS</a></li>
+</ul></details>
+<details class="chapter-group">
+<summary class="chapter-summary"><span>Distributed Database Systems</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/dbms/topics/049-sharding-in-dbms.html"><span class="topic-num">049</span>Sharding in DBMS</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/050-distributed-database-systems.html"><span class="topic-num">050</span>Distributed Database Systems</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/051-architecture-of-distributed-database-systems.html"><span class="topic-num">051</span>Architecture of Distributed Database Systems</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/052-data-distribution-methods.html"><span class="topic-num">052</span>Data Distribution Methods</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/053-fault-tolerance-in-distributed-databases.html"><span class="topic-num">053</span>Fault Tolerance in Distributed Databases</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/054-load-balancing-in-distributed-databases.html"><span class="topic-num">054</span>Load Balancing in Distributed Databases</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/055-data-replication-techniques.html"><span class="topic-num">055</span>Data Replication Techniques</a></li>
+</ul></details>
+<details class="chapter-group">
+<summary class="chapter-summary"><span>Transactions and Concurrency</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/dbms/topics/056-thomas-rules.html"><span class="topic-num">056</span>Thomas' Rules</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/057-acid-properties.html"><span class="topic-num">057</span>ACID Properties</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/058-cap-theorem.html"><span class="topic-num">058</span>CAP Theorem</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/059-database-transactions.html"><span class="topic-num">059</span>Database Transactions</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/060-concurrency-control-in-databases.html"><span class="topic-num">060</span>Concurrency Control in Databases</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/061-locking-protocol.html"><span class="topic-num">061</span>Locking Protocol</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/062-timestamp-ordering-protocols-in-dbms.html"><span class="topic-num">062</span>Timestamp Ordering Protocols in DBMS</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/063-starvation-in-dbms.html"><span class="topic-num">063</span>Starvation in DBMS</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/064-deadlock-in-dbms.html"><span class="topic-num">064</span>Deadlock in DBMS</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/065-concurrency-control-in-distributed-databases.html"><span class="topic-num">065</span>Concurrency Control in Distributed Databases</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/066-serialization-in-databases.html"><span class="topic-num">066</span>Serialization in Databases</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/067-scheduling-in-databases.html"><span class="topic-num">067</span>Scheduling in Databases</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/068-serialization-graphs-in-databases.html"><span class="topic-num">068</span>Serialization Graphs in Databases</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/069-isolation-levels.html"><span class="topic-num">069</span>Isolation Levels</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/070-managing-transaction-consistency-and-concurrency.html"><span class="topic-num">070</span>Managing Transaction Consistency and Concurrency</a></li>
+</ul></details>
+<details class="chapter-group">
+<summary class="chapter-summary"><span>Triggers and Procedural Features</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/dbms/topics/071-triggers-in-databases.html"><span class="topic-num">071</span>Triggers in Databases</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/072-stored-procedures-in-databases.html"><span class="topic-num">072</span>Stored Procedures in Databases</a></li>
+</ul></details>
+<details class="chapter-group">
+<summary class="chapter-summary"><span>Recovery and Backup</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/dbms/topics/073-database-recovery-management.html"><span class="topic-num">073</span>Database Recovery Management</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/074-database-backups.html"><span class="topic-num">074</span>Database Backups</a></li>
+</ul></details>
+<details class="chapter-group">
+<summary class="chapter-summary"><span>Indexing and Performance Tuning</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/dbms/topics/075-database-indexing.html"><span class="topic-num">075</span>Database Indexing</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/076-types-of-database-indexing.html"><span class="topic-num">076</span>Types of Database Indexing</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/077-indexing-techniques.html"><span class="topic-num">077</span>Indexing Techniques</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/078-b-and-b-trees.html"><span class="topic-num">078</span>B- and B+ Trees</a></li>
+</ul></details>
+<details class="chapter-group">
+<summary class="chapter-summary"><span>Database Monitoring and Caching</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/dbms/topics/079-database-monitoring.html"><span class="topic-num">079</span>Database Monitoring</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/080-performance-tuning.html"><span class="topic-num">080</span>Performance Tuning</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/081-database-caching.html"><span class="topic-num">081</span>Database Caching</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/082-database-caching-strategies.html"><span class="topic-num">082</span>Database Caching Strategies</a></li>
+</ul></details>
+<details class="chapter-group">
+<summary class="chapter-summary"><span>Security and Access Control</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/dbms/topics/083-data-encryption-in-dbms.html"><span class="topic-num">083</span>Data Encryption in DBMS</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/084-database-security.html"><span class="topic-num">084</span>Database Security</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/085-encryption-techniques-in-dbms.html"><span class="topic-num">085</span>Encryption Techniques in DBMS</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/086-data-masking-techniques.html"><span class="topic-num">086</span>Data Masking Techniques</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/087-rbac.html"><span class="topic-num">087</span>RBAC</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/088-rbac-models.html"><span class="topic-num">088</span>RBAC Models</a></li>
+</ul></details>
+<details class="chapter-group">
+<summary class="chapter-summary"><span>Scalability and Big Data</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/dbms/topics/089-database-scaling.html"><span class="topic-num">089</span>Database Scaling</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/090-big-data-and-dbms.html"><span class="topic-num">090</span>Big Data and DBMS</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/091-dbaas.html"><span class="topic-num">091</span>DBaas</a></li>
+</ul></details>
+<details class="chapter-group">
+<summary class="chapter-summary"><span>Data Warehousing and Migration</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/dbms/topics/092-database-migration.html"><span class="topic-num">092</span>Database Migration</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/093-data-warehousing.html"><span class="topic-num">093</span>Data Warehousing</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/094-event-driven-architecture.html"><span class="topic-num">094</span>Event-Driven Architecture</a></li>
+</ul></details>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    <div class="breadcrumb">
+      <a href="dashboard.html">Dashboard</a>
+      <span class="breadcrumb-sep">/</span>
+      <a href="dashboard.html">Database Management Systems</a>
+      <span class="breadcrumb-sep">/</span>
+      <span>Introduction to DBMS</span>
+    </div>
+
+    <div class="topic-meta">
+      <div class="topic-meta-chip">📂 Introduction to DBMS</div>
+      <div class="topic-meta-chip">📄 Topic 1</div>
+      <div class="topic-meta-chip" id="reading-time">…</div>
+    </div>
+
+    <article class="topic-article"><div class="editorial-content max-w-3xl px-4 mt-2"><div class="coreSubject dark:text-zinc-300"><br/>
+
+<h2>1. What is Data?</h2>
+<p>Data refers to raw, unprocessed facts and figures. It can exist in forms such as numbers, text, symbols, images, or sounds, and does not carry specific meaning by itself. When organized or processed, data becomes meaningful information.</p>
+<img alt="" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAnUAAAHGCAYAAAASQX0SAAAAAXNSR0IArs4c6QAAI250RVh0bXhmaWxlACUzQ214ZmlsZSUyMGhvc3QlM0QlMjJFbGVjdHJvbiUyMiUyMGFnZW50JTNEJTIyTW96aWxsYSUyRjUuMCUyMChXaW5kb3dzJTIwTlQlMjAxMC4wJTNCJTIwV2luNjQlM0IlMjB4NjQpJTIwQXBwbGVXZWJLaXQlMkY1MzcuMzYlMjAoS0hUTUwlMkMlMjBsaWtlJTIwR2Vja28pJTIwZHJhdy5pbyUyRjI1LjAuMiUyMENocm9tZSUyRjEyOC4wLjY2MTMuMTg2JTIwRWxlY3Ryb24lMkYzMi4yLjUlMjBTYWZhcmklMkY1MzcuMzYlMjIlMjB2ZXJzaW9uJTNEJTIyMjUuMC4yJTIyJTIwc2NhbGUlM0QlMjIwLjUlMjIlMjBib3JkZXIlM0QlMjIwJTIyJTNFJTBBJTIwJTIwJTNDZGlhZ3JhbSUyMG5hbWUlM0QlMjJQYWdlLTElMjIlMjBpZCUzRCUyMk82alRDbnE0LVhuLXp4UF9oM0hGJTIyJTNFJTBBJTIwJTIwJTIwJTIwJTNDbXhHcmFwaE1vZGVsJTIwZHglM0QlMjIyNzQ3JTIyJTIwZHklM0QlMjIxOTA1JTIyJTIwZ3JpZCUzRCUyMjElMjIlMjBncmlkU2l6ZSUzRCUyMjEwJTIyJTIwZ3VpZGVzJTNEJTIyMSUyMiUyMHRvb2x0aXBzJTNEJTIyMSUyMiUyMGNvbm5lY3QlM0QlMjIxJTIyJTIwYXJyb3dzJTNEJTIyMSUyMiUyMGZvbGQlM0QlMjIxJTIyJTIwcGFnZSUzRCUyMjElMjIlMjBwYWdlU2NhbGUlM0QlMjIxJTIyJTIwcGFnZVdpZHRoJTNEJTIyMTkyMCUyMiUyMHBhZ2VIZWlnaHQlM0QlMjIxMjAwJTIyJTIwbWF0aCUzRCUyMjAlMjIlMjBzaGFkb3clM0QlMjIwJTIyJTNFJTBBJTIwJTIwJTIwJTIwJTIwJTIwJTNDcm9vdCUzRSUwQSUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUzQ214Q2VsbCUyMGlkJTNEJTIyMCUyMiUyMCUyRiUzRSUwQSUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUzQ214Q2VsbCUyMGlkJTNEJTIyMSUyMiUyMHBhcmVudCUzRCUyMjAlMjIlMjAlMkYlM0UlMEElMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlM0NteENlbGwlMjBpZCUzRCUyMjIlMjIlMjB2YWx1ZSUzRCUyMiUyNmx0JTNCZGl2JTI2Z3QlM0IlMjZsdCUzQmJyJTI2Z3QlM0IlMjZsdCUzQiUyRmRpdiUyNmd0JTNCJTI2bHQlM0JkaXYlMjZndCUzQiUyNmx0JTNCYnIlMjZndCUzQiUyNmx0JTNCJTJGZGl2JTI2Z3QlM0IlMjIlMjBzdHlsZSUzRCUyMnJvdW5kZWQlM0QxJTNCd2hpdGVTcGFjZSUzRHdyYXAlM0JodG1sJTNEMSUzQnN0cm9rZUNvbG9yJTNEJTIzZTk3NjNmJTNCc3Ryb2tlV2lkdGglM0Q4JTNCYXJjU2l6ZSUzRDIlM0Jtb3ZhYmxlJTNEMSUzQnJlc2l6YWJsZSUzRDElM0Jyb3RhdGFibGUlM0QxJTNCZGVsZXRhYmxlJTNEMSUzQmVkaXRhYmxlJTNEMSUzQmxvY2tlZCUzRDAlM0Jjb25uZWN0YWJsZSUzRDElM0IlMjIlMjB2ZXJ0ZXglM0QlMjIxJTIyJTIwcGFyZW50JTNEJTIyMSUyMiUzRSUwQSUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUzQ214R2VvbWV0cnklMjB4JTNEJTIyMTk1MCUyMiUyMHklM0QlMjIxMTAlMjIlMjB3aWR0aCUzRCUyMjEyNTAlMjIlMjBoZWlnaHQlM0QlMjI5MDAlMjIlMjBhcyUzRCUyMmdlb21ldHJ5JTIyJTIwJTJGJTNFJTBBJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTNDJTJGbXhDZWxsJTNFJTBBJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTNDbXhDZWxsJTIwaWQlM0QlMjIzJTIyJTIwdmFsdWUlM0QlMjIlMjIlMjBzdHlsZSUzRCUyMnNoYXBlJTNEaW1hZ2UlM0Jhc3BlY3QlM0RmaXhlZCUzQmltYWdlJTNEZGF0YSUzQWltYWdlJTJGcG5nJTJDaVZCT1J3MEtHZ29BQUFBTlNVaEVVZ0FBQUp3QUFBQWtDQVlBQUFCOElWTlZBQUFBQ1hCSVdYTUFBQXNUQUFBTEV3RUFtcHdZQUFBRSUyQjBsRVFWUjRuT1ZjUVhJY05SUjlhazlZVUxoSzdBaWJLQ2RBbkFCeGc3a0IyVG03bUJOa09FSEN4Z1dyNUFiQUNkeWNBT1VFdElzRjdOeVUyWVNxV0N4NnBtcEdWbnYwSkhWcnhyeXFyckttMzlmN3Jma3Q2VXNhQ3d5NEJpQnglMkJQZ1NnTjBxTTM3YnRYMHVESUJMZ3Q4QyUyQkpyZ1N3QnZBQ3dKbXlud0xZRFglMkIwaFhaNmZ5SSUyQkd1QTdmYXh6JTJGOGMlMkJlNUZ3QTBqaVBZZ04xZ1UlMkJEOHZpcmtBNk1KQUg4VFhBWGdKd3pmU1czWUdOS2pCaG91Y01PNWR5RiUyQmclMkJFaGp3R3RWMWFrdlMzaXhkRERNV2dqZVJwRHo2bkolMkJxZUNqV0xkM3ByUXglMkJLa0NZNENEZmdHckFYJTJGamRHayUyRlclMkJGJTJGUGlDNU5zSWpzRVFiSXFzZXlyMDYycyUyRmhBaTJoeHNaVVJyd0RWZ0xmc0I4UmRxWEdsSTF5YmQ3N3IlMkZBRUd3eXdaZXBZR09KSXR3ZSUyRmVPTG0yQWRDd3dQMnZFJTJCQVd0YlNmQlRkWUM3QWFOSWU1dWh2WUVFOTd3OTd1OHBYZ0pZUmRiVkVibyUyQkpEaSUyRmclMkZNdkgxZG5weEp3S25ETGp0a3NrSmU1WFlJYmtwOW1hUG5RQk5kVzBMeFBWd0o0QmVCWlpEM2ZBemdudGJleHdoRGNzZGlaZiUyRjExOXZGTEp4cHpsJTJCYmtpTDM2OCUyRmtuZCUyQlp3UXFCZkVFNkVFSEJpRkRaVGF4dWE1TmNhVGtNOWhRS1hpWDZIJTJCRjV3RE95MGFhZTluR2lXNEo1ZElUQUNPWWMySiUyQkFZQjRCeVh6cFFMMFBWSkwlMkZ6eWdwY2NoQzFGaGFCV0wwTjdPYVA5YkNwQyUyRmdBT1BldXlUQlhKTjltYVBrd0pMOVVodnFFNUZ1diUyRkFieDdXWlJKdGdrTXFZZmo1cHl5elRpcExuTUNUaEQ4a3Q5NlVEbUVKRUJUZkp0aG4wdG4zZDBQN2h5QWVlQXE1d2h0ZGFYRG5DOWE0OHl2YXNHbCUyQmxaN0dhb01zRyUyQkJEVEo5M1Vsd292WGNxVHVEb0dNMmduUmYzNXhZd1hwekRhWWZjd2V3S2NaV3R1UWElMkIxWXRPRDJNc2V3eEREWlQ5VTE0UFpnbHdCJTJCSWZpejRvJTJGbnAlMkJjTHVGZiUyQjU2SVJ5ODh1YmtiOVRoMVNOZXE4clJ0dEJzeGVaa25kM0oyUlVuNVBnaE80NE1MNzJBN0RCcWtCcDBoJTJCMUVKaUpEVEpid3Zwc2xNSXZ6ZFRwTDBsJTJCYk5DaEo5bmRJZGhnOVNBTXlTJTJGUzlRSlFaRjhXMG5YZjlPWmdPMFJ1NWRaQWNOU1NmREZ0JTJGdHNVd051aWczc1E5ZldtYnFNdlc5N1VCaGRLaGs1a3JTTm5Ea2NBNXVvazZ2ZG8weFBZVWklMkI5Y29hRSUyQnhsMXNMWVVzbllrYVJ0cEFTY0FyOWgzeWZvaEtCSmJWdElsOUVFOGc4YXZBRGdLbHpmeERoMzYlMkZEMlh5ZWUlMkJ0ZjdEJTJGaDFuMjNLT3B3bSUyQlYyQ3hoZ2t5UyUyRlZVeGlTYjcyeUx1TEY5SWhxcnljJTJGM3ZSSTdFUlNlamhOOGtzT0Q0YmtkNFYwMlhtanY2dHlMR2NPN2RRQ0tRR1h1enlRZzJOSkdIS0gxQnBvNXhDWm80Yzc5bE1pRXZ5aFMxOVhGJTJGQmphc3lTcUxBQkoxRjNBVk1UM0I1bGtoVkdFempPWUFQS0hxNFlCWnMwYUpKdlNmNGhhck82JTJGcGFVSXUyWE9PQTkxRnl3UFp3bSUyQlRXSDAxSkRoQ2I1YmFaOXlUWTdPTEFCeCUyRjVTcWlYNTk4R1ElMkZLNlFidTZoeTVxN01nY0hOdUFVeWJjayUyRno2OEJUY25LN1VVb1VtJTJCOWNvcXclMkZaJTJGRFFsJTJCNVZvVzl1RVpxYyUyRjhVaWtFVGVyNTUlMkZRa2FmOXpwcjhQQ2daNWpWOEtLOUlQazZHMUpMWDhOVWREMnE4eWZEMEtNRm1xSnV1MkpEOFdLd3pEVk5TJTJCSDhvdVBPJTJCRG42Z28wbjZXcFltYVlPWndiTUl3NVVMaU9jcnUwWlpDNTVVMWFmJTJCZ00xU0FDemhGMXQyUmZBWTlodDhMVEttUkF1dVYyY1NsSyUyQlBHd3dDYk1KZ1pmRElKZmsxNVNjJTJCJTJGYThMMndRJTJCbkRBenlHMzhxbkNmNE5zWDF1JTJCZVhKTzNubkd0V1ElMkJ5UXFzbDZMZVk3ayUyRjhhd3o5N3FZM09LMnZTJTJGcUJQJTJCWmJDZjhoJTJCOVlWRFBuM1VBQUFBQUVsRlRrU3VRbUNDJTNCJTIyJTIwdmVydGV4JTNEJTIyMSUyMiUyMHBhcmVudCUzRCUyMjElMjIlM0UlMEElMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlM0NteEdlb21ldHJ5JTIweCUzRCUyMjMwMzAlMjIlMjB5JTNEJTIyMTMwJTIyJTIwd2lkdGglM0QlMjIxNDQuNiUyMiUyMGhlaWdodCUzRCUyMjMzLjM3JTIyJTIwYXMlM0QlMjJnZW9tZXRyeSUyMiUyMCUyRiUzRSUwQSUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUzQyUyRm14Q2VsbCUzRSUwQSUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUzQ214Q2VsbCUyMGlkJTNEJTIyNCUyMiUyMHZhbHVlJTNEJTIyJTIyJTIwc3R5bGUlM0QlMjJncm91cCUyMiUyMHZlcnRleCUzRCUyMjElMjIlMjBjb25uZWN0YWJsZSUzRCUyMjAlMjIlMjBwYXJlbnQlM0QlMjIxJTIyJTNFJTBBJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTNDbXhHZW9tZXRyeSUyMHglM0QlMjIyMTEwJTIyJTIweSUzRCUyMjE3MCUyMiUyMHdpZHRoJTNEJTIyOTMwJTIyJTIwaGVpZ2h0JTNEJTIyNzUwJTIyJTIwYXMlM0QlMjJnZW9tZXRyeSUyMiUyMCUyRiUzRSUwQSUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUzQyUyRm14Q2VsbCUzRSUwQSUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUzQ214Q2VsbCUyMGlkJTNEJTIyNSUyMiUyMHZhbHVlJTNEJTIyJTI2bHQlM0Jmb250JTIwZmFjZSUzRCUyNnF1b3QlM0JUaXRpbGxpdW0lMjBXZWIlMjZxdW90JTNCJTIwc3R5bGUlM0QlMjZxdW90JTNCZm9udC1zaXplJTNBJTIwNDBweCUzQiUyNnF1b3QlM0IlMjZndCUzQiUyNmx0JTNCaSUyNmd0JTNCJTI2bHQlM0JiJTI2Z3QlM0JEYXRhYmFzZSUyNmFtcCUzQm5ic3AlM0IlMjZsdCUzQiUyRmIlMjZndCUzQiUyNmx0JTNCJTJGaSUyNmd0JTNCJTI2bHQlM0IlMkZmb250JTI2Z3QlM0IlMjIlMjBzdHlsZSUzRCUyMnJvdW5kZWQlM0QxJTNCd2hpdGVTcGFjZSUzRHdyYXAlM0JodG1sJTNEMSUzQnN0cm9rZUNvbG9yJTNEJTIzRTk3NjNGJTNCc3Ryb2tlV2lkdGglM0Q1JTNCZmlsbENvbG9yJTNEJTIzRTk3NjNGJTNCJTIyJTIwdmVydGV4JTNEJTIyMSUyMiUyMHBhcmVudCUzRCUyMjQlMjIlM0UlMEElMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlM0NteEdlb21ldHJ5JTIweSUzRCUyMjUwJTIyJTIwd2lkdGglM0QlMjI5MzAlMjIlMjBoZWlnaHQlM0QlMjI3MCUyMiUyMGFzJTNEJTIyZ2VvbWV0cnklMjIlMjAlMkYlM0UlMEElMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlM0MlMkZteENlbGwlM0UlMEElMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlM0NteENlbGwlMjBpZCUzRCUyMjYlMjIlMjB2YWx1ZSUzRCUyMiUyNmx0JTNCZm9udCUyMGZhY2UlM0QlMjZxdW90JTNCVGl0aWxsaXVtJTIwV2ViJTI2cXVvdCUzQiUyMHN0eWxlJTNEJTI2cXVvdCUzQmZvbnQtc2l6ZSUzQSUyMDQwcHglM0IlMjZxdW90JTNCJTI2Z3QlM0IlMjZsdCUzQmklMjZndCUzQiUyNmx0JTNCYiUyNmd0JTNCRmlsZXMlMjZsdCUzQiUyRmIlMjZndCUzQiUyNmx0JTNCJTJGaSUyNmd0JTNCJTI2bHQlM0IlMkZmb250JTI2Z3QlM0IlMjIlMjBzdHlsZSUzRCUyMnJvdW5kZWQlM0QxJTNCd2hpdGVTcGFjZSUzRHdyYXAlM0JodG1sJTNEMSUzQnN0cm9rZUNvbG9yJTNEJTIzRTk3NjNGJTNCc3Ryb2tlV2lkdGglM0Q1JTNCZmlsbENvbG9yJTNEJTIzRkY5OTMzJTNCJTIyJTIwdmVydGV4JTNEJTIyMSUyMiUyMHBhcmVudCUzRCUyMjQlMjIlM0UlMEElMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlM0NteEdlb21ldHJ5JTIweCUzRCUyMjM1Ljc2OTIzMDc2OTIzMDc3NCUyMiUyMHklM0QlMjIxNzAlMjIlMjB3aWR0aCUzRCUyMjg1OC40NjE1Mzg0NjE1Mzg1JTIyJTIwaGVpZ2h0JTNEJTIyNzAlMjIlMjBhcyUzRCUyMmdlb21ldHJ5JTIyJTIwJTJGJTNFJTBBJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTNDJTJGbXhDZWxsJTNFJTBBJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTNDbXhDZWxsJTIwaWQlM0QlMjI3JTIyJTIwdmFsdWUlM0QlMjIlMjZsdCUzQmZvbnQlMjBmYWNlJTNEJTI2cXVvdCUzQlRpdGlsbGl1bSUyMFdlYiUyNnF1b3QlM0IlMjBzdHlsZSUzRCUyNnF1b3QlM0Jmb250LXNpemUlM0ElMjA0MHB4JTNCJTI2cXVvdCUzQiUyNmd0JTNCJTI2bHQlM0JpJTI2Z3QlM0IlMjZsdCUzQmIlMjZndCUzQlJlY29yZHMlMjZsdCUzQiUyRmIlMjZndCUzQiUyNmx0JTNCJTJGaSUyNmd0JTNCJTI2bHQlM0IlMkZmb250JTI2Z3QlM0IlMjIlMjBzdHlsZSUzRCUyMnJvdW5kZWQlM0QxJTNCd2hpdGVTcGFjZSUzRHdyYXAlM0JodG1sJTNEMSUzQnN0cm9rZUNvbG9yJTNEJTIzRTk3NjNGJTNCc3Ryb2tlV2lkdGglM0Q1JTNCZmlsbENvbG9yJTNEJTIzRkY5OTMzJTNCJTIyJTIwdmVydGV4JTNEJTIyMSUyMiUyMHBhcmVudCUzRCUyMjQlMjIlM0UlMEElMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlM0NteEdlb21ldHJ5JTIweCUzRCUyMjcxLjUzODQ2MTUzODQ2MTU1JTIyJTIweSUzRCUyMjI5MCUyMiUyMHdpZHRoJTNEJTIyNzg2LjkyMzA3NjkyMzA3NjklMjIlMjBoZWlnaHQlM0QlMjI3MCUyMiUyMGFzJTNEJTIyZ2VvbWV0cnklMjIlMjAlMkYlM0UlMEElMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlM0MlMkZteENlbGwlM0UlMEElMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlM0NteENlbGwlMjBpZCUzRCUyMjglMjIlMjB2YWx1ZSUzRCUyMiUyNmx0JTNCZm9udCUyMGZhY2UlM0QlMjZxdW90JTNCVGl0aWxsaXVtJTIwV2ViJTI2cXVvdCUzQiUyMHN0eWxlJTNEJTI2cXVvdCUzQmZvbnQtc2l6ZSUzQSUyMDQwcHglM0IlMjZxdW90JTNCJTI2Z3QlM0IlMjZsdCUzQmklMjZndCUzQiUyNmx0JTNCYiUyNmd0JTNCRmllbGRzJTI2bHQlM0IlMkZiJTI2Z3QlM0IlMjZsdCUzQiUyRmklMjZndCUzQiUyNmx0JTNCJTJGZm9udCUyNmd0JTNCJTIyJTIwc3R5bGUlM0QlMjJyb3VuZGVkJTNEMSUzQndoaXRlU3BhY2UlM0R3cmFwJTNCaHRtbCUzRDElM0JzdHJva2VDb2xvciUzRCUyM0U5NzYzRiUzQnN0cm9rZVdpZHRoJTNENSUzQmZpbGxDb2xvciUzRCUyM0ZGQjM2NiUzQiUyMiUyMHZlcnRleCUzRCUyMjElMjIlMjBwYXJlbnQlM0QlMjI0JTIyJTNFJTBBJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTNDbXhHZW9tZXRyeSUyMHglM0QlMjIxMDcuMzA3NjkyMzA3NjkyMyUyMiUyMHklM0QlMjI0MTAlMjIlMjB3aWR0aCUzRCUyMjcxNS4zODQ2MTUzODQ2MTU1JTIyJTIwaGVpZ2h0JTNEJTIyNzAlMjIlMjBhcyUzRCUyMmdlb21ldHJ5JTIyJTIwJTJGJTNFJTBBJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTNDJTJGbXhDZWxsJTNFJTBBJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTNDbXhDZWxsJTIwaWQlM0QlMjI5JTIyJTIwdmFsdWUlM0QlMjIlMjZsdCUzQmZvbnQlMjBmYWNlJTNEJTI2cXVvdCUzQlRpdGlsbGl1bSUyMFdlYiUyNnF1b3QlM0IlMjBzdHlsZSUzRCUyNnF1b3QlM0Jmb250LXNpemUlM0ElMjA0MHB4JTNCJTI2cXVvdCUzQiUyNmd0JTNCJTI2bHQlM0JpJTI2Z3QlM0IlMjZsdCUzQmIlMjZndCUzQkJ5dGVzJTI2bHQlM0IlMkZiJTI2Z3QlM0IlMjZsdCUzQiUyRmklMjZndCUzQiUyNmx0JTNCJTJGZm9udCUyNmd0JTNCJTIyJTIwc3R5bGUlM0QlMjJyb3VuZGVkJTNEMSUzQndoaXRlU3BhY2UlM0R3cmFwJTNCaHRtbCUzRDElM0JzdHJva2VDb2xvciUzRCUyM0U5NzYzRiUzQnN0cm9rZVdpZHRoJTNENSUzQmZpbGxDb2xvciUzRCUyM0ZGRTZDQyUzQiUyMiUyMHZlcnRleCUzRCUyMjElMjIlMjBwYXJlbnQlM0QlMjI0JTIyJTNFJTBBJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTNDbXhHZW9tZXRyeSUyMHglM0QlMjIxNDMuMDc2OTIzMDc2OTIzMSUyMiUyMHklM0QlMjI1MzAlMjIlMjB3aWR0aCUzRCUyMjY0My44NDYxNTM4NDYxNTM5JTIyJTIwaGVpZ2h0JTNEJTIyNzAlMjIlMjBhcyUzRCUyMmdlb21ldHJ5JTIyJTIwJTJGJTNFJTBBJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTNDJTJGbXhDZWxsJTNFJTBBJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTNDbXhDZWxsJTIwaWQlM0QlMjIxMCUyMiUyMHZhbHVlJTNEJTIyJTI2bHQlM0Jmb250JTIwZmFjZSUzRCUyNnF1b3QlM0JUaXRpbGxpdW0lMjBXZWIlMjZxdW90JTNCJTIwc3R5bGUlM0QlMjZxdW90JTNCZm9udC1zaXplJTNBJTIwNDBweCUzQiUyNnF1b3QlM0IlMjZndCUzQiUyNmx0JTNCaSUyNmd0JTNCJTI2bHQlM0JiJTI2Z3QlM0JCaXRzJTI2bHQlM0IlMkZiJTI2Z3QlM0IlMjZsdCUzQiUyRmklMjZndCUzQiUyNmx0JTNCJTJGZm9udCUyNmd0JTNCJTIyJTIwc3R5bGUlM0QlMjJyb3VuZGVkJTNEMSUzQndoaXRlU3BhY2UlM0R3cmFwJTNCaHRtbCUzRDElM0JzdHJva2VDb2xvciUzRCUyM0U5NzYzRiUzQnN0cm9rZVdpZHRoJTNENSUzQiUyMiUyMHZlcnRleCUzRCUyMjElMjIlMjBwYXJlbnQlM0QlMjI0JTIyJTNFJTBBJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTNDbXhHZW9tZXRyeSUyMHglM0QlMjIxNzguODQ2MTUzODQ2MTUzODclMjIlMjB5JTNEJTIyNjUwJTIyJTIwd2lkdGglM0QlMjI1NzIuMzA3NjkyMzA3NjkyNCUyMiUyMGhlaWdodCUzRCUyMjcwJTIyJTIwYXMlM0QlMjJnZW9tZXRyeSUyMiUyMCUyRiUzRSUwQSUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUzQyUyRm14Q2VsbCUzRSUwQSUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUzQ214Q2VsbCUyMGlkJTNEJTIyMTElMjIlMjB2YWx1ZSUzRCUyMiUyMiUyMHN0eWxlJTNEJTIyZW5kQXJyb3clM0RjbGFzc2ljJTNCaHRtbCUzRDElM0Jyb3VuZGVkJTNEMCUzQnN0cm9rZVdpZHRoJTNEMTElM0JzdHJva2VDb2xvciUzRCUyMzAwMDAwMCUzQmVuZEZpbGwlM0QxJTNCJTIyJTIwZWRnZSUzRCUyMjElMjIlMjBwYXJlbnQlM0QlMjI0JTIyJTNFJTBBJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTNDbXhHZW9tZXRyeSUyMHdpZHRoJTNEJTIyNTAlMjIlMjBoZWlnaHQlM0QlMjI1MCUyMiUyMHJlbGF0aXZlJTNEJTIyMSUyMiUyMGFzJTNEJTIyZ2VvbWV0cnklMjIlM0UlMEElMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlM0NteFBvaW50JTIweCUzRCUyMjM1Ljc3MjMwNzY5MjMwNzU1JTIyJTIweSUzRCUyMjc1MCUyMiUyMGFzJTNEJTIyc291cmNlUG9pbnQlMjIlMjAlMkYlM0UlMEElMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlM0NteFBvaW50JTIweCUzRCUyMjM3LjU2MDc2OTIzMDc2ODk4JTIyJTIwYXMlM0QlMjJ0YXJnZXRQb2ludCUyMiUyMCUyRiUzRSUwQSUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUzQyUyRm14R2VvbWV0cnklM0UlMEElMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlM0MlMkZt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" style="display:block;margin:0 auto"/>
+<h3>Types of Data</h3>
+<table>
+<tbody><tr>
+<th>Type</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+<tr>
+<td>Numerical</td>
+<td>Data represented by numbers</td>
+<td>123, 45.67, -34</td>
+</tr>
+<tr>
+<td>Textual</td>
+<td>Data represented in words or characters</td>
+<td>"Hello", "Database"</td>
+</tr>
+<tr>
+<td>Boolean</td>
+<td>Data represented in true or false values</td>
+<td>true, false</td>
+</tr>
+<tr>
+<td>Categorical</td>
+<td>Data categorized into distinct groups or classes</td>
+<td>Male/Female, Product A/B/C</td>
+</tr>
+</tbody></table>
+<hr class="line-break"/>
+<h2>2. Data Hierarchy</h2>
+<p>Data hierarchy represents the levels of data organization, starting with the smallest element and moving to complex levels for meaningful information.</p>
+<table>
+<tbody><tr>
+<th>Level</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+<tr>
+<td>Bit</td>
+<td>The smallest unit of data, represented as 0 or 1</td>
+<td>0, 1</td>
+</tr>
+<tr>
+<td>Byte</td>
+<td>8 bits make up a byte</td>
+<td>ASCII code for "A" is 65</td>
+</tr>
+<tr>
+<td>Field</td>
+<td>A single piece of data</td>
+<td>"John", "25"</td>
+</tr>
+<tr>
+<td>Record</td>
+<td>A collection of related fields</td>
+<td>{Name: John, Age: 25}</td>
+</tr>
+<tr>
+<td>File</td>
+<td>A collection of related records</td>
+<td>A customer data file</td>
+</tr>
+<tr>
+<td>Database</td>
+<td>A structured set of files/data stored for easy access</td>
+<td>A school database with student info</td>
+</tr>
+</tbody></table>
+<hr class="line-break"/>
+<h2>3. What is Information?</h2>
+<p>Information is data that has been processed and organized in a way that adds meaning, making it useful for decision-making.</p>
+<h3>Example: Data vs. Information</h3>
+<table>
+<tbody><tr>
+<th>Data</th>
+<th>Information</th>
+</tr>
+<tr>
+<td>{Marks: [55, 78, 62, 85]}</td>
+<td>"Average Marks: 70"</td>
+</tr>
+<tr>
+<td>{Time Logs: [9:00, 17:00]}</td>
+<td>"Employee worked 8 hours today"</td>
+</tr>
+<tr>
+<td>{Temperature: [30°C, 35°C]}</td>
+<td>"Average temperature this week: 32.5°C"</td>
+</tr>
+</tbody></table>
+<hr class="line-break"/>
+<h2>4. What is a Database?</h2>
+<p>A database is a structured collection of data that can be accessed, managed, and updated efficiently. Databases are essential for storing information in an organized way.</p>
+<h3>Types of Databases</h3>
+<table>
+<tbody><tr>
+<th>Type</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+<tr>
+<td>Relational Database</td>
+<td>Uses tables (relations) to organize data</td>
+<td>MySQL, PostgreSQL</td>
+</tr>
+<tr>
+<td>NoSQL Database</td>
+<td>Non-tabular, flexible schema structure</td>
+<td>MongoDB, Cassandra</td>
+</tr>
+<tr>
+<td>In-Memory Database</td>
+<td>Stores data in memory for faster access</td>
+<td>Redis, Memcached</td>
+</tr>
+<tr>
+<td>Distributed Database</td>
+<td>Data stored across multiple physical locations</td>
+<td>Google Bigtable, Amazon DynamoDB</td>
+</tr>
+<tr>
+<td>Cloud Database</td>
+<td>Hosted on cloud services</td>
+<td>Google Cloud SQL, Amazon RDS</td>
+</tr>
+</tbody></table>
+<h3>Code Example: SQL Query in a Relational Database</h3>
+<pre><code class="language-sql">            SELECT first_name, last_name, age 
+            FROM students 
+            WHERE age &gt; 18;
+        </code></pre>
+<p>In this query:</p>
+<ul>
+<li><code>first_name</code>, <code>last_name</code>, and <code>age</code> are columns in the <code>students</code> table.</li>
+<li>The <code>WHERE</code> clause filters records to return only those where age is greater than 18.</li>
+</ul>
+<hr class="line-break"/>
+<h2>5. Characteristics of a Database</h2>
+<table>
+<tbody><tr>
+<th>Characteristic</th>
+<th>Description</th>
+</tr>
+<tr>
+<td>Data Integrity</td>
+<td>Ensures data accuracy and consistency</td>
+</tr>
+<tr>
+<td>Data Security</td>
+<td>Protects data from unauthorized access or corruption</td>
+</tr>
+<tr>
+<td>Concurrent Access</td>
+<td>Allows multiple users to access data simultaneously</td>
+</tr>
+<tr>
+<td>Data Independence</td>
+<td>Changes in data storage do not affect data access methods</td>
+</tr>
+<tr>
+<td>Scalability</td>
+<td>Ability to handle increasing amounts of data</td>
+</tr>
+</tbody></table>
+<p>In summary:</p>
+<ul>
+<li><strong>Data</strong> is raw, unprocessed facts.</li>
+<li><strong>Information</strong> is meaningful and organized data.</li>
+<li>A <strong>database</strong> efficiently stores, manages, and retrieves data, with key characteristics like data integrity, security, and scalability.</li>
+</ul>
+<br/>
+<hr class="line-break"/>
+</div></div></article>
+
+    <div class="topic-nav"><a href="002-types-of-databases.html" class="nav-btn nav-next"><span class="nav-btn-label">Next →</span><span class="nav-btn-title">Types of Databases</span></a></div>
+  </main>
+</div>
+
+<button id="back-to-top" aria-label="Back to top">↑</button>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="../../../assets/script.js?v=12"></script>
+</body>
+</html>

@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+  (function() {
+    const saved = localStorage.getItem('GrindOS-theme');
+    if (saved) {
+      document.documentElement.classList.add(saved);
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.documentElement.classList.add('dark');
+    }
+  })();
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Extended ER Features — Database Management Systems — GrindOS</title>
+<link rel="stylesheet" href="../../../assets/style.css?v=13">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+  
+  <link rel="icon" type="image/png" href="../../../logo.png">
+  
+  <link rel="apple-touch-icon" href="../../../logo.png">
+</head>
+<body>
+
+<div id="reading-progress"></div>
+
+<header class="topbar">
+  <button class="icon-btn menu-toggle" id="menu-toggle" aria-label="Menu">☰</button>
+  <a href="dashboard.html" class="topbar-brand">
+    <img src="../../../logo.png" alt="GrindOS Logo" class="brand-logo" style="width: 34px; height: 34px; object-fit: contain; border-radius: 4px; flex-shrink: 0; display: inline-block; vertical-align: middle;">
+    <span class="brand-wordmark">GrindOS</span>
+  </a>
+  <nav class="topbar-nav">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="dashboard.html" class="active">🗄️ Database Management Systems</a>
+    <a href="../../../interview-prep/index.html" class="nav-cta">🎯 Interview Prep</a>
+  </nav>
+  <div class="topbar-right">
+    <button class="icon-btn" id="theme-toggle" aria-label="Toggle theme"><span class="theme-icon">☾</span></button>
+  </div>
+</header>
+
+<div class="page-layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-course-label"><span class="course-emoji">🗄️</span>Database Management Systems</div>
+    </div>
+    <div class="sidebar-progress">
+      <div class="progress-label-row">
+        <span>Progress</span>
+        <span class="progress-count">12 / 94</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" style="width:13%"></div></div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-search">
+<input type="text" id="sidebar-search" placeholder="Search topics…  /" autocomplete="off">
+<span class="sidebar-search-icon">⌕</span></div>
+<details class="chapter-group">
+<summary class="chapter-summary"><span>Introduction to DBMS</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/dbms/topics/001-data-information-database.html"><span class="topic-num">001</span>Data, Information & Database</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/002-types-of-databases.html"><span class="topic-num">002</span>Types of Databases</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/003-database-management-system.html"><span class="topic-num">003</span>Database Management System</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/004-need-advantages-and-disadvantages-of-dbms.html"><span class="topic-num">004</span>Need, Advantages and Disadvantages of DBMS</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/005-data-abstraction-in-dbms.html"><span class="topic-num">005</span>Data Abstraction in DBMS</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/006-dbms-architecture.html"><span class="topic-num">006</span>DBMS Architecture</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/007-database-users-and-interactions.html"><span class="topic-num">007</span>Database Users and Interactions</a></li>
+</ul></details>
+<details class="chapter-group"open>
+<summary class="chapter-summary"><span>Data Models and ER Models</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/dbms/topics/008-dbms-interfaces.html"><span class="topic-num">008</span>DBMS Interfaces</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/009-data-models-and-their-types.html"><span class="topic-num">009</span>Data Models and Their Types</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/010-er-model-and-its-components.html"><span class="topic-num">010</span>ER Model and its Components</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/011-types-of-relationships-in-dbms.html"><span class="topic-num">011</span>Types of Relationships in DBMS</a></li>
+<li class="topic-item active"><a href="../../../courses/dbms/topics/012-extended-er-features.html"><span class="topic-num">012</span>Extended ER Features</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/013-types-of-inheritance.html"><span class="topic-num">013</span>Types of Inheritance</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/014-entity-relationship-diagram.html"><span class="topic-num">014</span>Entity-Relationship Diagram</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/015-create-er-diagram.html"><span class="topic-num">015</span>Create ER Diagram</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/016-relationships-in-er-diagram.html"><span class="topic-num">016</span>Relationships in ER Diagram</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/017-relational-models.html"><span class="topic-num">017</span>Relational Models</a></li>
+</ul></details>
+<details class="chapter-group">
+<summary class="chapter-summary"><span>Relational Model and Normalization</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/dbms/topics/018-intension-and-extension.html"><span class="topic-num">018</span>Intension and Extension</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/019-keys-in-dbms.html"><span class="topic-num">019</span>Keys in DBMS</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/020-data-normalization.html"><span class="topic-num">020</span>Data Normalization</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/021-functional-dependency.html"><span class="topic-num">021</span>Functional Dependency</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/022-armstrongs-axioms.html"><span class="topic-num">022</span>Armstrong's Axioms</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/023-inference-rules.html"><span class="topic-num">023</span>Inference Rules</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/024-closure-in-functional-dependencies.html"><span class="topic-num">024</span>Closure in Functional Dependencies</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/025-denormalisation.html"><span class="topic-num">025</span>Denormalisation</a></li>
+</ul></details>
+<details class="chapter-group">
+<summary class="chapter-summary"><span>SQL and Query Optimization</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/dbms/topics/026-database-languages.html"><span class="topic-num">026</span>Database Languages</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/027-sql-operators.html"><span class="topic-num">027</span>SQL Operators</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/028-aggregates-in-sql.html"><span class="topic-num">028</span>Aggregates in SQL</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/029-sql-clauses.html"><span class="topic-num">029</span>SQL Clauses</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/030-sql-joins.html"><span class="topic-num">030</span>SQL Joins</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/031-sql-joins.html"><span class="topic-num">031</span>SQL Joins</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/032-sql-joins.html"><span class="topic-num">032</span>SQL Joins</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/033-views-in-sql.html"><span class="topic-num">033</span>Views in SQL</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/034-advanced-views-in-sql.html"><span class="topic-num">034</span>Advanced Views in SQL</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/035-indexed-views.html"><span class="topic-num">035</span>Indexed Views</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/036-sql-subqueries.html"><span class="topic-num">036</span>SQL Subqueries</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/037-types-of-sql-subqueries.html"><span class="topic-num">037</span>Types of SQL Subqueries</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/038-query-processing.html"><span class="topic-num">038</span>Query Processing</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/039-query-optimization.html"><span class="topic-num">039</span>Query Optimization</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/040-advanced-query-optimization.html"><span class="topic-num">040</span>Advanced Query Optimization</a></li>
+</ul></details>
+<details class="chapter-group">
+<summary class="chapter-summary"><span>NoSQL Databases</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/dbms/topics/041-nosql-databases.html"><span class="topic-num">041</span>NoSQL Databases</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/042-base-properties.html"><span class="topic-num">042</span>BASE Properties</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/043-nosql-languages.html"><span class="topic-num">043</span>NoSQL Languages</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/044-graph-databases.html"><span class="topic-num">044</span>Graph Databases</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/045-in-memory-databases.html"><span class="topic-num">045</span>In-Memory Databases</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/046-partitioning-in-databases.html"><span class="topic-num">046</span>Partitioning in Databases</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/047-types-of-partitioning.html"><span class="topic-num">047</span>Types of Partitioning</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/048-sharding-in-dbms.html"><span class="topic-num">048</span>Sharding in DBMS</a></li>
+</ul></details>
+<details class="chapter-group">
+<summary class="chapter-summary"><span>Distributed Database Systems</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/dbms/topics/049-sharding-in-dbms.html"><span class="topic-num">049</span>Sharding in DBMS</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/050-distributed-database-systems.html"><span class="topic-num">050</span>Distributed Database Systems</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/051-architecture-of-distributed-database-systems.html"><span class="topic-num">051</span>Architecture of Distributed Database Systems</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/052-data-distribution-methods.html"><span class="topic-num">052</span>Data Distribution Methods</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/053-fault-tolerance-in-distributed-databases.html"><span class="topic-num">053</span>Fault Tolerance in Distributed Databases</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/054-load-balancing-in-distributed-databases.html"><span class="topic-num">054</span>Load Balancing in Distributed Databases</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/055-data-replication-techniques.html"><span class="topic-num">055</span>Data Replication Techniques</a></li>
+</ul></details>
+<details class="chapter-group">
+<summary class="chapter-summary"><span>Transactions and Concurrency</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/dbms/topics/056-thomas-rules.html"><span class="topic-num">056</span>Thomas' Rules</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/057-acid-properties.html"><span class="topic-num">057</span>ACID Properties</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/058-cap-theorem.html"><span class="topic-num">058</span>CAP Theorem</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/059-database-transactions.html"><span class="topic-num">059</span>Database Transactions</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/060-concurrency-control-in-databases.html"><span class="topic-num">060</span>Concurrency Control in Databases</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/061-locking-protocol.html"><span class="topic-num">061</span>Locking Protocol</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/062-timestamp-ordering-protocols-in-dbms.html"><span class="topic-num">062</span>Timestamp Ordering Protocols in DBMS</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/063-starvation-in-dbms.html"><span class="topic-num">063</span>Starvation in DBMS</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/064-deadlock-in-dbms.html"><span class="topic-num">064</span>Deadlock in DBMS</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/065-concurrency-control-in-distributed-databases.html"><span class="topic-num">065</span>Concurrency Control in Distributed Databases</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/066-serialization-in-databases.html"><span class="topic-num">066</span>Serialization in Databases</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/067-scheduling-in-databases.html"><span class="topic-num">067</span>Scheduling in Databases</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/068-serialization-graphs-in-databases.html"><span class="topic-num">068</span>Serialization Graphs in Databases</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/069-isolation-levels.html"><span class="topic-num">069</span>Isolation Levels</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/070-managing-transaction-consistency-and-concurrency.html"><span class="topic-num">070</span>Managing Transaction Consistency and Concurrency</a></li>
+</ul></details>
+<details class="chapter-group">
+<summary class="chapter-summary"><span>Triggers and Procedural Features</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/dbms/topics/071-triggers-in-databases.html"><span class="topic-num">071</span>Triggers in Databases</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/072-stored-procedures-in-databases.html"><span class="topic-num">072</span>Stored Procedures in Databases</a></li>
+</ul></details>
+<details class="chapter-group">
+<summary class="chapter-summary"><span>Recovery and Backup</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/dbms/topics/073-database-recovery-management.html"><span class="topic-num">073</span>Database Recovery Management</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/074-database-backups.html"><span class="topic-num">074</span>Database Backups</a></li>
+</ul></details>
+<details class="chapter-group">
+<summary class="chapter-summary"><span>Indexing and Performance Tuning</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/dbms/topics/075-database-indexing.html"><span class="topic-num">075</span>Database Indexing</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/076-types-of-database-indexing.html"><span class="topic-num">076</span>Types of Database Indexing</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/077-indexing-techniques.html"><span class="topic-num">077</span>Indexing Techniques</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/078-b-and-b-trees.html"><span class="topic-num">078</span>B- and B+ Trees</a></li>
+</ul></details>
+<details class="chapter-group">
+<summary class="chapter-summary"><span>Database Monitoring and Caching</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/dbms/topics/079-database-monitoring.html"><span class="topic-num">079</span>Database Monitoring</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/080-performance-tuning.html"><span class="topic-num">080</span>Performance Tuning</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/081-database-caching.html"><span class="topic-num">081</span>Database Caching</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/082-database-caching-strategies.html"><span class="topic-num">082</span>Database Caching Strategies</a></li>
+</ul></details>
+<details class="chapter-group">
+<summary class="chapter-summary"><span>Security and Access Control</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/dbms/topics/083-data-encryption-in-dbms.html"><span class="topic-num">083</span>Data Encryption in DBMS</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/084-database-security.html"><span class="topic-num">084</span>Database Security</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/085-encryption-techniques-in-dbms.html"><span class="topic-num">085</span>Encryption Techniques in DBMS</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/086-data-masking-techniques.html"><span class="topic-num">086</span>Data Masking Techniques</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/087-rbac.html"><span class="topic-num">087</span>RBAC</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/088-rbac-models.html"><span class="topic-num">088</span>RBAC Models</a></li>
+</ul></details>
+<details class="chapter-group">
+<summary class="chapter-summary"><span>Scalability and Big Data</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/dbms/topics/089-database-scaling.html"><span class="topic-num">089</span>Database Scaling</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/090-big-data-and-dbms.html"><span class="topic-num">090</span>Big Data and DBMS</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/091-dbaas.html"><span class="topic-num">091</span>DBaas</a></li>
+</ul></details>
+<details class="chapter-group">
+<summary class="chapter-summary"><span>Data Warehousing and Migration</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/dbms/topics/092-database-migration.html"><span class="topic-num">092</span>Database Migration</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/093-data-warehousing.html"><span class="topic-num">093</span>Data Warehousing</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/094-event-driven-architecture.html"><span class="topic-num">094</span>Event-Driven Architecture</a></li>
+</ul></details>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    <div class="breadcrumb">
+      <a href="dashboard.html">Dashboard</a>
+      <span class="breadcrumb-sep">/</span>
+      <a href="dashboard.html">Database Management Systems</a>
+      <span class="breadcrumb-sep">/</span>
+      <span>Data Models and ER Models</span>
+    </div>
+
+    <div class="topic-meta">
+      <div class="topic-meta-chip">📂 Data Models and ER Models</div>
+      <div class="topic-meta-chip">📄 Topic 12</div>
+      <div class="topic-meta-chip" id="reading-time">…</div>
+    </div>
+
+    <article class="topic-article"><div class="editorial-content max-w-3xl px-4 mt-2"><div class="coreSubject dark:text-zinc-300"><br/>
+
+<h1>Extended ER Features</h1>
+<p>The Enhanced Entity-Relationship (EER) Model is an extension of the basic ER model that includes additional concepts to represent more complex data relationships. EER features make it possible to model hierarchical and composite relationships, providing a richer representation of data.</p>
+<p>The primary EER features are:</p>
+<ul>
+<li>Generalization</li>
+<li>Specialization</li>
+<li>Aggregation</li>
+<li>Union</li>
+<li>Inheritance</li>
+<li>Composition</li>
+</ul>
+<br/>
+<hr class="line-break"/>
+<h2>1. Generalization</h2>
+<p>Generalization is a process of extracting shared characteristics from multiple entities to create a higher-level entity, known as a superclass. It’s a bottom-up approach where similar entities are combined into a more generalized entity.</p>
+<h3>Characteristics of Generalization</h3>
+<ul>
+<li><strong>Common Attributes:</strong> Combines entities with similar attributes.</li>
+<li><strong>Superclasses and Subclasses:</strong> The higher-level entity is the superclass, and the original entities are subclasses.</li>
+<li><strong>Simplifies Data Modeling:</strong> Reduces redundancy by grouping similar entities.</li>
+</ul>
+<p><strong>Example of Generalization:</strong> Consider entities such as Undergraduate_Student and Graduate_Student in a university database. Both entities share common attributes like Student_ID, Name, and Address, so we can generalize them into a higher-level entity called Student.</p>
+<table>
+<tbody><tr>
+<th>Superclass</th>
+<th>Subclass</th>
+<th>Shared Attributes</th>
+</tr>
+<tr>
+<td>Student</td>
+<td>Undergraduate_Student</td>
+<td>Student_ID, Name, Address</td>
+</tr>
+<tr>
+<td></td>
+<td>Graduate_Student</td>
+<td>Student_ID, Name, Address</td>
+</tr>
+</tbody></table>
+<hr class="line-break"/>
+<h2>2. Specialization</h2>
+<p>Specialization is the opposite of generalization, where a higher-level entity is divided into lower-level entities, known as subclasses, based on unique characteristics. It’s a top-down approach that differentiates entities with distinct attributes or roles.</p>
+<h3>Characteristics of Specialization</h3>
+<ul>
+<li><strong>Creates Subclasses:</strong> Divides a superclass into more specific entities.</li>
+<li><strong>Unique Attributes:</strong> Each subclass has additional, unique attributes.</li>
+<li><strong>Enhances Specificity:</strong> Allows modeling of specific types within a broader category.</li>
+</ul>
+<p><strong>Example of Specialization:</strong> In a hospital database, the Employee entity can be specialized into Doctor and Nurse, each with unique attributes.</p>
+<table>
+<tbody><tr>
+<th>Superclass</th>
+<th>Subclass</th>
+<th>Unique Attributes</th>
+</tr>
+<tr>
+<td>Employee</td>
+<td>Doctor</td>
+<td>Specialization, License_Number</td>
+</tr>
+<tr>
+<td></td>
+<td>Nurse</td>
+<td>Certification</td>
+</tr>
+</tbody></table>
+<hr class="line-break"/>
+<h2>3. Aggregation</h2>
+<p>Aggregation is a concept that allows the grouping of related entities and relationships into a higher-level entity. It’s useful for representing a “has-a” relationship, where an entity is composed of other entities.</p>
+<h3>Characteristics of Aggregation</h3>
+<ul>
+<li><strong>“Has-a” Relationship:</strong> Used to model a whole-part relationship.</li>
+<li><strong>Encapsulation of Relationships:</strong> Combines entities and relationships into a single higher-level entity.</li>
+<li><strong>Reduces Complexity:</strong> Useful in complex scenarios where relationships involve multiple entities.</li>
+</ul>
+<p><strong>Example of Aggregation:</strong> Consider a database for a research project, where Project is an entity, and it consists of a Researcher and a Department. Instead of creating complex relationships, we aggregate Researcher and Department under Project.</p>
+<table>
+<tbody><tr>
+<th>Aggregated Entity</th>
+<th>Component Entities</th>
+<th>Description</th>
+</tr>
+<tr>
+<td>Project</td>
+<td>Researcher, Department</td>
+<td>Project has a Researcher and Department</td>
+</tr>
+</tbody></table>
+<hr class="line-break"/>
+<h2>4. Union (or Category)</h2>
+<p>Union in the EER model allows an entity to be a subclass of multiple superclasses. It’s used when an entity can be related to more than one superclass and doesn’t belong exclusively to any of them.</p>
+<h3>Characteristics of Union</h3>
+<ul>
+<li><strong>Multiple Superclasses:</strong> The subclass inherits attributes from multiple superclasses.</li>
+<li><strong>Shared Attributes:</strong> Allows entities to share attributes and relationships.</li>
+<li><strong>Flexibility:</strong> Useful when an entity does not fall strictly under one category.</li>
+</ul>
+<p><strong>Example of Union:</strong> In a transportation system, an entity Person might inherit attributes from both Driver and Passenger. Person could be a subclass of either Driver or Passenger or both.</p>
+<table>
+<tbody><tr>
+<th>Union Entity</th>
+<th>Superclass 1</th>
+<th>Superclass 2</th>
+<th>Description</th>
+</tr>
+<tr>
+<td>Person</td>
+<td>Driver</td>
+<td>Passenger</td>
+<td>A person can be both a driver and a passenger</td>
+</tr>
+</tbody></table>
+<hr class="line-break"/>
+<h2>5. Inheritance</h2>
+<p>Inheritance is a feature that allows an entity (subclass) to inherit attributes and relationships from another entity (superclass). This concept is similar to inheritance in object-oriented programming and enables reusability of attributes.</p>
+<h3>Characteristics of Inheritance</h3>
+<ul>
+<li><strong>Attribute Sharing:</strong> Subclasses inherit attributes from the superclass.</li>
+<li><strong>Hierarchical Structure:</strong> Creates a hierarchy between entities.</li>
+<li><strong>Reduces Redundancy:</strong> Allows for shared attributes without duplication.</li>
+</ul>
+<p><strong>Example of Inheritance:</strong> In a university database, Student is a superclass with attributes like Student_ID and Name. Undergraduate_Student and Graduate_Student inherit these attributes, with additional attributes specific to each.</p>
+<table>
+<tbody><tr>
+<th>Superclass</th>
+<th>Subclass</th>
+<th>Inherited Attributes</th>
+</tr>
+<tr>
+<td>Student</td>
+<td>Undergraduate_Student</td>
+<td>Student_ID, Name</td>
+</tr>
+<tr>
+<td></td>
+<td>Graduate_Student</td>
+<td>Student_ID, Name</td>
+</tr>
+</tbody></table>
+<hr class="line-break"/>
+<h2>6. Composition</h2>
+<p>Composition is a form of aggregation where one entity is entirely dependent on another for its existence. If the higher-level entity (whole) is deleted, the lower-level entities (parts) are also deleted. Composition indicates a strong dependency between entities.</p>
+<h3>Characteristics of Composition</h3>
+<ul>
+<li><strong>Strong Dependency:</strong> The component entity cannot exist without the main entity.</li>
+<li><strong>Ownership Relationship:</strong> The “whole” owns the “part,” and the part ceases to exist if the whole is deleted.</li>
+<li><strong>Simplifies Data Integrity:</strong> Ensures that dependent entities are automatically removed when the parent entity is deleted.</li>
+</ul>
+<p><strong>Example of Composition:</strong> In an e-commerce database, an Order can have multiple OrderItems. However, OrderItems cannot exist independently without an Order.</p>
+<table>
+<tbody><tr>
+<th>Whole Entity</th>
+<th>Part Entity</th>
+<th>Dependency</th>
+</tr>
+<tr>
+<td>Order</td>
+<td>OrderItem</td>
+<td>OrderItem is dependent on Order</td>
+</tr>
+</tbody></table>
+<hr class="line-break"/>
+<h2>Example of an EER Diagram with Enhanced Features</h2>
+<p>To illustrate these concepts, consider a university database that includes entities like Person, Student, Employee, Professor, and Course.</p>
+<ul>
+<li><strong>Generalization:</strong> Student and Employee can be generalized as Person since both share attributes like Name and Address.</li>
+<li><strong>Specialization:</strong> Employee can be specialized into Professor and Administrator, where each subclass has unique attributes.</li>
+<li><strong>Aggregation:</strong> Course can have a Professor and a list of enrolled Students aggregated into a single relationship with Course.</li>
+<li><strong>Union:</strong> Teaching_Assistant could be a union of Student and Employee, inheriting characteristics from both.</li>
+<li><strong>Inheritance:</strong> Graduate_Student inherits from Student and adds attributes specific to graduate-level studies.</li>
+<li><strong>Composition:</strong> A Department has Course, and if the department is removed, all its courses are also removed.</li>
+</ul>
+<br/>
+<hr class="line-break"/>
+<h2>Summary Table</h2>
+<table>
+<tbody><tr>
+<th>Feature</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+<tr>
+<td>Generalization</td>
+<td>Combines similar entities into a higher-level entity</td>
+<td>Student and Employee generalized as Person</td>
+</tr>
+<tr>
+<td>Specialization</td>
+<td>Divides an entity into more specific sub-entities</td>
+<td>Employee specialized into Professor and Administrator</td>
+</tr>
+<tr>
+<td>Aggregation</td>
+<td>Combines entities into a higher-level entity</td>
+<td>Project aggregates Researcher and Department</td>
+</tr>
+<tr>
+<td>Union</td>
+<td>Subclass belongs to multiple superclasses</td>
+<td>Person can be both Driver and Passenger</td>
+</tr>
+<tr>
+<td>Inheritance</td>
+<td>Subclass inherits attributes from superclass</td>
+<td>Graduate_Student inherits from Student</td>
+</tr>
+<tr>
+<td>Composition</td>
+<td>Strong dependency relationship</td>
+<td>Order and OrderItem</td>
+</tr>
+</tbody></table>
+<hr class="line-break"/>
+</div></div></article>
+
+    <div class="topic-nav"><a href="011-types-of-relationships-in-dbms.html" class="nav-btn nav-prev"><span class="nav-btn-label">← Previous</span><span class="nav-btn-title">Types of Relationships in DBMS</span></a><a href="013-types-of-inheritance.html" class="nav-btn nav-next"><span class="nav-btn-label">Next →</span><span class="nav-btn-title">Types of Inheritance</span></a></div>
+  </main>
+</div>
+
+<button id="back-to-top" aria-label="Back to top">↑</button>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="../../../assets/script.js?v=12"></script>
+</body>
+</html>

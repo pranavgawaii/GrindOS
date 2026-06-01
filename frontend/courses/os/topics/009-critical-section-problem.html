@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+  (function() {
+    const saved = localStorage.getItem('GrindOS-theme');
+    if (saved) {
+      document.documentElement.classList.add(saved);
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.documentElement.classList.add('dark');
+    }
+  })();
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Critical Section Problem — Peterson's Solution — Operating Systems — GrindOS</title>
+<link rel="stylesheet" href="../../../assets/style.css?v=13">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+  <link rel="icon" type="image/png" href="../../../logo.png">
+  
+  <link rel="apple-touch-icon" href="../../../logo.png">
+</head>
+<body>
+
+<div id="reading-progress"></div>
+
+<header class="topbar">
+  <button class="icon-btn menu-toggle" id="menu-toggle" aria-label="Menu">☰</button>
+  <a href="dashboard.html" class="topbar-brand">
+    <img src="../../../logo.png" alt="GrindOS Logo" class="brand-logo" style="width: 34px; height: 34px; object-fit: contain; border-radius: 4px; flex-shrink: 0; display: inline-block; vertical-align: middle;">
+    <span class="brand-wordmark">GrindOS</span>
+  </a>
+  <nav class="topbar-nav">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="dashboard.html" class="active">💻 Operating Systems</a>
+    <a href="../../../interview-prep/index.html" class="nav-cta">🎯 Interview Prep</a>
+  </nav>
+  <div class="topbar-right">
+    <button class="icon-btn" id="theme-toggle" aria-label="Toggle theme"><span class="theme-icon">☾</span></button>
+  </div>
+</header>
+
+<div class="page-layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-course-label"><span class="course-emoji">💻</span>Operating Systems</div>
+    </div>
+    <div class="sidebar-progress">
+      <div class="progress-label-row">
+        <span>Progress</span>
+        <span class="progress-count">9 / 17</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" style="width:53%"></div></div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-search">
+        <input type="text" id="sidebar-search" placeholder="Search topics…  /" autocomplete="off">
+        <span class="sidebar-search-icon">⌕</span>
+      </div>
+      <details class="chapter-group" >
+        <summary class="chapter-summary"><span>Processes and CPU Scheduling</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item "><a href="../../../courses/os/topics/001-process-vs-thread.html"><span class="topic-num">001</span>Process vs Thread</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/002-cpu-scheduling-algorithms-fcfs-sjf-rr.html"><span class="topic-num">002</span>CPU Scheduling Algorithms</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/003-context-switching-and-dispatcher.html"><span class="topic-num">003</span>Context Switching & Dispatcher</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/004-multilevel-queue-scheduling.html"><span class="topic-num">004</span>Multilevel Queue Scheduling</a></li>
+        </ul>
+      </details>
+      <details class="chapter-group" >
+        <summary class="chapter-summary"><span>Memory Management</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item "><a href="../../../courses/os/topics/005-paging-and-page-tables.html"><span class="topic-num">005</span>Paging and Page Tables</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/006-segmentation.html"><span class="topic-num">006</span>Segmentation</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/007-virtual-memory-and-demand-paging.html"><span class="topic-num">007</span>Virtual Memory & Demand Paging</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/008-page-replacement-algorithms.html"><span class="topic-num">008</span>Page Replacement Algorithms</a></li>
+        </ul>
+      </details>
+      <details class="chapter-group" open>
+        <summary class="chapter-summary"><span>Process Synchronization</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item active"><a href="../../../courses/os/topics/009-critical-section-problem.html"><span class="topic-num">009</span>Critical Section Problem</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/010-mutex-vs-semaphore-vs-monitor.html"><span class="topic-num">010</span>Mutex vs Semaphore vs Monitor</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/011-classic-synchronisation-problems.html"><span class="topic-num">011</span>Classic Synchronisation Problems</a></li>
+        </ul>
+      </details>
+      <details class="chapter-group" >
+        <summary class="chapter-summary"><span>Deadlocks</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item "><a href="../../../courses/os/topics/012-deadlock-conditions-and-prevention.html"><span class="topic-num">012</span>Deadlock Conditions & Prevention</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/013-deadlock-avoidance-bankers-algorithm.html"><span class="topic-num">013</span>Deadlock Avoidance & Banker's Algorithm</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/014-deadlock-detection-and-recovery.html"><span class="topic-num">014</span>Deadlock Detection & Recovery</a></li>
+        </ul>
+      </details>
+      <details class="chapter-group" >
+        <summary class="chapter-summary"><span>File Systems & Disk Scheduling</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item "><a href="../../../courses/os/topics/015-file-system-concepts.html"><span class="topic-num">015</span>File System Concepts</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/016-directory-structure-and-inode.html"><span class="topic-num">016</span>Directory Structure and Inode</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/017-disk-scheduling-algorithms.html"><span class="topic-num">017</span>Disk Scheduling Algorithms</a></li>
+        </ul>
+      </details>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    <div class="breadcrumb">
+      <a href="dashboard.html">Dashboard</a>
+      <span class="breadcrumb-sep">/</span>
+      <a href="dashboard.html">Operating Systems</a>
+      <span class="breadcrumb-sep">/</span>
+      <span>Process Synchronization</span>
+    </div>
+
+    <div class="topic-meta">
+      <div class="topic-meta-chip">📂 Process Synchronization</div>
+      <div class="topic-meta-chip">📄 Topic 9</div>
+      <div class="topic-meta-chip" id="reading-time">…</div>
+    </div>
+
+    <article class="topic-article">
+      <div class="editorial-content max-w-3xl px-4 mt-2">
+        <div class="coreSubject dark:text-zinc-300">
+          <br/>
+          
+<h2>1. What is the Critical Section Problem?</h2>
+<p>A <strong>Critical Section (CS)</strong> is a segment of code where a process accesses and modifies shared resources (like global variables, files, or buffers). A **Race Condition** occurs if multiple threads access and modify this shared state concurrently, causing data corruption.</p>
+<p>The **Critical Section Problem** is to design a protocol ensuring that only one process executes inside its critical section at any given time.</p>
+
+<hr class="line-break"/>
+
+<h2>2. Three Core Architectural Requirements</h2>
+<p>Any valid solution to the critical section problem must satisfy all three constraints:</p>
+<ol>
+  <li><strong>Mutual Exclusion:</strong> If process P<sub>i</sub> is executing in its critical section, no other processes can execute in their critical sections for the same shared resources.</li>
+  <li><strong>Progress:</strong> If no process is executing in its critical section and some processes wish to enter, only those processes that are not executing in their remainder sections can participate in deciding which process enters next. This decision cannot be postponed indefinitely.</li>
+  <li><strong>Bounded Waiting:</strong> There must be a limit on the number of times other processes are allowed to enter their critical sections after a process has made a request to enter and before that request is granted. This prevents process starvation.</li>
+</ol>
+
+<hr class="line-break"/>
+
+<h2>3. Software Solution: Peterson's Solution</h2>
+<p>A classic software-based solution for two processes (P<sub>0</sub> and P<sub>1</sub>) sharing synchronization variables:</p>
+<pre><code class="language-c">int turn;
+boolean flag[2]; // Initialized to false
+
+// Process P_i
+void process_i() {
+    int j = 1 - i;
+    while(1) {
+        flag[i] = true;        // Signal intent to enter
+        turn = j;              // Give turn to other process
+        
+        while (flag[j] && turn == j); // Busy wait (spin lock)
+        
+        // ---- CRITICAL SECTION ----
+        // Modify shared resource
+        
+        flag[i] = false;       // Reset intent
+        
+        // ---- REMAINDER SECTION ----
+    }
+}</code></pre>
+
+<h3>Proof of Correctness</h3>
+<ul>
+  <li><strong>Mutual Exclusion:</strong> If both try to enter, `turn` can only be `0` or `1`. If `turn == j`, then P<sub>i</sub> spins, guaranteeing only one process enters.</li>
+  <li><strong>Progress & Bounded Waiting:</strong> When P<sub>i</sub> exits, it sets `flag[i] = false`, letting the waiting process break its spin lock instantly.</li>
+</ul>
+
+          
+<div class="interview-qna">
+  <h3>🎯 Topic Q&A</h3>
+  <div class="qna-item">
+    <strong>Q1: What are the three requirements for a valid solution to the Critical Section problem?</strong>
+    <p>They are: 1) <strong>Mutual Exclusion</strong> (only one process in CS). 2) <strong>Progress</strong> (processes waiting to enter decide who goes next). 3) <strong>Bounded Waiting</strong> (no process waits indefinitely/starves).</p>
+  </div>
+  <div class="qna-item">
+    <strong>Q2: Why does Peterson's Solution fail on modern CPU architectures?</strong>
+    <p>Peterson's solution assumes sequential consistency. Modern CPUs perform out-of-order execution and aggressive compiler optimizations (register caching), which can reorder the execution of flag and turn statements, violating mutual exclusion unless explicit **Memory Barriers** are used.</p>
+  </div>
+  <div class="qna-item">
+    <strong>Q3: What is a Race Condition?</strong>
+    <p>A race condition is an undesirable state where multiple concurrent threads read and write to a shared memory block, and the final state of the data depends entirely on the timing and scheduling of the threads.</p>
+  </div>
+  <div class="qna-item">
+    <strong>Q4: Explain busy waiting (spin lock) and its disadvantage.</strong>
+    <p>Busy waiting occurs when a thread repeatedly checks a condition in a loop (like `while(turn == j)`) to acquire a lock. This wastes CPU cycles and battery power, especially in single-core systems.</p>
+  </div>
+  <div class="qna-item">
+    <strong>Q5: What are hardware atomic instructions?</strong>
+    <p>Hardware atomic instructions are special CPU operations (like `TestAndSet` or `CompareAndSwap`) that execute read-modify-write instructions in a single, uninterruptible clock cycle at the hardware bus level.</p>
+  </div>
+</div>
+
+        </div>
+      </div>
+    </article>
+
+    <div class="topic-nav"><a href="008-page-replacement-algorithms.html" class="nav-btn nav-prev"><span class="nav-btn-label">← Previous</span><span class="nav-btn-title">Page Replacement Algorithms</span></a><a href="010-mutex-vs-semaphore-vs-monitor.html" class="nav-btn nav-next"><span class="nav-btn-label">Next →</span><span class="nav-btn-title">Mutex vs Semaphore vs Monitor</span></a></div>
+  </main>
+</div>
+
+<button id="back-to-top" aria-label="Back to top">↑</button>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="../../../assets/script.js?v=12"></script>
+</body>
+</html>

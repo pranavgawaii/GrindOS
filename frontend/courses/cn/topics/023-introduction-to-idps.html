@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+  (function() {
+    const saved = localStorage.getItem('GrindOS-theme');
+    if (saved) {
+      document.documentElement.classList.add(saved);
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.documentElement.classList.add('dark');
+    }
+  })();
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Introduction to IDPS — Computer Networks — GrindOS</title>
+<link rel="stylesheet" href="../../../assets/style.css?v=13">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+  
+  <link rel="icon" type="image/png" href="../../../logo.png">
+  
+  <link rel="apple-touch-icon" href="../../../logo.png">
+</head>
+<body>
+
+<div id="reading-progress"></div>
+
+<header class="topbar">
+  <button class="icon-btn menu-toggle" id="menu-toggle" aria-label="Menu">☰</button>
+  <a href="dashboard.html" class="topbar-brand">
+    <img src="../../../logo.png" alt="GrindOS Logo" class="brand-logo" style="width: 34px; height: 34px; object-fit: contain; border-radius: 4px; flex-shrink: 0; display: inline-block; vertical-align: middle;">
+    <span class="brand-wordmark">GrindOS</span>
+  </a>
+  <nav class="topbar-nav">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="dashboard.html" class="active">🌐 Computer Networks</a>
+    <a href="../../../interview-prep/index.html" class="nav-cta">🎯 Interview Prep</a>
+  </nav>
+  <div class="topbar-right">
+    <button class="icon-btn" id="theme-toggle" aria-label="Toggle theme"><span class="theme-icon">☾</span></button>
+  </div>
+</header>
+
+<div class="page-layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-course-label"><span class="course-emoji">🌐</span>Computer Networks</div>
+    </div>
+    <div class="sidebar-progress">
+      <div class="progress-label-row">
+        <span>Progress</span>
+        <span class="progress-count">24 / 40</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" style="width:60%"></div></div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-search">
+<input type="text" id="sidebar-search" placeholder="Search topics…  /" autocomplete="off">
+<span class="sidebar-search-icon">⌕</span></div>
+<details class="chapter-group">
+<summary class="chapter-summary"><span>Introduction To Computer Networks</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/cn/topics/000-what-are-computer-networks.html"><span class="topic-num">000</span>What are Computer Networks?</a></li>
+<li class="topic-item"><a href="../../../courses/cn/topics/001-types-of-networks.html"><span class="topic-num">001</span>Types of Networks</a></li>
+<li class="topic-item"><a href="../../../courses/cn/topics/002-what-are-network-topologies.html"><span class="topic-num">002</span>What are Network Topologies?</a></li>
+</ul></details>
+<details class="chapter-group">
+<summary class="chapter-summary"><span>Networking Models</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/cn/topics/003-introduction-to-the-osi-model.html"><span class="topic-num">003</span>Introduction to the OSI Model</a></li>
+<li class="topic-item"><a href="../../../courses/cn/topics/004-introduction-to-tcpip-model.html"><span class="topic-num">004</span>Introduction to TCP/IP Model</a></li>
+</ul></details>
+<details class="chapter-group">
+<summary class="chapter-summary"><span>Networking Fundamentals And Basics</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/cn/topics/005-introduction-to-network-cabling-and-connectors.html"><span class="topic-num">005</span>Introduction to Network Cabling and Connectors</a></li>
+<li class="topic-item"><a href="../../../courses/cn/topics/006-introduction-to-network-devices.html"><span class="topic-num">006</span>Introduction to Network Devices</a></li>
+<li class="topic-item"><a href="../../../courses/cn/topics/007-ethernet-frame-structure.html"><span class="topic-num">007</span>Ethernet Frame Structure</a></li>
+</ul></details>
+<details class="chapter-group">
+<summary class="chapter-summary"><span>Network Protocols And Communication</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/cn/topics/008-network-protocols.html"><span class="topic-num">008</span>Network Protocols</a></li>
+<li class="topic-item"><a href="../../../courses/cn/topics/009-importance.html"><span class="topic-num">009</span>Importance</a></li>
+<li class="topic-item"><a href="../../../courses/cn/topics/010-network-layer-functions-and-protocols.html"><span class="topic-num">010</span>Network Layer Functions and Protocols</a></li>
+</ul></details>
+<details class="chapter-group">
+<summary class="chapter-summary"><span>IP Addressing And Subnetting</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/cn/topics/011-ip-addressing-ipv4-and-ipv6.html"><span class="topic-num">011</span>IP Addressing (IPv4 and IPv6)</a></li>
+<li class="topic-item"><a href="../../../courses/cn/topics/012-subnetting.html"><span class="topic-num">012</span>Subnetting</a></li>
+<li class="topic-item"><a href="../../../courses/cn/topics/013-network-address-translation-nat.html"><span class="topic-num">013</span>Network Address Translation (NAT)</a></li>
+</ul></details>
+<details class="chapter-group">
+<summary class="chapter-summary"><span>Routing And Switching</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/cn/topics/014-routing-algorithms.html"><span class="topic-num">014</span>Routing Algorithms</a></li>
+<li class="topic-item"><a href="../../../courses/cn/topics/015-introduction-to-routing-protocols.html"><span class="topic-num">015</span>Introduction to Routing Protocols</a></li>
+<li class="topic-item"><a href="../../../courses/cn/topics/016-border-gateway-protocol-bgp.html"><span class="topic-num">016</span>Border Gateway Protocol (BGP)</a></li>
+<li class="topic-item"><a href="../../../courses/cn/topics/017-introduction-to-switching-techniques.html"><span class="topic-num">017</span>Introduction to Switching Techniques</a></li>
+</ul></details>
+<details class="chapter-group">
+<summary class="chapter-summary"><span>Network Technologies And Standards</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/cn/topics/018-ethernet-technology-and-standards-ieee-8023.html"><span class="topic-num">018</span>Ethernet Technology and Standards (IEEE 802.3)</a></li>
+<li class="topic-item"><a href="../../../courses/cn/topics/019-ethernet-switching.html"><span class="topic-num">019</span>Ethernet Switching</a></li>
+<li class="topic-item"><a href="../../../courses/cn/topics/020-point-to-point-protocol-ppp.html"><span class="topic-num">020</span>Point-to-Point Protocol (PPP)</a></li>
+</ul></details>
+<details class="chapter-group"open>
+<summary class="chapter-summary"><span>Network Security</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/cn/topics/021-introduction.html"><span class="topic-num">021</span>Introduction</a></li>
+<li class="topic-item"><a href="../../../courses/cn/topics/022-introduction-to-firewalls.html"><span class="topic-num">022</span>Introduction to Firewalls</a></li>
+<li class="topic-item active"><a href="../../../courses/cn/topics/023-introduction-to-idps.html"><span class="topic-num">023</span>Introduction to IDPS</a></li>
+<li class="topic-item"><a href="../../../courses/cn/topics/024-virtual-private-networks-vpns.html"><span class="topic-num">024</span>Virtual Private Networks (VPNs)</a></li>
+<li class="topic-item"><a href="../../../courses/cn/topics/025-introduction-to-cryptography.html"><span class="topic-num">025</span>Introduction to Cryptography</a></li>
+<li class="topic-item"><a href="../../../courses/cn/topics/026-introduction-to-tls-and-ssl.html"><span class="topic-num">026</span>Introduction to TLS and SSL</a></li>
+<li class="topic-item"><a href="../../../courses/cn/topics/027-network-layer-and-application-layer-firewalls.html"><span class="topic-num">027</span>Network Layer And Application Layer Firewalls</a></li>
+</ul></details>
+<details class="chapter-group">
+<summary class="chapter-summary"><span>Network Management And Monitoring</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/cn/topics/028-traffic-management-techniques.html"><span class="topic-num">028</span>Traffic Management Techniques</a></li>
+<li class="topic-item"><a href="../../../courses/cn/topics/029-quality-of-service-bandwidth-and-latency-network-congestion-and-control-mechanisms.html"><span class="topic-num">029</span>Quality Of Service Bandwidth And Latency Network Congestion And Control Mechanisms</a></li>
+<li class="topic-item"><a href="../../../courses/cn/topics/030-network-performance-metrics.html"><span class="topic-num">030</span>Network Performance Metrics</a></li>
+<li class="topic-item"><a href="../../../courses/cn/topics/031-network-troubleshooting-techniques.html"><span class="topic-num">031</span>Network Troubleshooting Techniques</a></li>
+<li class="topic-item"><a href="../../../courses/cn/topics/032-network-monitoring-and-management.html"><span class="topic-num">032</span>Network Monitoring And Management</a></li>
+<li class="topic-item"><a href="../../../courses/cn/topics/033-network-protocol-analysis-tools.html"><span class="topic-num">033</span>Network Protocol Analysis Tools</a></li>
+</ul></details>
+<details class="chapter-group">
+<summary class="chapter-summary"><span>Advanced Networking Concepts</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/cn/topics/034-client-server-vs-peer-to-peer-architectures.html"><span class="topic-num">034</span>Client Server Vs Peer To Peer Architectures</a></li>
+<li class="topic-item"><a href="../../../courses/cn/topics/035-network-design-principles-and-considerations.html"><span class="topic-num">035</span>Network Design Principles And Considerations</a></li>
+<li class="topic-item"><a href="../../../courses/cn/topics/036-load-balancing-techniques-content-delivery-networks.html"><span class="topic-num">036</span>Load Balancing Techniques Content Delivery Networks</a></li>
+<li class="topic-item"><a href="../../../courses/cn/topics/037-network-virtualization.html"><span class="topic-num">037</span>Network Virtualization</a></li>
+<li class="topic-item"><a href="../../../courses/cn/topics/038-software-defined-networking.html"><span class="topic-num">038</span>Software Defined Networking</a></li>
+<li class="topic-item"><a href="../../../courses/cn/topics/039-network-reliability-and-fault-tolerance.html"><span class="topic-num">039</span>Network Reliability And Fault Tolerance</a></li>
+</ul></details>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    <div class="breadcrumb">
+      <a href="dashboard.html">Dashboard</a>
+      <span class="breadcrumb-sep">/</span>
+      <a href="dashboard.html">Computer Networks</a>
+      <span class="breadcrumb-sep">/</span>
+      <span>Network Security</span>
+    </div>
+
+    <div class="topic-meta">
+      <div class="topic-meta-chip">📂 Network Security</div>
+      <div class="topic-meta-chip">📄 Topic 24</div>
+      <div class="topic-meta-chip" id="reading-time">…</div>
+    </div>
+
+    <article class="topic-article"><div class="editorial-content max-w-3xl px-4 mt-2"><div class="coreSubject dark:text-zinc-300"><br/>
+
+<h2>Introduction to IDPS</h2>
+<p>Intrusion Detection and Prevention Systems (IDPS) are critical tools for network security. These systems detect, analyze, and mitigate malicious activities within networks or individual devices. By monitoring traffic and taking appropriate actions, IDPS solutions strengthen the overall security posture of organizations, enabling them to stay resilient against evolving cyber threats.</p>
+<h3>Purpose of IDPS</h3>
+<p>The primary objectives of IDPS solutions include:</p>
+<ul>
+<li><strong>Threat Detection:</strong> Identify suspicious activities or potential security breaches through continuous monitoring of traffic or system logs.</li>
+<li><strong>Threat Prevention:</strong> Block malicious traffic in real-time to mitigate risks and prevent harm.</li>
+<li><strong>Enhanced Network Visibility:</strong> Provide administrators with insights into network behavior and potential vulnerabilities.</li>
+</ul>
+<br/>
+<hr class="line-break"/>
+<h2>1. Components of IDPS</h2>
+<h3>Intrusion Detection System (IDS)</h3>
+<p><strong>Function:</strong> IDS is a passive component that monitors and analyzes network or system activities to detect suspicious behavior, generating alerts for administrators.</p>
+<h4>Types of IDS</h4>
+<ul>
+<li><strong>Network-Based IDS (NIDS):</strong>
+<ul>
+<li>Monitors traffic across the entire network for abnormal patterns or known attack signatures.</li>
+<li>Detects activities like Distributed Denial of Service (DDoS) attacks, malware propagation, or port scanning.</li>
+<li>Commonly deployed at network entry points for comprehensive visibility.</li>
+</ul>
+</li>
+<li><strong>Host-Based IDS (HIDS):</strong>
+<ul>
+<li>Runs on individual devices, monitoring system files, configurations, and processes for suspicious changes.</li>
+<li>Identifies policy violations, unauthorized file access, and potential insider threats.</li>
+<li>Ideal for environments requiring granular monitoring at the device level.</li>
+</ul>
+</li>
+</ul>
+<h3>Intrusion Prevention System (IPS)</h3>
+<p><strong>Function:</strong> IPS is an active component that not only detects but also prevents malicious activities by taking immediate action.</p>
+<h4>Capabilities of IPS</h4>
+<ul>
+<li><strong>Real-Time Blocking:</strong> Drops malicious packets before they reach their destination.</li>
+<li><strong>Connection Termination:</strong> Resets sessions associated with suspicious or unauthorized activities.</li>
+<li><strong>Threat Reporting:</strong> Provides deIloned logs and alerts to aid in incident response and future prevention strategies.</li>
+</ul>
+<br/>
+<hr class="line-break"/>
+<h2>2. Detection Techniques</h2>
+<h3>Signature-Based Detection</h3>
+<p>Signature-based detection compares traffic patterns against a database of predefined attack signatures.</p>
+<h4>Advantages</h4>
+<ul>
+<li><strong>Accurate for Known Threats:</strong> Quickly identifies attacks with existing signatures.</li>
+<li><strong>Low False Positive Rate:</strong> Relies on verified signatures to reduce erroneous alerts.</li>
+</ul>
+<h4>Disadvantages</h4>
+<ul>
+<li><strong>Inability to Detect Zero-Day Attacks:</strong> Ineffective against threats that lack predefined signatures.</li>
+<li><strong>Frequent Updates Required:</strong> Relies on regular updates to remain effective.</li>
+</ul>
+<h3>Anomaly-Based Detection</h3>
+<p>Anomaly-based detection uses machine learning or statistical models to identify deviations from normal traffic patterns.</p>
+<h4>Advantages</h4>
+<ul>
+<li><strong>Effective Against New Threats:</strong> Detects previously unknown attacks by identifying abnormal behaviors.</li>
+<li><strong>Comprehensive Monitoring:</strong> Identifies subtle changes in network behavior that may indicate threats.</li>
+</ul>
+<h4>Disadvantages</h4>
+<ul>
+<li><strong>High False Positive Rate:</strong> Normal traffic variations can be mistaken for anomalies.</li>
+<li><strong>Requires Baseline Training:</strong> Needs a well-defined baseline for accurate detection.</li>
+</ul>
+<h3>Hybrid Detection</h3>
+<p>Hybrid detection combines signature-based and anomaly-based approaches to leverage the strengths of both methods, enhancing detection accuracy and reducing false positives.</p>
+<hr class="line-break"/>
+<h2>IDPS Deployment Strategies</h2>
+<p>Deployment strategies depend on the security requirements and network architecture of the organization. Common strategies include:</p>
+<table>
+<tbody><tr>
+<th>Strategy</th>
+<th>Description</th>
+<th>Use Case</th>
+</tr>
+<tr>
+<td><strong>Inline Mode (IPS):</strong></td>
+<td>Monitors and actively blocks malicious traffic in real-time.</td>
+<td>Preventing unauthorized access or malware propagation.</td>
+</tr>
+<tr>
+<td><strong>Passive Mode (IDS):</strong></td>
+<td>Monitors traffic passively and generates alerts without disrupting network flows.</td>
+<td>Ideal for policy enforcement and threat detection in low-risk environments.</td>
+</tr>
+<tr>
+<td><strong>Distributed Deployment:</strong></td>
+<td>Employs multiple sensors across a network for comprehensive visibility.</td>
+<td>Large networks requiring end-to-end monitoring and threat detection.</td>
+</tr>
+</tbody></table>
+<hr class="line-break"/>
+<h2>4. IDPS Best Practices</h2>
+<p>To maximize the effectiveness of IDPS, organizations should adopt the following practices:</p>
+<ul>
+<li><strong>Regular Updates:</strong> Continuously update the signature database and detection algorithms to address new threats.</li>
+<li><strong>Baseline Traffic Analysis:</strong> Define normal traffic patterns for accurate anomaly detection and reduced false positives.</li>
+<li><strong>Integration with Other Security Tools:</strong> Combine IDPS with firewalls, Security Information and Event Management (SIEM) systems, and threat intelligence platforms for a layered defense.</li>
+<li><strong>Incident Response Planning:</strong> Develop and regularly test response plans to handle detected threats effectively.</li>
+</ul>
+<br/>
+<hr class="line-break"/>
+<h2>Applications of IDPS</h2>
+<p>IDPS solutions are versatile and critical for protecting various types of environments:</p>
+<ul>
+<li><strong>Corporate Networks:</strong> Protects against internal threats and external attacks, ensuring data security and compliance.</li>
+<li><strong>Cloud Environments:</strong> Monitors virtualized workloads and network traffic in dynamic, cloud-based infrastructures.</li>
+<li><strong>IoT Networks:</strong> Secures connected devices, preventing unauthorized access and mitigating risks of botnet attacks.</li>
+</ul>
+<br/>
+<hr class="line-break"/>
+<h2>Comparison: IDS vs. IPS</h2>
+<p>While IDS and IPS share common goals, they differ significantly in functionality and deployment:</p>
+<table>
+<tbody><tr>
+<th>Feature</th>
+<th>IDS</th>
+<th>IPS</th>
+</tr>
+<tr>
+<td><strong>Function:</strong></td>
+<td>Detects and generates alerts for suspicious activities.</td>
+<td>Detects and actively prevents malicious activities in real-time.</td>
+</tr>
+<tr>
+<td><strong>Deployment:</strong></td>
+<td>Passively monitors traffic.</td>
+<td>Inline deployment for proactive intervention.</td>
+</tr>
+<tr>
+<td><strong>Impact on Traffic:</strong></td>
+<td>No interference; observes traffic only.</td>
+<td>May introduce latency due to real-time processing.</td>
+</tr>
+<tr>
+<td><strong>Use Case:</strong></td>
+<td>Best for policy enforcement and monitoring.</td>
+<td>Ideal for environments requiring immediate threat mitigation.</td>
+</tr>
+</tbody></table>
+<hr class="line-break"/>
+<h2>Conclusion</h2>
+<p>Intrusion Detection and Prevention Systems (IDPS) are indispensable components of modern network security. While IDS excels in monitoring and alerting, IPS provides proactive threat prevention. Together, they offer a robust defense mechanism, safeguarding networks from both known and unknown threats.</p>
+<hr class="line-break"/></div></div></article>
+
+    <div class="topic-nav"><a href="022-introduction-to-firewalls.html" class="nav-btn nav-prev"><span class="nav-btn-label">← Previous</span><span class="nav-btn-title">Introduction to Firewalls</span></a><a href="024-virtual-private-networks-vpns.html" class="nav-btn nav-next"><span class="nav-btn-label">Next →</span><span class="nav-btn-title">Virtual Private Networks (VPNs)</span></a></div>
+  </main>
+</div>
+
+<button id="back-to-top" aria-label="Back to top">↑</button>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="../../../assets/script.js?v=12"></script>
+</body>
+</html>

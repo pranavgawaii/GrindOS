@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+  (function() {
+    const saved = localStorage.getItem('GrindOS-theme');
+    if (saved) {
+      document.documentElement.classList.add(saved);
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.documentElement.classList.add('dark');
+    }
+  })();
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Disk Scheduling — FCFS, SSTF, SCAN, C-SCAN — Operating Systems — GrindOS</title>
+<link rel="stylesheet" href="../../../assets/style.css?v=13">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+  <link rel="icon" type="image/png" href="../../../logo.png">
+  
+  <link rel="apple-touch-icon" href="../../../logo.png">
+</head>
+<body>
+
+<div id="reading-progress"></div>
+
+<header class="topbar">
+  <button class="icon-btn menu-toggle" id="menu-toggle" aria-label="Menu">☰</button>
+  <a href="dashboard.html" class="topbar-brand">
+    <img src="../../../logo.png" alt="GrindOS Logo" class="brand-logo" style="width: 34px; height: 34px; object-fit: contain; border-radius: 4px; flex-shrink: 0; display: inline-block; vertical-align: middle;">
+    <span class="brand-wordmark">GrindOS</span>
+  </a>
+  <nav class="topbar-nav">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="dashboard.html" class="active">💻 Operating Systems</a>
+    <a href="../../../interview-prep/index.html" class="nav-cta">🎯 Interview Prep</a>
+  </nav>
+  <div class="topbar-right">
+    <button class="icon-btn" id="theme-toggle" aria-label="Toggle theme"><span class="theme-icon">☾</span></button>
+  </div>
+</header>
+
+<div class="page-layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-course-label"><span class="course-emoji">💻</span>Operating Systems</div>
+    </div>
+    <div class="sidebar-progress">
+      <div class="progress-label-row">
+        <span>Progress</span>
+        <span class="progress-count">17 / 17</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" style="width:100%"></div></div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-search">
+        <input type="text" id="sidebar-search" placeholder="Search topics…  /" autocomplete="off">
+        <span class="sidebar-search-icon">⌕</span>
+      </div>
+      <details class="chapter-group" >
+        <summary class="chapter-summary"><span>Processes and CPU Scheduling</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item "><a href="../../../courses/os/topics/001-process-vs-thread.html"><span class="topic-num">001</span>Process vs Thread</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/002-cpu-scheduling-algorithms-fcfs-sjf-rr.html"><span class="topic-num">002</span>CPU Scheduling Algorithms</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/003-context-switching-and-dispatcher.html"><span class="topic-num">003</span>Context Switching & Dispatcher</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/004-multilevel-queue-scheduling.html"><span class="topic-num">004</span>Multilevel Queue Scheduling</a></li>
+        </ul>
+      </details>
+      <details class="chapter-group" >
+        <summary class="chapter-summary"><span>Memory Management</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item "><a href="../../../courses/os/topics/005-paging-and-page-tables.html"><span class="topic-num">005</span>Paging and Page Tables</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/006-segmentation.html"><span class="topic-num">006</span>Segmentation</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/007-virtual-memory-and-demand-paging.html"><span class="topic-num">007</span>Virtual Memory & Demand Paging</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/008-page-replacement-algorithms.html"><span class="topic-num">008</span>Page Replacement Algorithms</a></li>
+        </ul>
+      </details>
+      <details class="chapter-group" >
+        <summary class="chapter-summary"><span>Process Synchronization</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item "><a href="../../../courses/os/topics/009-critical-section-problem.html"><span class="topic-num">009</span>Critical Section Problem</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/010-mutex-vs-semaphore-vs-monitor.html"><span class="topic-num">010</span>Mutex vs Semaphore vs Monitor</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/011-classic-synchronisation-problems.html"><span class="topic-num">011</span>Classic Synchronisation Problems</a></li>
+        </ul>
+      </details>
+      <details class="chapter-group" >
+        <summary class="chapter-summary"><span>Deadlocks</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item "><a href="../../../courses/os/topics/012-deadlock-conditions-and-prevention.html"><span class="topic-num">012</span>Deadlock Conditions & Prevention</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/013-deadlock-avoidance-bankers-algorithm.html"><span class="topic-num">013</span>Deadlock Avoidance & Banker's Algorithm</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/014-deadlock-detection-and-recovery.html"><span class="topic-num">014</span>Deadlock Detection & Recovery</a></li>
+        </ul>
+      </details>
+      <details class="chapter-group" open>
+        <summary class="chapter-summary"><span>File Systems & Disk Scheduling</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item "><a href="../../../courses/os/topics/015-file-system-concepts.html"><span class="topic-num">015</span>File System Concepts</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/016-directory-structure-and-inode.html"><span class="topic-num">016</span>Directory Structure and Inode</a></li>
+          <li class="topic-item active"><a href="../../../courses/os/topics/017-disk-scheduling-algorithms.html"><span class="topic-num">017</span>Disk Scheduling Algorithms</a></li>
+        </ul>
+      </details>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    <div class="breadcrumb">
+      <a href="dashboard.html">Dashboard</a>
+      <span class="breadcrumb-sep">/</span>
+      <a href="dashboard.html">Operating Systems</a>
+      <span class="breadcrumb-sep">/</span>
+      <span>File Systems</span>
+    </div>
+
+    <div class="topic-meta">
+      <div class="topic-meta-chip">📂 File Systems</div>
+      <div class="topic-meta-chip">📄 Topic 17</div>
+      <div class="topic-meta-chip" id="reading-time">…</div>
+    </div>
+
+    <article class="topic-article">
+      <div class="editorial-content max-w-3xl px-4 mt-2">
+        <div class="coreSubject dark:text-zinc-300">
+          <br/>
+          
+<h2>1. Mechanical Disk Latency Components</h2>
+<p>Accessing data on a mechanical Hard Disk Drive (HDD) involves physical seek operations:</p>
+<ul>
+  <li><strong>Seek Time:</strong> The time required for the mechanical arm to move to the correct cylinder track. **Seek time is the most expensive access delay.**</li>
+  <li><strong>Rotational Latency:</strong> The time spent waiting for the target sector to rotate under the read/write head.</li>
+</ul>
+
+<hr class="line-break"/>
+
+<h2>2. Disk Scheduling Algorithms</h2>
+<p>To minimize head movement (seek time), the OS schedules pending I/O block requests in an optimal order.</p>
+
+<h3>A. First-Come, First-Served (FCFS)</h3>
+<p>Processes requests sequentially as they arrive. Simple, but results in high head seek times because it does not optimize head coordinates.</p>
+
+<h3>B. Shortest Seek Time First (SSTF)</h3>
+<p>Selects the request closest to the current head position. While fast, it can cause **Starvation** of distant requests if new close requests keep arriving.</p>
+
+<h3>C. SCAN (Elevator Algorithm)</h3>
+<p>The head sweeps continuously from one end of the disk to the other end, servicing all requests, and then reverses direction. Prevents starvation.</p>
+
+<h3>D. C-SCAN (Circular SCAN)</h3>
+<p>The head sweeps from one end to the other, but when it reaches the boundary, it returns to the starting boundary instantly without servicing requests on the return sweep, providing a more uniform waiting time.</p>
+
+<h3>E. LOOK and C-LOOK</h3>
+<p>Optimized variants of SCAN and C-SCAN. Instead of forcing the head to travel to the absolute outer boundary of the disk volume, the head only travels as far as the outermost pending request before reversing.</p>
+
+<hr class="line-break"/>
+
+<h2>3. Numerical Trace Example</h2>
+<p>Consider a disk queue with requests at cylinders: <code>98, 183, 37, 122, 14, 124, 65, 67</code>, with head starting at <code>53</code>:</p>
+<table border="1" cellpadding="8" style="width:100%; text-align:center;">
+  <thead>
+    <tr>
+      <th>Algorithm</th>
+      <th>Order of Service</th>
+      <th>Total Head Seek Distance</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>FCFS</strong></td>
+      <td>53 &rarr; 98 &rarr; 183 &rarr; 37 &rarr; 122 &rarr; 14 &rarr; 124 &rarr; 65 &rarr; 67</td>
+      <td>640 cylinders</td>
+    </tr>
+    <tr>
+      <td><strong>SSTF</strong></td>
+      <td>53 &rarr; 65 &rarr; 67 &rarr; 37 &rarr; 14 &rarr; 98 &rarr; 122 &rarr; 124 &rarr; 183</td>
+      <td style="color:var(--brand); font-weight:bold;">236 cylinders</td>
+    </tr>
+  </tbody>
+</table>
+
+          
+<div class="interview-qna">
+  <h3>🎯 Topic Q&A</h3>
+  <div class="qna-item">
+    <strong>Q1: Which component of disk access latency is the most expensive?</strong>
+    <p>Seek Time (the time taken to mechanically reposition the disk arm onto the correct cylinder track) is the most expensive disk access delay.</p>
+  </div>
+  <div class="qna-item">
+    <strong>Q2: Why does SSTF suffer from process starvation?</strong>
+    <p>Because it constantly selects the request closest to the current head location. If new requests keep arriving close to the head, distant requests will wait indefinitely, starving of I/O resources.</p>
+  </div>
+  <div class="qna-item">
+    <strong>Q3: How does C-SCAN improve upon the standard SCAN algorithm?</strong>
+    <p>C-SCAN provides more uniform waiting times. In standard SCAN, cylinders near the center are scanned twice as often as edge cylinders. C-SCAN sweeps in only one direction and jumps back, offering a fair waiting time for all disk sectors.</p>
+  </div>
+  <div class="qna-item">
+    <strong>Q4: Explain the difference between SCAN and LOOK scheduling.</strong>
+    <p>SCAN forces the read/write head to travel to the absolute boundary of the disk volume before reversing. LOOK checks if there are pending requests ahead; if no more requests exist in the active sweep direction, it reverses immediately, avoiding useless travel.</p>
+  </div>
+  <div class="qna-item">
+    <strong>Q5: Trace the SSTF seek calculations from 53 to 65.</strong>
+    <p>Initial position is 53. The distances are: |53-65|=12, |53-37|=16. The closest is 65, so head moves to 65. From 65, distances are: |65-67|=2, |65-37|=28. Closest is 67. The sequence continues, yielding 236 total seek distance.</p>
+  </div>
+</div>
+
+        </div>
+      </div>
+    </article>
+
+    <div class="topic-nav"><a href="016-directory-structure-and-inode.html" class="nav-btn nav-prev"><span class="nav-btn-label">← Previous</span><span class="nav-btn-title">Directory Structure and Inode</span></a><a href="dashboard.html" class="nav-btn nav-next"><span class="nav-btn-label">Course Landing →</span><span class="nav-btn-title">Index</span></a></div>
+  </main>
+</div>
+
+<button id="back-to-top" aria-label="Back to top">↑</button>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="../../../assets/script.js?v=12"></script>
+</body>
+</html>

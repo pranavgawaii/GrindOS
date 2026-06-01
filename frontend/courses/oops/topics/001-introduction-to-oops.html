@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+  (function() {
+    const saved = localStorage.getItem('GrindOS-theme');
+    if (saved) {
+      document.documentElement.classList.add(saved);
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.documentElement.classList.add('dark');
+    }
+  })();
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Introduction to OOPs — Core Paradigms, OOPs vs Procedural — Object-Oriented Programming — GrindOS</title>
+<link rel="stylesheet" href="../../../assets/style.css?v=13">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+  <link rel="icon" type="image/png" href="../../../logo.png">
+  
+  <link rel="apple-touch-icon" href="../../../logo.png">
+</head>
+<body>
+
+<div id="reading-progress"></div>
+
+<header class="topbar">
+  <button class="icon-btn menu-toggle" id="menu-toggle" aria-label="Menu">☰</button>
+  <a href="dashboard.html" class="topbar-brand">
+    <img src="../../../logo.png" alt="GrindOS Logo" class="brand-logo" style="width: 34px; height: 34px; object-fit: contain; border-radius: 4px; flex-shrink: 0; display: inline-block; vertical-align: middle;">
+    <span class="brand-wordmark">GrindOS</span>
+  </a>
+  <nav class="topbar-nav">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="dashboard.html" class="active">📦 Object-Oriented Programming</a>
+    <a href="../../../interview-prep/index.html" class="nav-cta">🎯 Interview Prep</a>
+  </nav>
+  <div class="topbar-right">
+    <button class="icon-btn" id="theme-toggle" aria-label="Toggle theme"><span class="theme-icon">☾</span></button>
+  </div>
+</header>
+
+<div class="page-layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-course-label"><span class="course-emoji">📦</span>Object-Oriented Programming</div>
+    </div>
+    <div class="sidebar-progress">
+      <div class="progress-label-row">
+        <span>Progress</span>
+        <span class="progress-count">1 / 15</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" style="width:7%"></div></div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-search">
+        <input type="text" id="sidebar-search" placeholder="Search topics…  /" autocomplete="off">
+        <span class="sidebar-search-icon">⌕</span>
+      </div>
+      <details class="chapter-group" open>
+        <summary class="chapter-summary"><span>Fundamentals</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item active"><a href="../../../courses/oops/topics/001-introduction-to-oops.html"><span class="topic-num">001</span>Introduction to OOPs</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/002-classes-and-objects.html"><span class="topic-num">002</span>Classes and Objects</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/003-encapsulation.html"><span class="topic-num">003</span>Encapsulation</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/004-inheritance.html"><span class="topic-num">004</span>Inheritance</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/005-polymorphism.html"><span class="topic-num">005</span>Polymorphism</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/006-abstraction.html"><span class="topic-num">006</span>Abstraction</a></li>
+        </ul>
+      </details>
+      <details class="chapter-group" >
+        <summary class="chapter-summary"><span>Advanced Concepts</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item "><a href="../../../courses/oops/topics/007-constructors-in-python.html"><span class="topic-num">007</span>Constructors in Python</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/008-dunder-magic-methods.html"><span class="topic-num">008</span>Dunder Magic Methods</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/009-static-and-class-methods.html"><span class="topic-num">009</span>Static and Class Methods</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/010-composition-vs-inheritance.html"><span class="topic-num">010</span>Composition vs Inheritance</a></li>
+        </ul>
+      </details>
+      <details class="chapter-group" >
+        <summary class="chapter-summary"><span>Design Patterns</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item "><a href="../../../courses/oops/topics/011-singleton-pattern.html"><span class="topic-num">011</span>Singleton Pattern</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/012-factory-pattern.html"><span class="topic-num">012</span>Factory Pattern</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/013-observer-pattern.html"><span class="topic-num">013</span>Observer Pattern</a></li>
+        </ul>
+      </details>
+      <details class="chapter-group" >
+        <summary class="chapter-summary"><span>Interview Special</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item "><a href="../../../courses/oops/topics/014-oops-interview-questions.html"><span class="topic-num">014</span>OOPs Interview Qs</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/015-oops-in-python-vs-java.html"><span class="topic-num">015</span>OOPs Python vs Java</a></li>
+        </ul>
+      </details>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    <div class="breadcrumb">
+      <a href="dashboard.html">Dashboard</a>
+      <span class="breadcrumb-sep">/</span>
+      <a href="dashboard.html">Object-Oriented Programming</a>
+      <span class="breadcrumb-sep">/</span>
+      <span>Fundamentals</span>
+    </div>
+
+    <div class="topic-meta">
+      <div class="topic-meta-chip">📂 Fundamentals</div>
+      <div class="topic-meta-chip">📄 Topic 1</div>
+      <div class="topic-meta-chip" id="reading-time">…</div>
+    </div>
+
+    <article class="topic-article">
+      <div class="editorial-content max-w-3xl px-4 mt-2">
+        <div class="coreSubject dark:text-zinc-300">
+          <br/>
+          
+<h2>1. What is Object-Oriented Programming (OOP)?</h2>
+<p><strong>Object-Oriented Programming (OOP)</strong> is a software programming paradigm that structures code around **Objects** (data entities) rather than actions or logic. An object is an active instance of a blueprint class, holding attributes (data/state) and methods (behaviors).</p>
+
+<hr class="line-break"/>
+
+<h2>2. OOP vs. Procedural Programming</h2>
+<table border="1" cellpadding="8" style="width:100%;">
+  <thead>
+    <tr>
+      <th>Dimension</th>
+      <th>Procedural Programming (e.g., C, Pascal)</th>
+      <th>Object-Oriented Programming (e.g., Python, C++, Java)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Approach</strong></td>
+      <td>Top-Down approach. Focuses on functions and step-by-step procedures.</td>
+      <td>Bottom-Up approach. Focuses on real-world data entities (objects) and models.</td>
+    </tr>
+    <tr>
+      <td><strong>Security</strong></td>
+      <td>Low security. Data moves freely across global scopes and functions.</td>
+      <td>High security. Data is hidden inside objects (encapsulation) and accessed via controlled methods.</td>
+    </tr>
+    <tr>
+      <td><strong>Code Reusability</strong></td>
+      <td>Low. Relies heavily on copying/modifying raw code functions.</td>
+      <td>High. Encouraged through inheritance, polymorphism, and composition.</td>
+    </tr>
+    <tr>
+      <td><strong>Modularity</strong></td>
+      <td>Hard to scale. Large codebases are difficult to manage and debug.</td>
+      <td>Easy to scale. Objects are isolated, modular, and self-contained units.</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr class="line-break"/>
+
+<h2>3. The Four Pillars of OOP</h2>
+<p>The core of OOP rests on four fundamental pillars:</p>
+<ol>
+  <li><strong>Encapsulation:</strong> Bundling data and methods into a single class block, restricting direct external access to variables.</li>
+  <li><strong>Inheritance:</strong> Allowing a new class (subclass) to inherit fields and methods from an existing class (parent), reducing duplication.</li>
+  <li><strong>Polymorphism:</strong> Allowing different objects to respond to the same method call signature in unique, class-specific ways.</li>
+  <li><strong>Abstraction:</strong> Hiding complex inner execution details, exposing only essential, clean interfaces.</li>
+</ol>
+
+          
+<div class="interview-qna">
+  <h3>🎯 Topic Q&A</h3>
+  <div class="qna-item">
+    <strong>Q1: Why was the OOP paradigm introduced?</strong>
+    <p>OOP was introduced to solve the complexity and un-maintainability of large procedural codebases. By grouping data and behaviors into self-contained objects, OOP offers modularity, data safety, and reusability.</p>
+  </div>
+  <div class="qna-item">
+    <strong>Q2: What is the differences between top-down and bottom-up programming?</strong>
+    <p>Top-down (procedural) breaks a problem into subtasks and writes sequential functions. Bottom-up (OOP) builds independent, reusable models of data and actions first, and aggregates them to solve the global problem.</p>
+  </div>
+  <div class="qna-item">
+    <strong>Q3: What are the 4 main pillars of OOP?</strong>
+    <p>They are: 1) Encapsulation. 2) Inheritance. 3) Polymorphism. 4) Abstraction.</p>
+  </div>
+  <div class="qna-item">
+    <strong>Q4: Can a class be created without an object?</strong>
+    <p>Yes. A class is a structural definition (blueprint) stored in code. It does not occupy active memory for fields until you instantiate it to create an object.</p>
+  </div>
+  <div class="qna-item">
+    <strong>Q5: What is an Object in terms of memory?</strong>
+    <p>An object is an active memory allocation in the heap containing the instance variable states, metadata pointers linking to its Class definition, and references to its method blocks.</p>
+  </div>
+</div>
+
+        </div>
+      </div>
+    </article>
+
+    <div class="topic-nav"><a href="dashboard.html" class="nav-btn nav-prev"><span class="nav-btn-label">← Course Landing</span><span class="nav-btn-title">Index</span></a><a href="002-classes-and-objects.html" class="nav-btn nav-next"><span class="nav-btn-label">Next →</span><span class="nav-btn-title">Classes and Objects</span></a></div>
+  </main>
+</div>
+
+<button id="back-to-top" aria-label="Back to top">↑</button>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="../../../assets/script.js?v=12"></script>
+</body>
+</html>

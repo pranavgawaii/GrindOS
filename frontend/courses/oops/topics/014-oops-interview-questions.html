@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+  (function() {
+    const saved = localStorage.getItem('GrindOS-theme');
+    if (saved) {
+      document.documentElement.classList.add(saved);
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.documentElement.classList.add('dark');
+    }
+  })();
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>OOPs Interview Prep — 20 High-Yield Questions — Object-Oriented Programming — GrindOS</title>
+<link rel="stylesheet" href="../../../assets/style.css?v=13">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+  <link rel="icon" type="image/png" href="../../../logo.png">
+  
+  <link rel="apple-touch-icon" href="../../../logo.png">
+</head>
+<body>
+
+<div id="reading-progress"></div>
+
+<header class="topbar">
+  <button class="icon-btn menu-toggle" id="menu-toggle" aria-label="Menu">☰</button>
+  <a href="dashboard.html" class="topbar-brand">
+    <img src="../../../logo.png" alt="GrindOS Logo" class="brand-logo" style="width: 34px; height: 34px; object-fit: contain; border-radius: 4px; flex-shrink: 0; display: inline-block; vertical-align: middle;">
+    <span class="brand-wordmark">GrindOS</span>
+  </a>
+  <nav class="topbar-nav">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="dashboard.html" class="active">📦 Object-Oriented Programming</a>
+    <a href="../../../interview-prep/index.html" class="nav-cta">🎯 Interview Prep</a>
+  </nav>
+  <div class="topbar-right">
+    <button class="icon-btn" id="theme-toggle" aria-label="Toggle theme"><span class="theme-icon">☾</span></button>
+  </div>
+</header>
+
+<div class="page-layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-course-label"><span class="course-emoji">📦</span>Object-Oriented Programming</div>
+    </div>
+    <div class="sidebar-progress">
+      <div class="progress-label-row">
+        <span>Progress</span>
+        <span class="progress-count">14 / 15</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" style="width:93%"></div></div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-search">
+        <input type="text" id="sidebar-search" placeholder="Search topics…  /" autocomplete="off">
+        <span class="sidebar-search-icon">⌕</span>
+      </div>
+      <details class="chapter-group" >
+        <summary class="chapter-summary"><span>Fundamentals</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item "><a href="../../../courses/oops/topics/001-introduction-to-oops.html"><span class="topic-num">001</span>Introduction to OOPs</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/002-classes-and-objects.html"><span class="topic-num">002</span>Classes and Objects</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/003-encapsulation.html"><span class="topic-num">003</span>Encapsulation</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/004-inheritance.html"><span class="topic-num">004</span>Inheritance</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/005-polymorphism.html"><span class="topic-num">005</span>Polymorphism</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/006-abstraction.html"><span class="topic-num">006</span>Abstraction</a></li>
+        </ul>
+      </details>
+      <details class="chapter-group" >
+        <summary class="chapter-summary"><span>Advanced Concepts</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item "><a href="../../../courses/oops/topics/007-constructors-in-python.html"><span class="topic-num">007</span>Constructors in Python</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/008-dunder-magic-methods.html"><span class="topic-num">008</span>Dunder Magic Methods</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/009-static-and-class-methods.html"><span class="topic-num">009</span>Static and Class Methods</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/010-composition-vs-inheritance.html"><span class="topic-num">010</span>Composition vs Inheritance</a></li>
+        </ul>
+      </details>
+      <details class="chapter-group" >
+        <summary class="chapter-summary"><span>Design Patterns</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item "><a href="../../../courses/oops/topics/011-singleton-pattern.html"><span class="topic-num">011</span>Singleton Pattern</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/012-factory-pattern.html"><span class="topic-num">012</span>Factory Pattern</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/013-observer-pattern.html"><span class="topic-num">013</span>Observer Pattern</a></li>
+        </ul>
+      </details>
+      <details class="chapter-group" open>
+        <summary class="chapter-summary"><span>Interview Special</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item active"><a href="../../../courses/oops/topics/014-oops-interview-questions.html"><span class="topic-num">014</span>OOPs Interview Qs</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/015-oops-in-python-vs-java.html"><span class="topic-num">015</span>OOPs Python vs Java</a></li>
+        </ul>
+      </details>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    <div class="breadcrumb">
+      <a href="dashboard.html">Dashboard</a>
+      <span class="breadcrumb-sep">/</span>
+      <a href="dashboard.html">Object-Oriented Programming</a>
+      <span class="breadcrumb-sep">/</span>
+      <span>Interview Special</span>
+    </div>
+
+    <div class="topic-meta">
+      <div class="topic-meta-chip">📂 Interview Special</div>
+      <div class="topic-meta-chip">📄 Topic 14</div>
+      <div class="topic-meta-chip" id="reading-time">…</div>
+    </div>
+
+    <article class="topic-article">
+      <div class="editorial-content max-w-3xl px-4 mt-2">
+        <div class="coreSubject dark:text-zinc-300">
+          <br/>
+          
+<h2>20 Most Common OOPs Placement Questions</h2>
+<p>Prepare model answers for key concepts:</p>
+
+<ol>
+  <li><strong>What is the difference between abstraction and encapsulation?</strong>
+    <ul>
+      <li>*Answer:* Abstraction is the process of hiding complex design logic to simplify interfaces (design level). Encapsulation is the process of bundling data and methods inside a class to restrict direct access (implementation level).</li>
+    </ul>
+  </li>
+  <li><strong>Does Python support multiple inheritance? How does it resolve conflicts?</strong>
+    <ul>
+      <li>*Answer:* Yes, Python supports multiple inheritance. It resolves method name collisions using **Method Resolution Order (MRO)** powered by the **C3 Linearization** algorithm.</li>
+    </ul>
+  </li>
+  <li><strong>Explain the SOLID design principles.</strong>
+    <ul>
+      <li>*Answer:* Single Responsibility, Open/Closed (extend, don't modify), Liskov Substitution (subclass safety), Interface Segregation, and Dependency Inversion (depend on abstractions).</li>
+    </ul>
+  </li>
+  <li><strong>What is dynamic binding (runtime polymorphism)?</strong>
+    <ul>
+      <li>*Answer:* Resolving a method call during program execution based on the dynamic type of the object, rather than compiling it statically (e.g., method overriding).</li>
+    </ul>
+  </li>
+</ol>
+
+          
+<div class="interview-qna">
+  <h3>🎯 Topic Q&A</h3>
+  <div class="qna-item">
+    <strong>Q1: What is the difference between a class and an interface?</strong>
+    <p>A class is a structural template defining both attributes and concrete code implementations. An interface contains only abstract method signatures without code execution details, enforcing a strict contract on subclasses.</p>
+  </div>
+  <div class="qna-item">
+    <strong>Q2: What is the Liskov Substitution Principle?</strong>
+    <p>It states that subtypes must be completely substitutable for their parent types without altering program correctness, preventing unexpected errors during runtime polymorphism.</p>
+  </div>
+  <div class="qna-item">
+    <strong>Q3: Contrast deep copy and shallow copy in Python.</strong>
+    <p>Shallow copy duplicates the outer object container but shares references to inner nested mutable elements. Deep copy recursively duplicates all elements, creating completely independent object trees.</p>
+  </div>
+  <div class="qna-item">
+    <strong>Q4: Explain the difference between Composition and Inheritance.</strong>
+    <p>Inheritance is an "Is-A" relationship creating tight coupling. Composition is a "Has-A" relationship that nests component objects inside a class, providing loose coupling and dynamic modifications.</p>
+  </div>
+  <div class="qna-item">
+    <strong>Q5: What are magic/dunder methods in Python?</strong>
+    <p>They are special hooks starting and ending with double underscores (e.g., `__init__`, `__str__`) that let you customize core operator behaviors for user-defined object classes.</p>
+  </div>
+</div>
+
+        </div>
+      </div>
+    </article>
+
+    <div class="topic-nav"><a href="013-observer-pattern.html" class="nav-btn nav-prev"><span class="nav-btn-label">← Previous</span><span class="nav-btn-title">Observer Pattern</span></a><a href="015-oops-in-python-vs-java.html" class="nav-btn nav-next"><span class="nav-btn-label">Next →</span><span class="nav-btn-title">OOPs Python vs Java</span></a></div>
+  </main>
+</div>
+
+<button id="back-to-top" aria-label="Back to top">↑</button>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="../../../assets/script.js?v=12"></script>
+</body>
+</html>

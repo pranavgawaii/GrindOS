@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign In — GrindOS</title>
+  <link rel="icon" type="image/png" href="../logo.png">
+  <link rel="apple-touch-icon" href="../logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+
+  <script>window.__CLERK_PUBLISHABLE_KEY__ = 'pk_test_Z29yZ2VvdXMtamF3ZmlzaC0zMy5jbGVyay5hY2NvdW50cy5kZXYk';</script>
+  <script
+    async
+    crossorigin="anonymous"
+    data-clerk-publishable-key="pk_test_Z29yZ2VvdXMtamF3ZmlzaC0zMy5jbGVyay5hY2NvdW50cy5kZXYk"
+    src="https://cdn.jsdelivr.net/npm/@clerk/clerk-js@4/dist/clerk.browser.js"
+    type="text/javascript"
+    onload="initLogin()"
+  ></script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --brand:        #ea763f;
+      --brand-hover:  #d4662f;
+      --bg:           #fdfdfc;
+      --bg-2:         #f7f6f2;
+      --card:         #ffffff;
+      --border:       #e2e0d8;
+      --text-1:       #18181b;
+      --text-2:       #27272a;
+      --text-3:       #71717a;
+      --text-4:       #a1a1aa;
+      --radius:       12px;
+    }
+
+    body {
+      font-family: 'DM Sans', -apple-system, system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text-1);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Subtle warm glow behind the card */
+    body::before {
+      content: '';
+      position: absolute;
+      top: -25%; left: 50%;
+      transform: translateX(-50%);
+      width: 720px; height: 720px;
+      background: radial-gradient(circle, rgba(234,118,63,0.08) 0%, transparent 65%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .auth-card {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 420px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 40px 36px;
+      box-shadow: 0 1px 2px rgba(0,0,0,.04), 0 12px 40px rgba(0,0,0,.06);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .brand-row {
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none;
+      margin-bottom: 28px;
+    }
+    .brand-row img {
+      width: 36px; height: 36px;
+      border-radius: 8px; object-fit: contain;
+    }
+    .brand-row span {
+      font-size: 1.35rem; font-weight: 800;
+      color: var(--text-1); letter-spacing: -0.04em;
+    }
+
+    .auth-tagline { text-align: center; margin-bottom: 28px; }
+    .auth-tagline h2 {
+      font-size: 1.5rem; font-weight: 700;
+      color: var(--text-1); letter-spacing: -0.03em;
+      margin-bottom: 6px;
+    }
+    .auth-tagline p {
+      font-size: 0.92rem; color: var(--text-3); line-height: 1.5;
+    }
+
+    #clerk-auth-container {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+    #clerk-auth-container:empty,
+    #clerk-auth-container:has(.loading-state) {
+      min-height: 300px;
+      align-items: center;
+    }
+
+    .loading-state {
+      display: flex; flex-direction: column; align-items: center; gap: 12px;
+      padding: 48px 0; color: var(--text-3); font-size: 0.9rem;
+    }
+    .spinner {
+      width: 30px; height: 30px;
+      border: 3px solid var(--bg-2);
+      border-top-color: var(--brand);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .auth-footer {
+      font-size: 0.76rem; color: var(--text-4);
+      text-align: center; line-height: 1.6;
+      margin-top: 28px;
+    }
+    .auth-footer a { color: var(--brand); text-decoration: none; }
+    .auth-footer a:hover { text-decoration: underline; }
+
+    /* ── Clerk light-theme overrides ───────────────────────────────── */
+    .cl-rootBox, .cl-card, .cl-signIn-root, .cl-signUp-root {
+      background: transparent !important;
+      border: none !important;
+      box-shadow: none !important;
+      width: 100% !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      gap: 16px !important;
+    }
+    /* Full-width form elements, consistently aligned */
+    .cl-main,
+    .cl-form,
+    .cl-socialButtons,
+    .cl-formButtonPrimary,
+    .cl-socialButtonsBlockButton {
+      width: 100% !important;
+    }
+    .cl-formFieldLabelRow { justify-content: flex-start !important; }
+    /* Hide ALL Clerk chrome — its header/logo (the duplicate "GrindOS"),
+       footer, "Secured by Clerk", and the dev-mode badge. We supply our own. */
+    [class*="cl-header"],
+    [class*="cl-logoBox"],
+    [class*="cl-logoImage"],
+    [class*="cl-headerTitle"],
+    [class*="cl-headerSubtitle"],
+    [class*="cl-footer"],
+    [class*="cl-badge"],
+    .cl-branding,
+    a[href*="clerk.com"],
+    a[href*="clerk.dev"] {
+      display: none !important;
+    }
+    .cl-formFieldInput {
+      background: #ffffff !important;
+      border: 1px solid var(--border) !important;
+      color: var(--text-1) !important;
+      border-radius: var(--radius) !important;
+      padding: 12px 14px !important;
+      transition: border-color 0.2s, box-shadow 0.2s !important;
+    }
+    .cl-formFieldInput:focus {
+      border-color: var(--brand) !important;
+      box-shadow: 0 0 0 3px rgba(234, 118, 63, 0.15) !important;
+    }
+    .cl-formButtonPrimary {
+      background: var(--brand) !important;
+      border-radius: var(--radius) !important;
+      font-weight: 700 !important;
+      padding: 12px 24px !important;
+      text-transform: none !important;
+      transition: all 0.2s !important;
+    }
+    .cl-formButtonPrimary:hover {
+      background: var(--brand-hover) !important;
+      transform: translateY(-1px);
+    }
+    .cl-footerActionLink { color: var(--brand) !important; }
+    .cl-identityPreviewEditButton { color: var(--brand) !important; }
+    .cl-dividerLine { background: var(--border) !important; }
+    .cl-dividerText { color: var(--text-4) !important; }
+    .cl-socialButtonsIconButton {
+      background: #ffffff !important;
+      border: 1px solid var(--border) !important;
+      border-radius: var(--radius) !important;
+      transition: all 0.2s !important;
+    }
+    .cl-socialButtonsIconButton:hover {
+      border-color: var(--brand) !important;
+      background: rgba(234, 118, 63, 0.06) !important;
+      transform: translateY(-1px);
+    }
+    /* Our own clean sign-in / sign-up switch */
+    .auth-switch {
+      font-size: 0.88rem; color: var(--text-3);
+      text-align: center; margin-top: 18px;
+    }
+    .auth-switch a { color: var(--brand); font-weight: 600; text-decoration: none; }
+    .auth-switch a:hover { text-decoration: underline; }
+
+    @media (max-width: 480px) {
+      .auth-card { padding: 32px 24px; border-radius: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="auth-card">
+    <a href="../index.html" class="brand-row">
+      <img src="../logo.png" alt="GrindOS">
+      <span>GrindOS</span>
+    </a>
+
+    <div class="auth-tagline">
+      <h2 id="page-title">Welcome back</h2>
+      <p id="page-desc">Sign in to access your prep dashboard.</p>
+    </div>
+
+    <div id="clerk-auth-container">
+      <div class="loading-state">
+        <div class="spinner"></div>
+        <span>Loading authentication…</span>
+      </div>
+    </div>
+
+    <div class="auth-switch" id="auth-switch"></div>
+
+    <div class="auth-footer">
+      By continuing you agree to our <a href="#">Terms of Service</a>.<br>
+      Built by Pranav Gawai · <a href="https://grindos.pranavx.in" target="_blank">grindos.pranavx.in</a>
+    </div>
+  </div>
+
+  <script>
+    let clerkInitialized = false;
+
+    async function initLogin() {
+      if (clerkInitialized) return;
+      if (!window.Clerk) {
+        setTimeout(initLogin, 100);
+        return;
+      }
+      clerkInitialized = true;
+
+      try {
+        await window.Clerk.load({
+          publishableKey: 'pk_test_Z29yZ2VvdXMtamF3ZmlzaC0zMy5jbGVyay5hY2NvdW50cy5kZXYk',
+          signInUrl: '/auth/login.html?mode=signin',
+          signUpUrl: '/auth/login.html?mode=signup',
+          afterSignInUrl: '/dashboard.html',
+          afterSignUpUrl: '/dashboard.html',
+        });
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const isSignUp = urlParams.get('mode') === 'signup';
+
+        const heading = document.getElementById('page-title');
+        const desc = document.getElementById('page-desc');
+        const title = document.querySelector('title');
+        const switchEl = document.getElementById('auth-switch');
+
+        if (isSignUp) {
+          heading.textContent = 'Create your account';
+          desc.textContent = 'Sign up to start tracking your interview prep.';
+          title.textContent = 'Sign Up — GrindOS';
+          switchEl.innerHTML = 'Already have an account? <a href="?mode=signin">Sign in</a>';
+        } else {
+          heading.textContent = 'Welcome back';
+          desc.textContent = 'Sign in to access your prep dashboard.';
+          title.textContent = 'Sign In — GrindOS';
+          switchEl.innerHTML = 'New to GrindOS? <a href="?mode=signup">Create an account</a>';
+        }
+
+        const container = document.getElementById('clerk-auth-container');
+        container.innerHTML = '';
+
+        const clerkConfig = {
+          appearance: {
+            variables: {
+              colorPrimary: '#ea763f',
+              colorBackground: 'transparent',
+              colorText: '#18181b',
+              colorTextSecondary: '#71717a',
+              colorInputBackground: '#ffffff',
+              colorInputText: '#18181b',
+              colorBorder: '#e2e0d8',
+              borderRadius: '12px',
+              fontFamily: 'DM Sans, -apple-system, sans-serif',
+            },
+            elements: {
+              card: { boxShadow: 'none', background: 'transparent' },
+              headerTitle: { display: 'none' },
+              headerSubtitle: { display: 'none' }
+            }
+          }
+        };
+
+        if (isSignUp) {
+          window.Clerk.mountSignUp(container, clerkConfig);
+        } else {
+          window.Clerk.mountSignIn(container, clerkConfig);
+        }
+
+        // Strip Clerk branding that uses hashed classes ("Secured by Clerk", dev badge).
+        const stripBranding = () => {
+          container.querySelectorAll('*').forEach(el => {
+            if (el.children.length) return;
+            const txt = (el.textContent || '').replace(/\s+/g, ' ').trim().toLowerCase();
+            if (txt === 'secured by' || txt.includes('secured by clerk') || txt === 'development mode') {
+              const wrap = el.closest('div') || el;
+              wrap.style.display = 'none';
+            }
+          });
+        };
+        stripBranding();
+        new MutationObserver(stripBranding).observe(container, { childList: true, subtree: true });
+
+        if (window.Clerk.user) {
+          window.location.replace('../dashboard.html');
+        }
+      } catch (err) {
+        console.error('Failed to initialize Clerk:', err);
+        document.getElementById('clerk-auth-container').innerHTML =
+          `<div style="color: #dc2626; font-weight: 600; text-align: center; padding: 20px 0;">Error loading authentication.</div>`;
+      }
+    }
+
+    if (window.Clerk) {
+      initLogin();
+    } else {
+      const script = document.querySelector('script[src*="clerk-js"]');
+      if (script) {
+        script.addEventListener('load', initLogin);
+      } else {
+        window.addEventListener('load', () => {
+          if (window.Clerk) initLogin();
+        });
+      }
+    }
+  </script>
+
+</body>
+</html>

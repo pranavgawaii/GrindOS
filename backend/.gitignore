@@ -1,0 +1,27 @@
+# Secrets & env
+.env
+backend/.env
+*.local
+
+# Personal data (scrub before publishing)
+backend/pranav_profile.json
+
+# Python
+__pycache__/
+*.py[cod]
+venv/
+backend/venv/
+notes/
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/
+.claude/
+
+# Build / cache
+.next/
+dist/
+build/
+node_modules/
+

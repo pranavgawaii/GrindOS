@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+  (function() {
+    const saved = localStorage.getItem('GrindOS-theme');
+    if (saved) {
+      document.documentElement.classList.add(saved);
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.documentElement.classList.add('dark');
+    }
+  })();
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Paging — Pages, Frames, Page Tables, TLB Address Translation — Operating Systems — GrindOS</title>
+<link rel="stylesheet" href="../../../assets/style.css?v=13">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+  <link rel="icon" type="image/png" href="../../../logo.png">
+  
+  <link rel="apple-touch-icon" href="../../../logo.png">
+</head>
+<body>
+
+<div id="reading-progress"></div>
+
+<header class="topbar">
+  <button class="icon-btn menu-toggle" id="menu-toggle" aria-label="Menu">☰</button>
+  <a href="dashboard.html" class="topbar-brand">
+    <img src="../../../logo.png" alt="GrindOS Logo" class="brand-logo" style="width: 34px; height: 34px; object-fit: contain; border-radius: 4px; flex-shrink: 0; display: inline-block; vertical-align: middle;">
+    <span class="brand-wordmark">GrindOS</span>
+  </a>
+  <nav class="topbar-nav">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="dashboard.html" class="active">💻 Operating Systems</a>
+    <a href="../../../interview-prep/index.html" class="nav-cta">🎯 Interview Prep</a>
+  </nav>
+  <div class="topbar-right">
+    <button class="icon-btn" id="theme-toggle" aria-label="Toggle theme"><span class="theme-icon">☾</span></button>
+  </div>
+</header>
+
+<div class="page-layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-course-label"><span class="course-emoji">💻</span>Operating Systems</div>
+    </div>
+    <div class="sidebar-progress">
+      <div class="progress-label-row">
+        <span>Progress</span>
+        <span class="progress-count">5 / 17</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" style="width:29%"></div></div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-search">
+        <input type="text" id="sidebar-search" placeholder="Search topics…  /" autocomplete="off">
+        <span class="sidebar-search-icon">⌕</span>
+      </div>
+      <details class="chapter-group" >
+        <summary class="chapter-summary"><span>Processes and CPU Scheduling</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item "><a href="../../../courses/os/topics/001-process-vs-thread.html"><span class="topic-num">001</span>Process vs Thread</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/002-cpu-scheduling-algorithms-fcfs-sjf-rr.html"><span class="topic-num">002</span>CPU Scheduling Algorithms</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/003-context-switching-and-dispatcher.html"><span class="topic-num">003</span>Context Switching & Dispatcher</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/004-multilevel-queue-scheduling.html"><span class="topic-num">004</span>Multilevel Queue Scheduling</a></li>
+        </ul>
+      </details>
+      <details class="chapter-group" open>
+        <summary class="chapter-summary"><span>Memory Management</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item active"><a href="../../../courses/os/topics/005-paging-and-page-tables.html"><span class="topic-num">005</span>Paging and Page Tables</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/006-segmentation.html"><span class="topic-num">006</span>Segmentation</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/007-virtual-memory-and-demand-paging.html"><span class="topic-num">007</span>Virtual Memory & Demand Paging</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/008-page-replacement-algorithms.html"><span class="topic-num">008</span>Page Replacement Algorithms</a></li>
+        </ul>
+      </details>
+      <details class="chapter-group" >
+        <summary class="chapter-summary"><span>Process Synchronization</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item "><a href="../../../courses/os/topics/009-critical-section-problem.html"><span class="topic-num">009</span>Critical Section Problem</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/010-mutex-vs-semaphore-vs-monitor.html"><span class="topic-num">010</span>Mutex vs Semaphore vs Monitor</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/011-classic-synchronisation-problems.html"><span class="topic-num">011</span>Classic Synchronisation Problems</a></li>
+        </ul>
+      </details>
+      <details class="chapter-group" >
+        <summary class="chapter-summary"><span>Deadlocks</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item "><a href="../../../courses/os/topics/012-deadlock-conditions-and-prevention.html"><span class="topic-num">012</span>Deadlock Conditions & Prevention</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/013-deadlock-avoidance-bankers-algorithm.html"><span class="topic-num">013</span>Deadlock Avoidance & Banker's Algorithm</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/014-deadlock-detection-and-recovery.html"><span class="topic-num">014</span>Deadlock Detection & Recovery</a></li>
+        </ul>
+      </details>
+      <details class="chapter-group" >
+        <summary class="chapter-summary"><span>File Systems & Disk Scheduling</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item "><a href="../../../courses/os/topics/015-file-system-concepts.html"><span class="topic-num">015</span>File System Concepts</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/016-directory-structure-and-inode.html"><span class="topic-num">016</span>Directory Structure and Inode</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/017-disk-scheduling-algorithms.html"><span class="topic-num">017</span>Disk Scheduling Algorithms</a></li>
+        </ul>
+      </details>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    <div class="breadcrumb">
+      <a href="dashboard.html">Dashboard</a>
+      <span class="breadcrumb-sep">/</span>
+      <a href="dashboard.html">Operating Systems</a>
+      <span class="breadcrumb-sep">/</span>
+      <span>Memory Management</span>
+    </div>
+
+    <div class="topic-meta">
+      <div class="topic-meta-chip">📂 Memory Management</div>
+      <div class="topic-meta-chip">📄 Topic 5</div>
+      <div class="topic-meta-chip" id="reading-time">…</div>
+    </div>
+
+    <article class="topic-article">
+      <div class="editorial-content max-w-3xl px-4 mt-2">
+        <div class="coreSubject dark:text-zinc-300">
+          <br/>
+          
+<h2>1. Non-Contiguous Allocation: Paging</h2>
+<p>Paging is a memory management scheme that eliminates the need for contiguous physical memory allocation. Physical memory is broken into fixed-size blocks called <strong>Frames</strong>, and logical memory is divided into blocks of the exact same size called <strong>Pages</strong>.</p>
+
+<hr class="line-break"/>
+
+<h2>2. Address Translation in Paging</h2>
+<p>The CPU generates a <strong>Logical Address</strong> split into two parts:</p>
+<ul>
+  <li><strong>Page Number (p):</strong> Used as an index into a <strong>Page Table</strong>. The page table contains the base physical frame number.</li>
+  <li><strong>Page Offset (d):</strong> The specific displacement address within the page. It is concatenated with the physical frame base to form the final physical address.</li>
+</ul>
+<pre><code class="language-text">Logical Address:  [ Page Number (p) | Offset (d) ]
+                          |
+                     [Page Table Lookup]
+                          |
+Physical Address: [ Frame Number (f) | Offset (d) ]</code></pre>
+
+<div class="mermaid" style="text-align: center; margin: 24px 0;">
+graph TD
+    CPU[CPU Logical Address: p, d] --> Lookup{Search TLB}
+    Lookup -- Hit --> Frame[Get Frame Number f]
+    Lookup -- Miss --> PT[Look up in Page Table in RAM]
+    PT --> Update[Update TLB]
+    PT --> Frame
+    Frame --> Combine[Concatenate f and offset d]
+    Combine --> Physical[Physical Address in RAM]
+    style CPU fill:#ea580c,stroke:#333,stroke-width:2px,color:#fff
+    style Physical fill:#10b981,stroke:#333,stroke-width:2px,color:#fff
+</div>
+
+<hr class="line-break"/>
+
+<h2>3. Translation Lookaside Buffer (TLB)</h2>
+<p>Since the page table resides in RAM, every data access requires two memory cycles (one to read the page table, one to access the data). To double this performance, a high-speed hardware cache called the <strong>Translation Lookaside Buffer (TLB)</strong> is added to the Memory Management Unit (MMU) to cache recent translations.</p>
+
+<h3>Effective Access Time (EAT) Formula</h3>
+<p>Let <code>h</code> be the TLB hit ratio, <code>m</code> be memory access time, and <code>c</code> be TLB cache lookup time:</p>
+<div class="alert alert-note">
+  <code>EAT = h * (c + m) + (1 - h) * (c + 2m)</code>
+</div>
+
+<hr class="line-break"/>
+
+<h2>4. Page Table Entry (PTE) Structure</h2>
+<p>A standard Page Table Entry contains several bit flags to manage page states:</p>
+<table border="1" cellpadding="8">
+  <thead>
+    <tr>
+      <th>Bit / Field</th>
+      <th>Function</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Frame Number</strong></td>
+      <td>The physical address base mapping.</td>
+    </tr>
+    <tr>
+      <td><strong>Valid / Invalid Bit</strong></td>
+      <td>Indicates if the page is currently loaded in physical RAM.</td>
+    </tr>
+    <tr>
+      <td><strong>Dirty Bit (Modify Bit)</strong></td>
+      <td>Indicates if the page has been modified since it was loaded (crucial for page replacement write-back decisions).</td>
+    </tr>
+    <tr>
+      <td><strong>Referenced Bit</strong></td>
+      <td>Indicates if the page has been read/written recently (used by LRU approximation).</td>
+    </tr>
+  </tbody>
+</table>
+
+          
+<div class="interview-qna">
+  <h3>🎯 Topic Q&A</h3>
+  <div class="qna-item">
+    <strong>Q1: Why must page size and frame size be identical?</strong>
+    <p>They must be identical so that the offset (`d`) in logical memory maps exactly to the offset in physical memory without mathematical translation, making address translation an instant bit-level operation.</p>
+  </div>
+  <div class="qna-item">
+    <strong>Q2: What is the Translation Lookaside Buffer (TLB)?</strong>
+    <p>The TLB is an ultra-fast associative hardware cache inside the Memory Management Unit (MMU) that stores recently accessed virtual-to-physical address mappings, preventing expensive repeated RAM lookups.</p>
+  </div>
+  <div class="qna-item">
+    <strong>Q3: Explain the role of the Dirty Bit in a Page Table Entry.</strong>
+    <p>The Dirty Bit (Modify Bit) is set to 1 when a page in memory is modified. During page replacement, if the dirty bit is 0, the OS can discard the page because it is identical to the copy on disk, avoiding expensive write-back I/O.</p>
+  </div>
+  <div class="qna-item">
+    <strong>Q4: Calculate Effective Access Time (EAT) if memory access is 100ns, TLB search is 20ns, and TLB hit ratio is 90%.</strong>
+    <p>Using the EAT formula: <code>EAT = 0.90 * (20 + 100) + 0.10 * (20 + 200) = 108 + 22 = 130ns</code>.</p>
+  </div>
+  <div class="qna-item">
+    <strong>Q5: What is internal fragmentation in paging?</strong>
+    <p>Internal fragmentation occurs when a process's last page is not completely filled. Because memory is allocated in fixed page sizes, if a process needs 1KB but page size is 4KB, the remaining 3KB in the frame is wasted.</p>
+  </div>
+</div>
+
+        </div>
+      </div>
+    </article>
+
+    <div class="topic-nav"><a href="004-multilevel-queue-scheduling.html" class="nav-btn nav-prev"><span class="nav-btn-label">← Previous</span><span class="nav-btn-title">Multilevel Queue Scheduling</span></a><a href="006-segmentation.html" class="nav-btn nav-next"><span class="nav-btn-label">Next →</span><span class="nav-btn-title">Segmentation</span></a></div>
+  </main>
+</div>
+
+<button id="back-to-top" aria-label="Back to top">↑</button>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="../../../assets/script.js?v=12"></script>
+</body>
+</html>

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+  (function() {
+    const saved = localStorage.getItem('GrindOS-theme');
+    if (saved) {
+      document.documentElement.classList.add(saved);
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.documentElement.classList.add('dark');
+    }
+  })();
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Virtual Memory — Demand Paging, Page Faults, Thrashing — Operating Systems — GrindOS</title>
+<link rel="stylesheet" href="../../../assets/style.css?v=13">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+  <link rel="icon" type="image/png" href="../../../logo.png">
+  
+  <link rel="apple-touch-icon" href="../../../logo.png">
+</head>
+<body>
+
+<div id="reading-progress"></div>
+
+<header class="topbar">
+  <button class="icon-btn menu-toggle" id="menu-toggle" aria-label="Menu">☰</button>
+  <a href="dashboard.html" class="topbar-brand">
+    <img src="../../../logo.png" alt="GrindOS Logo" class="brand-logo" style="width: 34px; height: 34px; object-fit: contain; border-radius: 4px; flex-shrink: 0; display: inline-block; vertical-align: middle;">
+    <span class="brand-wordmark">GrindOS</span>
+  </a>
+  <nav class="topbar-nav">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="dashboard.html" class="active">💻 Operating Systems</a>
+    <a href="../../../interview-prep/index.html" class="nav-cta">🎯 Interview Prep</a>
+  </nav>
+  <div class="topbar-right">
+    <button class="icon-btn" id="theme-toggle" aria-label="Toggle theme"><span class="theme-icon">☾</span></button>
+  </div>
+</header>
+
+<div class="page-layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-course-label"><span class="course-emoji">💻</span>Operating Systems</div>
+    </div>
+    <div class="sidebar-progress">
+      <div class="progress-label-row">
+        <span>Progress</span>
+        <span class="progress-count">7 / 17</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" style="width:41%"></div></div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-search">
+        <input type="text" id="sidebar-search" placeholder="Search topics…  /" autocomplete="off">
+        <span class="sidebar-search-icon">⌕</span>
+      </div>
+      <details class="chapter-group" >
+        <summary class="chapter-summary"><span>Processes and CPU Scheduling</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item "><a href="../../../courses/os/topics/001-process-vs-thread.html"><span class="topic-num">001</span>Process vs Thread</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/002-cpu-scheduling-algorithms-fcfs-sjf-rr.html"><span class="topic-num">002</span>CPU Scheduling Algorithms</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/003-context-switching-and-dispatcher.html"><span class="topic-num">003</span>Context Switching & Dispatcher</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/004-multilevel-queue-scheduling.html"><span class="topic-num">004</span>Multilevel Queue Scheduling</a></li>
+        </ul>
+      </details>
+      <details class="chapter-group" open>
+        <summary class="chapter-summary"><span>Memory Management</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item "><a href="../../../courses/os/topics/005-paging-and-page-tables.html"><span class="topic-num">005</span>Paging and Page Tables</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/006-segmentation.html"><span class="topic-num">006</span>Segmentation</a></li>
+          <li class="topic-item active"><a href="../../../courses/os/topics/007-virtual-memory-and-demand-paging.html"><span class="topic-num">007</span>Virtual Memory & Demand Paging</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/008-page-replacement-algorithms.html"><span class="topic-num">008</span>Page Replacement Algorithms</a></li>
+        </ul>
+      </details>
+      <details class="chapter-group" >
+        <summary class="chapter-summary"><span>Process Synchronization</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item "><a href="../../../courses/os/topics/009-critical-section-problem.html"><span class="topic-num">009</span>Critical Section Problem</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/010-mutex-vs-semaphore-vs-monitor.html"><span class="topic-num">010</span>Mutex vs Semaphore vs Monitor</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/011-classic-synchronisation-problems.html"><span class="topic-num">011</span>Classic Synchronisation Problems</a></li>
+        </ul>
+      </details>
+      <details class="chapter-group" >
+        <summary class="chapter-summary"><span>Deadlocks</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item "><a href="../../../courses/os/topics/012-deadlock-conditions-and-prevention.html"><span class="topic-num">012</span>Deadlock Conditions & Prevention</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/013-deadlock-avoidance-bankers-algorithm.html"><span class="topic-num">013</span>Deadlock Avoidance & Banker's Algorithm</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/014-deadlock-detection-and-recovery.html"><span class="topic-num">014</span>Deadlock Detection & Recovery</a></li>
+        </ul>
+      </details>
+      <details class="chapter-group" >
+        <summary class="chapter-summary"><span>File Systems & Disk Scheduling</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item "><a href="../../../courses/os/topics/015-file-system-concepts.html"><span class="topic-num">015</span>File System Concepts</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/016-directory-structure-and-inode.html"><span class="topic-num">016</span>Directory Structure and Inode</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/017-disk-scheduling-algorithms.html"><span class="topic-num">017</span>Disk Scheduling Algorithms</a></li>
+        </ul>
+      </details>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    <div class="breadcrumb">
+      <a href="dashboard.html">Dashboard</a>
+      <span class="breadcrumb-sep">/</span>
+      <a href="dashboard.html">Operating Systems</a>
+      <span class="breadcrumb-sep">/</span>
+      <span>Memory Management</span>
+    </div>
+
+    <div class="topic-meta">
+      <div class="topic-meta-chip">📂 Memory Management</div>
+      <div class="topic-meta-chip">📄 Topic 7</div>
+      <div class="topic-meta-chip" id="reading-time">…</div>
+    </div>
+
+    <article class="topic-article">
+      <div class="editorial-content max-w-3xl px-4 mt-2">
+        <div class="coreSubject dark:text-zinc-300">
+          <br/>
+          
+<h2>1. Concept of Virtual Memory</h2>
+<p><strong>Virtual Memory</strong> is a memory management technique that decouples the programmer's logical view of memory from physical RAM. This allows processes to execute even if they are only partially loaded in RAM, enabling applications larger than physical memory to run smoothly.</p>
+
+<hr class="line-break"/>
+
+<h2>2. Demand Paging</h2>
+<p>Under a demand paging architecture, pages are loaded into physical frames only when they are actively referenced during execution (lazy swapper/pager). Each page table entry uses a <strong>Valid-Invalid (V/I) bit</strong>:</p>
+<ul>
+  <li><strong>Valid (V):</strong> The page is currently loaded in RAM.</li>
+  <li><strong>Invalid (I):</strong> The page is not in RAM (it is stored on secondary swap disk).</li>
+</ul>
+
+<hr class="line-break"/>
+
+<h2>3. Page Fault Handling</h2>
+<p>When the CPU attempts to access an address marked as **Invalid** in the page table, it triggers a hardware exception called a <strong>Page Fault</strong>. The OS handles this via these structured steps:</p>
+<ol>
+  <li>The OS traps the execution, checking an internal process control table to verify if the memory reference is valid.</li>
+  <li>If the reference is invalid, the process is terminated (Segmentation Fault). If valid, we must retrieve the page.</li>
+  <li>The OS locates a free frame in physical memory (if no frames are free, we run a **Page Replacement Algorithm**).</li>
+  <li>The OS schedules a disk I/O operation to read the desired page from secondary swap disk into the allocated free frame.</li>
+  <li>Once read is complete, the OS updates the page table: changes the page entry frame mapping and sets the status bit to <strong>Valid</strong>.</li>
+  <li>The OS restarts the CPU instruction that was interrupted by the page fault, resuming execution seamlessly.</li>
+</ol>
+
+<div class="mermaid" style="text-align: center; margin: 24px 0;">
+graph TD
+    Start[CPU references invalid page] --> Trap[Trap to OS: Page Fault Exception]
+    Trap --> Check{Free frame exists?}
+    Check -- Yes --> Load[Load page from disk into frame]
+    Check -- No --> Vict[Select victim frame via Page Replacement Alg]
+    Vict --> Dirty{Victim dirty/modified?}
+    Dirty -- Yes --> Write[Write victim back to disk]
+    Dirty -- No --> Swap[Swap page in]
+    Write --> Swap
+    Swap --> Load
+    Load --> Update[Update Page Table: valid bit = 1]
+    Update --> Restart[Restart CPU instruction]
+    style Start fill:#ea580c,stroke:#333,stroke-width:2px,color:#fff
+    style Restart fill:#10b981,stroke:#333,stroke-width:2px,color:#fff
+</div>
+
+<hr class="line-break"/>
+
+<h2>4. Thrashing and the Working Set Model</h2>
+<p><strong>Thrashing</strong> occurs when a virtual memory system spends more time page-faulting and swapping pages in/out of secondary storage than executing actual instructions.</p>
+<ul>
+  <li><strong>Cause:</strong> Happens when the collective working set sizes of all running processes exceed the available physical RAM.</li>
+  <li><strong>Working Set Model:</strong> The OS tracks the set of pages active in a sliding time window (<code>&Delta;</code>). If the sum of all working sets (<code>D</code>) exceeds physical RAM (<code>m</code>), the OS suspends a process, preventing thrashing.</li>
+</ul>
+
+          
+<div class="interview-qna">
+  <h3>🎯 Topic Q&A</h3>
+  <div class="qna-item">
+    <strong>Q1: What is a Page Fault?</strong>
+    <p>A page fault is a hardware interrupt triggered by the Memory Management Unit (MMU) when a running program attempts to access a virtual page that is not currently loaded in physical RAM.</p>
+  </div>
+  <div class="qna-item">
+    <strong>Q2: How does the OS handle page faults when physical memory is completely full?</strong>
+    <p>The OS executes a <strong>Page Replacement Algorithm</strong> (like LRU) to select a victim frame. If the victim's dirty bit is set, it writes the page back to disk. It then marks the victim's page table entry as Invalid, loads the new page into that frame, marks it as Valid, and restarts the instruction.</p>
+  </div>
+  <div class="qna-item">
+    <strong>Q3: What causes memory thrashing?</strong>
+    <p>Thrashing is caused by over-committing memory. If the degree of multiprogramming is too high, the OS allocates fewer frames than a process's active working set requires, causing continuous page faults and disk-swapping bottlenecks.</p>
+  </div>
+  <div class="qna-item">
+    <strong>Q4: Explain temporal and spatial locality.</strong>
+    <p>Temporal locality states that memory locations accessed recently are likely to be accessed again soon (e.g., loops). Spatial locality states that memory adjacent to recently accessed locations is likely to be accessed soon (e.g., arrays).</p>
+  </div>
+  <div class="qna-item">
+    <strong>Q5: What is the Working Set Window delta in thrashing prevention?</strong>
+    <p>The working set window delta is a configurable parameter representing the sliding window of recent page references used to determine which pages are actively needed by a process, allowing the OS to calculate total system frame demand.</p>
+  </div>
+</div>
+
+        </div>
+      </div>
+    </article>
+
+    <div class="topic-nav"><a href="006-segmentation.html" class="nav-btn nav-prev"><span class="nav-btn-label">← Previous</span><span class="nav-btn-title">Segmentation</span></a><a href="008-page-replacement-algorithms.html" class="nav-btn nav-next"><span class="nav-btn-label">Next →</span><span class="nav-btn-title">Page Replacement Algorithms</span></a></div>
+  </main>
+</div>
+
+<button id="back-to-top" aria-label="Back to top">↑</button>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="../../../assets/script.js?v=12"></script>
+</body>
+</html>

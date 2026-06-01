@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<script>
+  (function() {
+    const saved = localStorage.getItem('GrindOS-theme');
+    if (saved) {
+      document.documentElement.classList.add(saved);
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.documentElement.classList.add('dark');
+    }
+  })();
+</script>
+<title>Company Preparation — GrindOS</title>
+<link rel="stylesheet" href="assets/style.css?v=13">
+<link rel="icon" type="image/png" href="logo.png">
+<link rel="apple-touch-icon" href="logo.png">
+
+<!-- Clerk Auth Guard -->
+<script>window.__CLERK_PUBLISHABLE_KEY__ = 'pk_test_Z29yZ2VvdXMtamF3ZmlzaC0zMy5jbGVyay5hY2NvdW50cy5kZXYk';</script>
+<script src="auth/clerk.js"></script>
+
+<style>
+  .company-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-top: 24px;
+    margin-bottom: 64px;
+  }
+  .company-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    position: relative;
+    overflow: hidden;
+  }
+  .company-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--brand);
+    opacity: 0;
+    transition: opacity 0.25s;
+  }
+  .company-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--brand-glow);
+    box-shadow: var(--shadow-lg), 0 4px 20px var(--brand-light);
+  }
+  .company-card:hover::before {
+    opacity: 1;
+  }
+  .company-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 14px;
+  }
+  .company-name-wrap {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .company-logo {
+    width: 38px;
+    height: 38px;
+    border-radius: 8px;
+    background: var(--bg-2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    border: 1px solid var(--border);
+  }
+  .company-title {
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: var(--text-1);
+    letter-spacing: -0.02em;
+  }
+  .company-tier {
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    background: var(--brand-light);
+    color: var(--brand);
+    padding: 2px 8px;
+    border-radius: 20px;
+    letter-spacing: 0.05em;
+  }
+  .round-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .round-item {
+    font-size: 0.85rem;
+    color: var(--text-2);
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+  }
+  .round-num {
+    font-family: var(--font-mono);
+    font-weight: bold;
+    color: var(--brand);
+    flex-shrink: 0;
+  }
+  .focus-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    border-top: 1px dashed var(--border);
+    padding-top: 14px;
+  }
+  .focus-tag {
+    font-size: 0.75rem;
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    color: var(--text-3);
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-family: var(--font-sans);
+    font-weight: 500;
+  }
+  .trap-card {
+    background: rgba(239, 68, 68, 0.04);
+    border: 1px solid rgba(239, 68, 68, 0.15);
+    border-radius: var(--radius);
+    padding: 10px 14px;
+    font-size: 0.78rem;
+    color: #ef4444;
+    line-height: 1.4;
+  }
+  .dark .trap-card {
+    background: rgba(239, 68, 68, 0.08);
+    color: #fca5a5;
+  }
+  
+  @media (max-width: 900px) {
+    .company-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 600px) {
+    .company-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <a href="dashboard.html" class="topbar-brand">
+    <img src="logo.png" alt="GrindOS Logo" class="brand-logo" style="width: 34px; height: 34px; object-fit: contain; border-radius: 4px; flex-shrink: 0; display: inline-block; vertical-align: middle; margin-right: 4px;">
+    <span class="brand-wordmark">GrindOS</span>
+  </a>
+  <nav class="topbar-nav">
+    <a href="dashboard.html" class="learn-nav">Learn</a>
+    <a href="tracker.html" class="practice-nav">Practice</a>
+    <a href="interview-prep/index.html" class="prep-nav">Prep</a>
+    <a href="company-prep.html" class="company-nav active">Companies</a>
+  </nav>
+  <div class="topbar-right">
+    <button class="icon-btn" id="theme-toggle" aria-label="Toggle theme"><span class="theme-icon">☾</span></button>
+    <div id="clerk-user-widget"></div>
+  </div>
+</header>
+
+<div class="dashboard">
+  <div class="dashboard-header-row">
+    <div class="dashboard-title-area">
+      <h2>🏢 Company Preparation Cockpit</h2>
+      <p>Master hiring flows, critical rounds, and high-yield system design focus areas for top-tier companies.</p>
+    </div>
+    <div class="dashboard-meta-badges">
+      <span class="meta-badge">
+        <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round" style="color: var(--brand); margin-right: 4px;"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+        6 Major Firms
+      </span>
+      <span class="meta-badge">
+        <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round" style="color: var(--brand); margin-right: 4px;"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+        24+ Rounds
+      </span>
+    </div>
+  </div>
+
+  <div class="dashboard-search-container">
+    <div class="search-wrapper">
+      <input type="text" id="company-search" placeholder="Search companies, rounds, or tech stacks..." autocomplete="off">
+      <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+    </div>
+  </div>
+
+  <div class="company-grid" id="company-grid">
+    <!-- Google -->
+    <div class="company-card" data-tags="google faang search go mapreduce system design algorithm">
+      <div class="company-header">
+        <div class="company-name-wrap">
+          <div class="company-logo" style="color:#4285F4;">G</div>
+          <span class="company-title">Google</span>
+        </div>
+        <span class="company-tier">Tier 1</span>
+      </div>
+      <div class="round-list">
+        <div class="round-item">
+          <span class="round-num">01</span>
+          <span><strong>Technical Phone Screen:</strong> Deep focus on time/space complexity analysis and modular code.</span>
+        </div>
+        <div class="round-item">
+          <span class="round-num">02</span>
+          <span><strong>Coding Rounds (x3):</strong> Hard algorithmic puzzles (graphs, dynamic programming, sorting).</span>
+        </div>
+        <div class="round-item">
+          <span class="round-num">03</span>
+          <span><strong>System Design:</strong> MapReduce, BigTable architectures, or rate limiting at massive scale.</span>
+        </div>
+      </div>
+      <div class="trap-card">
+        <strong>⚠️ INTERVIEWER TRAP:</strong> Jumping straight to coding without discussing edge cases and alternative approaches. Ask clarifying questions first!
+      </div>
+      <div class="focus-tags">
+        <span class="focus-tag">Dijkstra & A*</span>
+        <span class="focus-tag">Tries</span>
+        <span class="focus-tag">Distributed Systems</span>
+      </div>
+    </div>
+
+    <!-- Microsoft -->
+    <div class="company-card" data-tags="microsoft faang windows azure cloud system design sql dbms oops">
+      <div class="company-header">
+        <div class="company-name-wrap">
+          <div class="company-logo" style="color:#F25022;">M</div>
+          <span class="company-title">Microsoft</span>
+        </div>
+        <span class="company-tier">Tier 1</span>
+      </div>
+      <div class="round-list">
+        <div class="round-item">
+          <span class="round-num">01</span>
+          <span><strong>Online Assessment (OA):</strong> Codility assessment containing 3 coding challenges.</span>
+        </div>
+        <div class="round-item">
+          <span class="round-num">02</span>
+          <span><strong>DS & Algos (x2):</strong> Tree traversal, design patterns, strings, and OOP design.</span>
+        </div>
+        <div class="round-item">
+          <span class="round-num">03</span>
+          <span><strong>System Design & Architecture:</strong> Cloud migration patterns, load balancer setups, database sharding.</span>
+        </div>
+      </div>
+      <div class="trap-card">
+        <strong>⚠️ COMMON MISTAKE:</strong> Weak OOP structures. Microsoft values clean class structures, encapsulation, and interfaces.
+      </div>
+      <div class="focus-tags">
+        <span class="focus-tag">OOPs Patterns</span>
+        <span class="focus-tag">Binary Trees</span>
+        <span class="focus-tag">DBMS & SQL</span>
+      </div>
+    </div>
+
+    <!-- Amazon -->
+    <div class="company-card" data-tags="amazon faang retail aws leadership lp barcode raiser system design sde">
+      <div class="company-header">
+        <div class="company-name-wrap">
+          <div class="company-logo" style="color:#FF9900;">A</div>
+          <span class="company-title">Amazon</span>
+        </div>
+        <span class="company-tier">Tier 1</span>
+      </div>
+      <div class="round-list">
+        <div class="round-item">
+          <span class="round-num">01</span>
+          <span><strong>Online Assessment:</strong> Coding task + Work Simulation test evaluating LP metrics.</span>
+        </div>
+        <div class="round-item">
+          <span class="round-num">02</span>
+          <span><strong>Coding Rounds (x2):</strong> Focus on lists, stacks/queues, heaps, and tree maps.</span>
+        </div>
+        <div class="round-item">
+          <span class="round-num">03</span>
+          <span><strong>System Design & LP (x2):</strong> Pub-Sub event architectures, DynamoDB scaling, and LP scenarios.</span>
+        </div>
+      </div>
+      <div class="trap-card">
+        <strong>⚠️ CRITICAL NOTE:</strong> 50% of the evaluation rests on Amazon's 16 Leadership Principles. Always back answers with the STAR method.
+      </div>
+      <div class="focus-tags">
+        <span class="focus-tag">Heaps & Priority Queues</span>
+        <span class="focus-tag">Leadership Principles</span>
+        <span class="focus-tag">NoSQL Scaling</span>
+      </div>
+    </div>
+
+    <!-- Uber -->
+    <div class="company-card" data-tags="uber ride startup high scale real time caching websockets geo redis database">
+      <div class="company-header">
+        <div class="company-name-wrap">
+          <div class="company-logo" style="color:#000000; border-color:#555;">U</div>
+          <span class="company-title">Uber</span>
+        </div>
+        <span class="company-tier">Startup Tier 1</span>
+      </div>
+      <div class="round-list">
+        <div class="round-item">
+          <span class="round-num">01</span>
+          <span><strong>OA / Phone Screen:</strong> Advanced algorithm screen with speed-optimized benchmarks.</span>
+        </div>
+        <div class="round-item">
+          <span class="round-num">02</span>
+          <span><strong>Low Level Design (LLD):</strong> Implementation of thread-safe systems (e.g. Rate Limiter, Ride Engine).</span>
+        </div>
+        <div class="round-item">
+          <span class="round-num">03</span>
+          <span><strong>High Level Design (HLD):</strong> Geo-spatial indexing, dynamic pricing engine, real-time message brokers.</span>
+        </div>
+      </div>
+      <div class="trap-card">
+        <strong>⚠️ INTERVIEWER TRAP:</strong> Ignoring concurrent write race conditions. Always address multi-threading locks and eventual consistency.
+      </div>
+      <div class="focus-tags">
+        <span class="focus-tag">H3 Geo-Spatial Indexing</span>
+        <span class="focus-tag">Concurrency Locks</span>
+        <span class="focus-tag">Redis & WebSockets</span>
+      </div>
+    </div>
+
+    <!-- Swiggy -->
+    <div class="company-card" data-tags="swiggy delivery microservices redis rabbitmq routing quadtree cache">
+      <div class="company-header">
+        <div class="company-name-wrap">
+          <div class="company-logo" style="color:#FC8019;">S</div>
+          <span class="company-title">Swiggy</span>
+        </div>
+        <span class="company-tier">SaaS / Unicorn</span>
+      </div>
+      <div class="round-list">
+        <div class="round-item">
+          <span class="round-num">01</span>
+          <span><strong>HackerEarth Test:</strong> 2 core algorithmic questions + SQL queries.</span>
+        </div>
+        <div class="round-item">
+          <span class="round-num">02</span>
+          <span><strong>Machine Coding (LLD):</strong> Complete working CLI app in 90-120 minutes (e.g. food delivery system).</span>
+        </div>
+        <div class="round-item">
+          <span class="round-num">03</span>
+          <span><strong>High Level Design:</strong> Microservices orchestration, real-time order tracking, cache synchronization.</span>
+        </div>
+      </div>
+      <div class="trap-card">
+        <strong>⚠️ MACHINE CODING RULE:</strong> Focus on clean architecture (SOLID) and extensibility rather than just a quick and dirty solution.
+      </div>
+      <div class="focus-tags">
+        <span class="focus-tag">Microservices</span>
+        <span class="focus-tag">Machine Coding LLD</span>
+        <span class="focus-tag">Message Queues</span>
+      </div>
+    </div>
+
+    <!-- Razorpay -->
+    <div class="company-card" data-tags="razorpay payment fintech transactions double entry idempotency scaling database audit">
+      <div class="company-header">
+        <div class="company-name-wrap">
+          <div class="company-logo" style="color:#004CFF;">R</div>
+          <span class="company-title">Razorpay</span>
+        </div>
+        <span class="company-tier">Fintech Leader</span>
+      </div>
+      <div class="round-list">
+        <div class="round-item">
+          <span class="round-num">01</span>
+          <span><strong>DS/Algo Screen:</strong> Core focus on linked lists, queues, caching implementations.</span>
+        </div>
+        <div class="round-item">
+          <span class="round-num">02</span>
+          <span><strong>System Design & LLD:</strong> Payment gateway simulation, handling idempotency, and audit trails.</span>
+        </div>
+        <div class="round-item">
+          <span class="round-num">03</span>
+          <span><strong>Culture Fit Round:</strong> Collaborative engineering mindset, handling production incidents.</span>
+        </div>
+      </div>
+      <div class="trap-card">
+        <strong>⚠️ CRITICAL THEORY:</strong> Understand **idempotency** (API-key deduction tracking) and **distributed database transactions** thoroughly.
+      </div>
+      <div class="focus-tags">
+        <span class="focus-tag">Idempotent APIs</span>
+        <span class="focus-tag">2-Phase Commits</span>
+        <span class="focus-tag">SQL ACID Rules</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="assets/script.js?v=12"></script>
+<script>
+  // Simple, fast real-time client-side filter
+  document.getElementById('company-search').addEventListener('input', function() {
+    const query = this.value.toLowerCase().trim();
+    const cards = document.querySelectorAll('#company-grid .company-card');
+    
+    cards.forEach(card => {
+      const tags = card.getAttribute('data-tags').toLowerCase();
+      const title = card.querySelector('.company-title').textContent.toLowerCase();
+      const content = card.textContent.toLowerCase();
+      
+      if (tags.includes(query) || title.includes(query) || content.includes(query)) {
+        card.style.display = 'flex';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  });
+</script>
+</body>
+</html>

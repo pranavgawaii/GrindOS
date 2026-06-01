@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+  (function() {
+    const saved = localStorage.getItem('GrindOS-theme');
+    if (saved) {
+      document.documentElement.classList.add(saved);
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.documentElement.classList.add('dark');
+    }
+  })();
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Stored Procedures in Databases — Database Management Systems — GrindOS</title>
+<link rel="stylesheet" href="../../../assets/style.css?v=13">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+  
+  <link rel="icon" type="image/png" href="../../../logo.png">
+  
+  <link rel="apple-touch-icon" href="../../../logo.png">
+</head>
+<body>
+
+<div id="reading-progress"></div>
+
+<header class="topbar">
+  <button class="icon-btn menu-toggle" id="menu-toggle" aria-label="Menu">☰</button>
+  <a href="dashboard.html" class="topbar-brand">
+    <img src="../../../logo.png" alt="GrindOS Logo" class="brand-logo" style="width: 34px; height: 34px; object-fit: contain; border-radius: 4px; flex-shrink: 0; display: inline-block; vertical-align: middle;">
+    <span class="brand-wordmark">GrindOS</span>
+  </a>
+  <nav class="topbar-nav">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="dashboard.html" class="active">🗄️ Database Management Systems</a>
+    <a href="../../../interview-prep/index.html" class="nav-cta">🎯 Interview Prep</a>
+  </nav>
+  <div class="topbar-right">
+    <button class="icon-btn" id="theme-toggle" aria-label="Toggle theme"><span class="theme-icon">☾</span></button>
+  </div>
+</header>
+
+<div class="page-layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-course-label"><span class="course-emoji">🗄️</span>Database Management Systems</div>
+    </div>
+    <div class="sidebar-progress">
+      <div class="progress-label-row">
+        <span>Progress</span>
+        <span class="progress-count">72 / 94</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" style="width:77%"></div></div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-search">
+<input type="text" id="sidebar-search" placeholder="Search topics…  /" autocomplete="off">
+<span class="sidebar-search-icon">⌕</span></div>
+<details class="chapter-group">
+<summary class="chapter-summary"><span>Introduction to DBMS</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/dbms/topics/001-data-information-database.html"><span class="topic-num">001</span>Data, Information & Database</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/002-types-of-databases.html"><span class="topic-num">002</span>Types of Databases</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/003-database-management-system.html"><span class="topic-num">003</span>Database Management System</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/004-need-advantages-and-disadvantages-of-dbms.html"><span class="topic-num">004</span>Need, Advantages and Disadvantages of DBMS</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/005-data-abstraction-in-dbms.html"><span class="topic-num">005</span>Data Abstraction in DBMS</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/006-dbms-architecture.html"><span class="topic-num">006</span>DBMS Architecture</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/007-database-users-and-interactions.html"><span class="topic-num">007</span>Database Users and Interactions</a></li>
+</ul></details>
+<details class="chapter-group">
+<summary class="chapter-summary"><span>Data Models and ER Models</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/dbms/topics/008-dbms-interfaces.html"><span class="topic-num">008</span>DBMS Interfaces</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/009-data-models-and-their-types.html"><span class="topic-num">009</span>Data Models and Their Types</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/010-er-model-and-its-components.html"><span class="topic-num">010</span>ER Model and its Components</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/011-types-of-relationships-in-dbms.html"><span class="topic-num">011</span>Types of Relationships in DBMS</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/012-extended-er-features.html"><span class="topic-num">012</span>Extended ER Features</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/013-types-of-inheritance.html"><span class="topic-num">013</span>Types of Inheritance</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/014-entity-relationship-diagram.html"><span class="topic-num">014</span>Entity-Relationship Diagram</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/015-create-er-diagram.html"><span class="topic-num">015</span>Create ER Diagram</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/016-relationships-in-er-diagram.html"><span class="topic-num">016</span>Relationships in ER Diagram</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/017-relational-models.html"><span class="topic-num">017</span>Relational Models</a></li>
+</ul></details>
+<details class="chapter-group">
+<summary class="chapter-summary"><span>Relational Model and Normalization</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/dbms/topics/018-intension-and-extension.html"><span class="topic-num">018</span>Intension and Extension</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/019-keys-in-dbms.html"><span class="topic-num">019</span>Keys in DBMS</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/020-data-normalization.html"><span class="topic-num">020</span>Data Normalization</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/021-functional-dependency.html"><span class="topic-num">021</span>Functional Dependency</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/022-armstrongs-axioms.html"><span class="topic-num">022</span>Armstrong's Axioms</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/023-inference-rules.html"><span class="topic-num">023</span>Inference Rules</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/024-closure-in-functional-dependencies.html"><span class="topic-num">024</span>Closure in Functional Dependencies</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/025-denormalisation.html"><span class="topic-num">025</span>Denormalisation</a></li>
+</ul></details>
+<details class="chapter-group">
+<summary class="chapter-summary"><span>SQL and Query Optimization</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/dbms/topics/026-database-languages.html"><span class="topic-num">026</span>Database Languages</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/027-sql-operators.html"><span class="topic-num">027</span>SQL Operators</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/028-aggregates-in-sql.html"><span class="topic-num">028</span>Aggregates in SQL</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/029-sql-clauses.html"><span class="topic-num">029</span>SQL Clauses</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/030-sql-joins.html"><span class="topic-num">030</span>SQL Joins</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/031-sql-joins.html"><span class="topic-num">031</span>SQL Joins</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/032-sql-joins.html"><span class="topic-num">032</span>SQL Joins</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/033-views-in-sql.html"><span class="topic-num">033</span>Views in SQL</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/034-advanced-views-in-sql.html"><span class="topic-num">034</span>Advanced Views in SQL</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/035-indexed-views.html"><span class="topic-num">035</span>Indexed Views</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/036-sql-subqueries.html"><span class="topic-num">036</span>SQL Subqueries</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/037-types-of-sql-subqueries.html"><span class="topic-num">037</span>Types of SQL Subqueries</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/038-query-processing.html"><span class="topic-num">038</span>Query Processing</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/039-query-optimization.html"><span class="topic-num">039</span>Query Optimization</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/040-advanced-query-optimization.html"><span class="topic-num">040</span>Advanced Query Optimization</a></li>
+</ul></details>
+<details class="chapter-group">
+<summary class="chapter-summary"><span>NoSQL Databases</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/dbms/topics/041-nosql-databases.html"><span class="topic-num">041</span>NoSQL Databases</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/042-base-properties.html"><span class="topic-num">042</span>BASE Properties</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/043-nosql-languages.html"><span class="topic-num">043</span>NoSQL Languages</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/044-graph-databases.html"><span class="topic-num">044</span>Graph Databases</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/045-in-memory-databases.html"><span class="topic-num">045</span>In-Memory Databases</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/046-partitioning-in-databases.html"><span class="topic-num">046</span>Partitioning in Databases</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/047-types-of-partitioning.html"><span class="topic-num">047</span>Types of Partitioning</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/048-sharding-in-dbms.html"><span class="topic-num">048</span>Sharding in DBMS</a></li>
+</ul></details>
+<details class="chapter-group">
+<summary class="chapter-summary"><span>Distributed Database Systems</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/dbms/topics/049-sharding-in-dbms.html"><span class="topic-num">049</span>Sharding in DBMS</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/050-distributed-database-systems.html"><span class="topic-num">050</span>Distributed Database Systems</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/051-architecture-of-distributed-database-systems.html"><span class="topic-num">051</span>Architecture of Distributed Database Systems</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/052-data-distribution-methods.html"><span class="topic-num">052</span>Data Distribution Methods</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/053-fault-tolerance-in-distributed-databases.html"><span class="topic-num">053</span>Fault Tolerance in Distributed Databases</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/054-load-balancing-in-distributed-databases.html"><span class="topic-num">054</span>Load Balancing in Distributed Databases</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/055-data-replication-techniques.html"><span class="topic-num">055</span>Data Replication Techniques</a></li>
+</ul></details>
+<details class="chapter-group">
+<summary class="chapter-summary"><span>Transactions and Concurrency</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/dbms/topics/056-thomas-rules.html"><span class="topic-num">056</span>Thomas' Rules</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/057-acid-properties.html"><span class="topic-num">057</span>ACID Properties</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/058-cap-theorem.html"><span class="topic-num">058</span>CAP Theorem</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/059-database-transactions.html"><span class="topic-num">059</span>Database Transactions</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/060-concurrency-control-in-databases.html"><span class="topic-num">060</span>Concurrency Control in Databases</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/061-locking-protocol.html"><span class="topic-num">061</span>Locking Protocol</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/062-timestamp-ordering-protocols-in-dbms.html"><span class="topic-num">062</span>Timestamp Ordering Protocols in DBMS</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/063-starvation-in-dbms.html"><span class="topic-num">063</span>Starvation in DBMS</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/064-deadlock-in-dbms.html"><span class="topic-num">064</span>Deadlock in DBMS</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/065-concurrency-control-in-distributed-databases.html"><span class="topic-num">065</span>Concurrency Control in Distributed Databases</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/066-serialization-in-databases.html"><span class="topic-num">066</span>Serialization in Databases</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/067-scheduling-in-databases.html"><span class="topic-num">067</span>Scheduling in Databases</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/068-serialization-graphs-in-databases.html"><span class="topic-num">068</span>Serialization Graphs in Databases</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/069-isolation-levels.html"><span class="topic-num">069</span>Isolation Levels</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/070-managing-transaction-consistency-and-concurrency.html"><span class="topic-num">070</span>Managing Transaction Consistency and Concurrency</a></li>
+</ul></details>
+<details class="chapter-group"open>
+<summary class="chapter-summary"><span>Triggers and Procedural Features</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/dbms/topics/071-triggers-in-databases.html"><span class="topic-num">071</span>Triggers in Databases</a></li>
+<li class="topic-item active"><a href="../../../courses/dbms/topics/072-stored-procedures-in-databases.html"><span class="topic-num">072</span>Stored Procedures in Databases</a></li>
+</ul></details>
+<details class="chapter-group">
+<summary class="chapter-summary"><span>Recovery and Backup</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/dbms/topics/073-database-recovery-management.html"><span class="topic-num">073</span>Database Recovery Management</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/074-database-backups.html"><span class="topic-num">074</span>Database Backups</a></li>
+</ul></details>
+<details class="chapter-group">
+<summary class="chapter-summary"><span>Indexing and Performance Tuning</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/dbms/topics/075-database-indexing.html"><span class="topic-num">075</span>Database Indexing</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/076-types-of-database-indexing.html"><span class="topic-num">076</span>Types of Database Indexing</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/077-indexing-techniques.html"><span class="topic-num">077</span>Indexing Techniques</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/078-b-and-b-trees.html"><span class="topic-num">078</span>B- and B+ Trees</a></li>
+</ul></details>
+<details class="chapter-group">
+<summary class="chapter-summary"><span>Database Monitoring and Caching</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/dbms/topics/079-database-monitoring.html"><span class="topic-num">079</span>Database Monitoring</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/080-performance-tuning.html"><span class="topic-num">080</span>Performance Tuning</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/081-database-caching.html"><span class="topic-num">081</span>Database Caching</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/082-database-caching-strategies.html"><span class="topic-num">082</span>Database Caching Strategies</a></li>
+</ul></details>
+<details class="chapter-group">
+<summary class="chapter-summary"><span>Security and Access Control</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/dbms/topics/083-data-encryption-in-dbms.html"><span class="topic-num">083</span>Data Encryption in DBMS</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/084-database-security.html"><span class="topic-num">084</span>Database Security</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/085-encryption-techniques-in-dbms.html"><span class="topic-num">085</span>Encryption Techniques in DBMS</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/086-data-masking-techniques.html"><span class="topic-num">086</span>Data Masking Techniques</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/087-rbac.html"><span class="topic-num">087</span>RBAC</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/088-rbac-models.html"><span class="topic-num">088</span>RBAC Models</a></li>
+</ul></details>
+<details class="chapter-group">
+<summary class="chapter-summary"><span>Scalability and Big Data</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/dbms/topics/089-database-scaling.html"><span class="topic-num">089</span>Database Scaling</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/090-big-data-and-dbms.html"><span class="topic-num">090</span>Big Data and DBMS</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/091-dbaas.html"><span class="topic-num">091</span>DBaas</a></li>
+</ul></details>
+<details class="chapter-group">
+<summary class="chapter-summary"><span>Data Warehousing and Migration</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/dbms/topics/092-database-migration.html"><span class="topic-num">092</span>Database Migration</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/093-data-warehousing.html"><span class="topic-num">093</span>Data Warehousing</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/094-event-driven-architecture.html"><span class="topic-num">094</span>Event-Driven Architecture</a></li>
+</ul></details>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    <div class="breadcrumb">
+      <a href="dashboard.html">Dashboard</a>
+      <span class="breadcrumb-sep">/</span>
+      <a href="dashboard.html">Database Management Systems</a>
+      <span class="breadcrumb-sep">/</span>
+      <span>Triggers and Procedural Features</span>
+    </div>
+
+    <div class="topic-meta">
+      <div class="topic-meta-chip">📂 Triggers and Procedural Features</div>
+      <div class="topic-meta-chip">📄 Topic 72</div>
+      <div class="topic-meta-chip" id="reading-time">…</div>
+    </div>
+
+    <article class="topic-article"><div class="editorial-content max-w-3xl px-4 mt-2"><div class="coreSubject dark:text-zinc-300"><br/>
+
+<h2>What are Stored Procedures?</h2>
+<p>A Stored Procedure is a precompiled collection of SQL statements and optional control-of-flow statements stored under a name and processed as a unit. Stored procedures are created and stored in the database, allowing users to execute a sequence of SQL commands with a single call.</p>
+<h4>Real-Life Analogy:</h4>
+<p>Imagine a recipe for baking a cake. Each time you want to make the cake, instead of remembering each step and measurement, you simply follow the recipe. Similarly, a stored procedure in a database is like a recipe that the database can execute repeatedly without needing to rewrite the SQL statements.</p>
+<hr/>
+<h2>Creating and Using Stored Procedures</h2>
+<p>Stored procedures can be created using SQL <code>CREATE PROCEDURE</code> or <code>CREATE FUNCTION</code> statements (depending on the database system). They can be invoked with a simple <code>CALL</code> statement, which executes all the SQL commands within the procedure.</p>
+<h4>Example: Creating a Simple Stored Procedure</h4>
+<p>Consider a Student Database where we want to get a student’s information based on their ID.</p>
+<pre><code class="language-sql">	CREATE PROCEDURE GetStudentInfo (IN student_id INT)
+	BEGIN
+	SELECT * FROM students WHERE id = student_id;
+	END;
+</code></pre>
+<p>Using the Stored Procedure:</p>
+<pre><code>	CALL GetStudentInfo(101);
+</code></pre>
+<p><strong>Output (Assuming student with ID 101 exists):</strong></p>
+<table border="1">
+<tbody><tr>
+<th>id</th>
+<th>name</th>
+<th>age</th>
+<th>grade</th>
+</tr>
+<tr>
+<td>101</td>
+<td>John Doe</td>
+<td>20</td>
+<td>A</td>
+</tr>
+</tbody></table>
+<p>This stored procedure, <code>GetStudentInfo</code>, takes a student ID as input and retrieves that student’s information from the students table.</p>
+<hr/>
+<h2>Parameters in Stored Procedures</h2>
+<p>Stored procedures can accept parameters to make them flexible and reusable. There are three types of parameters:</p>
+<ul>
+<li><strong>IN:</strong> The procedure takes input values.</li>
+<li><strong>OUT:</strong> The procedure returns values to the caller.</li>
+<li><strong>INOUT:</strong> The procedure takes input and can also modify and return the value.</li>
+</ul>
+<h4>Example: Stored Procedure with Parameters</h4>
+<p>Consider a Banking System where we want to update a customer’s balance and return the updated balance.</p>
+<pre><code class="language-sql">	CREATE PROCEDURE UpdateBalance (IN cust_id INT, IN deposit_amount DECIMAL(10,2), OUT new_balance DECIMAL(10,2))
+	BEGIN
+	UPDATE accounts SET balance = balance + deposit_amount WHERE customer_id = cust_id;
+	SELECT balance INTO new_balance FROM accounts WHERE customer_id = cust_id;
+	END;
+</code></pre>
+<p>Using the Stored Procedure:</p>
+<pre><code class="language-sql">	CALL UpdateBalance(101, 500.00, @updated_balance);
+	SELECT @updated_balance;
+</code></pre>
+<p>In this example:</p>
+<ul>
+<li><code>cust_id</code> and <code>deposit_amount</code> are IN parameters (inputs).</li>
+<li><code>new_balance</code> is an OUT parameter, which returns the updated balance.</li>
+</ul>
+<hr/>
+<h2>Benefits of Stored Procedures</h2>
+<p>Stored procedures provide several advantages in database management:</p>
+<ul>
+<li><strong>Reusability:</strong> Once created, stored procedures can be reused in different applications without rewriting SQL code.</li>
+<li><strong>Performance Optimization:</strong> Since they are precompiled, stored procedures can execute faster than separate SQL statements.</li>
+<li><strong>Security:</strong> Stored procedures help protect the database by controlling access to data and restricting direct SQL execution.</li>
+<li><strong>Maintenance:</strong> Centralizing business logic in stored procedures makes it easier to maintain and update.</li>
+</ul>
+<hr/>
+<h2>Differences Between Triggers and Stored Procedures</h2>
+<table border="1">
+<tbody><tr>
+<th>Feature</th>
+<th>Stored Procedures</th>
+<th>Triggers</th>
+</tr>
+<tr>
+<td>Execution</td>
+<td>Manually invoked by <code>CALL</code> statement</td>
+<td>Automatically triggered by events</td>
+</tr>
+<tr>
+<td>Use Case</td>
+<td>Perform routine tasks or calculations</td>
+<td>Enforce constraints, logging, etc.</td>
+</tr>
+<tr>
+<td>Event Binding</td>
+<td>Not bound to specific events</td>
+<td>Bound to INSERT, UPDATE, DELETE</td>
+</tr>
+<tr>
+<td>Return Values</td>
+<td>Can return values</td>
+<td>Cannot return values</td>
+</tr>
+<tr>
+<td>Complexity</td>
+<td>Can include complex logic and loops</td>
+<td>Typically more straightforward</td>
+</tr>
+</tbody></table>
+<p><strong>Summary:</strong></p>
+<ul>
+<li><strong>Stored Procedures:</strong> Called explicitly and used for routine tasks, calculations, and business logic.</li>
+<li><strong>Triggers:</strong> Executed automatically in response to database events to enforce data integrity and audit changes.</li>
+</ul>
+<hr/>
+<h2>Detailed Example: Stored Procedure for Monthly Sales Report</h2>
+<p>In a Sales Database, we want to generate a report showing total sales for a given month.</p>
+<pre><code class="language-sql">	CREATE PROCEDURE MonthlySalesReport (IN report_month INT, IN report_year INT, OUT total_sales DECIMAL(10,2))
+	BEGIN
+	SELECT SUM(amount) INTO total_sales
+	FROM sales
+	WHERE MONTH(sale_date) = report_month AND YEAR(sale_date) = report_year;
+	END;
+</code></pre>
+<p>Using the Stored Procedure:</p>
+<pre><code class="language-sql">	CALL MonthlySalesReport(9, 2023, @total_sales);
+	SELECT @total_sales;
+</code></pre>
+<p><strong>Explanation:</strong></p>
+<ul>
+<li><strong>IN parameters:</strong> <code>report_month</code> and <code>report_year</code> specify the month and year for the report.</li>
+<li><strong>OUT parameter:</strong> <code>total_sales</code> returns the calculated sales amount.</li>
+</ul>
+<p><strong>Sample Output:</strong></p>
+<table border="1">
+<tbody><tr>
+<th>@total_sales</th>
+</tr>
+<tr>
+<td>5000.00</td>
+</tr>
+</tbody></table>
+<p>This stored procedure simplifies the process of generating a monthly sales report and can be reused for any month or year.</p>
+<hr/></div></div></article>
+
+    <div class="topic-nav"><a href="071-triggers-in-databases.html" class="nav-btn nav-prev"><span class="nav-btn-label">← Previous</span><span class="nav-btn-title">Triggers in Databases</span></a><a href="073-database-recovery-management.html" class="nav-btn nav-next"><span class="nav-btn-label">Next →</span><span class="nav-btn-title">Database Recovery Management</span></a></div>
+  </main>
+</div>
+
+<button id="back-to-top" aria-label="Back to top">↑</button>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="../../../assets/script.js?v=12"></script>
+</body>
+</html>

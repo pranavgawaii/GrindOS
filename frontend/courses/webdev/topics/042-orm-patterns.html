@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+  (function() {
+    const saved = localStorage.getItem('GrindOS-theme');
+    if (saved) {
+      document.documentElement.classList.add(saved);
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.documentElement.classList.add('dark');
+    }
+  })();
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>ORM Patterns — Prisma & SQLAlchemy — Web Development — GrindOS</title>
+<link rel="stylesheet" href="../../../assets/style.css?v=13">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+<link rel="icon" type="image/png" href="../../../logo.png">
+
+<link rel="apple-touch-icon" href="../../../logo.png">
+</head>
+<body>
+
+<div id="reading-progress"></div>
+<header class="topbar">
+  <button class="icon-btn menu-toggle" id="menu-toggle" aria-label="Menu">☰</button>
+  <a href="dashboard.html" class="topbar-brand">
+    <img src="../../../logo.png" alt="GrindOS Logo" class="brand-logo" style="width: 34px; height: 34px; object-fit: contain; border-radius: 4px; flex-shrink: 0; display: inline-block; vertical-align: middle;">
+    <span class="brand-wordmark">GrindOS</span>
+  </a>
+  <nav class="topbar-nav">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="../../../courses/webdev/index.html" class="active">🌐 Web Development</a>
+    <a href="../../../interview-prep/index.html" class="nav-cta">🎯 Interview Prep</a>
+  </nav>
+  <div class="topbar-right">
+    <button class="icon-btn" id="theme-toggle" aria-label="Toggle theme"><span class="theme-icon">☾</span></button>
+  </div>
+</header>
+<div class="page-layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-course-label"><span class="course-emoji">🌐</span>Web Development</div>
+    </div>
+    <div class="sidebar-progress">
+      <div class="progress-label-row">
+        <span>Progress</span>
+        <span class="progress-count">42 / 62</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" style="width:68%"></div></div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-search">
+<input type="text" id="sidebar-search" placeholder="Search topics…  /" autocomplete="off">
+<span class="sidebar-search-icon">⌕</span></div>
+<details class="chapter-group" open>
+<summary class="chapter-summary"><span>How the Web Works</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/webdev/topics/001-how-internet-works.html"><span class="topic-num">001</span>How the Internet Works</a></li>
+<li class="topic-item"><a href="../../../courses/webdev/topics/002-http-https.html"><span class="topic-num">002</span>HTTP & HTTPS — Requests & Responses</a></li>
+<li class="topic-item"><a href="../../../courses/webdev/topics/003-dns-and-hosting.html"><span class="topic-num">003</span>DNS, Domains & Web Hosting</a></li>
+<li class="topic-item"><a href="../../../courses/webdev/topics/004-browsers-rendering.html"><span class="topic-num">004</span>Browsers & The Rendering Pipeline</a></li>
+</ul></details>
+<details class="chapter-group" >
+<summary class="chapter-summary"><span>HTML — Structure</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/webdev/topics/005-html-fundamentals.html"><span class="topic-num">005</span>HTML Fundamentals & Document Structure</a></li>
+<li class="topic-item"><a href="../../../courses/webdev/topics/006-semantic-html.html"><span class="topic-num">006</span>Semantic HTML5 Elements</a></li>
+<li class="topic-item"><a href="../../../courses/webdev/topics/007-forms-inputs.html"><span class="topic-num">007</span>Forms, Inputs & Validation</a></li>
+<li class="topic-item"><a href="../../../courses/webdev/topics/008-accessibility.html"><span class="topic-num">008</span>Web Accessibility (ARIA & WCAG)</a></li>
+<li class="topic-item"><a href="../../../courses/webdev/topics/009-seo-basics.html"><span class="topic-num">009</span>SEO Fundamentals & Meta Tags</a></li>
+</ul></details>
+<details class="chapter-group" >
+<summary class="chapter-summary"><span>CSS — Styling & Layout</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/webdev/topics/010-css-fundamentals.html"><span class="topic-num">010</span>CSS Fundamentals — Selectors & Box Model</a></li>
+<li class="topic-item"><a href="../../../courses/webdev/topics/011-flexbox.html"><span class="topic-num">011</span>Flexbox Layout</a></li>
+<li class="topic-item"><a href="../../../courses/webdev/topics/012-css-grid.html"><span class="topic-num">012</span>CSS Grid Layout</a></li>
+<li class="topic-item"><a href="../../../courses/webdev/topics/013-responsive-design.html"><span class="topic-num">013</span>Responsive Design & Media Queries</a></li>
+<li class="topic-item"><a href="../../../courses/webdev/topics/014-css-variables.html"><span class="topic-num">014</span>CSS Variables & Custom Properties</a></li>
+<li class="topic-item"><a href="../../../courses/webdev/topics/015-css-animations.html"><span class="topic-num">015</span>CSS Transitions & Animations</a></li>
+<li class="topic-item"><a href="../../../courses/webdev/topics/016-css-architecture.html"><span class="topic-num">016</span>CSS Architecture (BEM, ITCSS)</a></li>
+</ul></details>
+<details class="chapter-group" >
+<summary class="chapter-summary"><span>JavaScript — Core</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/webdev/topics/017-js-fundamentals.html"><span class="topic-num">017</span>JavaScript Fundamentals</a></li>
+<li class="topic-item"><a href="../../../courses/webdev/topics/018-dom-manipulation.html"><span class="topic-num">018</span>DOM Manipulation & Events</a></li>
+<li class="topic-item"><a href="../../../courses/webdev/topics/019-async-js.html"><span class="topic-num">019</span>Asynchronous JS — Callbacks, Promises, Async/Await</a></li>
+<li class="topic-item"><a href="../../../courses/webdev/topics/020-es6-features.html"><span class="topic-num">020</span>ES6+ Features (Arrow Functions, Destructuring, Modules)</a></li>
+<li class="topic-item"><a href="../../../courses/webdev/topics/021-closures-scope.html"><span class="topic-num">021</span>Closures, Scope & Hoisting</a></li>
+<li class="topic-item"><a href="../../../courses/webdev/topics/022-prototype-this.html"><span class="topic-num">022</span>Prototype Chain & `this` Keyword</a></li>
+<li class="topic-item"><a href="../../../courses/webdev/topics/023-error-handling.html"><span class="topic-num">023</span>Error Handling & Debugging</a></li>
+<li class="topic-item"><a href="../../../courses/webdev/topics/024-web-apis.html"><span class="topic-num">024</span>Browser Web APIs (Fetch, LocalStorage, WebSockets)</a></li>
+</ul></details>
+<details class="chapter-group" >
+<summary class="chapter-summary"><span>TypeScript</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/webdev/topics/025-ts-basics.html"><span class="topic-num">025</span>TypeScript Basics — Types & Interfaces</a></li>
+<li class="topic-item"><a href="../../../courses/webdev/topics/026-ts-generics.html"><span class="topic-num">026</span>Generics & Utility Types</a></li>
+<li class="topic-item"><a href="../../../courses/webdev/topics/027-ts-advanced.html"><span class="topic-num">027</span>Advanced TypeScript Patterns</a></li>
+</ul></details>
+<details class="chapter-group" >
+<summary class="chapter-summary"><span>React & Modern Frontend</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/webdev/topics/028-react-fundamentals.html"><span class="topic-num">028</span>React Fundamentals — JSX & Components</a></li>
+<li class="topic-item"><a href="../../../courses/webdev/topics/029-react-hooks.html"><span class="topic-num">029</span>React Hooks — useState, useEffect, useRef</a></li>
+<li class="topic-item"><a href="../../../courses/webdev/topics/030-react-advanced-hooks.html"><span class="topic-num">030</span>Advanced Hooks — useContext, useReducer, useMemo</a></li>
+<li class="topic-item"><a href="../../../courses/webdev/topics/031-react-routing.html"><span class="topic-num">031</span>React Router — Client-Side Routing</a></li>
+<li class="topic-item"><a href="../../../courses/webdev/topics/032-state-management.html"><span class="topic-num">032</span>State Management — Redux & Zustand</a></li>
+<li class="topic-item"><a href="../../../courses/webdev/topics/033-react-performance.html"><span class="topic-num">033</span>React Performance Optimization</a></li>
+<li class="topic-item"><a href="../../../courses/webdev/topics/034-next-js.html"><span class="topic-num">034</span>Next.js — SSR, SSG & App Router</a></li>
+</ul></details>
+<details class="chapter-group" >
+<summary class="chapter-summary"><span>Node.js & Backend</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/webdev/topics/035-nodejs-basics.html"><span class="topic-num">035</span>Node.js Fundamentals — Event Loop & Modules</a></li>
+<li class="topic-item"><a href="../../../courses/webdev/topics/036-express-js.html"><span class="topic-num">036</span>Express.js — REST API Design</a></li>
+<li class="topic-item"><a href="../../../courses/webdev/topics/037-fastapi-python.html"><span class="topic-num">037</span>FastAPI (Python) — Async REST APIs</a></li>
+<li class="topic-item"><a href="../../../courses/webdev/topics/038-authentication.html"><span class="topic-num">038</span>Authentication — JWT, OAuth2 & Sessions</a></li>
+<li class="topic-item"><a href="../../../courses/webdev/topics/039-databases-in-backend.html"><span class="topic-num">039</span>Connecting Databases (PostgreSQL, MongoDB)</a></li>
+<li class="topic-item"><a href="../../../courses/webdev/topics/040-rest-vs-graphql.html"><span class="topic-num">040</span>REST vs GraphQL vs tRPC</a></li>
+</ul></details>
+<details class="chapter-group" open>
+<summary class="chapter-summary"><span>Databases for Web</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/webdev/topics/041-sql-for-web.html"><span class="topic-num">041</span>SQL Fundamentals for Web Developers</a></li>
+<li class="topic-item active"><a href="../../../courses/webdev/topics/042-orm-patterns.html"><span class="topic-num">042</span>ORM Patterns — Prisma & SQLAlchemy</a></li>
+<li class="topic-item"><a href="../../../courses/webdev/topics/043-nosql-for-web.html"><span class="topic-num">043</span>NoSQL — MongoDB & Redis for Web</a></li>
+<li class="topic-item"><a href="../../../courses/webdev/topics/044-database-design-web.html"><span class="topic-num">044</span>Database Schema Design for Web Apps</a></li>
+</ul></details>
+<details class="chapter-group" >
+<summary class="chapter-summary"><span>Web Security</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/webdev/topics/045-owasp-top-10.html"><span class="topic-num">045</span>OWASP Top 10 Vulnerabilities</a></li>
+<li class="topic-item"><a href="../../../courses/webdev/topics/046-xss-csrf.html"><span class="topic-num">046</span>XSS, CSRF & Injection Attacks</a></li>
+<li class="topic-item"><a href="../../../courses/webdev/topics/047-https-certificates.html"><span class="topic-num">047</span>HTTPS, TLS & SSL Certificates</a></li>
+<li class="topic-item"><a href="../../../courses/webdev/topics/048-cors-csp.html"><span class="topic-num">048</span>CORS & Content Security Policy</a></li>
+</ul></details>
+<details class="chapter-group" >
+<summary class="chapter-summary"><span>DevOps & Deployment</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/webdev/topics/049-git-github.html"><span class="topic-num">049</span>Git & GitHub Workflows</a></li>
+<li class="topic-item"><a href="../../../courses/webdev/topics/050-docker-containers.html"><span class="topic-num">050</span>Docker & Containerization</a></li>
+<li class="topic-item"><a href="../../../courses/webdev/topics/051-ci-cd.html"><span class="topic-num">051</span>CI/CD Pipelines (GitHub Actions)</a></li>
+<li class="topic-item"><a href="../../../courses/webdev/topics/052-cloud-hosting.html"><span class="topic-num">052</span>Cloud Hosting — Vercel, Railway, AWS</a></li>
+<li class="topic-item"><a href="../../../courses/webdev/topics/053-nginx-reverse-proxy.html"><span class="topic-num">053</span>Nginx & Reverse Proxy Configuration</a></li>
+</ul></details>
+<details class="chapter-group" >
+<summary class="chapter-summary"><span>Performance & Optimization</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/webdev/topics/054-core-web-vitals.html"><span class="topic-num">054</span>Core Web Vitals & Lighthouse Metrics</a></li>
+<li class="topic-item"><a href="../../../courses/webdev/topics/055-caching-strategies.html"><span class="topic-num">055</span>Caching Strategies (CDN, Browser, Server)</a></li>
+<li class="topic-item"><a href="../../../courses/webdev/topics/056-lazy-loading.html"><span class="topic-num">056</span>Lazy Loading & Code Splitting</a></li>
+<li class="topic-item"><a href="../../../courses/webdev/topics/057-web-performance.html"><span class="topic-num">057</span>Web Performance Deep Dive</a></li>
+</ul></details>
+<details class="chapter-group" >
+<summary class="chapter-summary"><span>System Design for Web</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/webdev/topics/058-scalability.html"><span class="topic-num">058</span>Scalability — Horizontal vs Vertical Scaling</a></li>
+<li class="topic-item"><a href="../../../courses/webdev/topics/059-load-balancing.html"><span class="topic-num">059</span>Load Balancing & Rate Limiting</a></li>
+<li class="topic-item"><a href="../../../courses/webdev/topics/060-microservices.html"><span class="topic-num">060</span>Microservices Architecture</a></li>
+<li class="topic-item"><a href="../../../courses/webdev/topics/061-message-queues.html"><span class="topic-num">061</span>Message Queues (Redis, RabbitMQ, Kafka)</a></li>
+<li class="topic-item"><a href="../../../courses/webdev/topics/062-system-design-interview.html"><span class="topic-num">062</span>System Design Interview Framework</a></li>
+</ul></details>
+    </nav>
+  </aside>
+  <main class="main-content">
+    <div class="breadcrumb">
+      <a href="dashboard.html">Dashboard</a>
+      <span class="breadcrumb-sep">/</span>
+      <a href="dashboard.html">Web Development</a>
+      <span class="breadcrumb-sep">/</span>
+      <span>Databases for Web</span>
+    </div>
+    <div class="topic-meta">
+      <div class="topic-meta-chip">📂 Databases for Web</div>
+      <div class="topic-meta-chip">📄 Topic 42</div>
+      <div class="topic-meta-chip" id="reading-time">…</div>
+    </div>
+    <article class="topic-article"><div class="editorial-content max-w-3xl px-4 mt-2"><div class="coreSubject dark:text-zinc-300"><br/>
+<h2>1. Overview</h2>
+<p>This topic covers <strong>ORM Patterns — Prisma & SQLAlchemy</strong> — a fundamental concept in modern web development. Understanding this deeply will make you a more effective full-stack engineer and help you design scalable, maintainable applications.</p>
+
+<h2>2. Core Concepts</h2>
+<ul>
+<li>What is ORM Patterns — Prisma & SQLAlchemy and why does it matter?</li>
+<li>Key principles and mental models</li>
+<li>Common patterns and best practices</li>
+<li>When to use vs when to avoid</li>
+</ul>
+
+<h2>3. Implementation Example</h2>
+<pre><code class="language-javascript">// Example implementation for ORM Patterns — Prisma & SQLAlchemy
+// This is a placeholder template — refer to documentation for full implementation.
+
+function example() {
+  // Core logic here
+  const result = processData(input);
+  return result;
+}
+</code></pre>
+
+<h2>4. Real-World Application</h2>
+<p>In production web applications, this concept is used for:</p>
+<ul>
+<li>Improving performance and user experience</li>
+<li>Building more maintainable codebases</li>
+<li>Solving common engineering challenges</li>
+</ul>
+
+<h2>5. Key Takeaways</h2>
+<table>
+<tbody><tr><th>Aspect</th><th>Details</th></tr>
+<tr><td>Difficulty</td><td>Intermediate</td></tr>
+<tr><td>Interview Relevance</td><td>High</td></tr>
+<tr><td>Used In</td><td>All modern web projects</td></tr>
+</tbody></table>
+</div></div></article>
+<div class="topic-nav"><a href="041-sql-for-web.html" class="nav-btn nav-prev"><span class="nav-btn-label">← Prev</span><span class="nav-btn-title">SQL Fundamentals for Web Developers</span></a><a href="043-nosql-for-web.html" class="nav-btn nav-next"><span class="nav-btn-label">Next →</span><span class="nav-btn-title">NoSQL — MongoDB & Redis for Web</span></a></div>
+  </main>
+</div>
+
+<button id="back-to-top" aria-label="Back to top">↑</button>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="../../../assets/script.js?v=12"></script>
+</body>
+</html>

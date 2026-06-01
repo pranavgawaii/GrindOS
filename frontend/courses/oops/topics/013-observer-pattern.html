@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+  (function() {
+    const saved = localStorage.getItem('GrindOS-theme');
+    if (saved) {
+      document.documentElement.classList.add(saved);
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.documentElement.classList.add('dark');
+    }
+  })();
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Observer Pattern — Publish-Subscribe Architecture — Object-Oriented Programming — GrindOS</title>
+<link rel="stylesheet" href="../../../assets/style.css?v=13">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+  <link rel="icon" type="image/png" href="../../../logo.png">
+  
+  <link rel="apple-touch-icon" href="../../../logo.png">
+</head>
+<body>
+
+<div id="reading-progress"></div>
+
+<header class="topbar">
+  <button class="icon-btn menu-toggle" id="menu-toggle" aria-label="Menu">☰</button>
+  <a href="dashboard.html" class="topbar-brand">
+    <img src="../../../logo.png" alt="GrindOS Logo" class="brand-logo" style="width: 34px; height: 34px; object-fit: contain; border-radius: 4px; flex-shrink: 0; display: inline-block; vertical-align: middle;">
+    <span class="brand-wordmark">GrindOS</span>
+  </a>
+  <nav class="topbar-nav">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="dashboard.html" class="active">📦 Object-Oriented Programming</a>
+    <a href="../../../interview-prep/index.html" class="nav-cta">🎯 Interview Prep</a>
+  </nav>
+  <div class="topbar-right">
+    <button class="icon-btn" id="theme-toggle" aria-label="Toggle theme"><span class="theme-icon">☾</span></button>
+  </div>
+</header>
+
+<div class="page-layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-course-label"><span class="course-emoji">📦</span>Object-Oriented Programming</div>
+    </div>
+    <div class="sidebar-progress">
+      <div class="progress-label-row">
+        <span>Progress</span>
+        <span class="progress-count">13 / 15</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" style="width:87%"></div></div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-search">
+        <input type="text" id="sidebar-search" placeholder="Search topics…  /" autocomplete="off">
+        <span class="sidebar-search-icon">⌕</span>
+      </div>
+      <details class="chapter-group" >
+        <summary class="chapter-summary"><span>Fundamentals</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item "><a href="../../../courses/oops/topics/001-introduction-to-oops.html"><span class="topic-num">001</span>Introduction to OOPs</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/002-classes-and-objects.html"><span class="topic-num">002</span>Classes and Objects</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/003-encapsulation.html"><span class="topic-num">003</span>Encapsulation</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/004-inheritance.html"><span class="topic-num">004</span>Inheritance</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/005-polymorphism.html"><span class="topic-num">005</span>Polymorphism</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/006-abstraction.html"><span class="topic-num">006</span>Abstraction</a></li>
+        </ul>
+      </details>
+      <details class="chapter-group" >
+        <summary class="chapter-summary"><span>Advanced Concepts</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item "><a href="../../../courses/oops/topics/007-constructors-in-python.html"><span class="topic-num">007</span>Constructors in Python</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/008-dunder-magic-methods.html"><span class="topic-num">008</span>Dunder Magic Methods</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/009-static-and-class-methods.html"><span class="topic-num">009</span>Static and Class Methods</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/010-composition-vs-inheritance.html"><span class="topic-num">010</span>Composition vs Inheritance</a></li>
+        </ul>
+      </details>
+      <details class="chapter-group" open>
+        <summary class="chapter-summary"><span>Design Patterns</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item "><a href="../../../courses/oops/topics/011-singleton-pattern.html"><span class="topic-num">011</span>Singleton Pattern</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/012-factory-pattern.html"><span class="topic-num">012</span>Factory Pattern</a></li>
+          <li class="topic-item active"><a href="../../../courses/oops/topics/013-observer-pattern.html"><span class="topic-num">013</span>Observer Pattern</a></li>
+        </ul>
+      </details>
+      <details class="chapter-group" >
+        <summary class="chapter-summary"><span>Interview Special</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item "><a href="../../../courses/oops/topics/014-oops-interview-questions.html"><span class="topic-num">014</span>OOPs Interview Qs</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/015-oops-in-python-vs-java.html"><span class="topic-num">015</span>OOPs Python vs Java</a></li>
+        </ul>
+      </details>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    <div class="breadcrumb">
+      <a href="dashboard.html">Dashboard</a>
+      <span class="breadcrumb-sep">/</span>
+      <a href="dashboard.html">Object-Oriented Programming</a>
+      <span class="breadcrumb-sep">/</span>
+      <span>Design Patterns</span>
+    </div>
+
+    <div class="topic-meta">
+      <div class="topic-meta-chip">📂 Design Patterns</div>
+      <div class="topic-meta-chip">📄 Topic 13</div>
+      <div class="topic-meta-chip" id="reading-time">…</div>
+    </div>
+
+    <article class="topic-article">
+      <div class="editorial-content max-w-3xl px-4 mt-2">
+        <div class="coreSubject dark:text-zinc-300">
+          <br/>
+          
+<h2>1. What is the Observer Pattern?</h2>
+<p>The <strong>Observer Pattern</strong> (Pub-Sub) is a behavioral pattern defining a one-to-many relationship: when one object (the **Subject/Publisher**) modifies its state, it automatically notifies and updates all its registered dependents (**Observers/Subscribers**).</p>
+
+<hr class="line-break"/>
+
+<h2>2. Python Observer Implementation</h2>
+<pre><code class="language-python">class Publisher:
+    def __init__(self):
+        self._subscribers = [] # Active Observers list
+        
+    def register(self, sub):
+        self._subscribers.append(sub)
+        
+    def notify(self, message):
+        for sub in self._subscribers:
+            sub.update(message)
+
+class Subscriber:
+    def __init__(self, name):
+        self.name = name
+    def update(self, message):
+        print(f"{self.name} notified: {message}")
+
+pub = Publisher()
+s1 = Subscriber("Alice")
+pub.register(s1)
+pub.notify("System update at 10 PM")</code></pre>
+
+          
+<div class="interview-qna">
+  <h3>🎯 Topic Q&A</h3>
+  <div class="qna-item">
+    <strong>Q1: What problem does the Observer Pattern solve?</strong>
+    <p>It solves the challenge of synchronizing states between multiple objects without creating tight coupling or requiring polling loops (repeated queries), establishing event-driven notifications.</p>
+  </div>
+  <div class="qna-item">
+    <strong>Q2: How does the Observer Pattern decoupling work?</strong>
+    <p>The Subject/Publisher only knows that observers implement a specific `update()` interface. It does not need to know the inner workings of concrete subscriber classes, allowing you to add subscribers at runtime.</p>
+  </div>
+  <div class="qna-item">
+    <strong>Q3: Explain the difference between Push and Pull models in the Observer pattern.</strong>
+    <p>In the **Push model**, the Subject sends detailed state updates directly to observers. In the **Pull model**, the Subject only sends a notification alert, and observers query the Subject's API to fetch the specific data they need.</p>
+  </div>
+  <div class="qna-item">
+    <strong>Q4: What is the main risk when using the Observer Pattern?</strong>
+    <p>**Memory Leaks (Lapsed Listener Problem)**. If a subscriber is deleted by the client but forgets to deregister from the Subject, the Subject's active list retains a reference, preventing Garbage Collection.</p>
+  </div>
+  <div class="qna-item">
+    <strong>Q5: Can you write a Python un-register method for the Publisher?</strong>
+    <pre><code class="language-python">def unregister(self, sub):
+    if sub in self._subscribers:
+        self._subscribers.remove(sub)</code></pre>
+  </div>
+</div>
+
+        </div>
+      </div>
+    </article>
+
+    <div class="topic-nav"><a href="012-factory-pattern.html" class="nav-btn nav-prev"><span class="nav-btn-label">← Previous</span><span class="nav-btn-title">Factory Pattern</span></a><a href="014-oops-interview-questions.html" class="nav-btn nav-next"><span class="nav-btn-label">Next →</span><span class="nav-btn-title">OOPs Interview Qs</span></a></div>
+  </main>
+</div>
+
+<button id="back-to-top" aria-label="Back to top">↑</button>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="../../../assets/script.js?v=12"></script>
+</body>
+</html>

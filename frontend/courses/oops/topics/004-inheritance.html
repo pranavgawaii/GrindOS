@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+  (function() {
+    const saved = localStorage.getItem('GrindOS-theme');
+    if (saved) {
+      document.documentElement.classList.add(saved);
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.documentElement.classList.add('dark');
+    }
+  })();
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Inheritance — super(), Method Resolution Order (MRO) — Object-Oriented Programming — GrindOS</title>
+<link rel="stylesheet" href="../../../assets/style.css?v=13">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+  <link rel="icon" type="image/png" href="../../../logo.png">
+  
+  <link rel="apple-touch-icon" href="../../../logo.png">
+</head>
+<body>
+
+<div id="reading-progress"></div>
+
+<header class="topbar">
+  <button class="icon-btn menu-toggle" id="menu-toggle" aria-label="Menu">☰</button>
+  <a href="dashboard.html" class="topbar-brand">
+    <img src="../../../logo.png" alt="GrindOS Logo" class="brand-logo" style="width: 34px; height: 34px; object-fit: contain; border-radius: 4px; flex-shrink: 0; display: inline-block; vertical-align: middle;">
+    <span class="brand-wordmark">GrindOS</span>
+  </a>
+  <nav class="topbar-nav">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="dashboard.html" class="active">📦 Object-Oriented Programming</a>
+    <a href="../../../interview-prep/index.html" class="nav-cta">🎯 Interview Prep</a>
+  </nav>
+  <div class="topbar-right">
+    <button class="icon-btn" id="theme-toggle" aria-label="Toggle theme"><span class="theme-icon">☾</span></button>
+  </div>
+</header>
+
+<div class="page-layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-course-label"><span class="course-emoji">📦</span>Object-Oriented Programming</div>
+    </div>
+    <div class="sidebar-progress">
+      <div class="progress-label-row">
+        <span>Progress</span>
+        <span class="progress-count">4 / 15</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" style="width:27%"></div></div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-search">
+        <input type="text" id="sidebar-search" placeholder="Search topics…  /" autocomplete="off">
+        <span class="sidebar-search-icon">⌕</span>
+      </div>
+      <details class="chapter-group" open>
+        <summary class="chapter-summary"><span>Fundamentals</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item "><a href="../../../courses/oops/topics/001-introduction-to-oops.html"><span class="topic-num">001</span>Introduction to OOPs</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/002-classes-and-objects.html"><span class="topic-num">002</span>Classes and Objects</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/003-encapsulation.html"><span class="topic-num">003</span>Encapsulation</a></li>
+          <li class="topic-item active"><a href="../../../courses/oops/topics/004-inheritance.html"><span class="topic-num">004</span>Inheritance</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/005-polymorphism.html"><span class="topic-num">005</span>Polymorphism</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/006-abstraction.html"><span class="topic-num">006</span>Abstraction</a></li>
+        </ul>
+      </details>
+      <details class="chapter-group" >
+        <summary class="chapter-summary"><span>Advanced Concepts</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item "><a href="../../../courses/oops/topics/007-constructors-in-python.html"><span class="topic-num">007</span>Constructors in Python</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/008-dunder-magic-methods.html"><span class="topic-num">008</span>Dunder Magic Methods</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/009-static-and-class-methods.html"><span class="topic-num">009</span>Static and Class Methods</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/010-composition-vs-inheritance.html"><span class="topic-num">010</span>Composition vs Inheritance</a></li>
+        </ul>
+      </details>
+      <details class="chapter-group" >
+        <summary class="chapter-summary"><span>Design Patterns</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item "><a href="../../../courses/oops/topics/011-singleton-pattern.html"><span class="topic-num">011</span>Singleton Pattern</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/012-factory-pattern.html"><span class="topic-num">012</span>Factory Pattern</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/013-observer-pattern.html"><span class="topic-num">013</span>Observer Pattern</a></li>
+        </ul>
+      </details>
+      <details class="chapter-group" >
+        <summary class="chapter-summary"><span>Interview Special</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item "><a href="../../../courses/oops/topics/014-oops-interview-questions.html"><span class="topic-num">014</span>OOPs Interview Qs</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/015-oops-in-python-vs-java.html"><span class="topic-num">015</span>OOPs Python vs Java</a></li>
+        </ul>
+      </details>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    <div class="breadcrumb">
+      <a href="dashboard.html">Dashboard</a>
+      <span class="breadcrumb-sep">/</span>
+      <a href="dashboard.html">Object-Oriented Programming</a>
+      <span class="breadcrumb-sep">/</span>
+      <span>Fundamentals</span>
+    </div>
+
+    <div class="topic-meta">
+      <div class="topic-meta-chip">📂 Fundamentals</div>
+      <div class="topic-meta-chip">📄 Topic 4</div>
+      <div class="topic-meta-chip" id="reading-time">…</div>
+    </div>
+
+    <article class="topic-article">
+      <div class="editorial-content max-w-3xl px-4 mt-2">
+        <div class="coreSubject dark:text-zinc-300">
+          <br/>
+          
+<h2>1. What is Inheritance?</h2>
+<p><strong>Inheritance</strong> is a mechanism in OOP where a new class (derived/child class) inherits attributes and methods from an existing class (base/parent class), facilitating code reusability.</p>
+
+<hr class="line-break"/>
+
+<h2>2. Types of Inheritance in Python</h2>
+<ul>
+  <li><strong>Single Inheritance:</strong> A child inherits from exactly one parent.</li>
+  <li><strong>Multilevel Inheritance:</strong> A child inherits from a parent, which inherits from a grandparent.</li>
+  <li><strong>Hierarchical Inheritance:</strong> Multiple child classes inherit from the same parent.</li>
+  <li><strong>Multiple Inheritance:</strong> A child inherits from more than one parent.</li>
+</ul>
+<pre><code class="language-python">class ParentA:
+    def show_a(self): print("A")
+class ParentB:
+    def show_b(self): print("B")
+class Child(ParentA, ParentB): # Multiple Inheritance
+    pass</code></pre>
+
+<hr class="line-break"/>
+
+<h2>3. The super() Function</h2>
+<p>The `super()` function returns a proxy object that delegates method calls to a parent or sibling class, allowing constructors or methods to extend parent logic instead of overwriting it:</p>
+<pre><code class="language-python">class Employee:
+    def __init__(self, name, id):
+        self.name = name
+        self.id = id
+        
+class Manager(Employee):
+    def __init__(self, name, id, team_size):
+        super().__init__(name, id) # Extends Employee constructor
+        self.team_size = team_size</code></pre>
+
+<hr class="line-break"/>
+
+<h2>4. Method Resolution Order (MRO)</h2>
+<p>In multiple inheritance, Python resolves name conflicts (the Diamond Problem) using a strict sequence called the <strong>Method Resolution Order (MRO)</strong>, which is calculated using the **C3 Linearization Algorithm**.</p>
+<ul>
+  <li>MRO guarantees: Subclasses are checked before parents, and left-listed parents before right-listed parents.</li>
+  <li>You can inspect MRO sequence via <code>ClassName.__mro__</code> or <code>ClassName.mro()</code>.</li>
+</ul>
+
+<div class="mermaid" style="text-align: center; margin: 24px 0;">
+graph TD
+    Grandparent[Grandparent Class: G] --> ParentA[Parent Class: A]
+    Grandparent --> ParentB[Parent Class: B]
+    ParentA --> Child[Child Class: C]
+    ParentB --> Child
+    style Grandparent fill:#64748b,stroke:#333,stroke-width:2px,color:#fff
+    style ParentA fill:#ea580c,stroke:#333,stroke-width:2px,color:#fff
+    style ParentB fill:#ea580c,stroke:#333,stroke-width:2px,color:#fff
+    style Child fill:#10b981,stroke:#333,stroke-width:2px,color:#fff
+</div>
+
+<div class="interview-qna">
+  <h3>🎯 Topic Q&A</h3>
+  <div class="qna-item">
+    <strong>Q1: What is the Diamond Problem and how does Python resolve it?</strong>
+    <p>The Diamond Problem is an ambiguity that arises in multiple inheritance when a child inherits from parents A and B, which both inherit from a single grandparent G. If A and B override a grandparent method, which one does the child execute? Python resolves this using Method Resolution Order (MRO) and C3 Linearization.</p>
+  </div>
+  <div class="qna-item">
+    <strong>Q2: Why do we use `super()` inside a child constructor?</strong>
+    <p>We use `super()` to invoke the parent class's constructor, ensuring that all base attributes and initialization setups are executed properly, allowing the child class to extend base logic cleanly.</p>
+  </div>
+  <div class="qna-item">
+    <strong>Q3: How can you check the Method Resolution Order of a class?</strong>
+    <p>You can check it by inspecting the `__mro__` attribute (e.g., `Child.__mro__`) or by calling the `mro()` method on the class.</p>
+  </div>
+  <div class="qna-item">
+    <strong>Q4: Explain the difference between single and multiple inheritance.</strong>
+    <p>Single inheritance allows a subclass to inherit from a single parent class. Multiple inheritance allows a subclass to inherit directly from more than one parent class (e.g., `class Child(ParentA, ParentB)`).</p>
+  </div>
+  <div class="qna-item">
+    <strong>Q5: Write a simple Python example showcasing MRO ordering in multiple inheritance.</strong>
+    <pre><code class="language-python">class X: pass
+class Y: pass
+class Z(X, Y): pass
+print(Z.__mro__) # Output: (Z, X, Y, object)</code></pre>
+  </div>
+</div>
+
+        </div>
+      </div>
+    </article>
+
+    <div class="topic-nav"><a href="003-encapsulation.html" class="nav-btn nav-prev"><span class="nav-btn-label">← Previous</span><span class="nav-btn-title">Encapsulation</span></a><a href="005-polymorphism.html" class="nav-btn nav-next"><span class="nav-btn-label">Next →</span><span class="nav-btn-title">Polymorphism</span></a></div>
+  </main>
+</div>
+
+<button id="back-to-top" aria-label="Back to top">↑</button>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="../../../assets/script.js?v=12"></script>
+</body>
+</html>

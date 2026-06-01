@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<script>
+  (function() {
+    const saved = localStorage.getItem('GrindOS-theme');
+    if (saved) {
+      document.documentElement.classList.add(saved);
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.documentElement.classList.add('dark');
+    }
+  })();
+</script>
+<title>Computer Networks — GrindOS</title>
+<link rel="stylesheet" href="../../assets/style.css?v=13">
+  
+  <link rel="icon" type="image/png" href="../../logo.png">
+  
+  <link rel="apple-touch-icon" href="../../logo.png">
+</head>
+<body>
+
+<header class="topbar">
+  <a href="dashboard.html" class="topbar-brand">
+    <img src="../../logo.png" alt="GrindOS Logo" class="brand-logo" style="width: 34px; height: 34px; object-fit: contain; border-radius: 4px; flex-shrink: 0; display: inline-block; vertical-align: middle;">
+    <span class="brand-wordmark">GrindOS</span>
+  </a>
+  <nav class="topbar-nav">
+    <a href="dashboard.html" class="learn-nav active">Learn</a>
+    <a href="../../tracker.html" class="practice-nav">Practice</a>
+    <a href="../../interview-prep/index.html" class="prep-nav">Prep</a>
+  </nav>
+  <div class="topbar-right">
+    <button class="icon-btn" id="theme-toggle" aria-label="Toggle theme"><span class="theme-icon">☾</span></button>
+  </div>
+</header>
+
+<div class="course-page">
+  <div class="course-hero">
+    <div class="course-hero-icon">🌐</div>
+    <div class="course-hero-body">
+      <h1>Computer Networks</h1>
+      <p>OSI model, TCP/IP, routing, switching, network security, and advanced concepts.</p>
+      <div class="course-hero-meta">
+        <span class="meta-chip">📖 40 topics</span>
+        <span class="meta-chip">📂 10 chapters</span>
+      </div>
+    </div>
+    <a href="topics/000-what-are-computer-networks.html" class="start-btn">Start Course →</a>
+  </div>
+
+  <div class="chapter-grid"><div class="chapter-card">
+  <div class="chapter-card-head">
+    <h3 class="chapter-card-title">Introduction To Computer Networks</h3>
+    <span class="chapter-pill">3 topics</span>
+  </div>
+  <ul class="chapter-topic-list"><li><span class="t-num">000</span><a href="topics/000-what-are-computer-networks.html">What are Computer Networks?</a></li><li><span class="t-num">001</span><a href="topics/001-types-of-networks.html">Types of Networks</a></li><li><span class="t-num">002</span><a href="topics/002-what-are-network-topologies.html">What are Network Topologies?</a></li></ul>
+  <a href="topics/000-what-are-computer-networks.html" class="chapter-start-btn">Start Chapter →</a>
+</div><div class="chapter-card">
+  <div class="chapter-card-head">
+    <h3 class="chapter-card-title">Networking Models</h3>
+    <span class="chapter-pill">2 topics</span>
+  </div>
+  <ul class="chapter-topic-list"><li><span class="t-num">003</span><a href="topics/003-introduction-to-the-osi-model.html">Introduction to the OSI Model</a></li><li><span class="t-num">004</span><a href="topics/004-introduction-to-tcpip-model.html">Introduction to TCP/IP Model</a></li></ul>
+  <a href="topics/003-introduction-to-the-osi-model.html" class="chapter-start-btn">Start Chapter →</a>
+</div><div class="chapter-card">
+  <div class="chapter-card-head">
+    <h3 class="chapter-card-title">Networking Fundamentals And Basics</h3>
+    <span class="chapter-pill">3 topics</span>
+  </div>
+  <ul class="chapter-topic-list"><li><span class="t-num">005</span><a href="topics/005-introduction-to-network-cabling-and-connectors.html">Introduction to Network Cabling and Connectors</a></li><li><span class="t-num">006</span><a href="topics/006-introduction-to-network-devices.html">Introduction to Network Devices</a></li><li><span class="t-num">007</span><a href="topics/007-ethernet-frame-structure.html">Ethernet Frame Structure</a></li></ul>
+  <a href="topics/005-introduction-to-network-cabling-and-connectors.html" class="chapter-start-btn">Start Chapter →</a>
+</div><div class="chapter-card">
+  <div class="chapter-card-head">
+    <h3 class="chapter-card-title">Network Protocols And Communication</h3>
+    <span class="chapter-pill">3 topics</span>
+  </div>
+  <ul class="chapter-topic-list"><li><span class="t-num">008</span><a href="topics/008-network-protocols.html">Network Protocols</a></li><li><span class="t-num">009</span><a href="topics/009-importance.html">Importance</a></li><li><span class="t-num">010</span><a href="topics/010-network-layer-functions-and-protocols.html">Network Layer Functions and Protocols</a></li></ul>
+  <a href="topics/008-network-protocols.html" class="chapter-start-btn">Start Chapter →</a>
+</div><div class="chapter-card">
+  <div class="chapter-card-head">
+    <h3 class="chapter-card-title">IP Addressing And Subnetting</h3>
+    <span class="chapter-pill">3 topics</span>
+  </div>
+  <ul class="chapter-topic-list"><li><span class="t-num">011</span><a href="topics/011-ip-addressing-ipv4-and-ipv6.html">IP Addressing (IPv4 and IPv6)</a></li><li><span class="t-num">012</span><a href="topics/012-subnetting.html">Subnetting</a></li><li><span class="t-num">013</span><a href="topics/013-network-address-translation-nat.html">Network Address Translation (NAT)</a></li></ul>
+  <a href="topics/011-ip-addressing-ipv4-and-ipv6.html" class="chapter-start-btn">Start Chapter →</a>
+</div><div class="chapter-card">
+  <div class="chapter-card-head">
+    <h3 class="chapter-card-title">Routing And Switching</h3>
+    <span class="chapter-pill">4 topics</span>
+  </div>
+  <ul class="chapter-topic-list"><li><span class="t-num">014</span><a href="topics/014-routing-algorithms.html">Routing Algorithms</a></li><li><span class="t-num">015</span><a href="topics/015-introduction-to-routing-protocols.html">Introduction to Routing Protocols</a></li><li><span class="t-num">016</span><a href="topics/016-border-gateway-protocol-bgp.html">Border Gateway Protocol (BGP)</a></li><li><span class="t-num">017</span><a href="topics/017-introduction-to-switching-techniques.html">Introduction to Switching Techniques</a></li></ul>
+  <a href="topics/014-routing-algorithms.html" class="chapter-start-btn">Start Chapter →</a>
+</div><div class="chapter-card">
+  <div class="chapter-card-head">
+    <h3 class="chapter-card-title">Network Technologies And Standards</h3>
+    <span class="chapter-pill">3 topics</span>
+  </div>
+  <ul class="chapter-topic-list"><li><span class="t-num">018</span><a href="topics/018-ethernet-technology-and-standards-ieee-8023.html">Ethernet Technology and Standards (IEEE 802.3)</a></li><li><span class="t-num">019</span><a href="topics/019-ethernet-switching.html">Ethernet Switching</a></li><li><span class="t-num">020</span><a href="topics/020-point-to-point-protocol-ppp.html">Point-to-Point Protocol (PPP)</a></li></ul>
+  <a href="topics/018-ethernet-technology-and-standards-ieee-8023.html" class="chapter-start-btn">Start Chapter →</a>
+</div><div class="chapter-card">
+  <div class="chapter-card-head">
+    <h3 class="chapter-card-title">Network Security</h3>
+    <span class="chapter-pill">7 topics</span>
+  </div>
+  <ul class="chapter-topic-list"><li><span class="t-num">021</span><a href="topics/021-introduction.html">Introduction</a></li><li><span class="t-num">022</span><a href="topics/022-introduction-to-firewalls.html">Introduction to Firewalls</a></li><li><span class="t-num">023</span><a href="topics/023-introduction-to-idps.html">Introduction to IDPS</a></li><li><span class="t-num">024</span><a href="topics/024-virtual-private-networks-vpns.html">Virtual Private Networks (VPNs)</a></li><li><span class="t-num">025</span><a href="topics/025-introduction-to-cryptography.html">Introduction to Cryptography</a></li><li><span class="t-num">026</span><a href="topics/026-introduction-to-tls-and-ssl.html">Introduction to TLS and SSL</a></li><li><span class="t-num">027</span><a href="topics/027-network-layer-and-application-layer-firewalls.html">Network Layer And Application Layer Firewalls</a></li></ul>
+  <a href="topics/021-introduction.html" class="chapter-start-btn">Start Chapter →</a>
+</div><div class="chapter-card">
+  <div class="chapter-card-head">
+    <h3 class="chapter-card-title">Network Management And Monitoring</h3>
+    <span class="chapter-pill">6 topics</span>
+  </div>
+  <ul class="chapter-topic-list"><li><span class="t-num">028</span><a href="topics/028-traffic-management-techniques.html">Traffic Management Techniques</a></li><li><span class="t-num">029</span><a href="topics/029-quality-of-service-bandwidth-and-latency-network-congestion-and-control-mechanisms.html">Quality Of Service Bandwidth And Latency Network Congestion And Control Mechanisms</a></li><li><span class="t-num">030</span><a href="topics/030-network-performance-metrics.html">Network Performance Metrics</a></li><li><span class="t-num">031</span><a href="topics/031-network-troubleshooting-techniques.html">Network Troubleshooting Techniques</a></li><li><span class="t-num">032</span><a href="topics/032-network-monitoring-and-management.html">Network Monitoring And Management</a></li><li><span class="t-num">033</span><a href="topics/033-network-protocol-analysis-tools.html">Network Protocol Analysis Tools</a></li></ul>
+  <a href="topics/028-traffic-management-techniques.html" class="chapter-start-btn">Start Chapter →</a>
+</div><div class="chapter-card">
+  <div class="chapter-card-head">
+    <h3 class="chapter-card-title">Advanced Networking Concepts</h3>
+    <span class="chapter-pill">6 topics</span>
+  </div>
+  <ul class="chapter-topic-list"><li><span class="t-num">034</span><a href="topics/034-client-server-vs-peer-to-peer-architectures.html">Client Server Vs Peer To Peer Architectures</a></li><li><span class="t-num">035</span><a href="topics/035-network-design-principles-and-considerations.html">Network Design Principles And Considerations</a></li><li><span class="t-num">036</span><a href="topics/036-load-balancing-techniques-content-delivery-networks.html">Load Balancing Techniques Content Delivery Networks</a></li><li><span class="t-num">037</span><a href="topics/037-network-virtualization.html">Network Virtualization</a></li><li><span class="t-num">038</span><a href="topics/038-software-defined-networking.html">Software Defined Networking</a></li><li><span class="t-num">039</span><a href="topics/039-network-reliability-and-fault-tolerance.html">Network Reliability And Fault Tolerance</a></li></ul>
+  <a href="topics/034-client-server-vs-peer-to-peer-architectures.html" class="chapter-start-btn">Start Chapter →</a>
+</div></div>
+</div>
+
+<script src="../../assets/script.js?v=12"></script>
+</body>
+</html>

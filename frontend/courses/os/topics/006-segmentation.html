@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+  (function() {
+    const saved = localStorage.getItem('GrindOS-theme');
+    if (saved) {
+      document.documentElement.classList.add(saved);
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.documentElement.classList.add('dark');
+    }
+  })();
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Segmentation — Segment Table, Paging vs Segmentation — Operating Systems — GrindOS</title>
+<link rel="stylesheet" href="../../../assets/style.css?v=13">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+  <link rel="icon" type="image/png" href="../../../logo.png">
+  
+  <link rel="apple-touch-icon" href="../../../logo.png">
+</head>
+<body>
+
+<div id="reading-progress"></div>
+
+<header class="topbar">
+  <button class="icon-btn menu-toggle" id="menu-toggle" aria-label="Menu">☰</button>
+  <a href="dashboard.html" class="topbar-brand">
+    <img src="../../../logo.png" alt="GrindOS Logo" class="brand-logo" style="width: 34px; height: 34px; object-fit: contain; border-radius: 4px; flex-shrink: 0; display: inline-block; vertical-align: middle;">
+    <span class="brand-wordmark">GrindOS</span>
+  </a>
+  <nav class="topbar-nav">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="dashboard.html" class="active">💻 Operating Systems</a>
+    <a href="../../../interview-prep/index.html" class="nav-cta">🎯 Interview Prep</a>
+  </nav>
+  <div class="topbar-right">
+    <button class="icon-btn" id="theme-toggle" aria-label="Toggle theme"><span class="theme-icon">☾</span></button>
+  </div>
+</header>
+
+<div class="page-layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-course-label"><span class="course-emoji">💻</span>Operating Systems</div>
+    </div>
+    <div class="sidebar-progress">
+      <div class="progress-label-row">
+        <span>Progress</span>
+        <span class="progress-count">6 / 17</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" style="width:35%"></div></div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-search">
+        <input type="text" id="sidebar-search" placeholder="Search topics…  /" autocomplete="off">
+        <span class="sidebar-search-icon">⌕</span>
+      </div>
+      <details class="chapter-group" >
+        <summary class="chapter-summary"><span>Processes and CPU Scheduling</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item "><a href="../../../courses/os/topics/001-process-vs-thread.html"><span class="topic-num">001</span>Process vs Thread</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/002-cpu-scheduling-algorithms-fcfs-sjf-rr.html"><span class="topic-num">002</span>CPU Scheduling Algorithms</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/003-context-switching-and-dispatcher.html"><span class="topic-num">003</span>Context Switching & Dispatcher</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/004-multilevel-queue-scheduling.html"><span class="topic-num">004</span>Multilevel Queue Scheduling</a></li>
+        </ul>
+      </details>
+      <details class="chapter-group" open>
+        <summary class="chapter-summary"><span>Memory Management</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item "><a href="../../../courses/os/topics/005-paging-and-page-tables.html"><span class="topic-num">005</span>Paging and Page Tables</a></li>
+          <li class="topic-item active"><a href="../../../courses/os/topics/006-segmentation.html"><span class="topic-num">006</span>Segmentation</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/007-virtual-memory-and-demand-paging.html"><span class="topic-num">007</span>Virtual Memory & Demand Paging</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/008-page-replacement-algorithms.html"><span class="topic-num">008</span>Page Replacement Algorithms</a></li>
+        </ul>
+      </details>
+      <details class="chapter-group" >
+        <summary class="chapter-summary"><span>Process Synchronization</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item "><a href="../../../courses/os/topics/009-critical-section-problem.html"><span class="topic-num">009</span>Critical Section Problem</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/010-mutex-vs-semaphore-vs-monitor.html"><span class="topic-num">010</span>Mutex vs Semaphore vs Monitor</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/011-classic-synchronisation-problems.html"><span class="topic-num">011</span>Classic Synchronisation Problems</a></li>
+        </ul>
+      </details>
+      <details class="chapter-group" >
+        <summary class="chapter-summary"><span>Deadlocks</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item "><a href="../../../courses/os/topics/012-deadlock-conditions-and-prevention.html"><span class="topic-num">012</span>Deadlock Conditions & Prevention</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/013-deadlock-avoidance-bankers-algorithm.html"><span class="topic-num">013</span>Deadlock Avoidance & Banker's Algorithm</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/014-deadlock-detection-and-recovery.html"><span class="topic-num">014</span>Deadlock Detection & Recovery</a></li>
+        </ul>
+      </details>
+      <details class="chapter-group" >
+        <summary class="chapter-summary"><span>File Systems & Disk Scheduling</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item "><a href="../../../courses/os/topics/015-file-system-concepts.html"><span class="topic-num">015</span>File System Concepts</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/016-directory-structure-and-inode.html"><span class="topic-num">016</span>Directory Structure and Inode</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/017-disk-scheduling-algorithms.html"><span class="topic-num">017</span>Disk Scheduling Algorithms</a></li>
+        </ul>
+      </details>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    <div class="breadcrumb">
+      <a href="dashboard.html">Dashboard</a>
+      <span class="breadcrumb-sep">/</span>
+      <a href="dashboard.html">Operating Systems</a>
+      <span class="breadcrumb-sep">/</span>
+      <span>Memory Management</span>
+    </div>
+
+    <div class="topic-meta">
+      <div class="topic-meta-chip">📂 Memory Management</div>
+      <div class="topic-meta-chip">📄 Topic 6</div>
+      <div class="topic-meta-chip" id="reading-time">…</div>
+    </div>
+
+    <article class="topic-article">
+      <div class="editorial-content max-w-3xl px-4 mt-2">
+        <div class="coreSubject dark:text-zinc-300">
+          <br/>
+          
+<h2>1. Concept of Segmentation</h2>
+<p>Unlike paging, which is a physical address abstraction invisible to programs, <strong>Segmentation</strong> is a memory management scheme that aligns with the programmer's logical view of memory. A program is divided into logical, variable-sized segments (e.g., Code, Stack, Heap, Global Variables, Standard Libraries).</p>
+
+<hr class="line-break"/>
+
+<h2>2. Segment Address Translation</h2>
+<p>The CPU generates a logical address containing two parts: <code>&lt;segment-number (s), offset (d)&gt;</code>.
+The **Segment Table** contains two values for each segment:</p>
+<ul>
+  <li><strong>Base:</strong> Starting physical address of the segment in RAM.</li>
+  <li><strong>Limit:</strong> The exact physical length of the segment.</li>
+</ul>
+
+<h3>The Translation Rule</h3>
+<p>The hardware MMU checks if <code>offset (d) &lt; limit</code>. If it is valid, the physical address is calculated as:
+<code>Physical Address = Base + Offset (d)</code>. If the offset exceeds the limit, a **Segment Fault (Trap)** is thrown, protecting memory from out-of-bounds corruption.</p>
+
+<hr class="line-break"/>
+
+<h2>3. Paging vs. Segmentation Comparison</h2>
+<table border="1" cellpadding="8" style="width:100%;">
+  <thead>
+    <tr>
+      <th>Dimension</th>
+      <th>Paging</th>
+      <th>Segmentation</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Block Size</strong></td>
+      <td>Fixed-sized blocks (Pages/Frames).</td>
+      <td>Variable-sized blocks (Segments).</td>
+    </tr>
+    <tr>
+      <td><strong>Fragmentation</strong></td>
+      <td>Suffers from **Internal Fragmentation**.</td>
+      <td>Suffers from **External Fragmentation** (free slots between segments).</td>
+    </tr>
+    <tr>
+      <td><strong>User Visibility</strong></td>
+      <td>Invisible to the programmer (managed entirely by hardware/OS).</td>
+      <td>Visible to the compiler and programmer as logical modules.</td>
+    </tr>
+    <tr>
+      <td><strong>Address Form</strong></td>
+      <td>Single flat address mapped by page indices.</td>
+      <td>Two-dimensional address: <code>&lt;segment, offset&gt;</code>.</td>
+    </tr>
+    <tr>
+      <td><strong>Sharing & Security</strong></td>
+      <td>Harder to share logical modules because they span arbitrary pages.</td>
+      <td>Extremely easy to secure or share (e.g., mark the Code segment as Read-Only).</td>
+    </tr>
+  </tbody>
+</table>
+
+          
+<div class="interview-qna">
+  <h3>🎯 Topic Q&A</h3>
+  <div class="qna-item">
+    <strong>Q1: What is the main difference in how physical addresses are computed in paging vs. segmentation?</strong>
+    <p>In paging, the physical address is formed by concatenating the frame number and the offset. In segmentation, the physical address is calculated by adding the segment base address to the offset, requiring addition operations.</p>
+  </div>
+  <div class="qna-item">
+    <strong>Q2: Why does segmentation suffer from external fragmentation?</strong>
+    <p>Because segments are of variable sizes and are loaded/unloaded dynamically, RAM becomes partitioned into alternating free and occupied slots. Over time, the sum of free slots might exceed a request, but we cannot allocate it because it is not contiguous.</p>
+  </div>
+  <div class="qna-item">
+    <strong>Q3: How does the MMU validate safety in segmentation?</strong>
+    <p>The MMU checks if the logical offset (`d`) is strictly less than the segment's limit. If the offset is larger, the CPU throws a hardware exception (trap), preventing buffer overflow security exploits.</p>
+  </div>
+  <div class="qna-item">
+    <strong>Q4: Why is it easier to implement protection and sharing in segmentation?</strong>
+    <p>Since segments correspond directly to logical code modules (e.g., read-only code, read-write data), protection flags (read, write, execute) can be applied to the entire segment uniformly, whereas in paging, logical modules are scattered randomly across pages.</p>
+  </div>
+  <div class="qna-item">
+    <strong>Q5: What is segmented paging (hierarchical translation)?</strong>
+    <p>To combine the benefits of both worlds, modern architectures page the segments. A program is divided into logical segments, and each segment is subdivided into fixed-size pages, eliminating external fragmentation while preserving logical modules.</p>
+  </div>
+</div>
+
+        </div>
+      </div>
+    </article>
+
+    <div class="topic-nav"><a href="005-paging-and-page-tables.html" class="nav-btn nav-prev"><span class="nav-btn-label">← Previous</span><span class="nav-btn-title">Paging and Page Tables</span></a><a href="007-virtual-memory-and-demand-paging.html" class="nav-btn nav-next"><span class="nav-btn-label">Next →</span><span class="nav-btn-title">Virtual Memory & Demand Paging</span></a></div>
+  </main>
+</div>
+
+<button id="back-to-top" aria-label="Back to top">↑</button>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="../../../assets/script.js?v=12"></script>
+</body>
+</html>

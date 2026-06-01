@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+  (function() {
+    const saved = localStorage.getItem('GrindOS-theme');
+    if (saved) {
+      document.documentElement.classList.add(saved);
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.documentElement.classList.add('dark');
+    }
+  })();
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Composition vs. Inheritance — Has-A vs Is-A relationships — Object-Oriented Programming — GrindOS</title>
+<link rel="stylesheet" href="../../../assets/style.css?v=13">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+  <link rel="icon" type="image/png" href="../../../logo.png">
+  
+  <link rel="apple-touch-icon" href="../../../logo.png">
+</head>
+<body>
+
+<div id="reading-progress"></div>
+
+<header class="topbar">
+  <button class="icon-btn menu-toggle" id="menu-toggle" aria-label="Menu">☰</button>
+  <a href="dashboard.html" class="topbar-brand">
+    <img src="../../../logo.png" alt="GrindOS Logo" class="brand-logo" style="width: 34px; height: 34px; object-fit: contain; border-radius: 4px; flex-shrink: 0; display: inline-block; vertical-align: middle;">
+    <span class="brand-wordmark">GrindOS</span>
+  </a>
+  <nav class="topbar-nav">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="dashboard.html" class="active">📦 Object-Oriented Programming</a>
+    <a href="../../../interview-prep/index.html" class="nav-cta">🎯 Interview Prep</a>
+  </nav>
+  <div class="topbar-right">
+    <button class="icon-btn" id="theme-toggle" aria-label="Toggle theme"><span class="theme-icon">☾</span></button>
+  </div>
+</header>
+
+<div class="page-layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-course-label"><span class="course-emoji">📦</span>Object-Oriented Programming</div>
+    </div>
+    <div class="sidebar-progress">
+      <div class="progress-label-row">
+        <span>Progress</span>
+        <span class="progress-count">10 / 15</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" style="width:67%"></div></div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-search">
+        <input type="text" id="sidebar-search" placeholder="Search topics…  /" autocomplete="off">
+        <span class="sidebar-search-icon">⌕</span>
+      </div>
+      <details class="chapter-group" >
+        <summary class="chapter-summary"><span>Fundamentals</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item "><a href="../../../courses/oops/topics/001-introduction-to-oops.html"><span class="topic-num">001</span>Introduction to OOPs</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/002-classes-and-objects.html"><span class="topic-num">002</span>Classes and Objects</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/003-encapsulation.html"><span class="topic-num">003</span>Encapsulation</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/004-inheritance.html"><span class="topic-num">004</span>Inheritance</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/005-polymorphism.html"><span class="topic-num">005</span>Polymorphism</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/006-abstraction.html"><span class="topic-num">006</span>Abstraction</a></li>
+        </ul>
+      </details>
+      <details class="chapter-group" open>
+        <summary class="chapter-summary"><span>Advanced Concepts</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item "><a href="../../../courses/oops/topics/007-constructors-in-python.html"><span class="topic-num">007</span>Constructors in Python</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/008-dunder-magic-methods.html"><span class="topic-num">008</span>Dunder Magic Methods</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/009-static-and-class-methods.html"><span class="topic-num">009</span>Static and Class Methods</a></li>
+          <li class="topic-item active"><a href="../../../courses/oops/topics/010-composition-vs-inheritance.html"><span class="topic-num">010</span>Composition vs Inheritance</a></li>
+        </ul>
+      </details>
+      <details class="chapter-group" >
+        <summary class="chapter-summary"><span>Design Patterns</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item "><a href="../../../courses/oops/topics/011-singleton-pattern.html"><span class="topic-num">011</span>Singleton Pattern</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/012-factory-pattern.html"><span class="topic-num">012</span>Factory Pattern</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/013-observer-pattern.html"><span class="topic-num">013</span>Observer Pattern</a></li>
+        </ul>
+      </details>
+      <details class="chapter-group" >
+        <summary class="chapter-summary"><span>Interview Special</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item "><a href="../../../courses/oops/topics/014-oops-interview-questions.html"><span class="topic-num">014</span>OOPs Interview Qs</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/015-oops-in-python-vs-java.html"><span class="topic-num">015</span>OOPs Python vs Java</a></li>
+        </ul>
+      </details>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    <div class="breadcrumb">
+      <a href="dashboard.html">Dashboard</a>
+      <span class="breadcrumb-sep">/</span>
+      <a href="dashboard.html">Object-Oriented Programming</a>
+      <span class="breadcrumb-sep">/</span>
+      <span>Advanced Concepts</span>
+    </div>
+
+    <div class="topic-meta">
+      <div class="topic-meta-chip">📂 Advanced Concepts</div>
+      <div class="topic-meta-chip">📄 Topic 10</div>
+      <div class="topic-meta-chip" id="reading-time">…</div>
+    </div>
+
+    <article class="topic-article">
+      <div class="editorial-content max-w-3xl px-4 mt-2">
+        <div class="coreSubject dark:text-zinc-300">
+          <br/>
+          
+<h2>1. Structuring Object Relationships</h2>
+<p>Design patterns organize relationships between classes in two primary ways:</p>
+
+<h3>A. Inheritance ("Is-A" relationship)</h3>
+<p>A class inherits attributes and methods directly from a base class.</p>
+<ul>
+  <li>*Example:* `Car` is a `Vehicle`. `Manager` is an `Employee`.</li>
+  <li><strong>Tradeoff:</strong> High coupling. Child code is fragile; any updates to base class classes cascade down, risking breaking subclass invariants.</li>
+</ul>
+
+<h3>B. Composition ("Has-A" relationship)</h3>
+<p>A class holds instance variables referencing other helper classes as components.</p>
+<ul>
+  <li>*Example:* `Car` **has an** `Engine` component. `User` **has a** `Profile` component.</li>
+  <li><strong>Tradeoff:</strong> Loose coupling. You can swap component classes dynamically at runtime, ensuring modularity.</li>
+</ul>
+
+<div class="mermaid" style="text-align: center; margin: 24px 0;">
+graph LR
+    Car[Car Class] -- Has-A / Uses --> Engine[Engine Class]
+    Car -- Has-A / Uses --> Wheels[Wheels Class]
+    Car -- Has-A / Uses --> Chassis[Chassis Class]
+    style Car fill:#10b981,stroke:#333,stroke-width:2px,color:#fff
+    style Engine fill:#ea580c,stroke:#333,stroke-width:2px,color:#fff
+    style Wheels fill:#ea580c,stroke:#333,stroke-width:2px,color:#fff
+    style Chassis fill:#ea580c,stroke:#333,stroke-width:2px,color:#fff
+</div>
+
+<hr class="line-break"/>
+
+<h2>2. Composition Implementation Example</h2>
+<pre><code class="language-python">class Engine:
+    def start(self): return "Vroom vroom"
+
+class Car:
+    def __init__(self):
+        self.engine = Engine() # Composition
+        
+    def start(self):
+        return self.engine.start() # Delegates behaviour
+
+my_car = Car()
+print(my_car.start())</code></pre>
+
+          
+<div class="interview-qna">
+  <h3>🎯 Topic Q&A</h3>
+  <div class="qna-item">
+    <strong>Q1: What does the design principle "Favor Composition over Inheritance" mean?</strong>
+    <p>It means that systems should prioritize building complex behaviors by combining simple, modular component objects (Composition) rather than creating deep, tightly-coupled class hierarchies (Inheritance) that are difficult to refactor.</p>
+  </div>
+  <div class="qna-item">
+    <strong>Q2: Contrast "Is-A" and "Has-A" relationships with real-world examples.</strong>
+    <p>"Is-A" (Inheritance) models type hierarchies, e.g., a `Dog` is an `Animal`. "Has-A" (Composition) models component inclusion, e.g., a `Computer` has a `CPU` and a `HardDrive` class.</p>
+  </div>
+  <div class="qna-item">
+    <strong>Q3: Why is deep inheritance considered fragile?</strong>
+    <p>Because subclasses are tightly coupled to parent classes. If a developer alters a parent class method or attribute signature, it can inadvertently break execution paths or variable naming inside distant subclasses.</p>
+  </div>
+  <div class="qna-item">
+    <strong>Q4: How does composition enable dynamic, runtime behavior modifications?</strong>
+    <p>Since composition uses standard instance variables, you can swap component objects at runtime (e.g., switching a `Car.engine` from `PetrolEngine()` to `ElectricEngine()`), which is impossible under static class inheritance structures.</p>
+  </div>
+  <div class="qna-item">
+    <strong>Q5: Can composition and inheritance be combined?</strong>
+    <p>Yes. Concrete subclasses can inherit from abstract base classes while using composition internally to assign helper components, combining structural standardization with modular execution.</p>
+  </div>
+</div>
+
+        </div>
+      </div>
+    </article>
+
+    <div class="topic-nav"><a href="009-static-and-class-methods.html" class="nav-btn nav-prev"><span class="nav-btn-label">← Previous</span><span class="nav-btn-title">Static and Class Methods</span></a><a href="011-singleton-pattern.html" class="nav-btn nav-next"><span class="nav-btn-label">Next →</span><span class="nav-btn-title">Singleton Pattern</span></a></div>
+  </main>
+</div>
+
+<button id="back-to-top" aria-label="Back to top">↑</button>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="../../../assets/script.js?v=12"></script>
+</body>
+</html>

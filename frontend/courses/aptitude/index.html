@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<script>
+  (function() {
+    const saved = localStorage.getItem('GrindOS-theme');
+    if (saved) { document.documentElement.classList.add(saved); }
+    else if (window.matchMedia('(prefers-color-scheme: dark)').matches) { document.documentElement.classList.add('dark'); }
+  })();
+</script>
+<title>Quantitative & Logical Aptitude — GrindOS</title>
+<link rel="stylesheet" href="../../assets/style.css?v=13">
+<link rel="icon" type="image/png" href="../../logo.png">
+
+<link rel="apple-touch-icon" href="../../logo.png">
+</head>
+<body>
+
+<header class="topbar">
+  <a href="dashboard.html" class="topbar-brand">
+    <img src="../../logo.png" alt="GrindOS Logo" class="brand-logo" style="width: 34px; height: 34px; object-fit: contain; border-radius: 4px; flex-shrink: 0; display: inline-block; vertical-align: middle;">
+    <span class="brand-wordmark">GrindOS</span>
+  </a>
+  <nav class="topbar-nav">
+    <a href="dashboard.html" class="learn-nav active">Learn</a>
+    <a href="../../tracker.html" class="practice-nav">Practice</a>
+    <a href="../../interview-prep/index.html" class="prep-nav">Prep</a>
+  </nav>
+  <div class="topbar-right">
+    <button class="icon-btn" id="theme-toggle" aria-label="Toggle theme"><span class="theme-icon">☾</span></button>
+  </div>
+</header>
+
+<div class="course-page">
+  <div class="course-hero">
+    <div class="course-hero-icon">🧠</div>
+    <div class="course-hero-body">
+      <h1>Quantitative & Logical Aptitude</h1>
+      <p>Master arithmetic, algebra, logical reasoning, data interpretation, verbal ability, and speed shortcuts to crack placement screening rounds.</p>
+      <div class="course-hero-meta">
+        <span class="meta-chip">📖 35 topics</span>
+        <span class="meta-chip">📂 10 chapters</span>
+      </div>
+    </div>
+    <a href="topics/001-number-systems.html" class="start-btn">Start Course →</a>
+  </div>
+
+  <div class="chapter-grid">
+<div class="chapter-card">
+  <div class="chapter-card-head">
+    <h3 class="chapter-card-title">Quantitative Aptitude I: Arithmetic</h3>
+    <span class="chapter-pill">5 topics</span>
+  </div>
+  <ul class="chapter-topic-list"><li><span class="t-num">001</span><a href="topics/001-number-systems.html">Number Systems & Simplification</a></li><li><span class="t-num">002</span><a href="topics/002-percentage-and-applications.html">Percentage & Applications</a></li><li><span class="t-num">003</span><a href="topics/003-profit-loss-discount.html">Profit, Loss & Discount</a></li><li><span class="t-num">004</span><a href="topics/004-simple-compound-interest.html">Simple & Compound Interest</a></li><li><span class="t-num">005</span><a href="topics/005-ratio-proportion-partnership.html">Ratio, Proportion & Partnership</a></li></ul>
+  <a href="topics/001-number-systems.html" class="chapter-start-btn">Start Chapter →</a>
+</div>
+<div class="chapter-card">
+  <div class="chapter-card-head">
+    <h3 class="chapter-card-title">Quantitative Aptitude II: Algebra & Numbers</h3>
+    <span class="chapter-pill">4 topics</span>
+  </div>
+  <ul class="chapter-topic-list"><li><span class="t-num">006</span><a href="topics/006-lcm-hcf.html">LCM & HCF</a></li><li><span class="t-num">007</span><a href="topics/007-averages-mixtures-alligations.html">Averages, Mixtures & Alligations</a></li><li><span class="t-num">008</span><a href="topics/008-ages-averages.html">Ages Problems</a></li><li><span class="t-num">009</span><a href="topics/009-algebra-progressions.html">Algebra & Progressions</a></li></ul>
+  <a href="topics/006-lcm-hcf.html" class="chapter-start-btn">Start Chapter →</a>
+</div>
+<div class="chapter-card">
+  <div class="chapter-card-head">
+    <h3 class="chapter-card-title">Quantitative Aptitude III: Word Problems</h3>
+    <span class="chapter-pill">3 topics</span>
+  </div>
+  <ul class="chapter-topic-list"><li><span class="t-num">010</span><a href="topics/010-time-speed-distance.html">Time, Speed & Distance</a></li><li><span class="t-num">011</span><a href="topics/011-time-and-work.html">Time & Work</a></li><li><span class="t-num">012</span><a href="topics/012-clocks-calendars.html">Clocks & Calendars</a></li></ul>
+  <a href="topics/010-time-speed-distance.html" class="chapter-start-btn">Start Chapter →</a>
+</div>
+<div class="chapter-card">
+  <div class="chapter-card-head">
+    <h3 class="chapter-card-title">Quantitative Aptitude IV: Advanced Math</h3>
+    <span class="chapter-pill">3 topics</span>
+  </div>
+  <ul class="chapter-topic-list"><li><span class="t-num">013</span><a href="topics/013-permutation-combination.html">Permutations & Combinations</a></li><li><span class="t-num">014</span><a href="topics/014-probability.html">Probability</a></li><li><span class="t-num">015</span><a href="topics/015-mensuration-geometry.html">Mensuration & Geometry</a></li></ul>
+  <a href="topics/013-permutation-combination.html" class="chapter-start-btn">Start Chapter →</a>
+</div>
+<div class="chapter-card">
+  <div class="chapter-card-head">
+    <h3 class="chapter-card-title">Logical Reasoning I: Analytical</h3>
+    <span class="chapter-pill">5 topics</span>
+  </div>
+  <ul class="chapter-topic-list"><li><span class="t-num">016</span><a href="topics/016-coding-decoding.html">Coding & Decoding</a></li><li><span class="t-num">017</span><a href="topics/017-blood-relations.html">Blood Relations</a></li><li><span class="t-num">018</span><a href="topics/018-direction-sense.html">Direction Sense Test</a></li><li><span class="t-num">019</span><a href="topics/019-syllogisms.html">Syllogisms</a></li><li><span class="t-num">020</span><a href="topics/020-seating-arrangements.html">Seating Arrangements</a></li></ul>
+  <a href="topics/016-coding-decoding.html" class="chapter-start-btn">Start Chapter →</a>
+</div>
+<div class="chapter-card">
+  <div class="chapter-card-head">
+    <h3 class="chapter-card-title">Logical Reasoning II: Logical & Verbal</h3>
+    <span class="chapter-pill">4 topics</span>
+  </div>
+  <ul class="chapter-topic-list"><li><span class="t-num">021</span><a href="topics/021-number-letter-series.html">Number & Letter Series</a></li><li><span class="t-num">022</span><a href="topics/022-analogies-classification.html">Analogies & Classification</a></li><li><span class="t-num">023</span><a href="topics/023-assumptions-arguments.html">Statements, Assumptions & Arguments</a></li><li><span class="t-num">024</span><a href="topics/024-logical-deductions.html">Logical Deductions</a></li></ul>
+  <a href="topics/021-number-letter-series.html" class="chapter-start-btn">Start Chapter →</a>
+</div>
+<div class="chapter-card">
+  <div class="chapter-card-head">
+    <h3 class="chapter-card-title">Data Interpretation (DI)</h3>
+    <span class="chapter-pill">3 topics</span>
+  </div>
+  <ul class="chapter-topic-list"><li><span class="t-num">025</span><a href="topics/025-tables-line-graphs.html">Tables & Line Graphs</a></li><li><span class="t-num">026</span><a href="topics/026-bar-pie-charts.html">Bar Charts & Pie Charts</a></li><li><span class="t-num">027</span><a href="topics/027-caselets-radar-graphs.html">Caselets & Radar Graphs</a></li></ul>
+  <a href="topics/025-tables-line-graphs.html" class="chapter-start-btn">Start Chapter →</a>
+</div>
+<div class="chapter-card">
+  <div class="chapter-card-head">
+    <h3 class="chapter-card-title">Verbal Ability</h3>
+    <span class="chapter-pill">3 topics</span>
+  </div>
+  <ul class="chapter-topic-list"><li><span class="t-num">028</span><a href="topics/028-reading-comprehension.html">Reading Comprehension</a></li><li><span class="t-num">029</span><a href="topics/029-sentence-correction-grammar.html">Sentence Correction & Grammar</a></li><li><span class="t-num">030</span><a href="topics/030-synonyms-antonyms-analogy.html">Synonyms, Antonyms & Verbal Analogy</a></li></ul>
+  <a href="topics/028-reading-comprehension.html" class="chapter-start-btn">Start Chapter →</a>
+</div>
+<div class="chapter-card">
+  <div class="chapter-card-head">
+    <h3 class="chapter-card-title">Placement Tips & Tricks</h3>
+    <span class="chapter-pill">3 topics</span>
+  </div>
+  <ul class="chapter-topic-list"><li><span class="t-num">031</span><a href="topics/031-vedic-math-speed.html">Vedic Math & Speed Calculation</a></li><li><span class="t-num">032</span><a href="topics/032-option-elimination-estimation.html">Option Elimination & Estimation</a></li><li><span class="t-num">033</span><a href="topics/033-time-management.html">Time Management & Exam Strategies</a></li></ul>
+  <a href="topics/031-vedic-math-speed.html" class="chapter-start-btn">Start Chapter →</a>
+</div>
+<div class="chapter-card">
+  <div class="chapter-card-head">
+    <h3 class="chapter-card-title">Aptitude Quick Formulas & Cheat Sheet</h3>
+    <span class="chapter-pill">2 topics</span>
+  </div>
+  <ul class="chapter-topic-list"><li><span class="t-num">034</span><a href="topics/034-formula-reference.html">Arithmetic & Algebra Cheat Sheet</a></li><li><span class="t-num">035</span><a href="topics/035-geometry-reasoning-cheat-sheet.html">Geometry & Logical Reasoning Cheat Sheet</a></li></ul>
+  <a href="topics/034-formula-reference.html" class="chapter-start-btn">Start Chapter →</a>
+</div>
+  </div>
+</div>
+
+<script src="../../assets/script.js?v=12"></script>
+</body>
+</html>

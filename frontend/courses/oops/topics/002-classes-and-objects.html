@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+  (function() {
+    const saved = localStorage.getItem('GrindOS-theme');
+    if (saved) {
+      document.documentElement.classList.add(saved);
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.documentElement.classList.add('dark');
+    }
+  })();
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Classes & Objects — Constructor, self, Scope in Python — Object-Oriented Programming — GrindOS</title>
+<link rel="stylesheet" href="../../../assets/style.css?v=13">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+  <link rel="icon" type="image/png" href="../../../logo.png">
+  
+  <link rel="apple-touch-icon" href="../../../logo.png">
+</head>
+<body>
+
+<div id="reading-progress"></div>
+
+<header class="topbar">
+  <button class="icon-btn menu-toggle" id="menu-toggle" aria-label="Menu">☰</button>
+  <a href="dashboard.html" class="topbar-brand">
+    <img src="../../../logo.png" alt="GrindOS Logo" class="brand-logo" style="width: 34px; height: 34px; object-fit: contain; border-radius: 4px; flex-shrink: 0; display: inline-block; vertical-align: middle;">
+    <span class="brand-wordmark">GrindOS</span>
+  </a>
+  <nav class="topbar-nav">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="dashboard.html" class="active">📦 Object-Oriented Programming</a>
+    <a href="../../../interview-prep/index.html" class="nav-cta">🎯 Interview Prep</a>
+  </nav>
+  <div class="topbar-right">
+    <button class="icon-btn" id="theme-toggle" aria-label="Toggle theme"><span class="theme-icon">☾</span></button>
+  </div>
+</header>
+
+<div class="page-layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-course-label"><span class="course-emoji">📦</span>Object-Oriented Programming</div>
+    </div>
+    <div class="sidebar-progress">
+      <div class="progress-label-row">
+        <span>Progress</span>
+        <span class="progress-count">2 / 15</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" style="width:13%"></div></div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-search">
+        <input type="text" id="sidebar-search" placeholder="Search topics…  /" autocomplete="off">
+        <span class="sidebar-search-icon">⌕</span>
+      </div>
+      <details class="chapter-group" open>
+        <summary class="chapter-summary"><span>Fundamentals</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item "><a href="../../../courses/oops/topics/001-introduction-to-oops.html"><span class="topic-num">001</span>Introduction to OOPs</a></li>
+          <li class="topic-item active"><a href="../../../courses/oops/topics/002-classes-and-objects.html"><span class="topic-num">002</span>Classes and Objects</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/003-encapsulation.html"><span class="topic-num">003</span>Encapsulation</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/004-inheritance.html"><span class="topic-num">004</span>Inheritance</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/005-polymorphism.html"><span class="topic-num">005</span>Polymorphism</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/006-abstraction.html"><span class="topic-num">006</span>Abstraction</a></li>
+        </ul>
+      </details>
+      <details class="chapter-group" >
+        <summary class="chapter-summary"><span>Advanced Concepts</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item "><a href="../../../courses/oops/topics/007-constructors-in-python.html"><span class="topic-num">007</span>Constructors in Python</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/008-dunder-magic-methods.html"><span class="topic-num">008</span>Dunder Magic Methods</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/009-static-and-class-methods.html"><span class="topic-num">009</span>Static and Class Methods</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/010-composition-vs-inheritance.html"><span class="topic-num">010</span>Composition vs Inheritance</a></li>
+        </ul>
+      </details>
+      <details class="chapter-group" >
+        <summary class="chapter-summary"><span>Design Patterns</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item "><a href="../../../courses/oops/topics/011-singleton-pattern.html"><span class="topic-num">011</span>Singleton Pattern</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/012-factory-pattern.html"><span class="topic-num">012</span>Factory Pattern</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/013-observer-pattern.html"><span class="topic-num">013</span>Observer Pattern</a></li>
+        </ul>
+      </details>
+      <details class="chapter-group" >
+        <summary class="chapter-summary"><span>Interview Special</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item "><a href="../../../courses/oops/topics/014-oops-interview-questions.html"><span class="topic-num">014</span>OOPs Interview Qs</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/015-oops-in-python-vs-java.html"><span class="topic-num">015</span>OOPs Python vs Java</a></li>
+        </ul>
+      </details>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    <div class="breadcrumb">
+      <a href="dashboard.html">Dashboard</a>
+      <span class="breadcrumb-sep">/</span>
+      <a href="dashboard.html">Object-Oriented Programming</a>
+      <span class="breadcrumb-sep">/</span>
+      <span>Fundamentals</span>
+    </div>
+
+    <div class="topic-meta">
+      <div class="topic-meta-chip">📂 Fundamentals</div>
+      <div class="topic-meta-chip">📄 Topic 2</div>
+      <div class="topic-meta-chip" id="reading-time">…</div>
+    </div>
+
+    <article class="topic-article">
+      <div class="editorial-content max-w-3xl px-4 mt-2">
+        <div class="coreSubject dark:text-zinc-300">
+          <br/>
+          
+<h2>1. Classes and Objects in Python</h2>
+<p>A <strong>Class</strong> is a user-defined blueprint or template that defines variables and behaviors. An <strong>Object</strong> is a physical instance of that class allocated in memory.</p>
+
+<h3>Syntax and Instance Instantiation</h3>
+<pre><code class="language-python">class Student:
+    # Class Variable (Shared across all instances)
+    university = "MITADT Pune"
+    
+    # Constructor (Initialiser)
+    def __init__(self, name, cgpa):
+        self.name = name       # Instance Variable
+        self.cgpa = cgpa       # Instance Variable
+        
+    def display(self):
+        return f"{self.name} has CGPA {self.cgpa} at {self.university}"
+
+# Instantiating Objects
+s1 = Student("Pranav", 9.5)
+s2 = Student("Amit", 8.9)
+print(s1.display())</code></pre>
+
+<hr class="line-break"/>
+
+<h2>2. Understanding self and __init__</h2>
+<ul>
+  <li><strong>__init__ method:</strong> Python's constructor, invoked automatically when `Student("Pranav", 9.5)` is called. It initializes instance state.</li>
+  <li><strong>self pointer:</strong> References the specific active object instance currently calling the method. It allows Python to route variable actions to the correct memory block.</li>
+</ul>
+
+<hr class="line-break"/>
+
+<h2>3. Instance vs. Class Variables</h2>
+<table border="1" cellpadding="8" style="width:100%;">
+  <thead>
+    <tr>
+      <th>Dimension</th>
+      <th>Instance Variable</th>
+      <th>Class Variable (Static)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Definition</strong></td>
+      <td>Declared inside methods (usually `__init__`) prefixed with `self`.</td>
+      <td>Declared directly inside the class body, outside any methods.</td>
+    </tr>
+    <tr>
+      <td><strong>Memory Location</strong></td>
+      <td>Each object has its own separate memory copy.</td>
+      <td>One single copy shared in class metadata memory.</td>
+    </tr>
+    <tr>
+      <td><strong>Access Method</strong></td>
+      <td>Accessed via `self.variable` or `instance_name.variable`.</td>
+      <td>Accessed via `ClassName.variable` or `self.variable`.</td>
+    </tr>
+  </tbody>
+</table>
+
+          
+<div class="interview-qna">
+  <h3>🎯 Topic Q&A</h3>
+  <div class="qna-item">
+    <strong>Q1: What is the purpose of the `self` parameter in Python methods?</strong>
+    <p>`self` represents the active instance of the object currently executing the method. It allows Python to locate and access the correct instance variables stored in the object's specific memory scope.</p>
+  </div>
+  <div class="qna-item">
+    <strong>Q2: Contrast instance variables and class variables in Python.</strong>
+    <p>Instance variables are declared inside `__init__` via `self` and hold states unique to each object. Class variables are declared inside the class body and are shared by all instances of that class in memory.</p>
+  </div>
+  <div class="qna-item">
+    <strong>Q3: What happens if you modify a class variable using `self.variable = new_value`?</strong>
+    <p>Instead of modifying the shared class variable, Python creates a new **instance variable** with that name shadowing the class variable for that specific object only. To modify a class variable, access it via ClassName.</p>
+  </div>
+  <div class="qna-item">
+    <strong>Q4: Why does Python require an explicit `self` parameter, unlike Java's implicit `this`?</strong>
+    <p>Explicit `self` aligns with Python's design philosophy: "Explicit is better than implicit." It simplifies dynamic method additions to classes at runtime and keeps scoping rules simple.</p>
+  </div>
+  <div class="qna-item">
+    <strong>Q5: Can you define a class in Python with zero attributes and methods?</strong>
+    <p>Yes. You can use the `pass` placeholder: <code>class Empty: pass</code>. You can still instantiate it and add dynamic attributes to it at runtime.</p>
+  </div>
+</div>
+
+        </div>
+      </div>
+    </article>
+
+    <div class="topic-nav"><a href="001-introduction-to-oops.html" class="nav-btn nav-prev"><span class="nav-btn-label">← Previous</span><span class="nav-btn-title">Introduction to OOPs</span></a><a href="003-encapsulation.html" class="nav-btn nav-next"><span class="nav-btn-label">Next →</span><span class="nav-btn-title">Encapsulation</span></a></div>
+  </main>
+</div>
+
+<button id="back-to-top" aria-label="Back to top">↑</button>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="../../../assets/script.js?v=12"></script>
+</body>
+</html>

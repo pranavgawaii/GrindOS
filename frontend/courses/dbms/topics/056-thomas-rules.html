@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+  (function() {
+    const saved = localStorage.getItem('GrindOS-theme');
+    if (saved) {
+      document.documentElement.classList.add(saved);
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.documentElement.classList.add('dark');
+    }
+  })();
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Thomas' Rules — Database Management Systems — GrindOS</title>
+<link rel="stylesheet" href="../../../assets/style.css?v=13">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+  
+  <link rel="icon" type="image/png" href="../../../logo.png">
+  
+  <link rel="apple-touch-icon" href="../../../logo.png">
+</head>
+<body>
+
+<div id="reading-progress"></div>
+
+<header class="topbar">
+  <button class="icon-btn menu-toggle" id="menu-toggle" aria-label="Menu">☰</button>
+  <a href="dashboard.html" class="topbar-brand">
+    <img src="../../../logo.png" alt="GrindOS Logo" class="brand-logo" style="width: 34px; height: 34px; object-fit: contain; border-radius: 4px; flex-shrink: 0; display: inline-block; vertical-align: middle;">
+    <span class="brand-wordmark">GrindOS</span>
+  </a>
+  <nav class="topbar-nav">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="dashboard.html" class="active">🗄️ Database Management Systems</a>
+    <a href="../../../interview-prep/index.html" class="nav-cta">🎯 Interview Prep</a>
+  </nav>
+  <div class="topbar-right">
+    <button class="icon-btn" id="theme-toggle" aria-label="Toggle theme"><span class="theme-icon">☾</span></button>
+  </div>
+</header>
+
+<div class="page-layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-course-label"><span class="course-emoji">🗄️</span>Database Management Systems</div>
+    </div>
+    <div class="sidebar-progress">
+      <div class="progress-label-row">
+        <span>Progress</span>
+        <span class="progress-count">56 / 94</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" style="width:60%"></div></div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-search">
+<input type="text" id="sidebar-search" placeholder="Search topics…  /" autocomplete="off">
+<span class="sidebar-search-icon">⌕</span></div>
+<details class="chapter-group">
+<summary class="chapter-summary"><span>Introduction to DBMS</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/dbms/topics/001-data-information-database.html"><span class="topic-num">001</span>Data, Information & Database</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/002-types-of-databases.html"><span class="topic-num">002</span>Types of Databases</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/003-database-management-system.html"><span class="topic-num">003</span>Database Management System</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/004-need-advantages-and-disadvantages-of-dbms.html"><span class="topic-num">004</span>Need, Advantages and Disadvantages of DBMS</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/005-data-abstraction-in-dbms.html"><span class="topic-num">005</span>Data Abstraction in DBMS</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/006-dbms-architecture.html"><span class="topic-num">006</span>DBMS Architecture</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/007-database-users-and-interactions.html"><span class="topic-num">007</span>Database Users and Interactions</a></li>
+</ul></details>
+<details class="chapter-group">
+<summary class="chapter-summary"><span>Data Models and ER Models</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/dbms/topics/008-dbms-interfaces.html"><span class="topic-num">008</span>DBMS Interfaces</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/009-data-models-and-their-types.html"><span class="topic-num">009</span>Data Models and Their Types</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/010-er-model-and-its-components.html"><span class="topic-num">010</span>ER Model and its Components</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/011-types-of-relationships-in-dbms.html"><span class="topic-num">011</span>Types of Relationships in DBMS</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/012-extended-er-features.html"><span class="topic-num">012</span>Extended ER Features</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/013-types-of-inheritance.html"><span class="topic-num">013</span>Types of Inheritance</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/014-entity-relationship-diagram.html"><span class="topic-num">014</span>Entity-Relationship Diagram</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/015-create-er-diagram.html"><span class="topic-num">015</span>Create ER Diagram</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/016-relationships-in-er-diagram.html"><span class="topic-num">016</span>Relationships in ER Diagram</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/017-relational-models.html"><span class="topic-num">017</span>Relational Models</a></li>
+</ul></details>
+<details class="chapter-group">
+<summary class="chapter-summary"><span>Relational Model and Normalization</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/dbms/topics/018-intension-and-extension.html"><span class="topic-num">018</span>Intension and Extension</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/019-keys-in-dbms.html"><span class="topic-num">019</span>Keys in DBMS</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/020-data-normalization.html"><span class="topic-num">020</span>Data Normalization</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/021-functional-dependency.html"><span class="topic-num">021</span>Functional Dependency</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/022-armstrongs-axioms.html"><span class="topic-num">022</span>Armstrong's Axioms</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/023-inference-rules.html"><span class="topic-num">023</span>Inference Rules</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/024-closure-in-functional-dependencies.html"><span class="topic-num">024</span>Closure in Functional Dependencies</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/025-denormalisation.html"><span class="topic-num">025</span>Denormalisation</a></li>
+</ul></details>
+<details class="chapter-group">
+<summary class="chapter-summary"><span>SQL and Query Optimization</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/dbms/topics/026-database-languages.html"><span class="topic-num">026</span>Database Languages</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/027-sql-operators.html"><span class="topic-num">027</span>SQL Operators</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/028-aggregates-in-sql.html"><span class="topic-num">028</span>Aggregates in SQL</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/029-sql-clauses.html"><span class="topic-num">029</span>SQL Clauses</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/030-sql-joins.html"><span class="topic-num">030</span>SQL Joins</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/031-sql-joins.html"><span class="topic-num">031</span>SQL Joins</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/032-sql-joins.html"><span class="topic-num">032</span>SQL Joins</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/033-views-in-sql.html"><span class="topic-num">033</span>Views in SQL</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/034-advanced-views-in-sql.html"><span class="topic-num">034</span>Advanced Views in SQL</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/035-indexed-views.html"><span class="topic-num">035</span>Indexed Views</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/036-sql-subqueries.html"><span class="topic-num">036</span>SQL Subqueries</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/037-types-of-sql-subqueries.html"><span class="topic-num">037</span>Types of SQL Subqueries</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/038-query-processing.html"><span class="topic-num">038</span>Query Processing</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/039-query-optimization.html"><span class="topic-num">039</span>Query Optimization</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/040-advanced-query-optimization.html"><span class="topic-num">040</span>Advanced Query Optimization</a></li>
+</ul></details>
+<details class="chapter-group">
+<summary class="chapter-summary"><span>NoSQL Databases</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/dbms/topics/041-nosql-databases.html"><span class="topic-num">041</span>NoSQL Databases</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/042-base-properties.html"><span class="topic-num">042</span>BASE Properties</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/043-nosql-languages.html"><span class="topic-num">043</span>NoSQL Languages</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/044-graph-databases.html"><span class="topic-num">044</span>Graph Databases</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/045-in-memory-databases.html"><span class="topic-num">045</span>In-Memory Databases</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/046-partitioning-in-databases.html"><span class="topic-num">046</span>Partitioning in Databases</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/047-types-of-partitioning.html"><span class="topic-num">047</span>Types of Partitioning</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/048-sharding-in-dbms.html"><span class="topic-num">048</span>Sharding in DBMS</a></li>
+</ul></details>
+<details class="chapter-group">
+<summary class="chapter-summary"><span>Distributed Database Systems</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/dbms/topics/049-sharding-in-dbms.html"><span class="topic-num">049</span>Sharding in DBMS</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/050-distributed-database-systems.html"><span class="topic-num">050</span>Distributed Database Systems</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/051-architecture-of-distributed-database-systems.html"><span class="topic-num">051</span>Architecture of Distributed Database Systems</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/052-data-distribution-methods.html"><span class="topic-num">052</span>Data Distribution Methods</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/053-fault-tolerance-in-distributed-databases.html"><span class="topic-num">053</span>Fault Tolerance in Distributed Databases</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/054-load-balancing-in-distributed-databases.html"><span class="topic-num">054</span>Load Balancing in Distributed Databases</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/055-data-replication-techniques.html"><span class="topic-num">055</span>Data Replication Techniques</a></li>
+</ul></details>
+<details class="chapter-group"open>
+<summary class="chapter-summary"><span>Transactions and Concurrency</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item active"><a href="../../../courses/dbms/topics/056-thomas-rules.html"><span class="topic-num">056</span>Thomas' Rules</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/057-acid-properties.html"><span class="topic-num">057</span>ACID Properties</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/058-cap-theorem.html"><span class="topic-num">058</span>CAP Theorem</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/059-database-transactions.html"><span class="topic-num">059</span>Database Transactions</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/060-concurrency-control-in-databases.html"><span class="topic-num">060</span>Concurrency Control in Databases</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/061-locking-protocol.html"><span class="topic-num">061</span>Locking Protocol</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/062-timestamp-ordering-protocols-in-dbms.html"><span class="topic-num">062</span>Timestamp Ordering Protocols in DBMS</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/063-starvation-in-dbms.html"><span class="topic-num">063</span>Starvation in DBMS</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/064-deadlock-in-dbms.html"><span class="topic-num">064</span>Deadlock in DBMS</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/065-concurrency-control-in-distributed-databases.html"><span class="topic-num">065</span>Concurrency Control in Distributed Databases</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/066-serialization-in-databases.html"><span class="topic-num">066</span>Serialization in Databases</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/067-scheduling-in-databases.html"><span class="topic-num">067</span>Scheduling in Databases</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/068-serialization-graphs-in-databases.html"><span class="topic-num">068</span>Serialization Graphs in Databases</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/069-isolation-levels.html"><span class="topic-num">069</span>Isolation Levels</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/070-managing-transaction-consistency-and-concurrency.html"><span class="topic-num">070</span>Managing Transaction Consistency and Concurrency</a></li>
+</ul></details>
+<details class="chapter-group">
+<summary class="chapter-summary"><span>Triggers and Procedural Features</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/dbms/topics/071-triggers-in-databases.html"><span class="topic-num">071</span>Triggers in Databases</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/072-stored-procedures-in-databases.html"><span class="topic-num">072</span>Stored Procedures in Databases</a></li>
+</ul></details>
+<details class="chapter-group">
+<summary class="chapter-summary"><span>Recovery and Backup</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/dbms/topics/073-database-recovery-management.html"><span class="topic-num">073</span>Database Recovery Management</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/074-database-backups.html"><span class="topic-num">074</span>Database Backups</a></li>
+</ul></details>
+<details class="chapter-group">
+<summary class="chapter-summary"><span>Indexing and Performance Tuning</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/dbms/topics/075-database-indexing.html"><span class="topic-num">075</span>Database Indexing</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/076-types-of-database-indexing.html"><span class="topic-num">076</span>Types of Database Indexing</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/077-indexing-techniques.html"><span class="topic-num">077</span>Indexing Techniques</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/078-b-and-b-trees.html"><span class="topic-num">078</span>B- and B+ Trees</a></li>
+</ul></details>
+<details class="chapter-group">
+<summary class="chapter-summary"><span>Database Monitoring and Caching</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/dbms/topics/079-database-monitoring.html"><span class="topic-num">079</span>Database Monitoring</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/080-performance-tuning.html"><span class="topic-num">080</span>Performance Tuning</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/081-database-caching.html"><span class="topic-num">081</span>Database Caching</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/082-database-caching-strategies.html"><span class="topic-num">082</span>Database Caching Strategies</a></li>
+</ul></details>
+<details class="chapter-group">
+<summary class="chapter-summary"><span>Security and Access Control</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/dbms/topics/083-data-encryption-in-dbms.html"><span class="topic-num">083</span>Data Encryption in DBMS</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/084-database-security.html"><span class="topic-num">084</span>Database Security</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/085-encryption-techniques-in-dbms.html"><span class="topic-num">085</span>Encryption Techniques in DBMS</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/086-data-masking-techniques.html"><span class="topic-num">086</span>Data Masking Techniques</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/087-rbac.html"><span class="topic-num">087</span>RBAC</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/088-rbac-models.html"><span class="topic-num">088</span>RBAC Models</a></li>
+</ul></details>
+<details class="chapter-group">
+<summary class="chapter-summary"><span>Scalability and Big Data</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/dbms/topics/089-database-scaling.html"><span class="topic-num">089</span>Database Scaling</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/090-big-data-and-dbms.html"><span class="topic-num">090</span>Big Data and DBMS</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/091-dbaas.html"><span class="topic-num">091</span>DBaas</a></li>
+</ul></details>
+<details class="chapter-group">
+<summary class="chapter-summary"><span>Data Warehousing and Migration</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/dbms/topics/092-database-migration.html"><span class="topic-num">092</span>Database Migration</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/093-data-warehousing.html"><span class="topic-num">093</span>Data Warehousing</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/094-event-driven-architecture.html"><span class="topic-num">094</span>Event-Driven Architecture</a></li>
+</ul></details>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    <div class="breadcrumb">
+      <a href="dashboard.html">Dashboard</a>
+      <span class="breadcrumb-sep">/</span>
+      <a href="dashboard.html">Database Management Systems</a>
+      <span class="breadcrumb-sep">/</span>
+      <span>Transactions and Concurrency</span>
+    </div>
+
+    <div class="topic-meta">
+      <div class="topic-meta-chip">📂 Transactions and Concurrency</div>
+      <div class="topic-meta-chip">📄 Topic 56</div>
+      <div class="topic-meta-chip" id="reading-time">…</div>
+    </div>
+
+    <article class="topic-article"><div class="editorial-content max-w-3xl px-4 mt-2"><div class="coreSubject dark:text-zinc-300"><br/>
+
+<h1>Thomas’ Rules for Timestamp Ordering</h1>
+<p>The Timestamp Ordering Protocol is essential for concurrency control in databases, ordering transactions by their timestamps to prevent conflicts. Thomas’ Rules extend this protocol, particularly for write operations, to avoid unnecessary transaction aborts and improve system efficiency.</p>
+<h2>Key Topics</h2>
+<ul>
+<li>Introduction to Thomas’ Rules</li>
+<li>Limitations of Basic Timestamp Ordering</li>
+<li>Thomas’ Read Rule</li>
+<li>Thomas’ Write Rule</li>
+<li>Timestamp Ordering and Write-Write Conflicts</li>
+<li>Conflict Handling in Thomas’ Rule</li>
+</ul>
+<hr class="line-break"/>
+<h2>Introduction to Thomas’ Rules</h2>
+<p>Thomas' Rules are extensions to the basic Timestamp Ordering Protocol and allow certain writes to be skipped or ignored. This prevents unnecessary transaction aborts, especially in write-heavy environments, and improves throughput.</p>
+<ul>
+<li><strong>Key Principle:</strong> Transactions with outdated timestamps may not need to update data if a more recent transaction has already done so. This means we can sometimes ignore certain write operations, reducing conflicts.</li>
+</ul>
+<hr class="line-break"/>
+<h2>Limitations of Basic Timestamp Ordering</h2>
+<p>In traditional timestamp ordering:</p>
+<ul>
+<li>Transactions with later timestamps may be unnecessarily aborted due to conflicts.</li>
+<li>Write-write conflicts often result in newer transactions being rolled back even when their changes wouldn’t affect data integrity.</li>
+</ul>
+<p>Thomas’ Rules allow us to bypass these limitations, particularly by ignoring certain outdated writes.</p>
+<hr class="line-break"/>
+<h2>Thomas’ Read Rule</h2>
+<p><code>Thomas' Read Rule</code> specifies:</p>
+<ul>
+<li>A transaction <code>T</code> with timestamp <code>ts(T)</code> can read a data item only if <code>ts(T)</code> is greater than or equal to the item’s <code>Write Timestamp (WTS)</code>.</li>
+<li>If this condition is met, the read proceeds; otherwise, the read is aborted.</li>
+</ul>
+<h3>Example Table for Thomas’ Read Rule</h3>
+<table>
+<tbody><tr>
+<th>Step</th>
+<th>Transaction</th>
+<th>Operation</th>
+<th>Condition</th>
+<th>Action</th>
+</tr>
+<tr>
+<td>1</td>
+<td>T1 (ts=100)</td>
+<td>R(A)</td>
+<td>100 &gt;= WTS (80)</td>
+<td>Read Allowed</td>
+</tr>
+<tr>
+<td>2</td>
+<td>T2 (ts=200)</td>
+<td>R(A)</td>
+<td>200 &gt;= WTS (100)</td>
+<td>Read Allowed</td>
+</tr>
+</tbody></table>
+<br/>
+<hr class="line-break"/>
+<h2>Thomas’ Write Rule</h2>
+<p><code>Thomas' Write Rule</code> allows the system to handle writes more flexibly:</p>
+<ul>
+<li><strong>Outdated Write Check:</strong> If <code>ts(T) &lt; RTS</code>, abort <code>T</code> since the write is outdated.</li>
+<li><strong>Redundant Write Check:</strong> If <code>ts(T) &lt; WTS</code>, ignore <code>T</code>'s write as it would be redundant.</li>
+<li><strong>Proceed with Write:</strong> If <code>ts(T) &gt;= RTS</code> and <code>ts(T) &gt; WTS</code>, proceed with the write and update <code>WTS</code> to <code>ts(T)</code>.</li>
+</ul>
+<hr class="line-break"/>
+<h2>Timestamp Ordering and Write-Write Conflicts</h2>
+<p>
+ Timestamp ordering ensures consistency in a database by using transaction timestamps to control the order of operations like read and write. 
+ Write-Write conflicts occur when multiple transactions attempt to write to the same data item. These conflicts are managed using 
+ <strong>Thomas' Write Rule</strong>, which allows for outdated or redundant writes to be ignored while ensuring valid writes proceed.
+ </p>
+<h3>Conflict Type and Resolution</h3>
+<table border="1">
+<thead>
+<tr>
+<th>Conflict Type</th>
+<th>Condition</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Outdated Write</strong></td>
+<td>ts(T) &lt; RTS</td>
+<td>Abort transaction</td>
+</tr>
+<tr>
+<td><strong>Redundant Write</strong></td>
+<td>ts(T) &lt; WTS</td>
+<td>Ignore write</td>
+</tr>
+<tr>
+<td><strong>Valid Write</strong></td>
+<td>ts(T) ≥ RTS, ts(T) &gt; WTS</td>
+<td>Proceed with Write</td>
+</tr>
+</tbody>
+</table>
+<h3>Example of Write-Write Conflict Handling</h3>
+<p>
+ Assume we have a <strong>Customer Balance Table</strong>:
+ </p>
+<pre><code>RTS = 200
+WTS = 180
+    </code></pre>
+<table border="1">
+<thead>
+<tr>
+<th>Step</th>
+<th>Transaction</th>
+<th>Operation</th>
+<th>Condition</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>T1 (ts=150)</td>
+<td>W(Balance)</td>
+<td>150 &lt; RTS (200)</td>
+<td>Abort T1 (No update)</td>
+</tr>
+<tr>
+<td>2</td>
+<td>T2 (ts=210)</td>
+<td>W(Balance)</td>
+<td>210 &gt; RTS (200)</td>
+<td>Proceed with Write (Update WTS = 210)</td>
+</tr>
+</tbody>
+</table>
+<p>
+<strong>Explanation:</strong>
+</p>
+<ul>
+<li>T1 is aborted as it would disrupt consistency.</li>
+<li>T2 successfully writes, updating the WTS to 210.</li>
+</ul>
+<br/>
+<hr class="line-break"/>
+<h3>Scenario Setup</h3>
+<p>
+ Consider an Inventory Management System with a table <strong>Product</strong> that stores information about the stock level of products:
+ </p>
+<pre><code class="language-sql">CREATE TABLE Product (
+    ProductID INT PRIMARY KEY,
+    ProductName VARCHAR(50),
+    StockLevel INT,
+    RTS INT DEFAULT 0,     -- Read Timestamp
+    WTS INT DEFAULT 0      -- Write Timestamp
+);
+    </code></pre>
+<p>
+<strong>Table Fields:</strong>
+</p>
+<ul>
+<li>RTS (Read Timestamp): The last timestamp when StockLevel was read.</li>
+<li>WTS (Write Timestamp): The last timestamp when StockLevel was updated.</li>
+</ul>
+<p>
+ Let’s assume two transactions:
+ </p>
+<ul>
+<li>Transaction T1 with a timestamp ts(T1) = 100</li>
+<li>Transaction T2 with a timestamp ts(T2) = 200</li>
+</ul>
+<h4>Initial Table State</h4>
+<table border="1">
+<thead>
+<tr>
+<th>ProductID</th>
+<th>ProductName</th>
+<th>StockLevel</th>
+<th>RTS</th>
+<th>WTS</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Widget</td>
+<td>50</td>
+<td>80</td>
+<td>90</td>
+</tr>
+</tbody>
+</table>
+<h4>Condition Check for Read</h4>
+<p>
+ According to Thomas’ Read Rule, a transaction can read a data item if ts(T) ≥ WTS.
+ </p>
+<pre><code class="language-sql">-- T1 attempts to read
+SELECT CASE
+    WHEN 100 &gt;= WTS THEN 'Read Allowed'
+    ELSE 'Abort Read'
+END AS T1_Read_Status
+FROM Product
+WHERE ProductID = 1;
+
+-- T2 attempts to read
+SELECT CASE
+    WHEN 200 &gt;= WTS THEN 'Read Allowed'
+    ELSE 'Abort Read'
+END AS T2_Read_Status
+FROM Product
+WHERE ProductID = 1;
+    </code></pre>
+<p><strong>Output:</strong></p>
+<ul>
+<li>T1: Since 100 ≥ 90, the read is allowed.</li>
+<li>T2: Since 200 ≥ 90, the read is also allowed.</li>
+</ul>
+<p>After each read, we should update the RTS to the timestamp of the transaction:</p>
+<pre><code class="language-sql">-- Update RTS after successful read
+UPDATE Product
+SET RTS = 100  -- For T1's read
+WHERE ProductID = 1;
+
+-- Updating RTS again after T2's read
+UPDATE Product
+SET RTS = 200
+WHERE ProductID = 1;
+    </code></pre>
+<h4>Table State After Read</h4>
+<table border="1">
+<thead>
+<tr>
+<th>ProductID</th>
+<th>ProductName</th>
+<th>StockLevel</th>
+<th>RTS</th>
+<th>WTS</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Widget</td>
+<td>50</td>
+<td>200</td>
+<td>90</td>
+</tr>
+</tbody>
+</table>
+<br/>
+<hr class="line-break"/>
+<h2>Thomas’ Write Rule Example with SQL</h2>
+<h3>Scenario</h3>
+<p>
+ Transaction T1 (timestamp 100) and Transaction T2 (timestamp 200) both want to update the 
+ <strong>StockLevel</strong> for <code>ProductID = 1</code>.
+ </p>
+<h4>Initial Table State</h4>
+<table border="1">
+<thead>
+<tr>
+<th>ProductID</th>
+<th>ProductName</th>
+<th>StockLevel</th>
+<th>RTS</th>
+<th>WTS</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Widget</td>
+<td>50</td>
+<td>200</td>
+<td>90</td>
+</tr>
+</tbody>
+</table>
+<h4>Conditions for Write</h4>
+<p>
+ Using Thomas’ Write Rule:
+ </p>
+<ul>
+<li>Abort T1 if <code>ts(T1) &lt; RTS</code>.</li>
+<li>Ignore T1 if <code>ts(T1) &lt; WTS</code>.</li>
+<li>Proceed with the write if <code>ts(T1) ≥ RTS</code> and <code>ts(T1) &gt; WTS</code>.</li>
+</ul>
+<h4>SQL Example</h4>
+<h5>Step 1: T1 attempts to write</h5>
+<pre><code class="language-sql">-- T1 attempts to write to StockLevel
+SELECT CASE
+    WHEN 100 &lt; RTS THEN 'Abort T1 (Outdated Write)'
+    WHEN 100 &lt; WTS THEN 'Ignore T1 Write (Redundant Write)'
+    ELSE 'Proceed with T1 Write'
+END AS T1_Write_Status
+FROM Product
+WHERE ProductID = 1;
+    </code></pre>
+<p>
+<strong>Output for T1:</strong> Since <code>100 &lt; RTS (200)</code>, T1’s write is aborted due to an outdated timestamp.
+ </p>
+<h5>Step 2: T2 attempts to write</h5>
+<pre><code class="language-sql">-- T2 attempts to write to StockLevel
+SELECT CASE
+    WHEN 200 &lt; RTS THEN 'Abort T2 (Outdated Write)'
+    WHEN 200 &lt; WTS THEN 'Ignore T2 Write (Redundant Write)'
+    ELSE 'Proceed with T2 Write'
+END AS T2_Write_Status
+FROM Product
+WHERE ProductID = 1;
+    </code></pre>
+<p>
+<strong>Output for T2:</strong> Since <code>200 ≥ RTS (200)</code> and <code>200 &gt; WTS (90)</code>, T2’s write is allowed.
+ </p>
+<h3>Updating the Table</h3>
+<p>
+ Since T2’s write is allowed, we update the <strong>StockLevel</strong> and set the <strong>WTS</strong> to 200.
+ </p>
+<pre><code class="language-sql">-- T2's successful write to StockLevel
+UPDATE Product
+SET StockLevel = 60,  -- New stock level updated by T2
+    WTS = 200
+WHERE ProductID = 1;
+    </code></pre>
+<h4>Final Table State</h4>
+<table border="1">
+<thead>
+<tr>
+<th>ProductID</th>
+<th>ProductName</th>
+<th>StockLevel</th>
+<th>RTS</th>
+<th>WTS</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Widget</td>
+<td>60</td>
+<td>200</td>
+<td>200</td>
+</tr>
+</tbody>
+</table>
+<br/>
+<hr class="line-break"/>
+<h2>Example with Write-Write Conflict Handling</h2>
+<p>
+ In real-world scenarios, write-write conflicts are common. Let’s go through an example where two transactions attempt to write to the same data item and we apply Thomas' Rules to resolve these conflicts.
+ </p>
+<h3>Scenario</h3>
+<p>
+ Transaction T3 with timestamp 300 attempts to write <strong>StockLevel</strong>.
+ Transaction T4 with timestamp 150 also attempts to write <strong>StockLevel</strong>.
+ </p>
+<h4>Initial Table State for Write-Write Conflict</h4>
+<table border="1">
+<thead>
+<tr>
+<th>ProductID</th>
+<th>ProductName</th>
+<th>StockLevel</th>
+<th>RTS</th>
+<th>WTS</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Widget</td>
+<td>60</td>
+<td>200</td>
+<td>200</td>
+</tr>
+</tbody>
+</table>
+<h4>SQL Example for Write-Write Conflict</h4>
+<h5>Step 1: T3 attempts to write</h5>
+<pre><code class="language-sql">-- T3 attempts to write to StockLevel
+SELECT CASE
+    WHEN 300 &lt; RTS THEN 'Abort T3 (Outdated Write)'
+    WHEN 300 &lt; WTS THEN 'Ignore T3 Write (Redundant Write)'
+    ELSE 'Proceed with T3 Write'
+END AS T3_Write_Status
+FROM Product
+WHERE ProductID = 1;
+    </code></pre>
+<p>
+<strong>Output for T3:</strong> Since <code>300 ≥ RTS</code> and <code>300 &gt; WTS</code>, T3 is allowed to write.
+ </p>
+<h5>Step 2: T4 attempts to write</h5>
+<pre><code class="language-sql">-- T4 attempts to write to StockLevel
+SELECT CASE
+    WHEN 150 &lt; RTS THEN 'Abort T4 (Outdated Write)'
+    WHEN 150 &lt; WTS THEN 'Ignore T4 Write (Redundant Write)'
+    ELSE 'Proceed with T4 Write'
+END AS T4_Write_Status
+FROM Product
+WHERE ProductID = 1;
+    </code></pre>
+<p>
+<strong>Output for T4:</strong> Since <code>150 &lt; RTS (200)</code>, T4’s write is aborted due to an outdated timestamp.
+ </p>
+<h3>Final Table Update after T3's Write</h3>
+<p>
+ Since T3 was allowed to write, we update <strong>StockLevel</strong> and set <strong>WTS</strong> to 300.
+ </p>
+<pre><code class="language-sql">-- T3's successful write to StockLevel
+UPDATE Product
+SET StockLevel = 70,  -- Updated stock level by T3
+    WTS = 300
+WHERE ProductID = 1;
+    </code></pre>
+<h4>Final Table State after Conflict Resolution</h4>
+<table border="1">
+<thead>
+<tr>
+<th>ProductID</th>
+<th>ProductName</th>
+<th>StockLevel</th>
+<th>RTS</th>
+<th>WTS</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Widget</td>
+<td>70</td>
+<td>200</td>
+<td>300</td>
+</tr>
+</tbody>
+</table>
+<br/>
+<hr/>
+</div></div></article>
+
+    <div class="topic-nav"><a href="055-data-replication-techniques.html" class="nav-btn nav-prev"><span class="nav-btn-label">← Previous</span><span class="nav-btn-title">Data Replication Techniques</span></a><a href="057-acid-properties.html" class="nav-btn nav-next"><span class="nav-btn-label">Next →</span><span class="nav-btn-title">ACID Properties</span></a></div>
+  </main>
+</div>
+
+<button id="back-to-top" aria-label="Back to top">↑</button>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="../../../assets/script.js?v=12"></script>
+</body>
+</html>

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<script>
+  (function() {
+    const saved = localStorage.getItem('GrindOS-theme');
+    if (saved) {
+      document.documentElement.classList.add(saved);
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.documentElement.classList.add('dark');
+    }
+  })();
+</script>
+<title>Database Management Systems — GrindOS</title>
+<link rel="stylesheet" href="../../assets/style.css?v=13">
+  
+  <link rel="icon" type="image/png" href="../../logo.png">
+  
+  <link rel="apple-touch-icon" href="../../logo.png">
+</head>
+<body>
+
+<header class="topbar">
+  <a href="dashboard.html" class="topbar-brand">
+    <img src="../../logo.png" alt="GrindOS Logo" class="brand-logo" style="width: 34px; height: 34px; object-fit: contain; border-radius: 4px; flex-shrink: 0; display: inline-block; vertical-align: middle;">
+    <span class="brand-wordmark">GrindOS</span>
+  </a>
+  <nav class="topbar-nav">
+    <a href="dashboard.html" class="learn-nav active">Learn</a>
+    <a href="../../tracker.html" class="practice-nav">Practice</a>
+    <a href="../../interview-prep/index.html" class="prep-nav">Prep</a>
+  </nav>
+  <div class="topbar-right">
+    <button class="icon-btn" id="theme-toggle" aria-label="Toggle theme"><span class="theme-icon">☾</span></button>
+  </div>
+</header>
+
+<div class="course-page">
+  <div class="course-hero">
+    <div class="course-hero-icon">🗄️</div>
+    <div class="course-hero-body">
+      <h1>Database Management Systems</h1>
+      <p>From ER models and SQL to transactions, indexing, and distributed databases.</p>
+      <div class="course-hero-meta">
+        <span class="meta-chip">📖 94 topics</span>
+        <span class="meta-chip">📂 14 chapters</span>
+      </div>
+    </div>
+    <a href="topics/001-data-information-database.html" class="start-btn">Start Course →</a>
+  </div>
+
+  <div class="chapter-grid"><div class="chapter-card">
+  <div class="chapter-card-head">
+    <h3 class="chapter-card-title">Introduction to DBMS</h3>
+    <span class="chapter-pill">7 topics</span>
+  </div>
+  <ul class="chapter-topic-list"><li><span class="t-num">001</span><a href="topics/001-data-information-database.html">Data, Information & Database</a></li><li><span class="t-num">002</span><a href="topics/002-types-of-databases.html">Types of Databases</a></li><li><span class="t-num">003</span><a href="topics/003-database-management-system.html">Database Management System</a></li><li><span class="t-num">004</span><a href="topics/004-need-advantages-and-disadvantages-of-dbms.html">Need, Advantages and Disadvantages of DBMS</a></li><li><span class="t-num">005</span><a href="topics/005-data-abstraction-in-dbms.html">Data Abstraction in DBMS</a></li><li><span class="t-num">006</span><a href="topics/006-dbms-architecture.html">DBMS Architecture</a></li><li><span class="t-num">007</span><a href="topics/007-database-users-and-interactions.html">Database Users and Interactions</a></li></ul>
+  <a href="topics/001-data-information-database.html" class="chapter-start-btn">Start Chapter →</a>
+</div><div class="chapter-card">
+  <div class="chapter-card-head">
+    <h3 class="chapter-card-title">Data Models and ER Models</h3>
+    <span class="chapter-pill">10 topics</span>
+  </div>
+  <ul class="chapter-topic-list"><li><span class="t-num">008</span><a href="topics/008-dbms-interfaces.html">DBMS Interfaces</a></li><li><span class="t-num">009</span><a href="topics/009-data-models-and-their-types.html">Data Models and Their Types</a></li><li><span class="t-num">010</span><a href="topics/010-er-model-and-its-components.html">ER Model and its Components</a></li><li><span class="t-num">011</span><a href="topics/011-types-of-relationships-in-dbms.html">Types of Relationships in DBMS</a></li><li><span class="t-num">012</span><a href="topics/012-extended-er-features.html">Extended ER Features</a></li><li><span class="t-num">013</span><a href="topics/013-types-of-inheritance.html">Types of Inheritance</a></li><li><span class="t-num">014</span><a href="topics/014-entity-relationship-diagram.html">Entity-Relationship Diagram</a></li><li><span class="t-num">015</span><a href="topics/015-create-er-diagram.html">Create ER Diagram</a></li><li><span class="t-num">016</span><a href="topics/016-relationships-in-er-diagram.html">Relationships in ER Diagram</a></li><li><span class="t-num">017</span><a href="topics/017-relational-models.html">Relational Models</a></li></ul>
+  <a href="topics/008-dbms-interfaces.html" class="chapter-start-btn">Start Chapter →</a>
+</div><div class="chapter-card">
+  <div class="chapter-card-head">
+    <h3 class="chapter-card-title">Relational Model and Normalization</h3>
+    <span class="chapter-pill">8 topics</span>
+  </div>
+  <ul class="chapter-topic-list"><li><span class="t-num">018</span><a href="topics/018-intension-and-extension.html">Intension and Extension</a></li><li><span class="t-num">019</span><a href="topics/019-keys-in-dbms.html">Keys in DBMS</a></li><li><span class="t-num">020</span><a href="topics/020-data-normalization.html">Data Normalization</a></li><li><span class="t-num">021</span><a href="topics/021-functional-dependency.html">Functional Dependency</a></li><li><span class="t-num">022</span><a href="topics/022-armstrongs-axioms.html">Armstrong's Axioms</a></li><li><span class="t-num">023</span><a href="topics/023-inference-rules.html">Inference Rules</a></li><li><span class="t-num">024</span><a href="topics/024-closure-in-functional-dependencies.html">Closure in Functional Dependencies</a></li><li><span class="t-num">025</span><a href="topics/025-denormalisation.html">Denormalisation</a></li></ul>
+  <a href="topics/018-intension-and-extension.html" class="chapter-start-btn">Start Chapter →</a>
+</div><div class="chapter-card">
+  <div class="chapter-card-head">
+    <h3 class="chapter-card-title">SQL and Query Optimization</h3>
+    <span class="chapter-pill">15 topics</span>
+  </div>
+  <ul class="chapter-topic-list"><li><span class="t-num">026</span><a href="topics/026-database-languages.html">Database Languages</a></li><li><span class="t-num">027</span><a href="topics/027-sql-operators.html">SQL Operators</a></li><li><span class="t-num">028</span><a href="topics/028-aggregates-in-sql.html">Aggregates in SQL</a></li><li><span class="t-num">029</span><a href="topics/029-sql-clauses.html">SQL Clauses</a></li><li><span class="t-num">030</span><a href="topics/030-sql-joins.html">SQL Joins — Inner &amp; Cross</a></li><li><span class="t-num">031</span><a href="topics/031-sql-joins.html">SQL Joins — Outer Joins</a></li><li><span class="t-num">032</span><a href="topics/032-sql-joins.html">SQL Joins — Self &amp; Advanced</a></li><li><span class="t-num">033</span><a href="topics/033-views-in-sql.html">Views in SQL</a></li><li><span class="t-num">034</span><a href="topics/034-advanced-views-in-sql.html">Advanced Views in SQL</a></li><li><span class="t-num">035</span><a href="topics/035-indexed-views.html">Indexed Views</a></li><li><span class="t-num">036</span><a href="topics/036-sql-subqueries.html">SQL Subqueries</a></li><li><span class="t-num">037</span><a href="topics/037-types-of-sql-subqueries.html">Types of SQL Subqueries</a></li><li><span class="t-num">038</span><a href="topics/038-query-processing.html">Query Processing</a></li><li><span class="t-num">039</span><a href="topics/039-query-optimization.html">Query Optimization</a></li><li><span class="t-num">040</span><a href="topics/040-advanced-query-optimization.html">Advanced Query Optimization</a></li></ul>
+  <a href="topics/026-database-languages.html" class="chapter-start-btn">Start Chapter →</a>
+</div><div class="chapter-card">
+  <div class="chapter-card-head">
+    <h3 class="chapter-card-title">NoSQL Databases</h3>
+    <span class="chapter-pill">8 topics</span>
+  </div>
+  <ul class="chapter-topic-list"><li><span class="t-num">041</span><a href="topics/041-nosql-databases.html">NoSQL Databases</a></li><li><span class="t-num">042</span><a href="topics/042-base-properties.html">BASE Properties</a></li><li><span class="t-num">043</span><a href="topics/043-nosql-languages.html">NoSQL Languages</a></li><li><span class="t-num">044</span><a href="topics/044-graph-databases.html">Graph Databases</a></li><li><span class="t-num">045</span><a href="topics/045-in-memory-databases.html">In-Memory Databases</a></li><li><span class="t-num">046</span><a href="topics/046-partitioning-in-databases.html">Partitioning in Databases</a></li><li><span class="t-num">047</span><a href="topics/047-types-of-partitioning.html">Types of Partitioning</a></li><li><span class="t-num">048</span><a href="topics/048-sharding-in-dbms.html">Sharding in DBMS</a></li></ul>
+  <a href="topics/041-nosql-databases.html" class="chapter-start-btn">Start Chapter →</a>
+</div><div class="chapter-card">
+  <div class="chapter-card-head">
+    <h3 class="chapter-card-title">Distributed Database Systems</h3>
+    <span class="chapter-pill">7 topics</span>
+  </div>
+  <ul class="chapter-topic-list"><li><span class="t-num">049</span><a href="topics/049-sharding-in-dbms.html">Sharding — Types &amp; Strategies</a></li><li><span class="t-num">050</span><a href="topics/050-distributed-database-systems.html">Distributed Database Systems</a></li><li><span class="t-num">051</span><a href="topics/051-architecture-of-distributed-database-systems.html">Architecture of Distributed Database Systems</a></li><li><span class="t-num">052</span><a href="topics/052-data-distribution-methods.html">Data Distribution Methods</a></li><li><span class="t-num">053</span><a href="topics/053-fault-tolerance-in-distributed-databases.html">Fault Tolerance in Distributed Databases</a></li><li><span class="t-num">054</span><a href="topics/054-load-balancing-in-distributed-databases.html">Load Balancing in Distributed Databases</a></li><li><span class="t-num">055</span><a href="topics/055-data-replication-techniques.html">Data Replication Techniques</a></li></ul>
+  <a href="topics/049-sharding-in-dbms.html" class="chapter-start-btn">Start Chapter →</a>
+</div><div class="chapter-card">
+  <div class="chapter-card-head">
+    <h3 class="chapter-card-title">Transactions and Concurrency</h3>
+    <span class="chapter-pill">15 topics</span>
+  </div>
+  <ul class="chapter-topic-list"><li><span class="t-num">056</span><a href="topics/056-thomas-rules.html">Thomas' Rules</a></li><li><span class="t-num">057</span><a href="topics/057-acid-properties.html">ACID Properties</a></li><li><span class="t-num">058</span><a href="topics/058-cap-theorem.html">CAP Theorem</a></li><li><span class="t-num">059</span><a href="topics/059-database-transactions.html">Database Transactions</a></li><li><span class="t-num">060</span><a href="topics/060-concurrency-control-in-databases.html">Concurrency Control in Databases</a></li><li><span class="t-num">061</span><a href="topics/061-locking-protocol.html">Locking Protocol</a></li><li><span class="t-num">062</span><a href="topics/062-timestamp-ordering-protocols-in-dbms.html">Timestamp Ordering Protocols in DBMS</a></li><li><span class="t-num">063</span><a href="topics/063-starvation-in-dbms.html">Starvation in DBMS</a></li><li><span class="t-num">064</span><a href="topics/064-deadlock-in-dbms.html">Deadlock in DBMS</a></li><li><span class="t-num">065</span><a href="topics/065-concurrency-control-in-distributed-databases.html">Concurrency Control in Distributed Databases</a></li><li><span class="t-num">066</span><a href="topics/066-serialization-in-databases.html">Serialization in Databases</a></li><li><span class="t-num">067</span><a href="topics/067-scheduling-in-databases.html">Scheduling in Databases</a></li><li><span class="t-num">068</span><a href="topics/068-serialization-graphs-in-databases.html">Serialization Graphs in Databases</a></li><li><span class="t-num">069</span><a href="topics/069-isolation-levels.html">Isolation Levels</a></li><li><span class="t-num">070</span><a href="topics/070-managing-transaction-consistency-and-concurrency.html">Managing Transaction Consistency and Concurrency</a></li></ul>
+  <a href="topics/056-thomas-rules.html" class="chapter-start-btn">Start Chapter →</a>
+</div><div class="chapter-card">
+  <div class="chapter-card-head">
+    <h3 class="chapter-card-title">Triggers and Procedural Features</h3>
+    <span class="chapter-pill">2 topics</span>
+  </div>
+  <ul class="chapter-topic-list"><li><span class="t-num">071</span><a href="topics/071-triggers-in-databases.html">Triggers in Databases</a></li><li><span class="t-num">072</span><a href="topics/072-stored-procedures-in-databases.html">Stored Procedures in Databases</a></li></ul>
+  <a href="topics/071-triggers-in-databases.html" class="chapter-start-btn">Start Chapter →</a>
+</div><div class="chapter-card">
+  <div class="chapter-card-head">
+    <h3 class="chapter-card-title">Recovery and Backup</h3>
+    <span class="chapter-pill">2 topics</span>
+  </div>
+  <ul class="chapter-topic-list"><li><span class="t-num">073</span><a href="topics/073-database-recovery-management.html">Database Recovery Management</a></li><li><span class="t-num">074</span><a href="topics/074-database-backups.html">Database Backups</a></li></ul>
+  <a href="topics/073-database-recovery-management.html" class="chapter-start-btn">Start Chapter →</a>
+</div><div class="chapter-card">
+  <div class="chapter-card-head">
+    <h3 class="chapter-card-title">Indexing and Performance Tuning</h3>
+    <span class="chapter-pill">4 topics</span>
+  </div>
+  <ul class="chapter-topic-list"><li><span class="t-num">075</span><a href="topics/075-database-indexing.html">Database Indexing</a></li><li><span class="t-num">076</span><a href="topics/076-types-of-database-indexing.html">Types of Database Indexing</a></li><li><span class="t-num">077</span><a href="topics/077-indexing-techniques.html">Indexing Techniques</a></li><li><span class="t-num">078</span><a href="topics/078-b-and-b-trees.html">B- and B+ Trees</a></li></ul>
+  <a href="topics/075-database-indexing.html" class="chapter-start-btn">Start Chapter →</a>
+</div><div class="chapter-card">
+  <div class="chapter-card-head">
+    <h3 class="chapter-card-title">Database Monitoring and Caching</h3>
+    <span class="chapter-pill">4 topics</span>
+  </div>
+  <ul class="chapter-topic-list"><li><span class="t-num">079</span><a href="topics/079-database-monitoring.html">Database Monitoring</a></li><li><span class="t-num">080</span><a href="topics/080-performance-tuning.html">Performance Tuning</a></li><li><span class="t-num">081</span><a href="topics/081-database-caching.html">Database Caching</a></li><li><span class="t-num">082</span><a href="topics/082-database-caching-strategies.html">Database Caching Strategies</a></li></ul>
+  <a href="topics/079-database-monitoring.html" class="chapter-start-btn">Start Chapter →</a>
+</div><div class="chapter-card">
+  <div class="chapter-card-head">
+    <h3 class="chapter-card-title">Security and Access Control</h3>
+    <span class="chapter-pill">6 topics</span>
+  </div>
+  <ul class="chapter-topic-list"><li><span class="t-num">083</span><a href="topics/083-data-encryption-in-dbms.html">Data Encryption in DBMS</a></li><li><span class="t-num">084</span><a href="topics/084-database-security.html">Database Security</a></li><li><span class="t-num">085</span><a href="topics/085-encryption-techniques-in-dbms.html">Encryption Techniques in DBMS</a></li><li><span class="t-num">086</span><a href="topics/086-data-masking-techniques.html">Data Masking Techniques</a></li><li><span class="t-num">087</span><a href="topics/087-rbac.html">RBAC</a></li><li><span class="t-num">088</span><a href="topics/088-rbac-models.html">RBAC Models</a></li></ul>
+  <a href="topics/083-data-encryption-in-dbms.html" class="chapter-start-btn">Start Chapter →</a>
+</div><div class="chapter-card">
+  <div class="chapter-card-head">
+    <h3 class="chapter-card-title">Scalability and Big Data</h3>
+    <span class="chapter-pill">3 topics</span>
+  </div>
+  <ul class="chapter-topic-list"><li><span class="t-num">089</span><a href="topics/089-database-scaling.html">Database Scaling</a></li><li><span class="t-num">090</span><a href="topics/090-big-data-and-dbms.html">Big Data and DBMS</a></li><li><span class="t-num">091</span><a href="topics/091-dbaas.html">DBaas</a></li></ul>
+  <a href="topics/089-database-scaling.html" class="chapter-start-btn">Start Chapter →</a>
+</div><div class="chapter-card">
+  <div class="chapter-card-head">
+    <h3 class="chapter-card-title">Data Warehousing and Migration</h3>
+    <span class="chapter-pill">3 topics</span>
+  </div>
+  <ul class="chapter-topic-list"><li><span class="t-num">092</span><a href="topics/092-database-migration.html">Database Migration</a></li><li><span class="t-num">093</span><a href="topics/093-data-warehousing.html">Data Warehousing</a></li><li><span class="t-num">094</span><a href="topics/094-event-driven-architecture.html">Event-Driven Architecture</a></li></ul>
+  <a href="topics/092-database-migration.html" class="chapter-start-btn">Start Chapter →</a>
+</div></div>
+</div>
+
+<script src="../../assets/script.js?v=12"></script>
+</body>
+</html>

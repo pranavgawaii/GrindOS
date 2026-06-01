@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<script>
+  (function() {
+    const saved = localStorage.getItem('GrindOS-theme');
+    if (saved) { document.documentElement.classList.add(saved); }
+    else if (window.matchMedia('(prefers-color-scheme: dark)').matches) { document.documentElement.classList.add('dark'); }
+  })();
+</script>
+<title>Data Structures & Algorithms — GrindOS</title>
+<link rel="stylesheet" href="../../../assets/style.css?v=13">
+<link rel="icon" type="image/png" href="../../../logo.png">
+
+<link rel="apple-touch-icon" href="../../../logo.png">
+</head>
+<body>
+
+<header class="topbar">
+  <a href="dashboard.html" class="topbar-brand">
+    <img src="../../../logo.png" alt="GrindOS Logo" class="brand-logo" style="width: 34px; height: 34px; object-fit: contain; border-radius: 4px; flex-shrink: 0; display: inline-block; vertical-align: middle;">
+    <span class="brand-wordmark">GrindOS</span>
+  </a>
+  <nav class="topbar-nav">
+    <a href="dashboard.html" class="learn-nav active">Learn</a>
+    <a href="../../../tracker.html" class="practice-nav">Practice</a>
+    <a href="../../../interview-prep/index.html" class="prep-nav">Prep</a>
+  </nav>
+  <div class="topbar-right">
+    <button class="icon-btn" id="theme-toggle" aria-label="Toggle theme"><span class="theme-icon">☾</span></button>
+  </div>
+</header>
+
+<div class="course-page">
+  <div class="course-hero">
+    <div class="course-hero-icon">🧮</div>
+    <div class="course-hero-body">
+      <h1>Data Structures & Algorithms</h1>
+      <p>Master arrays, trees, graphs, DP, and all DSA patterns needed for top placement interviews.</p>
+      <div class="course-hero-meta">
+        <span class="meta-chip">📖 72 topics</span>
+        <span class="meta-chip">📂 15 chapters</span>
+      </div>
+    </div>
+    <a href="topics/001-what-is-dsa.html" class="start-btn">Start Course →</a>
+  </div>
+
+  <div class="chapter-grid"><div class="chapter-card">
+  <div class="chapter-card-head">
+    <h3 class="chapter-card-title">Introduction & Complexity Analysis</h3>
+    <span class="chapter-pill">5 topics</span>
+  </div>
+  <ul class="chapter-topic-list"><li><span class="t-num">001</span><a href="topics/001-what-is-dsa.html">What is DSA?</a></li><li><span class="t-num">002</span><a href="topics/002-time-complexity.html">Time Complexity & Big-O</a></li><li><span class="t-num">003</span><a href="topics/003-space-complexity.html">Space Complexity</a></li><li><span class="t-num">004</span><a href="topics/004-recursion-basics.html">Recursion Basics</a></li><li><span class="t-num">005</span><a href="topics/005-recursion-tree.html">Recursion Tree & Call Stack</a></li></ul>
+  <a href="topics/001-what-is-dsa.html" class="chapter-start-btn">Start Chapter →</a>
+</div><div class="chapter-card">
+  <div class="chapter-card-head">
+    <h3 class="chapter-card-title">Arrays & Strings</h3>
+    <span class="chapter-pill">6 topics</span>
+  </div>
+  <ul class="chapter-topic-list"><li><span class="t-num">006</span><a href="topics/006-arrays.html">Arrays — Fundamentals</a></li><li><span class="t-num">007</span><a href="topics/007-sliding-window.html">Sliding Window Technique</a></li><li><span class="t-num">008</span><a href="topics/008-two-pointers.html">Two Pointer Technique</a></li><li><span class="t-num">009</span><a href="topics/009-prefix-sum.html">Prefix Sum Arrays</a></li><li><span class="t-num">010</span><a href="topics/010-strings.html">Strings — Fundamentals</a></li><li><span class="t-num">011</span><a href="topics/011-string-hashing.html">String Hashing & Rolling Hash</a></li></ul>
+  <a href="topics/006-arrays.html" class="chapter-start-btn">Start Chapter →</a>
+</div><div class="chapter-card">
+  <div class="chapter-card-head">
+    <h3 class="chapter-card-title">Linked Lists</h3>
+    <span class="chapter-pill">4 topics</span>
+  </div>
+  <ul class="chapter-topic-list"><li><span class="t-num">012</span><a href="topics/012-singly-linked-list.html">Singly Linked List</a></li><li><span class="t-num">013</span><a href="topics/013-doubly-linked-list.html">Doubly Linked List</a></li><li><span class="t-num">014</span><a href="topics/014-circular-linked-list.html">Circular Linked List</a></li><li><span class="t-num">015</span><a href="topics/015-linked-list-patterns.html">Linked List Patterns (Fast & Slow Pointers)</a></li></ul>
+  <a href="topics/012-singly-linked-list.html" class="chapter-start-btn">Start Chapter →</a>
+</div><div class="chapter-card">
+  <div class="chapter-card-head">
+    <h3 class="chapter-card-title">Stacks & Queues</h3>
+    <span class="chapter-pill">5 topics</span>
+  </div>
+  <ul class="chapter-topic-list"><li><span class="t-num">016</span><a href="topics/016-stack.html">Stack — Concept & Implementation</a></li><li><span class="t-num">017</span><a href="topics/017-monotonic-stack.html">Monotonic Stack</a></li><li><span class="t-num">018</span><a href="topics/018-queue.html">Queue — Concept & Implementation</a></li><li><span class="t-num">019</span><a href="topics/019-deque.html">Deque (Double-Ended Queue)</a></li><li><span class="t-num">020</span><a href="topics/020-priority-queue.html">Priority Queue & Heaps</a></li></ul>
+  <a href="topics/016-stack.html" class="chapter-start-btn">Start Chapter →</a>
+</div><div class="chapter-card">
+  <div class="chapter-card-head">
+    <h3 class="chapter-card-title">Hashing</h3>
+    <span class="chapter-pill">4 topics</span>
+  </div>
+  <ul class="chapter-topic-list"><li><span class="t-num">021</span><a href="topics/021-hash-tables.html">Hash Tables & Hash Maps</a></li><li><span class="t-num">022</span><a href="topics/022-hash-sets.html">Hash Sets</a></li><li><span class="t-num">023</span><a href="topics/023-collision-resolution.html">Collision Resolution Techniques</a></li><li><span class="t-num">024</span><a href="topics/024-hashing-patterns.html">Hashing Problem Patterns</a></li></ul>
+  <a href="topics/021-hash-tables.html" class="chapter-start-btn">Start Chapter →</a>
+</div><div class="chapter-card">
+  <div class="chapter-card-head">
+    <h3 class="chapter-card-title">Trees</h3>
+    <span class="chapter-pill">8 topics</span>
+  </div>
+  <ul class="chapter-topic-list"><li><span class="t-num">025</span><a href="topics/025-binary-tree.html">Binary Trees — Fundamentals</a></li><li><span class="t-num">026</span><a href="topics/026-bst.html">Binary Search Trees (BST)</a></li><li><span class="t-num">027</span><a href="topics/027-tree-traversals.html">Tree Traversals (BFS & DFS)</a></li><li><span class="t-num">028</span><a href="topics/028-avl-tree.html">AVL Trees (Self-Balancing)</a></li><li><span class="t-num">029</span><a href="topics/029-red-black-tree.html">Red-Black Trees</a></li><li><span class="t-num">030</span><a href="topics/030-segment-tree.html">Segment Trees</a></li><li><span class="t-num">031</span><a href="topics/031-fenwick-tree.html">Fenwick Tree (BIT)</a></li><li><span class="t-num">032</span><a href="topics/032-trie.html">Trie (Prefix Tree)</a></li></ul>
+  <a href="topics/025-binary-tree.html" class="chapter-start-btn">Start Chapter →</a>
+</div><div class="chapter-card">
+  <div class="chapter-card-head">
+    <h3 class="chapter-card-title">Heaps</h3>
+    <span class="chapter-pill">4 topics</span>
+  </div>
+  <ul class="chapter-topic-list"><li><span class="t-num">033</span><a href="topics/033-min-max-heap.html">Min-Heap & Max-Heap</a></li><li><span class="t-num">034</span><a href="topics/034-heap-operations.html">Heap Operations & Heapify</a></li><li><span class="t-num">035</span><a href="topics/035-heap-sort.html">Heap Sort</a></li><li><span class="t-num">036</span><a href="topics/036-top-k-problems.html">Top-K Element Problems</a></li></ul>
+  <a href="topics/033-min-max-heap.html" class="chapter-start-btn">Start Chapter →</a>
+</div><div class="chapter-card">
+  <div class="chapter-card-head">
+    <h3 class="chapter-card-title">Graphs</h3>
+    <span class="chapter-pill">7 topics</span>
+  </div>
+  <ul class="chapter-topic-list"><li><span class="t-num">037</span><a href="topics/037-graph-basics.html">Graph — Fundamentals & Representations</a></li><li><span class="t-num">038</span><a href="topics/038-bfs-dfs.html">BFS & DFS Algorithms</a></li><li><span class="t-num">039</span><a href="topics/039-topological-sort.html">Topological Sorting</a></li><li><span class="t-num">040</span><a href="topics/040-shortest-path.html">Shortest Path — Dijkstra & Bellman-Ford</a></li><li><span class="t-num">041</span><a href="topics/041-minimum-spanning-tree.html">Minimum Spanning Trees (Kruskal & Prim)</a></li><li><span class="t-num">042</span><a href="topics/042-union-find.html">Union-Find / Disjoint Set Union</a></li><li><span class="t-num">043</span><a href="topics/043-graph-patterns.html">Graph Problem Patterns</a></li></ul>
+  <a href="topics/037-graph-basics.html" class="chapter-start-btn">Start Chapter →</a>
+</div><div class="chapter-card">
+  <div class="chapter-card-head">
+    <h3 class="chapter-card-title">Sorting & Searching</h3>
+    <span class="chapter-pill">5 topics</span>
+  </div>
+  <ul class="chapter-topic-list"><li><span class="t-num">044</span><a href="topics/044-bubble-insertion-selection.html">Bubble, Insertion & Selection Sort</a></li><li><span class="t-num">045</span><a href="topics/045-merge-sort.html">Merge Sort</a></li><li><span class="t-num">046</span><a href="topics/046-quick-sort.html">Quick Sort</a></li><li><span class="t-num">047</span><a href="topics/047-binary-search.html">Binary Search</a></li><li><span class="t-num">048</span><a href="topics/048-binary-search-patterns.html">Binary Search on Answer Patterns</a></li></ul>
+  <a href="topics/044-bubble-insertion-selection.html" class="chapter-start-btn">Start Chapter →</a>
+</div><div class="chapter-card">
+  <div class="chapter-card-head">
+    <h3 class="chapter-card-title">Dynamic Programming</h3>
+    <span class="chapter-pill">8 topics</span>
+  </div>
+  <ul class="chapter-topic-list"><li><span class="t-num">049</span><a href="topics/049-dp-intro.html">Dynamic Programming — Introduction</a></li><li><span class="t-num">050</span><a href="topics/050-memoization-vs-tabulation.html">Memoization vs Tabulation</a></li><li><span class="t-num">051</span><a href="topics/051-1d-dp.html">1D DP Patterns (Fibonacci, Climbing Stairs)</a></li><li><span class="t-num">052</span><a href="topics/052-2d-dp.html">2D DP Patterns (Grid, LCS)</a></li><li><span class="t-num">053</span><a href="topics/053-knapsack.html">0-1 Knapsack & Variants</a></li><li><span class="t-num">054</span><a href="topics/054-dp-on-strings.html">DP on Strings (Edit Distance, LPS)</a></li><li><span class="t-num">055</span><a href="topics/055-dp-on-trees.html">DP on Trees</a></li><li><span class="t-num">056</span><a href="topics/056-bitmask-dp.html">Bitmask DP</a></li></ul>
+  <a href="topics/049-dp-intro.html" class="chapter-start-btn">Start Chapter →</a>
+</div><div class="chapter-card">
+  <div class="chapter-card-head">
+    <h3 class="chapter-card-title">Greedy Algorithms</h3>
+    <span class="chapter-pill">3 topics</span>
+  </div>
+  <ul class="chapter-topic-list"><li><span class="t-num">057</span><a href="topics/057-greedy-intro.html">Greedy Algorithm — Introduction</a></li><li><span class="t-num">058</span><a href="topics/058-interval-problems.html">Interval Scheduling Problems</a></li><li><span class="t-num">059</span><a href="topics/059-greedy-patterns.html">Greedy Problem Patterns</a></li></ul>
+  <a href="topics/057-greedy-intro.html" class="chapter-start-btn">Start Chapter →</a>
+</div><div class="chapter-card">
+  <div class="chapter-card-head">
+    <h3 class="chapter-card-title">Divide & Conquer</h3>
+    <span class="chapter-pill">2 topics</span>
+  </div>
+  <ul class="chapter-topic-list"><li><span class="t-num">060</span><a href="topics/060-divide-conquer.html">Divide & Conquer Strategy</a></li><li><span class="t-num">061</span><a href="topics/061-master-theorem.html">Master Theorem</a></li></ul>
+  <a href="topics/060-divide-conquer.html" class="chapter-start-btn">Start Chapter →</a>
+</div><div class="chapter-card">
+  <div class="chapter-card-head">
+    <h3 class="chapter-card-title">Backtracking</h3>
+    <span class="chapter-pill">3 topics</span>
+  </div>
+  <ul class="chapter-topic-list"><li><span class="t-num">062</span><a href="topics/062-backtracking-intro.html">Backtracking — Introduction</a></li><li><span class="t-num">063</span><a href="topics/063-subsets-permutations.html">Subsets & Permutations</a></li><li><span class="t-num">064</span><a href="topics/064-n-queens.html">N-Queens & Sudoku Solver</a></li></ul>
+  <a href="topics/062-backtracking-intro.html" class="chapter-start-btn">Start Chapter →</a>
+</div><div class="chapter-card">
+  <div class="chapter-card-head">
+    <h3 class="chapter-card-title">Bit Manipulation</h3>
+    <span class="chapter-pill">2 topics</span>
+  </div>
+  <ul class="chapter-topic-list"><li><span class="t-num">065</span><a href="topics/065-bit-basics.html">Bit Manipulation Basics</a></li><li><span class="t-num">066</span><a href="topics/066-bit-tricks.html">Common Bit Tricks</a></li></ul>
+  <a href="topics/065-bit-basics.html" class="chapter-start-btn">Start Chapter →</a>
+</div><div class="chapter-card">
+  <div class="chapter-card-head">
+    <h3 class="chapter-card-title">Advanced Topics</h3>
+    <span class="chapter-pill">6 topics</span>
+  </div>
+  <ul class="chapter-topic-list"><li><span class="t-num">067</span><a href="topics/067-fast-slow-pointers.html">Fast & Slow Pointers — Advanced</a></li><li><span class="t-num">068</span><a href="topics/068-cyclic-sort.html">Cyclic Sort Pattern</a></li><li><span class="t-num">069</span><a href="topics/069-merge-intervals.html">Merge Intervals Pattern</a></li><li><span class="t-num">070</span><a href="topics/070-monotonic-queue.html">Monotonic Queue — Sliding Window Max</a></li><li><span class="t-num">071</span><a href="topics/071-two-heaps.html">Two Heaps Pattern</a></li><li><span class="t-num">072</span><a href="topics/072-subset-generation.html">Subset Generation with BFS</a></li></ul>
+  <a href="topics/067-fast-slow-pointers.html" class="chapter-start-btn">Start Chapter →</a>
+</div>
+  </div>
+</div>
+
+<script src="../../../assets/script.js?v=12"></script>
+</body>
+</html>

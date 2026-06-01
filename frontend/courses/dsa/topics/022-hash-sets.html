@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+  (function() {
+    const saved = localStorage.getItem('GrindOS-theme');
+    if (saved) {
+      document.documentElement.classList.add(saved);
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.documentElement.classList.add('dark');
+    }
+  })();
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Hash Sets — Data Structures & Algorithms — GrindOS</title>
+<link rel="stylesheet" href="../../../assets/style.css?v=13">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+<link rel="icon" type="image/png" href="../../../logo.png">
+
+<link rel="apple-touch-icon" href="../../../logo.png">
+</head>
+<body>
+
+<div id="reading-progress"></div>
+<header class="topbar">
+  <button class="icon-btn menu-toggle" id="menu-toggle" aria-label="Menu">☰</button>
+  <a href="dashboard.html" class="topbar-brand">
+    <img src="../../../logo.png" alt="GrindOS Logo" class="brand-logo" style="width: 34px; height: 34px; object-fit: contain; border-radius: 4px; flex-shrink: 0; display: inline-block; vertical-align: middle;">
+    <span class="brand-wordmark">GrindOS</span>
+  </a>
+  <nav class="topbar-nav">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="../../../courses/dsa/index.html" class="active">🧮 Data Structures & Algorithms</a>
+    <a href="../../../interview-prep/index.html" class="nav-cta">🎯 Interview Prep</a>
+  </nav>
+  <div class="topbar-right">
+    <button class="icon-btn" id="theme-toggle" aria-label="Toggle theme"><span class="theme-icon">☾</span></button>
+  </div>
+</header>
+<div class="page-layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-course-label"><span class="course-emoji">🧮</span>Data Structures & Algorithms</div>
+    </div>
+    <div class="sidebar-progress">
+      <div class="progress-label-row">
+        <span>Progress</span>
+        <span class="progress-count">22 / 72</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" style="width:31%"></div></div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-search">
+<input type="text" id="sidebar-search" placeholder="Search topics…  /" autocomplete="off">
+<span class="sidebar-search-icon">⌕</span></div>
+<details class="chapter-group" open>
+<summary class="chapter-summary"><span>Introduction & Complexity Analysis</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/dsa/topics/001-what-is-dsa.html"><span class="topic-num">001</span>What is DSA?</a></li>
+<li class="topic-item"><a href="../../../courses/dsa/topics/002-time-complexity.html"><span class="topic-num">002</span>Time Complexity & Big-O</a></li>
+<li class="topic-item"><a href="../../../courses/dsa/topics/003-space-complexity.html"><span class="topic-num">003</span>Space Complexity</a></li>
+<li class="topic-item"><a href="../../../courses/dsa/topics/004-recursion-basics.html"><span class="topic-num">004</span>Recursion Basics</a></li>
+<li class="topic-item"><a href="../../../courses/dsa/topics/005-recursion-tree.html"><span class="topic-num">005</span>Recursion Tree & Call Stack</a></li>
+</ul></details>
+<details class="chapter-group" >
+<summary class="chapter-summary"><span>Arrays & Strings</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/dsa/topics/006-arrays.html"><span class="topic-num">006</span>Arrays — Fundamentals</a></li>
+<li class="topic-item"><a href="../../../courses/dsa/topics/007-sliding-window.html"><span class="topic-num">007</span>Sliding Window Technique</a></li>
+<li class="topic-item"><a href="../../../courses/dsa/topics/008-two-pointers.html"><span class="topic-num">008</span>Two Pointer Technique</a></li>
+<li class="topic-item"><a href="../../../courses/dsa/topics/009-prefix-sum.html"><span class="topic-num">009</span>Prefix Sum Arrays</a></li>
+<li class="topic-item"><a href="../../../courses/dsa/topics/010-strings.html"><span class="topic-num">010</span>Strings — Fundamentals</a></li>
+<li class="topic-item"><a href="../../../courses/dsa/topics/011-string-hashing.html"><span class="topic-num">011</span>String Hashing & Rolling Hash</a></li>
+</ul></details>
+<details class="chapter-group" >
+<summary class="chapter-summary"><span>Linked Lists</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/dsa/topics/012-singly-linked-list.html"><span class="topic-num">012</span>Singly Linked List</a></li>
+<li class="topic-item"><a href="../../../courses/dsa/topics/013-doubly-linked-list.html"><span class="topic-num">013</span>Doubly Linked List</a></li>
+<li class="topic-item"><a href="../../../courses/dsa/topics/014-circular-linked-list.html"><span class="topic-num">014</span>Circular Linked List</a></li>
+<li class="topic-item"><a href="../../../courses/dsa/topics/015-linked-list-patterns.html"><span class="topic-num">015</span>Linked List Patterns (Fast & Slow Pointers)</a></li>
+</ul></details>
+<details class="chapter-group" >
+<summary class="chapter-summary"><span>Stacks & Queues</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/dsa/topics/016-stack.html"><span class="topic-num">016</span>Stack — Concept & Implementation</a></li>
+<li class="topic-item"><a href="../../../courses/dsa/topics/017-monotonic-stack.html"><span class="topic-num">017</span>Monotonic Stack</a></li>
+<li class="topic-item"><a href="../../../courses/dsa/topics/018-queue.html"><span class="topic-num">018</span>Queue — Concept & Implementation</a></li>
+<li class="topic-item"><a href="../../../courses/dsa/topics/019-deque.html"><span class="topic-num">019</span>Deque (Double-Ended Queue)</a></li>
+<li class="topic-item"><a href="../../../courses/dsa/topics/020-priority-queue.html"><span class="topic-num">020</span>Priority Queue & Heaps</a></li>
+</ul></details>
+<details class="chapter-group" open>
+<summary class="chapter-summary"><span>Hashing</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/dsa/topics/021-hash-tables.html"><span class="topic-num">021</span>Hash Tables & Hash Maps</a></li>
+<li class="topic-item active"><a href="../../../courses/dsa/topics/022-hash-sets.html"><span class="topic-num">022</span>Hash Sets</a></li>
+<li class="topic-item"><a href="../../../courses/dsa/topics/023-collision-resolution.html"><span class="topic-num">023</span>Collision Resolution Techniques</a></li>
+<li class="topic-item"><a href="../../../courses/dsa/topics/024-hashing-patterns.html"><span class="topic-num">024</span>Hashing Problem Patterns</a></li>
+</ul></details>
+<details class="chapter-group" >
+<summary class="chapter-summary"><span>Trees</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/dsa/topics/025-binary-tree.html"><span class="topic-num">025</span>Binary Trees — Fundamentals</a></li>
+<li class="topic-item"><a href="../../../courses/dsa/topics/026-bst.html"><span class="topic-num">026</span>Binary Search Trees (BST)</a></li>
+<li class="topic-item"><a href="../../../courses/dsa/topics/027-tree-traversals.html"><span class="topic-num">027</span>Tree Traversals (BFS & DFS)</a></li>
+<li class="topic-item"><a href="../../../courses/dsa/topics/028-avl-tree.html"><span class="topic-num">028</span>AVL Trees (Self-Balancing)</a></li>
+<li class="topic-item"><a href="../../../courses/dsa/topics/029-red-black-tree.html"><span class="topic-num">029</span>Red-Black Trees</a></li>
+<li class="topic-item"><a href="../../../courses/dsa/topics/030-segment-tree.html"><span class="topic-num">030</span>Segment Trees</a></li>
+<li class="topic-item"><a href="../../../courses/dsa/topics/031-fenwick-tree.html"><span class="topic-num">031</span>Fenwick Tree (BIT)</a></li>
+<li class="topic-item"><a href="../../../courses/dsa/topics/032-trie.html"><span class="topic-num">032</span>Trie (Prefix Tree)</a></li>
+</ul></details>
+<details class="chapter-group" >
+<summary class="chapter-summary"><span>Heaps</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/dsa/topics/033-min-max-heap.html"><span class="topic-num">033</span>Min-Heap & Max-Heap</a></li>
+<li class="topic-item"><a href="../../../courses/dsa/topics/034-heap-operations.html"><span class="topic-num">034</span>Heap Operations & Heapify</a></li>
+<li class="topic-item"><a href="../../../courses/dsa/topics/035-heap-sort.html"><span class="topic-num">035</span>Heap Sort</a></li>
+<li class="topic-item"><a href="../../../courses/dsa/topics/036-top-k-problems.html"><span class="topic-num">036</span>Top-K Element Problems</a></li>
+</ul></details>
+<details class="chapter-group" >
+<summary class="chapter-summary"><span>Graphs</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/dsa/topics/037-graph-basics.html"><span class="topic-num">037</span>Graph — Fundamentals & Representations</a></li>
+<li class="topic-item"><a href="../../../courses/dsa/topics/038-bfs-dfs.html"><span class="topic-num">038</span>BFS & DFS Algorithms</a></li>
+<li class="topic-item"><a href="../../../courses/dsa/topics/039-topological-sort.html"><span class="topic-num">039</span>Topological Sorting</a></li>
+<li class="topic-item"><a href="../../../courses/dsa/topics/040-shortest-path.html"><span class="topic-num">040</span>Shortest Path — Dijkstra & Bellman-Ford</a></li>
+<li class="topic-item"><a href="../../../courses/dsa/topics/041-minimum-spanning-tree.html"><span class="topic-num">041</span>Minimum Spanning Trees (Kruskal & Prim)</a></li>
+<li class="topic-item"><a href="../../../courses/dsa/topics/042-union-find.html"><span class="topic-num">042</span>Union-Find / Disjoint Set Union</a></li>
+<li class="topic-item"><a href="../../../courses/dsa/topics/043-graph-patterns.html"><span class="topic-num">043</span>Graph Problem Patterns</a></li>
+</ul></details>
+<details class="chapter-group" >
+<summary class="chapter-summary"><span>Sorting & Searching</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/dsa/topics/044-bubble-insertion-selection.html"><span class="topic-num">044</span>Bubble, Insertion & Selection Sort</a></li>
+<li class="topic-item"><a href="../../../courses/dsa/topics/045-merge-sort.html"><span class="topic-num">045</span>Merge Sort</a></li>
+<li class="topic-item"><a href="../../../courses/dsa/topics/046-quick-sort.html"><span class="topic-num">046</span>Quick Sort</a></li>
+<li class="topic-item"><a href="../../../courses/dsa/topics/047-binary-search.html"><span class="topic-num">047</span>Binary Search</a></li>
+<li class="topic-item"><a href="../../../courses/dsa/topics/048-binary-search-patterns.html"><span class="topic-num">048</span>Binary Search on Answer Patterns</a></li>
+</ul></details>
+<details class="chapter-group" >
+<summary class="chapter-summary"><span>Dynamic Programming</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/dsa/topics/049-dp-intro.html"><span class="topic-num">049</span>Dynamic Programming — Introduction</a></li>
+<li class="topic-item"><a href="../../../courses/dsa/topics/050-memoization-vs-tabulation.html"><span class="topic-num">050</span>Memoization vs Tabulation</a></li>
+<li class="topic-item"><a href="../../../courses/dsa/topics/051-1d-dp.html"><span class="topic-num">051</span>1D DP Patterns (Fibonacci, Climbing Stairs)</a></li>
+<li class="topic-item"><a href="../../../courses/dsa/topics/052-2d-dp.html"><span class="topic-num">052</span>2D DP Patterns (Grid, LCS)</a></li>
+<li class="topic-item"><a href="../../../courses/dsa/topics/053-knapsack.html"><span class="topic-num">053</span>0-1 Knapsack & Variants</a></li>
+<li class="topic-item"><a href="../../../courses/dsa/topics/054-dp-on-strings.html"><span class="topic-num">054</span>DP on Strings (Edit Distance, LPS)</a></li>
+<li class="topic-item"><a href="../../../courses/dsa/topics/055-dp-on-trees.html"><span class="topic-num">055</span>DP on Trees</a></li>
+<li class="topic-item"><a href="../../../courses/dsa/topics/056-bitmask-dp.html"><span class="topic-num">056</span>Bitmask DP</a></li>
+</ul></details>
+<details class="chapter-group" >
+<summary class="chapter-summary"><span>Greedy Algorithms</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/dsa/topics/057-greedy-intro.html"><span class="topic-num">057</span>Greedy Algorithm — Introduction</a></li>
+<li class="topic-item"><a href="../../../courses/dsa/topics/058-interval-problems.html"><span class="topic-num">058</span>Interval Scheduling Problems</a></li>
+<li class="topic-item"><a href="../../../courses/dsa/topics/059-greedy-patterns.html"><span class="topic-num">059</span>Greedy Problem Patterns</a></li>
+</ul></details>
+<details class="chapter-group" >
+<summary class="chapter-summary"><span>Divide & Conquer</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/dsa/topics/060-divide-conquer.html"><span class="topic-num">060</span>Divide & Conquer Strategy</a></li>
+<li class="topic-item"><a href="../../../courses/dsa/topics/061-master-theorem.html"><span class="topic-num">061</span>Master Theorem</a></li>
+</ul></details>
+<details class="chapter-group" >
+<summary class="chapter-summary"><span>Backtracking</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/dsa/topics/062-backtracking-intro.html"><span class="topic-num">062</span>Backtracking — Introduction</a></li>
+<li class="topic-item"><a href="../../../courses/dsa/topics/063-subsets-permutations.html"><span class="topic-num">063</span>Subsets & Permutations</a></li>
+<li class="topic-item"><a href="../../../courses/dsa/topics/064-n-queens.html"><span class="topic-num">064</span>N-Queens & Sudoku Solver</a></li>
+</ul></details>
+<details class="chapter-group" >
+<summary class="chapter-summary"><span>Bit Manipulation</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/dsa/topics/065-bit-basics.html"><span class="topic-num">065</span>Bit Manipulation Basics</a></li>
+<li class="topic-item"><a href="../../../courses/dsa/topics/066-bit-tricks.html"><span class="topic-num">066</span>Common Bit Tricks</a></li>
+</ul></details>
+<details class="chapter-group" >
+<summary class="chapter-summary"><span>Advanced Topics</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/dsa/topics/067-fast-slow-pointers.html"><span class="topic-num">067</span>Fast & Slow Pointers — Advanced</a></li>
+<li class="topic-item"><a href="../../../courses/dsa/topics/068-cyclic-sort.html"><span class="topic-num">068</span>Cyclic Sort Pattern</a></li>
+<li class="topic-item"><a href="../../../courses/dsa/topics/069-merge-intervals.html"><span class="topic-num">069</span>Merge Intervals Pattern</a></li>
+<li class="topic-item"><a href="../../../courses/dsa/topics/070-monotonic-queue.html"><span class="topic-num">070</span>Monotonic Queue — Sliding Window Max</a></li>
+<li class="topic-item"><a href="../../../courses/dsa/topics/071-two-heaps.html"><span class="topic-num">071</span>Two Heaps Pattern</a></li>
+<li class="topic-item"><a href="../../../courses/dsa/topics/072-subset-generation.html"><span class="topic-num">072</span>Subset Generation with BFS</a></li>
+</ul></details>
+    </nav>
+  </aside>
+  <main class="main-content">
+    <div class="breadcrumb">
+      <a href="dashboard.html">Dashboard</a>
+      <span class="breadcrumb-sep">/</span>
+      <a href="dashboard.html">Data Structures & Algorithms</a>
+      <span class="breadcrumb-sep">/</span>
+      <span>Hashing</span>
+    </div>
+    <div class="topic-meta">
+      <div class="topic-meta-chip">📂 Hashing</div>
+      <div class="topic-meta-chip">📄 Topic 22</div>
+      <div class="topic-meta-chip" id="reading-time">…</div>
+    </div>
+    <article class="topic-article"><div class="editorial-content max-w-3xl px-4 mt-2"><div class="coreSubject dark:text-zinc-300"><br/>
+<h2>1. Overview</h2>
+<p>This topic covers <strong>Hash Sets</strong> — a critical concept in Data Structures and Algorithms. Mastering this will help you solve a wide class of placement interview problems efficiently.</p>
+
+<h2>2. Key Concepts</h2>
+<ul>
+<li>Core definition and intuition behind Hash Sets</li>
+<li>When to apply this approach</li>
+<li>Time and space complexity analysis</li>
+<li>Common pitfalls and edge cases</li>
+</ul>
+
+<h2>3. Implementation</h2>
+<pre><code class="language-python"># Pseudocode / Template for Hash Sets
+def solve(input):
+    # Initialize state
+    result = None
+    
+    # Core logic
+    # ...process input...
+    
+    return result
+</code></pre>
+
+<h2>4. Worked Example</h2>
+<p>Consider the following example to build intuition:</p>
+<pre><code class="language-python"># Example input
+# input = [...]
+# Expected output: ...
+
+# Step-by-step trace:
+# Step 1: ...
+# Step 2: ...
+# Step 3: Final answer = ...
+</code></pre>
+
+<h2>5. Common Interview Questions</h2>
+<ul>
+<li>LeetCode #1 — Classic application of Hash Sets</li>
+<li>LeetCode #2 — Variant requiring optimization</li>
+<li>LeetCode #3 — Hard-level application</li>
+</ul>
+
+<h2>6. Complexity Summary</h2>
+<table>
+<tbody><tr><th>Operation</th><th>Time</th><th>Space</th></tr>
+<tr><td>Best Case</td><td>O(?)</td><td>O(?)</td></tr>
+<tr><td>Average Case</td><td>O(?)</td><td>O(?)</td></tr>
+<tr><td>Worst Case</td><td>O(?)</td><td>O(?)</td></tr>
+</tbody></table>
+</div></div></article>
+<div class="topic-nav"><a href="021-hash-tables.html" class="nav-btn nav-prev"><span class="nav-btn-label">← Prev</span><span class="nav-btn-title">Hash Tables & Hash Maps</span></a><a href="023-collision-resolution.html" class="nav-btn nav-next"><span class="nav-btn-label">Next →</span><span class="nav-btn-title">Collision Resolution Techniques</span></a></div>
+  </main>
+</div>
+
+<button id="back-to-top" aria-label="Back to top">↑</button>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="../../../assets/script.js?v=12"></script>
+</body>
+</html>

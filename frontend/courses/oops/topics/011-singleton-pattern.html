@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+  (function() {
+    const saved = localStorage.getItem('GrindOS-theme');
+    if (saved) {
+      document.documentElement.classList.add(saved);
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.documentElement.classList.add('dark');
+    }
+  })();
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Singleton Pattern — Thread Safety, Double-Checked Locking — Object-Oriented Programming — GrindOS</title>
+<link rel="stylesheet" href="../../../assets/style.css?v=13">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+  <link rel="icon" type="image/png" href="../../../logo.png">
+  
+  <link rel="apple-touch-icon" href="../../../logo.png">
+</head>
+<body>
+
+<div id="reading-progress"></div>
+
+<header class="topbar">
+  <button class="icon-btn menu-toggle" id="menu-toggle" aria-label="Menu">☰</button>
+  <a href="dashboard.html" class="topbar-brand">
+    <img src="../../../logo.png" alt="GrindOS Logo" class="brand-logo" style="width: 34px; height: 34px; object-fit: contain; border-radius: 4px; flex-shrink: 0; display: inline-block; vertical-align: middle;">
+    <span class="brand-wordmark">GrindOS</span>
+  </a>
+  <nav class="topbar-nav">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="dashboard.html" class="active">📦 Object-Oriented Programming</a>
+    <a href="../../../interview-prep/index.html" class="nav-cta">🎯 Interview Prep</a>
+  </nav>
+  <div class="topbar-right">
+    <button class="icon-btn" id="theme-toggle" aria-label="Toggle theme"><span class="theme-icon">☾</span></button>
+  </div>
+</header>
+
+<div class="page-layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-course-label"><span class="course-emoji">📦</span>Object-Oriented Programming</div>
+    </div>
+    <div class="sidebar-progress">
+      <div class="progress-label-row">
+        <span>Progress</span>
+        <span class="progress-count">11 / 15</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" style="width:73%"></div></div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-search">
+        <input type="text" id="sidebar-search" placeholder="Search topics…  /" autocomplete="off">
+        <span class="sidebar-search-icon">⌕</span>
+      </div>
+      <details class="chapter-group" >
+        <summary class="chapter-summary"><span>Fundamentals</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item "><a href="../../../courses/oops/topics/001-introduction-to-oops.html"><span class="topic-num">001</span>Introduction to OOPs</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/002-classes-and-objects.html"><span class="topic-num">002</span>Classes and Objects</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/003-encapsulation.html"><span class="topic-num">003</span>Encapsulation</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/004-inheritance.html"><span class="topic-num">004</span>Inheritance</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/005-polymorphism.html"><span class="topic-num">005</span>Polymorphism</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/006-abstraction.html"><span class="topic-num">006</span>Abstraction</a></li>
+        </ul>
+      </details>
+      <details class="chapter-group" >
+        <summary class="chapter-summary"><span>Advanced Concepts</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item "><a href="../../../courses/oops/topics/007-constructors-in-python.html"><span class="topic-num">007</span>Constructors in Python</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/008-dunder-magic-methods.html"><span class="topic-num">008</span>Dunder Magic Methods</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/009-static-and-class-methods.html"><span class="topic-num">009</span>Static and Class Methods</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/010-composition-vs-inheritance.html"><span class="topic-num">010</span>Composition vs Inheritance</a></li>
+        </ul>
+      </details>
+      <details class="chapter-group" open>
+        <summary class="chapter-summary"><span>Design Patterns</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item active"><a href="../../../courses/oops/topics/011-singleton-pattern.html"><span class="topic-num">011</span>Singleton Pattern</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/012-factory-pattern.html"><span class="topic-num">012</span>Factory Pattern</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/013-observer-pattern.html"><span class="topic-num">013</span>Observer Pattern</a></li>
+        </ul>
+      </details>
+      <details class="chapter-group" >
+        <summary class="chapter-summary"><span>Interview Special</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item "><a href="../../../courses/oops/topics/014-oops-interview-questions.html"><span class="topic-num">014</span>OOPs Interview Qs</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/015-oops-in-python-vs-java.html"><span class="topic-num">015</span>OOPs Python vs Java</a></li>
+        </ul>
+      </details>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    <div class="breadcrumb">
+      <a href="dashboard.html">Dashboard</a>
+      <span class="breadcrumb-sep">/</span>
+      <a href="dashboard.html">Object-Oriented Programming</a>
+      <span class="breadcrumb-sep">/</span>
+      <span>Design Patterns</span>
+    </div>
+
+    <div class="topic-meta">
+      <div class="topic-meta-chip">📂 Design Patterns</div>
+      <div class="topic-meta-chip">📄 Topic 11</div>
+      <div class="topic-meta-chip" id="reading-time">…</div>
+    </div>
+
+    <article class="topic-article">
+      <div class="editorial-content max-w-3xl px-4 mt-2">
+        <div class="coreSubject dark:text-zinc-300">
+          <br/>
+          
+<h2>1. What is the Singleton Pattern?</h2>
+<p>The <strong>Singleton Pattern</strong> is a creational design pattern that restricts the instantiation of a class to exactly one globally shared instance, providing a unified access point (e.g., database connection pool, logger registry).</p>
+
+<hr class="line-break"/>
+
+<h2>2. Python Singleton Implementation</h2>
+<p>We implement a Singleton in Python by overriding the allocator magic method `__new__`:</p>
+<pre><code class="language-python">class Singleton:
+    _instance = None
+    
+    def __new__(cls, *args, **kwargs):
+        if not cls._instance:
+            # Allocates and caches instance
+            cls._instance = super(Singleton, cls).__new__(cls)
+        return cls._instance
+
+s1 = Singleton()
+s2 = Singleton()
+print(s1 is s2) # Output: True (Identical memory block)</code></pre>
+
+<hr class="line-break"/>
+
+<h2>3. Thread-Safe Singleton</h2>
+<p>In multi-threaded environments, two threads could concurrently execute the `if not cls._instance` check, creating two instances. We prevent this using a synchronization lock and **Double-Checked Locking**:</p>
+<pre><code class="language-python">import threading
+
+class ThreadSafeSingleton:
+    _instance = None
+    _lock = threading.Lock()
+    
+    def __new__(cls):
+        if not cls._instance: # First check (No lock overhead if created)
+            with cls._lock:
+                if not cls._instance: # Second check (Thread safe)
+                    cls._instance = super(ThreadSafeSingleton, cls).__new__(cls)
+        return cls._instance</code></pre>
+
+          
+<div class="interview-qna">
+  <h3>🎯 Topic Q&A</h3>
+  <div class="qna-item">
+    <strong>Q1: What is the Singleton Design Pattern and when should it be used?</strong>
+    <p>A Singleton restricts a class to one single active instance. It should be used to manage global shared resources like logger registries, database connection pools, or application state configurations.</p>
+  </div>
+  <div class="qna-item">
+    <strong>Q2: Why is the standard `__new__` singleton implementation unsafe in multi-threaded systems?</strong>
+    <p>Because of race conditions. If two threads execute `__new__` at the same time before `_instance` is set, both checks pass, creating two distinct object allocations in memory.</p>
+  </div>
+  <div class="qna-item">
+    <strong>Q3: Explain Double-Checked Locking in Singletons.</strong>
+    <p>Double-checked locking minimizes lock overhead. It checks if `_instance` is empty before locking. If empty, it acquires the thread lock and checks `_instance` again, ensuring only the first thread performs the instantiation while keeping subsequent fetches extremely fast.</p>
+  </div>
+  <div class="qna-item">
+    <strong>Q4: What is an alternative way to implement a Singleton in Python besides `__new__`?</strong>
+    <p>Using a **Module-level instance**. Python modules are cached on first import. By instantiating an object at the module level and importing that instance, Python natively enforces a Singleton structure.</p>
+  </div>
+  <div class="qna-item">
+    <strong>Q5: Can you inherit from a Singleton class?</strong>
+    <p>It is difficult and highly discouraged. Subclassing singletons complicates MRO constructor logic and can inadvertently trigger `__new__` clashes, corrupting base class caches.</p>
+  </div>
+</div>
+
+        </div>
+      </div>
+    </article>
+
+    <div class="topic-nav"><a href="010-composition-vs-inheritance.html" class="nav-btn nav-prev"><span class="nav-btn-label">← Previous</span><span class="nav-btn-title">Composition vs Inheritance</span></a><a href="012-factory-pattern.html" class="nav-btn nav-next"><span class="nav-btn-label">Next →</span><span class="nav-btn-title">Factory Pattern</span></a></div>
+  </main>
+</div>
+
+<button id="back-to-top" aria-label="Back to top">↑</button>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="../../../assets/script.js?v=12"></script>
+</body>
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<script>
+  (function() {
+    const saved = localStorage.getItem('GrindOS-theme');
+    if (saved) {
+      document.documentElement.classList.add(saved);
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.documentElement.classList.add('dark');
+    }
+  })();
+</script>
+<title>Operating Systems — GrindOS</title>
+<link rel="stylesheet" href="../../assets/style.css?v=13">
+  <link rel="icon" type="image/png" href="../../logo.png">
+  
+  <link rel="apple-touch-icon" href="../../logo.png">
+</head>
+<body>
+
+<header class="topbar">
+  <a href="dashboard.html" class="topbar-brand">
+    <img src="../../logo.png" alt="GrindOS Logo" class="brand-logo" style="width: 34px; height: 34px; object-fit: contain; border-radius: 4px; flex-shrink: 0; display: inline-block; vertical-align: middle;">
+    <span class="brand-wordmark">GrindOS</span>
+  </a>
+  <nav class="topbar-nav">
+    <a href="dashboard.html" class="learn-nav active">Learn</a>
+    <a href="../../tracker.html" class="practice-nav">Practice</a>
+    <a href="../../interview-prep/index.html" class="prep-nav">Prep</a>
+  </nav>
+  <div class="topbar-right">
+    <button class="icon-btn" id="theme-toggle" aria-label="Toggle theme"><span class="theme-icon">☾</span></button>
+  </div>
+</header>
+
+<div class="course-page">
+  <div class="course-hero">
+    <div class="course-hero-icon">💻</div>
+    <div class="course-hero-body">
+      <h1>Operating Systems</h1>
+      <p>Processes, CPU scheduling, memory management, page tables, deadlocks, synchronization, and file system architecture.</p>
+      <div class="course-hero-meta">
+        <span class="meta-chip">📖 17 topics</span>
+        <span class="meta-chip">📂 5 chapters</span>
+      </div>
+    </div>
+    <a href="topics/001-process-vs-thread.html" class="start-btn">Start Course →</a>
+  </div>
+
+  <div class="chapter-grid">
+    <div class="chapter-card">
+      <div class="chapter-card-head">
+        <h3 class="chapter-card-title">Processes and CPU Scheduling</h3>
+        <span class="chapter-pill">4 topics</span>
+      </div>
+      <ul class="chapter-topic-list">
+        <li><span class="t-num">001</span><a href="topics/001-process-vs-thread.html">Process vs Thread</a></li>
+        <li><span class="t-num">002</span><a href="topics/002-cpu-scheduling-algorithms-fcfs-sjf-rr.html">CPU Scheduling Algorithms</a></li>
+        <li><span class="t-num">003</span><a href="topics/003-context-switching-and-dispatcher.html">Context Switching & Dispatcher</a></li>
+        <li><span class="t-num">004</span><a href="topics/004-multilevel-queue-scheduling.html">Multilevel Queue Scheduling</a></li>
+      </ul>
+      <a href="topics/001-process-vs-thread.html" class="chapter-start-btn">Start Chapter →</a>
+    </div>
+
+    <div class="chapter-card">
+      <div class="chapter-card-head">
+        <h3 class="chapter-card-title">Memory Management</h3>
+        <span class="chapter-pill">4 topics</span>
+      </div>
+      <ul class="chapter-topic-list">
+        <li><span class="t-num">005</span><a href="topics/005-paging-and-page-tables.html">Paging and Page Tables</a></li>
+        <li><span class="t-num">006</span><a href="topics/006-segmentation.html">Segmentation</a></li>
+        <li><span class="t-num">007</span><a href="topics/007-virtual-memory-and-demand-paging.html">Virtual Memory & Demand Paging</a></li>
+        <li><span class="t-num">008</span><a href="topics/008-page-replacement-algorithms.html">Page Replacement Algorithms</a></li>
+      </ul>
+      <a href="topics/005-paging-and-page-tables.html" class="chapter-start-btn">Start Chapter →</a>
+    </div>
+
+    <div class="chapter-card">
+      <div class="chapter-card-head">
+        <h3 class="chapter-card-title">Process Synchronization</h3>
+        <span class="chapter-pill">3 topics</span>
+      </div>
+      <ul class="chapter-topic-list">
+        <li><span class="t-num">009</span><a href="topics/009-critical-section-problem.html">Critical Section Problem</a></li>
+        <li><span class="t-num">010</span><a href="topics/010-mutex-vs-semaphore-vs-monitor.html">Mutex vs Semaphore vs Monitor</a></li>
+        <li><span class="t-num">011</span><a href="topics/011-classic-synchronisation-problems.html">Classic Synchronisation Problems</a></li>
+      </ul>
+      <a href="topics/009-critical-section-problem.html" class="chapter-start-btn">Start Chapter →</a>
+    </div>
+
+    <div class="chapter-card">
+      <div class="chapter-card-head">
+        <h3 class="chapter-card-title">Deadlocks</h3>
+        <span class="chapter-pill">3 topics</span>
+      </div>
+      <ul class="chapter-topic-list">
+        <li><span class="t-num">012</span><a href="topics/012-deadlock-conditions-and-prevention.html">Deadlock Conditions & Prevention</a></li>
+        <li><span class="t-num">013</span><a href="topics/013-deadlock-avoidance-bankers-algorithm.html">Deadlock Avoidance & Banker's Algorithm</a></li>
+        <li><span class="t-num">014</span><a href="topics/014-deadlock-detection-and-recovery.html">Deadlock Detection & Recovery</a></li>
+      </ul>
+      <a href="topics/012-deadlock-conditions-and-prevention.html" class="chapter-start-btn">Start Chapter →</a>
+    </div>
+
+    <div class="chapter-card">
+      <div class="chapter-card-head">
+        <h3 class="chapter-card-title">File Systems & Disk Scheduling</h3>
+        <span class="chapter-pill">3 topics</span>
+      </div>
+      <ul class="chapter-topic-list">
+        <li><span class="t-num">015</span><a href="topics/015-file-system-concepts.html">File System Concepts</a></li>
+        <li><span class="t-num">016</span><a href="topics/016-directory-structure-and-inode.html">Directory Structure and Inode</a></li>
+        <li><span class="t-num">017</span><a href="topics/017-disk-scheduling-algorithms.html">Disk Scheduling Algorithms</a></li>
+      </ul>
+      <a href="topics/015-file-system-concepts.html" class="chapter-start-btn">Start Chapter →</a>
+    </div>
+  </div>
+</div>
+
+<script src="../../assets/script.js?v=12"></script>
+</body>
+</html>

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+  (function() {
+    const saved = localStorage.getItem('GrindOS-theme');
+    if (saved) {
+      document.documentElement.classList.add(saved);
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.documentElement.classList.add('dark');
+    }
+  })();
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Multilevel Queue Scheduling — Feedback Queues — Operating Systems — GrindOS</title>
+<link rel="stylesheet" href="../../../assets/style.css?v=13">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+  <link rel="icon" type="image/png" href="../../../logo.png">
+  
+  <link rel="apple-touch-icon" href="../../../logo.png">
+</head>
+<body>
+
+<div id="reading-progress"></div>
+
+<header class="topbar">
+  <button class="icon-btn menu-toggle" id="menu-toggle" aria-label="Menu">☰</button>
+  <a href="dashboard.html" class="topbar-brand">
+    <img src="../../../logo.png" alt="GrindOS Logo" class="brand-logo" style="width: 34px; height: 34px; object-fit: contain; border-radius: 4px; flex-shrink: 0; display: inline-block; vertical-align: middle;">
+    <span class="brand-wordmark">GrindOS</span>
+  </a>
+  <nav class="topbar-nav">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="dashboard.html" class="active">💻 Operating Systems</a>
+    <a href="../../../interview-prep/index.html" class="nav-cta">🎯 Interview Prep</a>
+  </nav>
+  <div class="topbar-right">
+    <button class="icon-btn" id="theme-toggle" aria-label="Toggle theme"><span class="theme-icon">☾</span></button>
+  </div>
+</header>
+
+<div class="page-layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-course-label"><span class="course-emoji">💻</span>Operating Systems</div>
+    </div>
+    <div class="sidebar-progress">
+      <div class="progress-label-row">
+        <span>Progress</span>
+        <span class="progress-count">4 / 17</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" style="width:24%"></div></div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-search">
+        <input type="text" id="sidebar-search" placeholder="Search topics…  /" autocomplete="off">
+        <span class="sidebar-search-icon">⌕</span>
+      </div>
+      <details class="chapter-group" open>
+        <summary class="chapter-summary"><span>Processes and CPU Scheduling</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item "><a href="../../../courses/os/topics/001-process-vs-thread.html"><span class="topic-num">001</span>Process vs Thread</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/002-cpu-scheduling-algorithms-fcfs-sjf-rr.html"><span class="topic-num">002</span>CPU Scheduling Algorithms</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/003-context-switching-and-dispatcher.html"><span class="topic-num">003</span>Context Switching & Dispatcher</a></li>
+          <li class="topic-item active"><a href="../../../courses/os/topics/004-multilevel-queue-scheduling.html"><span class="topic-num">004</span>Multilevel Queue Scheduling</a></li>
+        </ul>
+      </details>
+      <details class="chapter-group" >
+        <summary class="chapter-summary"><span>Memory Management</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item "><a href="../../../courses/os/topics/005-paging-and-page-tables.html"><span class="topic-num">005</span>Paging and Page Tables</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/006-segmentation.html"><span class="topic-num">006</span>Segmentation</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/007-virtual-memory-and-demand-paging.html"><span class="topic-num">007</span>Virtual Memory & Demand Paging</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/008-page-replacement-algorithms.html"><span class="topic-num">008</span>Page Replacement Algorithms</a></li>
+        </ul>
+      </details>
+      <details class="chapter-group" >
+        <summary class="chapter-summary"><span>Process Synchronization</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item "><a href="../../../courses/os/topics/009-critical-section-problem.html"><span class="topic-num">009</span>Critical Section Problem</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/010-mutex-vs-semaphore-vs-monitor.html"><span class="topic-num">010</span>Mutex vs Semaphore vs Monitor</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/011-classic-synchronisation-problems.html"><span class="topic-num">011</span>Classic Synchronisation Problems</a></li>
+        </ul>
+      </details>
+      <details class="chapter-group" >
+        <summary class="chapter-summary"><span>Deadlocks</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item "><a href="../../../courses/os/topics/012-deadlock-conditions-and-prevention.html"><span class="topic-num">012</span>Deadlock Conditions & Prevention</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/013-deadlock-avoidance-bankers-algorithm.html"><span class="topic-num">013</span>Deadlock Avoidance & Banker's Algorithm</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/014-deadlock-detection-and-recovery.html"><span class="topic-num">014</span>Deadlock Detection & Recovery</a></li>
+        </ul>
+      </details>
+      <details class="chapter-group" >
+        <summary class="chapter-summary"><span>File Systems & Disk Scheduling</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item "><a href="../../../courses/os/topics/015-file-system-concepts.html"><span class="topic-num">015</span>File System Concepts</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/016-directory-structure-and-inode.html"><span class="topic-num">016</span>Directory Structure and Inode</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/017-disk-scheduling-algorithms.html"><span class="topic-num">017</span>Disk Scheduling Algorithms</a></li>
+        </ul>
+      </details>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    <div class="breadcrumb">
+      <a href="dashboard.html">Dashboard</a>
+      <span class="breadcrumb-sep">/</span>
+      <a href="dashboard.html">Operating Systems</a>
+      <span class="breadcrumb-sep">/</span>
+      <span>Processes and CPU Scheduling</span>
+    </div>
+
+    <div class="topic-meta">
+      <div class="topic-meta-chip">📂 Processes and CPU Scheduling</div>
+      <div class="topic-meta-chip">📄 Topic 4</div>
+      <div class="topic-meta-chip" id="reading-time">…</div>
+    </div>
+
+    <article class="topic-article">
+      <div class="editorial-content max-w-3xl px-4 mt-2">
+        <div class="coreSubject dark:text-zinc-300">
+          <br/>
+          
+<h2>1. Multilevel Queue Scheduling</h2>
+<p>In real-world operating systems, processes have distinct requirements. Instead of maintaining a single ready queue, <strong>Multilevel Queue Scheduling</strong> partitions the ready queue into several separate queues based on process properties (e.g., system processes, interactive foreground jobs, background batch jobs).</p>
+<ul>
+  <li>Each queue has its own unique scheduling algorithm (e.g., Round Robin for interactive jobs, FCFS for background batch jobs).</li>
+  <li><strong>Static Assignment:</strong> A process is assigned to a specific queue upon creation and cannot move between queues.</li>
+  <li><strong>Inter-Queue Scheduling:</strong> Typically implemented as a strict preemptive priority scheduling (e.g., service the system queue first, then interactive, then batch). This can lead to starvation of background queues.</li>
+</ul>
+
+<hr class="line-break"/>
+
+<h2>2. Multilevel Feedback Queue (MLFQ)</h2>
+<p>To eliminate the static mapping limitation and prevent starvation, the <strong>Multilevel Feedback Queue (MLFQ)</strong> was introduced. It allows processes to move dynamically between queues based on their execution history.</p>
+
+<h3>Core Rules of MLFQ</h3>
+<ol>
+  <li><strong>Aging:</strong> If a process spends too much time waiting in a low-priority queue, the OS promotes it to a higher-priority queue, preventing starvation.</li>
+  <li><strong>Preemption:</strong> A process that uses its entire time quantum on the CPU is demoted to a lower-priority queue (penalizing CPU-bound processes).</li>
+  <li><strong>I/O Release:</strong> A process that voluntary yields the CPU before its quantum expires (I/O-bound process) is kept in the high-priority queue, ensuring high responsiveness.</li>
+</ol>
+
+          
+<div class="interview-qna">
+  <h3>🎯 Topic Q&A</h3>
+  <div class="qna-item">
+    <strong>Q1: What is the main difference between Multilevel Queue and Multilevel Feedback Queue?</strong>
+    <p>In Multilevel Queue scheduling, processes are statically assigned to a queue and cannot move. In Multilevel Feedback Queue scheduling, processes can move dynamically between queues to optimize system performance and prevent starvation.</p>
+  </div>
+  <div class="qna-item">
+    <strong>Q2: How does MLFQ identify if a process is CPU-bound or I/O-bound?</strong>
+    <p>MLFQ monitors CPU usage. If a process uses its entire time quantum without blocking, the scheduler flags it as CPU-bound and demotes it. If it voluntary yields the CPU before the quantum ends for I/O, it remains in the high-priority queue.</p>
+  </div>
+  <div class="qna-item">
+    <strong>Q3: How does MLFQ prevent starvation of batch background processes?</strong>
+    <p>It uses <strong>Aging</strong>. If a background process waits in the low-priority queue for a set threshold, it is promoted to a higher-priority queue to guarantee CPU cycles.</p>
+  </div>
+  <div class="qna-item">
+    <strong>Q4: Why do we use different scheduling algorithms for foreground and background queues?</strong>
+    <p>Foreground queues require fast response times for interactive user actions (best served by preemptive Round Robin). Background queues handle long processing batch jobs where latency doesn't matter, making low-overhead FCFS more efficient.</p>
+  </div>
+  <div class="qna-item">
+    <strong>Q5: Can you write a pseudo-implementation outline of queue promotion in Python?</strong>
+    <pre><code class="language-python"># Dynamic queue aging tick
+def check_aging(queues, max_wait_time):
+    for q_idx in range(1, len(queues)): # Skip highest queue
+        for process in list(queues[q_idx]):
+            if process.wait_time > max_wait_time:
+                queues[q_idx].remove(process)
+                queues[q_idx - 1].append(process) # Promote
+                process.wait_time = 0</code></pre>
+  </div>
+</div>
+
+        </div>
+      </div>
+    </article>
+
+    <div class="topic-nav"><a href="003-context-switching-and-dispatcher.html" class="nav-btn nav-prev"><span class="nav-btn-label">← Previous</span><span class="nav-btn-title">Context Switching & Dispatcher</span></a><a href="005-paging-and-page-tables.html" class="nav-btn nav-next"><span class="nav-btn-label">Next →</span><span class="nav-btn-title">Paging and Page Tables</span></a></div>
+  </main>
+</div>
+
+<button id="back-to-top" aria-label="Back to top">↑</button>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="../../../assets/script.js?v=12"></script>
+</body>
+</html>

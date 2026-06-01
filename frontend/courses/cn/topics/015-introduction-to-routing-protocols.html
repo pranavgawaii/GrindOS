@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+  (function() {
+    const saved = localStorage.getItem('GrindOS-theme');
+    if (saved) {
+      document.documentElement.classList.add(saved);
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.documentElement.classList.add('dark');
+    }
+  })();
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Introduction to Routing Protocols — Computer Networks — GrindOS</title>
+<link rel="stylesheet" href="../../../assets/style.css?v=13">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+  
+  <link rel="icon" type="image/png" href="../../../logo.png">
+  
+  <link rel="apple-touch-icon" href="../../../logo.png">
+</head>
+<body>
+
+<div id="reading-progress"></div>
+
+<header class="topbar">
+  <button class="icon-btn menu-toggle" id="menu-toggle" aria-label="Menu">☰</button>
+  <a href="dashboard.html" class="topbar-brand">
+    <img src="../../../logo.png" alt="GrindOS Logo" class="brand-logo" style="width: 34px; height: 34px; object-fit: contain; border-radius: 4px; flex-shrink: 0; display: inline-block; vertical-align: middle;">
+    <span class="brand-wordmark">GrindOS</span>
+  </a>
+  <nav class="topbar-nav">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="dashboard.html" class="active">🌐 Computer Networks</a>
+    <a href="../../../interview-prep/index.html" class="nav-cta">🎯 Interview Prep</a>
+  </nav>
+  <div class="topbar-right">
+    <button class="icon-btn" id="theme-toggle" aria-label="Toggle theme"><span class="theme-icon">☾</span></button>
+  </div>
+</header>
+
+<div class="page-layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-course-label"><span class="course-emoji">🌐</span>Computer Networks</div>
+    </div>
+    <div class="sidebar-progress">
+      <div class="progress-label-row">
+        <span>Progress</span>
+        <span class="progress-count">16 / 40</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" style="width:40%"></div></div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-search">
+<input type="text" id="sidebar-search" placeholder="Search topics…  /" autocomplete="off">
+<span class="sidebar-search-icon">⌕</span></div>
+<details class="chapter-group">
+<summary class="chapter-summary"><span>Introduction To Computer Networks</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/cn/topics/000-what-are-computer-networks.html"><span class="topic-num">000</span>What are Computer Networks?</a></li>
+<li class="topic-item"><a href="../../../courses/cn/topics/001-types-of-networks.html"><span class="topic-num">001</span>Types of Networks</a></li>
+<li class="topic-item"><a href="../../../courses/cn/topics/002-what-are-network-topologies.html"><span class="topic-num">002</span>What are Network Topologies?</a></li>
+</ul></details>
+<details class="chapter-group">
+<summary class="chapter-summary"><span>Networking Models</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/cn/topics/003-introduction-to-the-osi-model.html"><span class="topic-num">003</span>Introduction to the OSI Model</a></li>
+<li class="topic-item"><a href="../../../courses/cn/topics/004-introduction-to-tcpip-model.html"><span class="topic-num">004</span>Introduction to TCP/IP Model</a></li>
+</ul></details>
+<details class="chapter-group">
+<summary class="chapter-summary"><span>Networking Fundamentals And Basics</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/cn/topics/005-introduction-to-network-cabling-and-connectors.html"><span class="topic-num">005</span>Introduction to Network Cabling and Connectors</a></li>
+<li class="topic-item"><a href="../../../courses/cn/topics/006-introduction-to-network-devices.html"><span class="topic-num">006</span>Introduction to Network Devices</a></li>
+<li class="topic-item"><a href="../../../courses/cn/topics/007-ethernet-frame-structure.html"><span class="topic-num">007</span>Ethernet Frame Structure</a></li>
+</ul></details>
+<details class="chapter-group">
+<summary class="chapter-summary"><span>Network Protocols And Communication</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/cn/topics/008-network-protocols.html"><span class="topic-num">008</span>Network Protocols</a></li>
+<li class="topic-item"><a href="../../../courses/cn/topics/009-importance.html"><span class="topic-num">009</span>Importance</a></li>
+<li class="topic-item"><a href="../../../courses/cn/topics/010-network-layer-functions-and-protocols.html"><span class="topic-num">010</span>Network Layer Functions and Protocols</a></li>
+</ul></details>
+<details class="chapter-group">
+<summary class="chapter-summary"><span>IP Addressing And Subnetting</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/cn/topics/011-ip-addressing-ipv4-and-ipv6.html"><span class="topic-num">011</span>IP Addressing (IPv4 and IPv6)</a></li>
+<li class="topic-item"><a href="../../../courses/cn/topics/012-subnetting.html"><span class="topic-num">012</span>Subnetting</a></li>
+<li class="topic-item"><a href="../../../courses/cn/topics/013-network-address-translation-nat.html"><span class="topic-num">013</span>Network Address Translation (NAT)</a></li>
+</ul></details>
+<details class="chapter-group"open>
+<summary class="chapter-summary"><span>Routing And Switching</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/cn/topics/014-routing-algorithms.html"><span class="topic-num">014</span>Routing Algorithms</a></li>
+<li class="topic-item active"><a href="../../../courses/cn/topics/015-introduction-to-routing-protocols.html"><span class="topic-num">015</span>Introduction to Routing Protocols</a></li>
+<li class="topic-item"><a href="../../../courses/cn/topics/016-border-gateway-protocol-bgp.html"><span class="topic-num">016</span>Border Gateway Protocol (BGP)</a></li>
+<li class="topic-item"><a href="../../../courses/cn/topics/017-introduction-to-switching-techniques.html"><span class="topic-num">017</span>Introduction to Switching Techniques</a></li>
+</ul></details>
+<details class="chapter-group">
+<summary class="chapter-summary"><span>Network Technologies And Standards</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/cn/topics/018-ethernet-technology-and-standards-ieee-8023.html"><span class="topic-num">018</span>Ethernet Technology and Standards (IEEE 802.3)</a></li>
+<li class="topic-item"><a href="../../../courses/cn/topics/019-ethernet-switching.html"><span class="topic-num">019</span>Ethernet Switching</a></li>
+<li class="topic-item"><a href="../../../courses/cn/topics/020-point-to-point-protocol-ppp.html"><span class="topic-num">020</span>Point-to-Point Protocol (PPP)</a></li>
+</ul></details>
+<details class="chapter-group">
+<summary class="chapter-summary"><span>Network Security</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/cn/topics/021-introduction.html"><span class="topic-num">021</span>Introduction</a></li>
+<li class="topic-item"><a href="../../../courses/cn/topics/022-introduction-to-firewalls.html"><span class="topic-num">022</span>Introduction to Firewalls</a></li>
+<li class="topic-item"><a href="../../../courses/cn/topics/023-introduction-to-idps.html"><span class="topic-num">023</span>Introduction to IDPS</a></li>
+<li class="topic-item"><a href="../../../courses/cn/topics/024-virtual-private-networks-vpns.html"><span class="topic-num">024</span>Virtual Private Networks (VPNs)</a></li>
+<li class="topic-item"><a href="../../../courses/cn/topics/025-introduction-to-cryptography.html"><span class="topic-num">025</span>Introduction to Cryptography</a></li>
+<li class="topic-item"><a href="../../../courses/cn/topics/026-introduction-to-tls-and-ssl.html"><span class="topic-num">026</span>Introduction to TLS and SSL</a></li>
+<li class="topic-item"><a href="../../../courses/cn/topics/027-network-layer-and-application-layer-firewalls.html"><span class="topic-num">027</span>Network Layer And Application Layer Firewalls</a></li>
+</ul></details>
+<details class="chapter-group">
+<summary class="chapter-summary"><span>Network Management And Monitoring</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/cn/topics/028-traffic-management-techniques.html"><span class="topic-num">028</span>Traffic Management Techniques</a></li>
+<li class="topic-item"><a href="../../../courses/cn/topics/029-quality-of-service-bandwidth-and-latency-network-congestion-and-control-mechanisms.html"><span class="topic-num">029</span>Quality Of Service Bandwidth And Latency Network Congestion And Control Mechanisms</a></li>
+<li class="topic-item"><a href="../../../courses/cn/topics/030-network-performance-metrics.html"><span class="topic-num">030</span>Network Performance Metrics</a></li>
+<li class="topic-item"><a href="../../../courses/cn/topics/031-network-troubleshooting-techniques.html"><span class="topic-num">031</span>Network Troubleshooting Techniques</a></li>
+<li class="topic-item"><a href="../../../courses/cn/topics/032-network-monitoring-and-management.html"><span class="topic-num">032</span>Network Monitoring And Management</a></li>
+<li class="topic-item"><a href="../../../courses/cn/topics/033-network-protocol-analysis-tools.html"><span class="topic-num">033</span>Network Protocol Analysis Tools</a></li>
+</ul></details>
+<details class="chapter-group">
+<summary class="chapter-summary"><span>Advanced Networking Concepts</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/cn/topics/034-client-server-vs-peer-to-peer-architectures.html"><span class="topic-num">034</span>Client Server Vs Peer To Peer Architectures</a></li>
+<li class="topic-item"><a href="../../../courses/cn/topics/035-network-design-principles-and-considerations.html"><span class="topic-num">035</span>Network Design Principles And Considerations</a></li>
+<li class="topic-item"><a href="../../../courses/cn/topics/036-load-balancing-techniques-content-delivery-networks.html"><span class="topic-num">036</span>Load Balancing Techniques Content Delivery Networks</a></li>
+<li class="topic-item"><a href="../../../courses/cn/topics/037-network-virtualization.html"><span class="topic-num">037</span>Network Virtualization</a></li>
+<li class="topic-item"><a href="../../../courses/cn/topics/038-software-defined-networking.html"><span class="topic-num">038</span>Software Defined Networking</a></li>
+<li class="topic-item"><a href="../../../courses/cn/topics/039-network-reliability-and-fault-tolerance.html"><span class="topic-num">039</span>Network Reliability And Fault Tolerance</a></li>
+</ul></details>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    <div class="breadcrumb">
+      <a href="dashboard.html">Dashboard</a>
+      <span class="breadcrumb-sep">/</span>
+      <a href="dashboard.html">Computer Networks</a>
+      <span class="breadcrumb-sep">/</span>
+      <span>Routing And Switching</span>
+    </div>
+
+    <div class="topic-meta">
+      <div class="topic-meta-chip">📂 Routing And Switching</div>
+      <div class="topic-meta-chip">📄 Topic 16</div>
+      <div class="topic-meta-chip" id="reading-time">…</div>
+    </div>
+
+    <article class="topic-article"><div class="editorial-content max-w-3xl px-4 mt-2"><div class="coreSubject dark:text-zinc-300"><br/>
+
+<p>Routing protocols are essential mechanisms in modern networking that enable routers to determine the best path for data packets to travel through a network. They facilitate communication across multiple interconnected networks by ensuring data is transmitted efficiently and reliably. Among the various routing protocols, two primary categories stand out: Distance Vector and Link State. These protocols differ in their approach to routing, scalability, and network applications, making them suitable for different scenarios.</p>
+<p>This guide delves into the intricacies of Distance Vector and Link State Routing Protocols, highlighting their features, advantages, disadvantages, and applications.</p>
+<hr class="line-break"/>
+<h2>Introduction to Routing Protocols</h2>
+<p>Routing protocols are specialized algorithms and procedures used by routers to exchange routing information and make decisions about the best paths for forwarding data packets. These protocols are vital for building dynamic, scalable networks that can adapt to changing conditions such as link failures or traffic congestion. Without routing protocols, managing large networks would require extensive manual configuration and constant intervention, making them impractical.</p>
+<p>Routing protocols fall into two primary categories based on their methodology:</p>
+<ul>
+<li><strong>Distance Vector Routing Protocols:</strong> Determine the best path based on distance metrics, such as hop count, and share limited information with neighboring routers.</li>
+<li><strong>Link State Routing Protocols:</strong> Use a complete map of the network topology to calculate optimal paths, enabling faster convergence and greater scalability.</li>
+</ul>
+<br/>
+<hr class="line-break"/>
+<h2>1. Distance Vector Routing Protocols</h2>
+<p>Distance Vector Routing Protocols operate by sharing routing tables with directly connected neighbors. These protocols rely on metrics like hop count or distance to decide the optimal path to a destination. Each router makes decisions based on information provided by its neighbors, creating a localized perspective of the network.</p>
+<h3>Key Features</h3>
+<p>Distance Vector Routing Protocols have several distinguishing characteristics:</p>
+<ul>
+<li><strong>Periodic Updates:</strong> Routers periodically share their entire routing tables with directly connected neighbors, ensuring routing information is updated regularly.</li>
+<li><strong>Metric-Based Path Selection:</strong> The best path is determined using simple metrics such as hop count, where fewer hops indicate a better path.</li>
+<li><strong>Decentralized Decision-Making:</strong> Each router relies solely on its neighbors' information to update its routing table, without a global view of the network.</li>
+</ul>
+<h3>Advantages</h3>
+<p>Distance Vector Routing Protocols are straightforward to implement and maintain, offering several advantages:</p>
+<ul>
+<li><strong>Ease of Implementation:</strong> These protocols are simple to configure and require minimal expertise, making them suitable for small networks.</li>
+<li><strong>Low Resource Requirements:</strong> Routers running Distance Vector Protocols have lower CPU and memory demands compared to more complex protocols like Link State.</li>
+</ul>
+<h3>Disadvantages</h3>
+<p>Despite their simplicity, Distance Vector Protocols face several limitations:</p>
+<ul>
+<li><strong>Slow Convergence:</strong> Changes in the network, such as link failures, take longer to propagate through the routing tables, leading to potential delays.</li>
+<li><strong>Count-to-Infinity Problem:</strong> Routers may continuously increase the hop count to unreachable destinations, causing inefficient routing loops.</li>
+</ul>
+<h3>Example Protocols</h3>
+<p>Two widely known Distance Vector Protocols are:</p>
+<ul>
+<li><strong>RIP (Routing Information Protocol):</strong>
+<ul>
+<li>Uses hop count as the metric to determine the best path, with a maximum limit of 15 hops to prevent infinite loops.</li>
+<li>Sends periodic updates every 30 seconds, ensuring routing tables are refreshed regularly.</li>
+</ul>
+</li>
+<li><strong>EIGRP (Enhanced Interior Gateway Routing Protocol):</strong>
+<ul>
+<li>A hybrid protocol that incorporates Distance Vector features along with advanced capabilities like multiple metrics (e.g., bandwidth, delay).</li>
+<li>Provides faster convergence and better scalability than traditional Distance Vector Protocols.</li>
+</ul>
+</li>
+</ul>
+<br/>
+<hr class="line-break"/>
+<h2>2. Link State Routing Protocols</h2>
+<p>Link State Routing Protocols build a complete map of the network topology by exchanging deIloned information with all routers in the network. This comprehensive view allows each router to independently calculate the shortest path to each destination using algorithms like Dijkstra's Algorithm.</p>
+<h3>Key Features</h3>
+<p>Link State Protocols offer several advanced capabilities:</p>
+<ul>
+<li><strong>Global Topology Awareness:</strong> Routers share link-state advertisements (LSAs) with all routers, providing a full view of the network.</li>
+<li><strong>Event-Driven Updates:</strong> Updates are triggered by changes in the network, such as link failures or additions, rather than periodic broadcasts.</li>
+<li><strong>Shortest Path Calculation:</strong> Each router independently computes the optimal paths using a consistent and accurate network topology map.</li>
+</ul>
+<h3>Advantages</h3>
+<p>Link State Routing Protocols are well-suited for large and dynamic networks, offering benefits like:</p>
+<ul>
+<li><strong>Faster Convergence:</strong> Changes in the network are propagated quickly, reducing downtime and improving reliability.</li>
+<li><strong>Scalability:</strong> The hierarchical structure of Link State Protocols, such as OSPF's use of areas, enables efficient management of large-scale networks.</li>
+<li><strong>Accurate Routing Decisions:</strong> The full network topology ensures optimal path selection, minimizing latency and maximizing efficiency.</li>
+</ul>
+<h3>Disadvantages</h3>
+<p>However, the complexity of Link State Protocols introduces certain challenges:</p>
+<ul>
+<li><strong>Resource Intensive:</strong> Requires more memory and processing power to maintain and process the network topology map.</li>
+<li><strong>Configuration Complexity:</strong> Configuring and managing Link State Protocols requires a higher level of expertise compared to Distance Vector Protocols.</li>
+</ul>
+<h3>Example Protocols</h3>
+<p>Two commonly used Link State Protocols are:</p>
+<ul>
+<li><strong>OSPF (Open Shortest Path First):</strong>
+<ul>
+<li>Divides the network into hierarchical areas, with a backbone area (Area 0) to optimize routing in large networks.</li>
+<li>Uses Dijkstra's Algorithm to compute the shortest path to all destinations.</li>
+</ul>
+</li>
+<li><strong>IS-IS (Intermediate System to Intermediate System):</strong>
+<ul>
+<li>Similar to OSPF but designed for use in service provider networks and supports both IPv4 and IPv6 natively.</li>
+</ul>
+</li>
+</ul>
+<br/>
+<hr class="line-break"/>
+<h2>Comparison: Distance Vector vs. Link State Routing Protocols</h2>
+<p>Distance Vector and Link State Protocols serve different purposes and are suited to different network environments. The table below highlights their key differences:</p>
+<table>
+<tbody><tr>
+<th>Feature</th>
+<th>Distance Vector</th>
+<th>Link State</th>
+</tr>
+<tr>
+<td>Routing Information</td>
+<td>Shares routing table with neighbors</td>
+<td>Shares link state information with all routers</td>
+</tr>
+<tr>
+<td>View of Network</td>
+<td>Partial (neighbors only)</td>
+<td>Complete topology</td>
+</tr>
+<tr>
+<td>Convergence Speed</td>
+<td>Slow</td>
+<td>Fast</td>
+</tr>
+<tr>
+<td>Memory/CPU Usage</td>
+<td>Low</td>
+<td>High</td>
+</tr>
+<tr>
+<td>Scalability</td>
+<td>Limited</td>
+<td>Highly Scalable</td>
+</tr>
+<tr>
+<td>Examples</td>
+<td>RIP, EIGRP</td>
+<td>OSPF, IS-IS</td>
+</tr>
+</tbody></table>
+<hr class="line-break"/>
+<h2>Applications</h2>
+<p>Routing protocols are deployed based on network size, complexity, and performance requirements:</p>
+<ul>
+<li><strong>Distance Vector Protocols:</strong> Suitable for small, less dynamic networks with limited resources. Commonly used in small businesses and simpler routing environments.</li>
+<li><strong>Link State Protocols:</strong> Preferred for large, dynamic networks like enterprise environments, data centers, and ISPs, where scalability and fast convergence are critical.</li>
+</ul>
+<br/>
+<hr class="line-break"/>
+</div></div></article>
+
+    <div class="topic-nav"><a href="014-routing-algorithms.html" class="nav-btn nav-prev"><span class="nav-btn-label">← Previous</span><span class="nav-btn-title">Routing Algorithms</span></a><a href="016-border-gateway-protocol-bgp.html" class="nav-btn nav-next"><span class="nav-btn-label">Next →</span><span class="nav-btn-title">Border Gateway Protocol (BGP)</span></a></div>
+  </main>
+</div>
+
+<button id="back-to-top" aria-label="Back to top">↑</button>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="../../../assets/script.js?v=12"></script>
+</body>
+</html>

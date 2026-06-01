@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+  (function() {
+    const saved = localStorage.getItem('GrindOS-theme');
+    if (saved) {
+      document.documentElement.classList.add(saved);
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.documentElement.classList.add('dark');
+    }
+  })();
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Page Replacement Algorithms — FIFO, LRU, Optimal — Operating Systems — GrindOS</title>
+<link rel="stylesheet" href="../../../assets/style.css?v=13">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+  <link rel="icon" type="image/png" href="../../../logo.png">
+  
+  <link rel="apple-touch-icon" href="../../../logo.png">
+</head>
+<body>
+
+<div id="reading-progress"></div>
+
+<header class="topbar">
+  <button class="icon-btn menu-toggle" id="menu-toggle" aria-label="Menu">☰</button>
+  <a href="dashboard.html" class="topbar-brand">
+    <img src="../../../logo.png" alt="GrindOS Logo" class="brand-logo" style="width: 34px; height: 34px; object-fit: contain; border-radius: 4px; flex-shrink: 0; display: inline-block; vertical-align: middle;">
+    <span class="brand-wordmark">GrindOS</span>
+  </a>
+  <nav class="topbar-nav">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="dashboard.html" class="active">💻 Operating Systems</a>
+    <a href="../../../interview-prep/index.html" class="nav-cta">🎯 Interview Prep</a>
+  </nav>
+  <div class="topbar-right">
+    <button class="icon-btn" id="theme-toggle" aria-label="Toggle theme"><span class="theme-icon">☾</span></button>
+  </div>
+</header>
+
+<div class="page-layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-course-label"><span class="course-emoji">💻</span>Operating Systems</div>
+    </div>
+    <div class="sidebar-progress">
+      <div class="progress-label-row">
+        <span>Progress</span>
+        <span class="progress-count">8 / 17</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" style="width:47%"></div></div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-search">
+        <input type="text" id="sidebar-search" placeholder="Search topics…  /" autocomplete="off">
+        <span class="sidebar-search-icon">⌕</span>
+      </div>
+      <details class="chapter-group" >
+        <summary class="chapter-summary"><span>Processes and CPU Scheduling</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item "><a href="../../../courses/os/topics/001-process-vs-thread.html"><span class="topic-num">001</span>Process vs Thread</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/002-cpu-scheduling-algorithms-fcfs-sjf-rr.html"><span class="topic-num">002</span>CPU Scheduling Algorithms</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/003-context-switching-and-dispatcher.html"><span class="topic-num">003</span>Context Switching & Dispatcher</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/004-multilevel-queue-scheduling.html"><span class="topic-num">004</span>Multilevel Queue Scheduling</a></li>
+        </ul>
+      </details>
+      <details class="chapter-group" open>
+        <summary class="chapter-summary"><span>Memory Management</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item "><a href="../../../courses/os/topics/005-paging-and-page-tables.html"><span class="topic-num">005</span>Paging and Page Tables</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/006-segmentation.html"><span class="topic-num">006</span>Segmentation</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/007-virtual-memory-and-demand-paging.html"><span class="topic-num">007</span>Virtual Memory & Demand Paging</a></li>
+          <li class="topic-item active"><a href="../../../courses/os/topics/008-page-replacement-algorithms.html"><span class="topic-num">008</span>Page Replacement Algorithms</a></li>
+        </ul>
+      </details>
+      <details class="chapter-group" >
+        <summary class="chapter-summary"><span>Process Synchronization</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item "><a href="../../../courses/os/topics/009-critical-section-problem.html"><span class="topic-num">009</span>Critical Section Problem</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/010-mutex-vs-semaphore-vs-monitor.html"><span class="topic-num">010</span>Mutex vs Semaphore vs Monitor</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/011-classic-synchronisation-problems.html"><span class="topic-num">011</span>Classic Synchronisation Problems</a></li>
+        </ul>
+      </details>
+      <details class="chapter-group" >
+        <summary class="chapter-summary"><span>Deadlocks</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item "><a href="../../../courses/os/topics/012-deadlock-conditions-and-prevention.html"><span class="topic-num">012</span>Deadlock Conditions & Prevention</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/013-deadlock-avoidance-bankers-algorithm.html"><span class="topic-num">013</span>Deadlock Avoidance & Banker's Algorithm</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/014-deadlock-detection-and-recovery.html"><span class="topic-num">014</span>Deadlock Detection & Recovery</a></li>
+        </ul>
+      </details>
+      <details class="chapter-group" >
+        <summary class="chapter-summary"><span>File Systems & Disk Scheduling</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item "><a href="../../../courses/os/topics/015-file-system-concepts.html"><span class="topic-num">015</span>File System Concepts</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/016-directory-structure-and-inode.html"><span class="topic-num">016</span>Directory Structure and Inode</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/017-disk-scheduling-algorithms.html"><span class="topic-num">017</span>Disk Scheduling Algorithms</a></li>
+        </ul>
+      </details>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    <div class="breadcrumb">
+      <a href="dashboard.html">Dashboard</a>
+      <span class="breadcrumb-sep">/</span>
+      <a href="dashboard.html">Operating Systems</a>
+      <span class="breadcrumb-sep">/</span>
+      <span>Memory Management</span>
+    </div>
+
+    <div class="topic-meta">
+      <div class="topic-meta-chip">📂 Memory Management</div>
+      <div class="topic-meta-chip">📄 Topic 8</div>
+      <div class="topic-meta-chip" id="reading-time">…</div>
+    </div>
+
+    <article class="topic-article">
+      <div class="editorial-content max-w-3xl px-4 mt-2">
+        <div class="coreSubject dark:text-zinc-300">
+          <br/>
+          
+<h2>1. Page Replacement Overview</h2>
+<p>When physical memory (RAM) is completely full and a page fault occurs, the operating system must select an existing frame (a victim page) to overwrite. This choice is determined by a **Page Replacement Algorithm** with the goal of minimizing page faults.</p>
+
+<hr class="line-break"/>
+
+<h2>2. Core Algorithms</h2>
+
+<h3>A. First-In, First-Out (FIFO)</h3>
+<p>Replaces the oldest page in memory. While simple, it suffers from **Belady's Anomaly**, where allocating more physical frames paradoxically increases the page fault rate for certain reference strings.</p>
+
+<h3>B. Optimal Page Replacement (OPT)</h3>
+<p>Replaces the page that will not be accessed for the longest period in the future. It is a theoretical algorithm that guarantees the lowest possible page fault rate, but **cannot be implemented** because future memory references are unknown.</p>
+
+<h3>C. Least Recently Used (LRU)</h3>
+<p>Replaces the page that has not been accessed for the longest duration of time, leveraging temporal locality history. It is highly performant and immune to Belady's Anomaly but requires hardware support (counters/stacks).</p>
+
+<hr class="line-break"/>
+
+<h2>3. Numerical Trace Example</h2>
+<p>Given 3 physical frames, trace reference string: <code>7, 0, 1, 2, 0, 3, 0, 4</code>:</p>
+
+<h3>FIFO Trace (7 Page Faults)</h3>
+<table border="1" cellpadding="8" style="text-align:center; width:100%;">
+  <thead>
+    <tr>
+      <th>Ref</th>
+      <th>7</th>
+      <th>0</th>
+      <th>1</th>
+      <th>2</th>
+      <th>0</th>
+      <th>3</th>
+      <th>0</th>
+      <th>4</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Frame 1</td>
+      <td style="background: var(--brand-light);">7</td>
+      <td>7</td>
+      <td>7</td>
+      <td style="background: var(--brand-light);">2</td>
+      <td>2</td>
+      <td>2</td>
+      <td style="background: var(--brand-light);">0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>Frame 2</td>
+      <td>-</td>
+      <td style="background: var(--brand-light);">0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td style="background: var(--brand-light);">3</td>
+      <td>3</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>Frame 3</td>
+      <td>-</td>
+      <td>-</td>
+      <td style="background: var(--brand-light);">1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td style="background: var(--brand-light);">4</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3>LRU Trace (6 Page Faults)</h3>
+<table border="1" cellpadding="8" style="text-align:center; width:100%;">
+  <thead>
+    <tr>
+      <th>Ref</th>
+      <th>7</th>
+      <th>0</th>
+      <th>1</th>
+      <th>2</th>
+      <th>0</th>
+      <th>3</th>
+      <th>0</th>
+      <th>4</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Frame 1</td>
+      <td style="background: var(--brand-light);">7</td>
+      <td>7</td>
+      <td>7</td>
+      <td style="background: var(--brand-light);">2</td>
+      <td>2</td>
+      <td>2</td>
+      <td>2</td>
+      <td style="background: var(--brand-light);">4</td>
+    </tr>
+    <tr>
+      <td>Frame 2</td>
+      <td>-</td>
+      <td style="background: var(--brand-light);">0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>Frame 3</td>
+      <td>-</td>
+      <td>-</td>
+      <td style="background: var(--brand-light);">1</td>
+      <td>1</td>
+      <td>1</td>
+      <td style="background: var(--brand-light);">3</td>
+      <td>3</td>
+      <td>3</td>
+    </tr>
+  </tbody>
+</table>
+
+          
+<div class="interview-qna">
+  <h3>🎯 Topic Q&A</h3>
+  <div class="qna-item">
+    <strong>Q1: What is Belady's Anomaly?</strong>
+    <p>Belady's Anomaly is a phenomenon where the page fault rate increases when more physical memory frames are allocated to a process. It occurs in first-in, first-out (FIFO) page replacement algorithms but does not happen in stack-based algorithms like LRU.</p>
+  </div>
+  <div class="qna-item">
+    <strong>Q2: Why cannot the Optimal Page Replacement algorithm be implemented in practice?</strong>
+    <p>Because it requires perfect future knowledge of all memory reference strings that the CPU will execute, which is impossible to predict dynamically in a multitasking OS.</p>
+  </div>
+  <div class="qna-item">
+    <strong>Q3: How is LRU implemented in hardware?</strong>
+    <p>It is typically implemented in two ways: 1) <strong>Counters:</strong> associating each page entry with a register that updates to the CPU clock on access. 2) <strong>Stacks:</strong> maintaining a hardware stack of page references, moving accessed pages to the top of the stack.</p>
+  </div>
+  <div class="qna-item">
+    <strong>Q4: Explain the LRU Approximation Second Chance (Clock) algorithm.</strong>
+    <p>Since true LRU is expensive, the Clock algorithm uses a single **Referenced Bit**. It arranges frames in a circular queue. When a victim is needed, the clock hand scans: if referenced is 1, it sets it to 0 and moves on (giving a second chance); if referenced is 0, it replaces that page.</p>
+  </div>
+  <div class="qna-item">
+    <strong>Q5: Can you write a Python function tracing a simple LRU cache operation?</strong>
+    <pre><code class="language-python"># Simple LRU Cache simulation outline
+def lru_refer(cache, capacity, page):
+    if page in cache:
+        cache.remove(page)
+    elif len(cache) >= capacity:
+        cache.pop(0) # Evict LRU (index 0)
+    cache.append(page) # Make MRU</code></pre>
+  </div>
+</div>
+
+        </div>
+      </div>
+    </article>
+
+    <div class="topic-nav"><a href="007-virtual-memory-and-demand-paging.html" class="nav-btn nav-prev"><span class="nav-btn-label">← Previous</span><span class="nav-btn-title">Virtual Memory & Demand Paging</span></a><a href="009-critical-section-problem.html" class="nav-btn nav-next"><span class="nav-btn-label">Next →</span><span class="nav-btn-title">Critical Section Problem</span></a></div>
+  </main>
+</div>
+
+<button id="back-to-top" aria-label="Back to top">↑</button>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="../../../assets/script.js?v=12"></script>
+</body>
+</html>

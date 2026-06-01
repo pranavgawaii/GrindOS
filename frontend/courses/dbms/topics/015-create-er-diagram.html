@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+  (function() {
+    const saved = localStorage.getItem('GrindOS-theme');
+    if (saved) {
+      document.documentElement.classList.add(saved);
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.documentElement.classList.add('dark');
+    }
+  })();
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Create ER Diagram — Database Management Systems — GrindOS</title>
+<link rel="stylesheet" href="../../../assets/style.css?v=13">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+  
+  <link rel="icon" type="image/png" href="../../../logo.png">
+  
+  <link rel="apple-touch-icon" href="../../../logo.png">
+</head>
+<body>
+
+<div id="reading-progress"></div>
+
+<header class="topbar">
+  <button class="icon-btn menu-toggle" id="menu-toggle" aria-label="Menu">☰</button>
+  <a href="dashboard.html" class="topbar-brand">
+    <img src="../../../logo.png" alt="GrindOS Logo" class="brand-logo" style="width: 34px; height: 34px; object-fit: contain; border-radius: 4px; flex-shrink: 0; display: inline-block; vertical-align: middle;">
+    <span class="brand-wordmark">GrindOS</span>
+  </a>
+  <nav class="topbar-nav">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="dashboard.html" class="active">🗄️ Database Management Systems</a>
+    <a href="../../../interview-prep/index.html" class="nav-cta">🎯 Interview Prep</a>
+  </nav>
+  <div class="topbar-right">
+    <button class="icon-btn" id="theme-toggle" aria-label="Toggle theme"><span class="theme-icon">☾</span></button>
+  </div>
+</header>
+
+<div class="page-layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-course-label"><span class="course-emoji">🗄️</span>Database Management Systems</div>
+    </div>
+    <div class="sidebar-progress">
+      <div class="progress-label-row">
+        <span>Progress</span>
+        <span class="progress-count">15 / 94</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" style="width:16%"></div></div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-search">
+<input type="text" id="sidebar-search" placeholder="Search topics…  /" autocomplete="off">
+<span class="sidebar-search-icon">⌕</span></div>
+<details class="chapter-group">
+<summary class="chapter-summary"><span>Introduction to DBMS</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/dbms/topics/001-data-information-database.html"><span class="topic-num">001</span>Data, Information & Database</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/002-types-of-databases.html"><span class="topic-num">002</span>Types of Databases</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/003-database-management-system.html"><span class="topic-num">003</span>Database Management System</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/004-need-advantages-and-disadvantages-of-dbms.html"><span class="topic-num">004</span>Need, Advantages and Disadvantages of DBMS</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/005-data-abstraction-in-dbms.html"><span class="topic-num">005</span>Data Abstraction in DBMS</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/006-dbms-architecture.html"><span class="topic-num">006</span>DBMS Architecture</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/007-database-users-and-interactions.html"><span class="topic-num">007</span>Database Users and Interactions</a></li>
+</ul></details>
+<details class="chapter-group"open>
+<summary class="chapter-summary"><span>Data Models and ER Models</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/dbms/topics/008-dbms-interfaces.html"><span class="topic-num">008</span>DBMS Interfaces</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/009-data-models-and-their-types.html"><span class="topic-num">009</span>Data Models and Their Types</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/010-er-model-and-its-components.html"><span class="topic-num">010</span>ER Model and its Components</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/011-types-of-relationships-in-dbms.html"><span class="topic-num">011</span>Types of Relationships in DBMS</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/012-extended-er-features.html"><span class="topic-num">012</span>Extended ER Features</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/013-types-of-inheritance.html"><span class="topic-num">013</span>Types of Inheritance</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/014-entity-relationship-diagram.html"><span class="topic-num">014</span>Entity-Relationship Diagram</a></li>
+<li class="topic-item active"><a href="../../../courses/dbms/topics/015-create-er-diagram.html"><span class="topic-num">015</span>Create ER Diagram</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/016-relationships-in-er-diagram.html"><span class="topic-num">016</span>Relationships in ER Diagram</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/017-relational-models.html"><span class="topic-num">017</span>Relational Models</a></li>
+</ul></details>
+<details class="chapter-group">
+<summary class="chapter-summary"><span>Relational Model and Normalization</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/dbms/topics/018-intension-and-extension.html"><span class="topic-num">018</span>Intension and Extension</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/019-keys-in-dbms.html"><span class="topic-num">019</span>Keys in DBMS</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/020-data-normalization.html"><span class="topic-num">020</span>Data Normalization</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/021-functional-dependency.html"><span class="topic-num">021</span>Functional Dependency</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/022-armstrongs-axioms.html"><span class="topic-num">022</span>Armstrong's Axioms</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/023-inference-rules.html"><span class="topic-num">023</span>Inference Rules</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/024-closure-in-functional-dependencies.html"><span class="topic-num">024</span>Closure in Functional Dependencies</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/025-denormalisation.html"><span class="topic-num">025</span>Denormalisation</a></li>
+</ul></details>
+<details class="chapter-group">
+<summary class="chapter-summary"><span>SQL and Query Optimization</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/dbms/topics/026-database-languages.html"><span class="topic-num">026</span>Database Languages</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/027-sql-operators.html"><span class="topic-num">027</span>SQL Operators</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/028-aggregates-in-sql.html"><span class="topic-num">028</span>Aggregates in SQL</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/029-sql-clauses.html"><span class="topic-num">029</span>SQL Clauses</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/030-sql-joins.html"><span class="topic-num">030</span>SQL Joins</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/031-sql-joins.html"><span class="topic-num">031</span>SQL Joins</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/032-sql-joins.html"><span class="topic-num">032</span>SQL Joins</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/033-views-in-sql.html"><span class="topic-num">033</span>Views in SQL</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/034-advanced-views-in-sql.html"><span class="topic-num">034</span>Advanced Views in SQL</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/035-indexed-views.html"><span class="topic-num">035</span>Indexed Views</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/036-sql-subqueries.html"><span class="topic-num">036</span>SQL Subqueries</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/037-types-of-sql-subqueries.html"><span class="topic-num">037</span>Types of SQL Subqueries</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/038-query-processing.html"><span class="topic-num">038</span>Query Processing</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/039-query-optimization.html"><span class="topic-num">039</span>Query Optimization</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/040-advanced-query-optimization.html"><span class="topic-num">040</span>Advanced Query Optimization</a></li>
+</ul></details>
+<details class="chapter-group">
+<summary class="chapter-summary"><span>NoSQL Databases</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/dbms/topics/041-nosql-databases.html"><span class="topic-num">041</span>NoSQL Databases</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/042-base-properties.html"><span class="topic-num">042</span>BASE Properties</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/043-nosql-languages.html"><span class="topic-num">043</span>NoSQL Languages</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/044-graph-databases.html"><span class="topic-num">044</span>Graph Databases</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/045-in-memory-databases.html"><span class="topic-num">045</span>In-Memory Databases</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/046-partitioning-in-databases.html"><span class="topic-num">046</span>Partitioning in Databases</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/047-types-of-partitioning.html"><span class="topic-num">047</span>Types of Partitioning</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/048-sharding-in-dbms.html"><span class="topic-num">048</span>Sharding in DBMS</a></li>
+</ul></details>
+<details class="chapter-group">
+<summary class="chapter-summary"><span>Distributed Database Systems</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/dbms/topics/049-sharding-in-dbms.html"><span class="topic-num">049</span>Sharding in DBMS</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/050-distributed-database-systems.html"><span class="topic-num">050</span>Distributed Database Systems</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/051-architecture-of-distributed-database-systems.html"><span class="topic-num">051</span>Architecture of Distributed Database Systems</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/052-data-distribution-methods.html"><span class="topic-num">052</span>Data Distribution Methods</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/053-fault-tolerance-in-distributed-databases.html"><span class="topic-num">053</span>Fault Tolerance in Distributed Databases</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/054-load-balancing-in-distributed-databases.html"><span class="topic-num">054</span>Load Balancing in Distributed Databases</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/055-data-replication-techniques.html"><span class="topic-num">055</span>Data Replication Techniques</a></li>
+</ul></details>
+<details class="chapter-group">
+<summary class="chapter-summary"><span>Transactions and Concurrency</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/dbms/topics/056-thomas-rules.html"><span class="topic-num">056</span>Thomas' Rules</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/057-acid-properties.html"><span class="topic-num">057</span>ACID Properties</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/058-cap-theorem.html"><span class="topic-num">058</span>CAP Theorem</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/059-database-transactions.html"><span class="topic-num">059</span>Database Transactions</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/060-concurrency-control-in-databases.html"><span class="topic-num">060</span>Concurrency Control in Databases</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/061-locking-protocol.html"><span class="topic-num">061</span>Locking Protocol</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/062-timestamp-ordering-protocols-in-dbms.html"><span class="topic-num">062</span>Timestamp Ordering Protocols in DBMS</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/063-starvation-in-dbms.html"><span class="topic-num">063</span>Starvation in DBMS</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/064-deadlock-in-dbms.html"><span class="topic-num">064</span>Deadlock in DBMS</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/065-concurrency-control-in-distributed-databases.html"><span class="topic-num">065</span>Concurrency Control in Distributed Databases</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/066-serialization-in-databases.html"><span class="topic-num">066</span>Serialization in Databases</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/067-scheduling-in-databases.html"><span class="topic-num">067</span>Scheduling in Databases</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/068-serialization-graphs-in-databases.html"><span class="topic-num">068</span>Serialization Graphs in Databases</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/069-isolation-levels.html"><span class="topic-num">069</span>Isolation Levels</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/070-managing-transaction-consistency-and-concurrency.html"><span class="topic-num">070</span>Managing Transaction Consistency and Concurrency</a></li>
+</ul></details>
+<details class="chapter-group">
+<summary class="chapter-summary"><span>Triggers and Procedural Features</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/dbms/topics/071-triggers-in-databases.html"><span class="topic-num">071</span>Triggers in Databases</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/072-stored-procedures-in-databases.html"><span class="topic-num">072</span>Stored Procedures in Databases</a></li>
+</ul></details>
+<details class="chapter-group">
+<summary class="chapter-summary"><span>Recovery and Backup</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/dbms/topics/073-database-recovery-management.html"><span class="topic-num">073</span>Database Recovery Management</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/074-database-backups.html"><span class="topic-num">074</span>Database Backups</a></li>
+</ul></details>
+<details class="chapter-group">
+<summary class="chapter-summary"><span>Indexing and Performance Tuning</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/dbms/topics/075-database-indexing.html"><span class="topic-num">075</span>Database Indexing</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/076-types-of-database-indexing.html"><span class="topic-num">076</span>Types of Database Indexing</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/077-indexing-techniques.html"><span class="topic-num">077</span>Indexing Techniques</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/078-b-and-b-trees.html"><span class="topic-num">078</span>B- and B+ Trees</a></li>
+</ul></details>
+<details class="chapter-group">
+<summary class="chapter-summary"><span>Database Monitoring and Caching</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/dbms/topics/079-database-monitoring.html"><span class="topic-num">079</span>Database Monitoring</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/080-performance-tuning.html"><span class="topic-num">080</span>Performance Tuning</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/081-database-caching.html"><span class="topic-num">081</span>Database Caching</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/082-database-caching-strategies.html"><span class="topic-num">082</span>Database Caching Strategies</a></li>
+</ul></details>
+<details class="chapter-group">
+<summary class="chapter-summary"><span>Security and Access Control</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/dbms/topics/083-data-encryption-in-dbms.html"><span class="topic-num">083</span>Data Encryption in DBMS</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/084-database-security.html"><span class="topic-num">084</span>Database Security</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/085-encryption-techniques-in-dbms.html"><span class="topic-num">085</span>Encryption Techniques in DBMS</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/086-data-masking-techniques.html"><span class="topic-num">086</span>Data Masking Techniques</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/087-rbac.html"><span class="topic-num">087</span>RBAC</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/088-rbac-models.html"><span class="topic-num">088</span>RBAC Models</a></li>
+</ul></details>
+<details class="chapter-group">
+<summary class="chapter-summary"><span>Scalability and Big Data</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/dbms/topics/089-database-scaling.html"><span class="topic-num">089</span>Database Scaling</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/090-big-data-and-dbms.html"><span class="topic-num">090</span>Big Data and DBMS</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/091-dbaas.html"><span class="topic-num">091</span>DBaas</a></li>
+</ul></details>
+<details class="chapter-group">
+<summary class="chapter-summary"><span>Data Warehousing and Migration</span><span class="chapter-chevron">▶</span></summary>
+<ul class="topic-list">
+<li class="topic-item"><a href="../../../courses/dbms/topics/092-database-migration.html"><span class="topic-num">092</span>Database Migration</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/093-data-warehousing.html"><span class="topic-num">093</span>Data Warehousing</a></li>
+<li class="topic-item"><a href="../../../courses/dbms/topics/094-event-driven-architecture.html"><span class="topic-num">094</span>Event-Driven Architecture</a></li>
+</ul></details>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    <div class="breadcrumb">
+      <a href="dashboard.html">Dashboard</a>
+      <span class="breadcrumb-sep">/</span>
+      <a href="dashboard.html">Database Management Systems</a>
+      <span class="breadcrumb-sep">/</span>
+      <span>Data Models and ER Models</span>
+    </div>
+
+    <div class="topic-meta">
+      <div class="topic-meta-chip">📂 Data Models and ER Models</div>
+      <div class="topic-meta-chip">📄 Topic 15</div>
+      <div class="topic-meta-chip" id="reading-time">…</div>
+    </div>
+
+    <article class="topic-article"><div class="editorial-content max-w-3xl px-4 mt-2"><div class="coreSubject dark:text-zinc-300"><br/>
+
+<h1>Steps to Create an ERD</h1>
+<p>An Entity-Relationship Diagram (ERD) is a foundational tool in database design that visually represents entities (objects), relationships, and their attributes. Creating an ERD involves identifying and defining entities, relationships, and attributes while ensuring clarity and accuracy in data representation. Follow these structured steps to create an effective ERD.</p>
+<hr class="line-break"/>
+<h2>Step 1: Entity Identification</h2>
+<p>The first step in creating an ERD is to identify the main entities in the system. An entity represents a real-world object or concept in the database, such as a Customer, Product, or Order. Each entity will later be represented by a rectangle in the ERD.</p>
+<h4>Key Points for Entity Identification</h4>
+<ul>
+<li><strong>Focus on Core Objects:</strong> Identify objects that hold data in the system.</li>
+<li><strong>Avoid Redundancy:</strong> Each entity should represent a unique concept or object.</li>
+<li><strong>Naming Conventions:</strong> Use clear, descriptive names for entities.</li>
+</ul>
+<p><strong>Example:</strong> In an e-commerce database, main entities might include:</p>
+<ul>
+<li>Customer</li>
+<li>Product</li>
+<li>Order</li>
+</ul>
+<br/>
+<hr class="line-break"/>
+<h2>Step 2: Relationship Identification</h2>
+<p>Once entities are identified, the next step is to define the relationships between them. Relationships describe how entities are connected or interact with each other. They are usually represented by diamonds in ER diagrams.</p>
+<h4>Key Points for Relationship Identification</h4>
+<ul>
+<li><strong>Identify Relationships Based on Requirements:</strong> Think about how entities interact (e.g., customers place orders).</li>
+<li><strong>Define Relationship Types:</strong> Relationships can be one-to-one, one-to-many, or many-to-many.</li>
+<li><strong>Verb Phrases:</strong> Use action words like "places," "contains," or "belongs to" to describe relationships.</li>
+</ul>
+<p><strong>Example:</strong> In the e-commerce example:</p>
+<ul>
+<li>A Customer "places" an Order.</li>
+<li>An Order "contains" multiple Products.</li>
+</ul>
+<br/>
+<hr class="line-break"/>
+<h2>Step 3: Cardinality Identification</h2>
+<p>Cardinality describes the number of instances in one entity that can relate to instances in another entity. Identifying cardinality is essential to accurately represent how entities interact with each other. Cardinality is commonly represented as 1:1, 1:M, or M:M in ER diagrams.</p>
+<h4>Types of Cardinality</h4>
+<ul>
+<li><strong>One-to-One (1:1):</strong> One instance of an entity is related to only one instance of another entity.</li>
+<li><strong>One-to-Many (1:M):</strong> One instance of an entity is related to multiple instances of another entity.</li>
+<li><strong>Many-to-Many (M:M):</strong> Multiple instances of one entity are related to multiple instances of another entity.</li>
+</ul>
+<p><strong>Example:</strong> In the e-commerce example:</p>
+<ul>
+<li>A Customer can place multiple Orders (1:M).</li>
+<li>Each Order can contain multiple Products (M:M).</li>
+</ul>
+<br/>
+<hr class="line-break"/>
+<h2>Step 4: Identify Attributes</h2>
+<p>Next, specify the attributes for each entity. Attributes represent the properties or characteristics of an entity and are typically represented as ovals connected to their entities in ER diagrams. Each entity should have a primary key attribute to uniquely identify its instances.</p>
+<h4>Types of Attributes</h4>
+<ul>
+<li><strong>Simple Attributes:</strong> Attributes that cannot be divided further (e.g., Age).</li>
+<li><strong>Composite Attributes:</strong> Attributes that can be divided into sub-attributes (e.g., Address with Street, City, Zip Code).</li>
+<li><strong>Derived Attributes:</strong> Attributes that can be calculated from other attributes (e.g., Age from Date_of_Birth).</li>
+<li><strong>Multi-valued Attributes:</strong> Attributes that can have multiple values (e.g., Phone_Numbers).</li>
+</ul>
+<p><strong>Example:</strong></p>
+<ul>
+<li><strong>For the Customer entity:</strong>
+<ul>
+<li>Customer_ID (Primary Key)</li>
+<li>Name</li>
+<li>Contact_Number</li>
+<li>Email</li>
+</ul>
+</li>
+<li><strong>For the Order entity:</strong>
+<ul>
+<li>Order_ID (Primary Key)</li>
+<li>Date</li>
+<li>Customer_ID (Foreign Key to Customer)</li>
+</ul>
+</li>
+</ul>
+<br/>
+<hr class="line-break"/>
+<h2>Step 5: Create the ERD</h2>
+<p>Using an ERD tool, bring all components together to create the ERD. The ERD should visualize entities, their attributes, relationships, and cardinality. Tools like Lucidchart, MySQL Workbench, Draw.io, and Microsoft Visio provide templates and shapes specifically for creating ERDs.</p>
+<h4>Steps in ERD Creation</h4>
+<ul>
+<li><strong>Draw Entities as Rectangles:</strong> Place each entity in a rectangle and include the primary key.</li>
+<li><strong>Add Relationships as Diamonds:</strong> Use diamonds to represent relationships and label them with descriptive action words.</li>
+<li><strong>Connect Entities with Relationships:</strong> Draw lines between entities and relationships, specifying the cardinality (e.g., 1:M, M:M).</li>
+<li><strong>Add Attributes as Ovals:</strong> Connect attributes to their respective entities and specify primary and foreign keys.</li>
+</ul>
+<hr class="line-break"/>
+<h2>Step 6: Best Practices for Creating ERDs</h2>
+<p>Following best practices can help ensure that your ERD is clear, accurate, and useful.</p>
+<h4>Best Practices</h4>
+<ul>
+<li><strong>Use Clear Naming Conventions:</strong> Ensure entity and attribute names are descriptive and consistent.</li>
+<li><strong>Avoid Redundancy:</strong> Avoid repeating entities or relationships unless necessary.</li>
+<li><strong>Check for Completeness:</strong> Ensure that all entities, relationships, and cardinality are accurately represented.</li>
+<li><strong>Simplify Where Possible:</strong> Aim for simplicity to avoid clutter; only include necessary details.</li>
+<li><strong>Ensure Correct Cardinality:</strong> Double-check cardinality to avoid incorrect relationships.</li>
+<li><strong>Review for Accuracy:</strong> Have stakeholders review the ERD for clarity and correctness.</li>
+</ul>
+<br/>
+<hr class="line-break"/>
+<h2>Review</h2>
+<ul>
+<li><strong>Entity Identification:</strong> Identify the main entities.</li>
+<li><strong>Relationship Identification:</strong> Define relationships between entities.</li>
+<li><strong>Cardinality Identification:</strong> Determine the type of relationship (one-to-one, one-to-many, many-to-many).</li>
+<li><strong>Identify Attributes:</strong> Specify attributes and identify primary and foreign keys.</li>
+<li><strong>Create ERD:</strong> Use an ERD tool to design the diagram.</li>
+<li><strong>Best Practices:</strong> Review the ERD to ensure clarity and accuracy.</li>
+</ul>
+<br/>
+<hr class="line-break"/>
+</div></div></article>
+
+    <div class="topic-nav"><a href="014-entity-relationship-diagram.html" class="nav-btn nav-prev"><span class="nav-btn-label">← Previous</span><span class="nav-btn-title">Entity-Relationship Diagram</span></a><a href="016-relationships-in-er-diagram.html" class="nav-btn nav-next"><span class="nav-btn-label">Next →</span><span class="nav-btn-title">Relationships in ER Diagram</span></a></div>
+  </main>
+</div>
+
+<button id="back-to-top" aria-label="Back to top">↑</button>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="../../../assets/script.js?v=12"></script>
+</body>
+</html>

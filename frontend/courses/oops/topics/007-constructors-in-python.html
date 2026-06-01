@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+  (function() {
+    const saved = localStorage.getItem('GrindOS-theme');
+    if (saved) {
+      document.documentElement.classList.add(saved);
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.documentElement.classList.add('dark');
+    }
+  })();
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Constructors — __init__ vs __new__, Destructors — Object-Oriented Programming — GrindOS</title>
+<link rel="stylesheet" href="../../../assets/style.css?v=13">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+  <link rel="icon" type="image/png" href="../../../logo.png">
+  
+  <link rel="apple-touch-icon" href="../../../logo.png">
+</head>
+<body>
+
+<div id="reading-progress"></div>
+
+<header class="topbar">
+  <button class="icon-btn menu-toggle" id="menu-toggle" aria-label="Menu">☰</button>
+  <a href="dashboard.html" class="topbar-brand">
+    <img src="../../../logo.png" alt="GrindOS Logo" class="brand-logo" style="width: 34px; height: 34px; object-fit: contain; border-radius: 4px; flex-shrink: 0; display: inline-block; vertical-align: middle;">
+    <span class="brand-wordmark">GrindOS</span>
+  </a>
+  <nav class="topbar-nav">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="dashboard.html" class="active">📦 Object-Oriented Programming</a>
+    <a href="../../../interview-prep/index.html" class="nav-cta">🎯 Interview Prep</a>
+  </nav>
+  <div class="topbar-right">
+    <button class="icon-btn" id="theme-toggle" aria-label="Toggle theme"><span class="theme-icon">☾</span></button>
+  </div>
+</header>
+
+<div class="page-layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-course-label"><span class="course-emoji">📦</span>Object-Oriented Programming</div>
+    </div>
+    <div class="sidebar-progress">
+      <div class="progress-label-row">
+        <span>Progress</span>
+        <span class="progress-count">7 / 15</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" style="width:47%"></div></div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-search">
+        <input type="text" id="sidebar-search" placeholder="Search topics…  /" autocomplete="off">
+        <span class="sidebar-search-icon">⌕</span>
+      </div>
+      <details class="chapter-group" >
+        <summary class="chapter-summary"><span>Fundamentals</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item "><a href="../../../courses/oops/topics/001-introduction-to-oops.html"><span class="topic-num">001</span>Introduction to OOPs</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/002-classes-and-objects.html"><span class="topic-num">002</span>Classes and Objects</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/003-encapsulation.html"><span class="topic-num">003</span>Encapsulation</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/004-inheritance.html"><span class="topic-num">004</span>Inheritance</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/005-polymorphism.html"><span class="topic-num">005</span>Polymorphism</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/006-abstraction.html"><span class="topic-num">006</span>Abstraction</a></li>
+        </ul>
+      </details>
+      <details class="chapter-group" open>
+        <summary class="chapter-summary"><span>Advanced Concepts</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item active"><a href="../../../courses/oops/topics/007-constructors-in-python.html"><span class="topic-num">007</span>Constructors in Python</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/008-dunder-magic-methods.html"><span class="topic-num">008</span>Dunder Magic Methods</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/009-static-and-class-methods.html"><span class="topic-num">009</span>Static and Class Methods</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/010-composition-vs-inheritance.html"><span class="topic-num">010</span>Composition vs Inheritance</a></li>
+        </ul>
+      </details>
+      <details class="chapter-group" >
+        <summary class="chapter-summary"><span>Design Patterns</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item "><a href="../../../courses/oops/topics/011-singleton-pattern.html"><span class="topic-num">011</span>Singleton Pattern</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/012-factory-pattern.html"><span class="topic-num">012</span>Factory Pattern</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/013-observer-pattern.html"><span class="topic-num">013</span>Observer Pattern</a></li>
+        </ul>
+      </details>
+      <details class="chapter-group" >
+        <summary class="chapter-summary"><span>Interview Special</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item "><a href="../../../courses/oops/topics/014-oops-interview-questions.html"><span class="topic-num">014</span>OOPs Interview Qs</a></li>
+          <li class="topic-item "><a href="../../../courses/oops/topics/015-oops-in-python-vs-java.html"><span class="topic-num">015</span>OOPs Python vs Java</a></li>
+        </ul>
+      </details>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    <div class="breadcrumb">
+      <a href="dashboard.html">Dashboard</a>
+      <span class="breadcrumb-sep">/</span>
+      <a href="dashboard.html">Object-Oriented Programming</a>
+      <span class="breadcrumb-sep">/</span>
+      <span>Advanced Concepts</span>
+    </div>
+
+    <div class="topic-meta">
+      <div class="topic-meta-chip">📂 Advanced Concepts</div>
+      <div class="topic-meta-chip">📄 Topic 7</div>
+      <div class="topic-meta-chip" id="reading-time">…</div>
+    </div>
+
+    <article class="topic-article">
+      <div class="editorial-content max-w-3xl px-4 mt-2">
+        <div class="coreSubject dark:text-zinc-300">
+          <br/>
+          
+<h2>1. Constructor Basics in Python</h2>
+<p>A constructor is a special method automatically called when an object is instantiated. Python supports two levels of object creation:</p>
+
+<h3>__init__ vs. __new__</h3>
+<ul>
+  <li><strong>`__new__(cls, *args, **kwargs)`:</strong> The actual **creator**. It is a static method that allocates memory and returns a brand new object instance.</li>
+  <li><strong>`__init__(self, *args, **kwargs)`:</strong> The **initialiser**. It receives the instance created by `__new__` and configures instance variables.</li>
+</ul>
+<pre><code class="language-python">class Creator:
+    def __new__(cls, *args, **kwargs):
+        print("1. Allocating memory via __new__")
+        instance = super(Creator, cls).__new__(cls)
+        return instance
+        
+    def __init__(self):
+        print("2. Initialising state via __init__")
+
+obj = Creator()</code></pre>
+
+<hr class="line-break"/>
+
+<h2>2. Destructor: __del__</h2>
+<p>The `__del__` method acts as a destructor, called implicitly by Python's **Garbage Collector** when an object's reference count drops to 0:</p>
+<pre><code class="language-python">class FileHandler:
+    def __init__(self, filename):
+        self.file = open(filename, "w")
+    def __del__(self):
+        self.file.close() # Clean up resources
+        print("Resource closed cleanly.")</code></pre>
+
+          
+<div class="interview-qna">
+  <h3>🎯 Topic Q&A</h3>
+  <div class="qna-item">
+    <strong>Q1: What is the difference between `__new__` and `__init__` in Python?</strong>
+    <p>`__new__` is a class-level static method that allocates memory and creates the object instance, returning it. `__init__` is an instance-level initializer that configures attributes on that created instance.</p>
+  </div>
+  <div class="qna-item">
+    <strong>Q2: Why would you override `__new__` instead of `__init__`?</strong>
+    <p>You override `__new__` to control the instantiation process, such as implementing the **Singleton Pattern** (returning an existing instance instead of a new one) or customizing immutable type subclasses (like int or str).</p>
+  </div>
+  <div class="qna-item">
+    <strong>Q3: How does Python handle constructor overloading?</strong>
+    <p>Python does not support traditional constructor overloading (multiple `__init__` methods). If multiple exist, only the latest is registered. We achieve constructor flexibility using default arguments or variable parameters (`*args`, `**kwargs`).</p>
+  </div>
+  <div class="qna-item">
+    <strong>Q4: When does the `__del__` destructor get called in Python?</strong>
+    <p>`__del__` is executed when an object's reference counter hits 0. Because Python uses automatic reference counting and a cycle-detecting garbage collector, the timing of `__del__` is not guaranteed immediately.</p>
+  </div>
+  <div class="qna-item">
+    <strong>Q5: Write a Python class utilizing a classmethod as a custom alternative constructor.</strong>
+    <pre><code class="language-python">class Date:
+    def __init__(self, day, month, year):
+        self.day, self.month, self.year = day, month, year
+    @classmethod
+    def from_string(cls, date_str):
+        d, m, y = map(int, date_str.split('-'))
+        return cls(d, m, y) # Dynamic constructor</code></pre>
+  </div>
+</div>
+
+        </div>
+      </div>
+    </article>
+
+    <div class="topic-nav"><a href="006-abstraction.html" class="nav-btn nav-prev"><span class="nav-btn-label">← Previous</span><span class="nav-btn-title">Abstraction</span></a><a href="008-dunder-magic-methods.html" class="nav-btn nav-next"><span class="nav-btn-label">Next →</span><span class="nav-btn-title">Dunder Magic Methods</span></a></div>
+  </main>
+</div>
+
+<button id="back-to-top" aria-label="Back to top">↑</button>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="../../../assets/script.js?v=12"></script>
+</body>
+</html>

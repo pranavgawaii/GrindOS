@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<script>
+  (function() {
+    const saved = localStorage.getItem('GrindOS-theme');
+    if (saved) { document.documentElement.classList.add(saved); }
+    else if (window.matchMedia('(prefers-color-scheme: dark)').matches) { document.documentElement.classList.add('dark'); }
+  })();
+</script>
+<title>Web Development — GrindOS</title>
+<link rel="stylesheet" href="../../../assets/style.css?v=13">
+<link rel="icon" type="image/png" href="../../../logo.png">
+
+<link rel="apple-touch-icon" href="../../../logo.png">
+</head>
+<body>
+
+<header class="topbar">
+  <a href="dashboard.html" class="topbar-brand">
+    <img src="../../../logo.png" alt="GrindOS Logo" class="brand-logo" style="width: 34px; height: 34px; object-fit: contain; border-radius: 4px; flex-shrink: 0; display: inline-block; vertical-align: middle;">
+    <span class="brand-wordmark">GrindOS</span>
+  </a>
+  <nav class="topbar-nav">
+    <a href="dashboard.html" class="learn-nav active">Learn</a>
+    <a href="../../../tracker.html" class="practice-nav">Practice</a>
+    <a href="../../../interview-prep/index.html" class="prep-nav">Prep</a>
+  </nav>
+  <div class="topbar-right">
+    <button class="icon-btn" id="theme-toggle" aria-label="Toggle theme"><span class="theme-icon">☾</span></button>
+  </div>
+</header>
+
+<div class="course-page">
+  <div class="course-hero">
+    <div class="course-hero-icon">🌐</div>
+    <div class="course-hero-body">
+      <h1>Web Development</h1>
+      <p>Complete web development from HTML/CSS fundamentals to React, Node.js, DevOps, and system design.</p>
+      <div class="course-hero-meta">
+        <span class="meta-chip">📖 62 topics</span>
+        <span class="meta-chip">📂 12 chapters</span>
+      </div>
+    </div>
+    <a href="topics/001-how-internet-works.html" class="start-btn">Start Course →</a>
+  </div>
+
+  <div class="chapter-grid"><div class="chapter-card">
+  <div class="chapter-card-head">
+    <h3 class="chapter-card-title">How the Web Works</h3>
+    <span class="chapter-pill">4 topics</span>
+  </div>
+  <ul class="chapter-topic-list"><li><span class="t-num">001</span><a href="topics/001-how-internet-works.html">How the Internet Works</a></li><li><span class="t-num">002</span><a href="topics/002-http-https.html">HTTP & HTTPS — Requests & Responses</a></li><li><span class="t-num">003</span><a href="topics/003-dns-and-hosting.html">DNS, Domains & Web Hosting</a></li><li><span class="t-num">004</span><a href="topics/004-browsers-rendering.html">Browsers & The Rendering Pipeline</a></li></ul>
+  <a href="topics/001-how-internet-works.html" class="chapter-start-btn">Start Chapter →</a>
+</div><div class="chapter-card">
+  <div class="chapter-card-head">
+    <h3 class="chapter-card-title">HTML — Structure</h3>
+    <span class="chapter-pill">5 topics</span>
+  </div>
+  <ul class="chapter-topic-list"><li><span class="t-num">005</span><a href="topics/005-html-fundamentals.html">HTML Fundamentals & Document Structure</a></li><li><span class="t-num">006</span><a href="topics/006-semantic-html.html">Semantic HTML5 Elements</a></li><li><span class="t-num">007</span><a href="topics/007-forms-inputs.html">Forms, Inputs & Validation</a></li><li><span class="t-num">008</span><a href="topics/008-accessibility.html">Web Accessibility (ARIA & WCAG)</a></li><li><span class="t-num">009</span><a href="topics/009-seo-basics.html">SEO Fundamentals & Meta Tags</a></li></ul>
+  <a href="topics/005-html-fundamentals.html" class="chapter-start-btn">Start Chapter →</a>
+</div><div class="chapter-card">
+  <div class="chapter-card-head">
+    <h3 class="chapter-card-title">CSS — Styling & Layout</h3>
+    <span class="chapter-pill">7 topics</span>
+  </div>
+  <ul class="chapter-topic-list"><li><span class="t-num">010</span><a href="topics/010-css-fundamentals.html">CSS Fundamentals — Selectors & Box Model</a></li><li><span class="t-num">011</span><a href="topics/011-flexbox.html">Flexbox Layout</a></li><li><span class="t-num">012</span><a href="topics/012-css-grid.html">CSS Grid Layout</a></li><li><span class="t-num">013</span><a href="topics/013-responsive-design.html">Responsive Design & Media Queries</a></li><li><span class="t-num">014</span><a href="topics/014-css-variables.html">CSS Variables & Custom Properties</a></li><li><span class="t-num">015</span><a href="topics/015-css-animations.html">CSS Transitions & Animations</a></li><li><span class="t-num">016</span><a href="topics/016-css-architecture.html">CSS Architecture (BEM, ITCSS)</a></li></ul>
+  <a href="topics/010-css-fundamentals.html" class="chapter-start-btn">Start Chapter →</a>
+</div><div class="chapter-card">
+  <div class="chapter-card-head">
+    <h3 class="chapter-card-title">JavaScript — Core</h3>
+    <span class="chapter-pill">8 topics</span>
+  </div>
+  <ul class="chapter-topic-list"><li><span class="t-num">017</span><a href="topics/017-js-fundamentals.html">JavaScript Fundamentals</a></li><li><span class="t-num">018</span><a href="topics/018-dom-manipulation.html">DOM Manipulation & Events</a></li><li><span class="t-num">019</span><a href="topics/019-async-js.html">Asynchronous JS — Callbacks, Promises, Async/Await</a></li><li><span class="t-num">020</span><a href="topics/020-es6-features.html">ES6+ Features (Arrow Functions, Destructuring, Modules)</a></li><li><span class="t-num">021</span><a href="topics/021-closures-scope.html">Closures, Scope & Hoisting</a></li><li><span class="t-num">022</span><a href="topics/022-prototype-this.html">Prototype Chain & `this` Keyword</a></li><li><span class="t-num">023</span><a href="topics/023-error-handling.html">Error Handling & Debugging</a></li><li><span class="t-num">024</span><a href="topics/024-web-apis.html">Browser Web APIs (Fetch, LocalStorage, WebSockets)</a></li></ul>
+  <a href="topics/017-js-fundamentals.html" class="chapter-start-btn">Start Chapter →</a>
+</div><div class="chapter-card">
+  <div class="chapter-card-head">
+    <h3 class="chapter-card-title">TypeScript</h3>
+    <span class="chapter-pill">3 topics</span>
+  </div>
+  <ul class="chapter-topic-list"><li><span class="t-num">025</span><a href="topics/025-ts-basics.html">TypeScript Basics — Types & Interfaces</a></li><li><span class="t-num">026</span><a href="topics/026-ts-generics.html">Generics & Utility Types</a></li><li><span class="t-num">027</span><a href="topics/027-ts-advanced.html">Advanced TypeScript Patterns</a></li></ul>
+  <a href="topics/025-ts-basics.html" class="chapter-start-btn">Start Chapter →</a>
+</div><div class="chapter-card">
+  <div class="chapter-card-head">
+    <h3 class="chapter-card-title">React & Modern Frontend</h3>
+    <span class="chapter-pill">7 topics</span>
+  </div>
+  <ul class="chapter-topic-list"><li><span class="t-num">028</span><a href="topics/028-react-fundamentals.html">React Fundamentals — JSX & Components</a></li><li><span class="t-num">029</span><a href="topics/029-react-hooks.html">React Hooks — useState, useEffect, useRef</a></li><li><span class="t-num">030</span><a href="topics/030-react-advanced-hooks.html">Advanced Hooks — useContext, useReducer, useMemo</a></li><li><span class="t-num">031</span><a href="topics/031-react-routing.html">React Router — Client-Side Routing</a></li><li><span class="t-num">032</span><a href="topics/032-state-management.html">State Management — Redux & Zustand</a></li><li><span class="t-num">033</span><a href="topics/033-react-performance.html">React Performance Optimization</a></li><li><span class="t-num">034</span><a href="topics/034-next-js.html">Next.js — SSR, SSG & App Router</a></li></ul>
+  <a href="topics/028-react-fundamentals.html" class="chapter-start-btn">Start Chapter →</a>
+</div><div class="chapter-card">
+  <div class="chapter-card-head">
+    <h3 class="chapter-card-title">Node.js & Backend</h3>
+    <span class="chapter-pill">6 topics</span>
+  </div>
+  <ul class="chapter-topic-list"><li><span class="t-num">035</span><a href="topics/035-nodejs-basics.html">Node.js Fundamentals — Event Loop & Modules</a></li><li><span class="t-num">036</span><a href="topics/036-express-js.html">Express.js — REST API Design</a></li><li><span class="t-num">037</span><a href="topics/037-fastapi-python.html">FastAPI (Python) — Async REST APIs</a></li><li><span class="t-num">038</span><a href="topics/038-authentication.html">Authentication — JWT, OAuth2 & Sessions</a></li><li><span class="t-num">039</span><a href="topics/039-databases-in-backend.html">Connecting Databases (PostgreSQL, MongoDB)</a></li><li><span class="t-num">040</span><a href="topics/040-rest-vs-graphql.html">REST vs GraphQL vs tRPC</a></li></ul>
+  <a href="topics/035-nodejs-basics.html" class="chapter-start-btn">Start Chapter →</a>
+</div><div class="chapter-card">
+  <div class="chapter-card-head">
+    <h3 class="chapter-card-title">Databases for Web</h3>
+    <span class="chapter-pill">4 topics</span>
+  </div>
+  <ul class="chapter-topic-list"><li><span class="t-num">041</span><a href="topics/041-sql-for-web.html">SQL Fundamentals for Web Developers</a></li><li><span class="t-num">042</span><a href="topics/042-orm-patterns.html">ORM Patterns — Prisma & SQLAlchemy</a></li><li><span class="t-num">043</span><a href="topics/043-nosql-for-web.html">NoSQL — MongoDB & Redis for Web</a></li><li><span class="t-num">044</span><a href="topics/044-database-design-web.html">Database Schema Design for Web Apps</a></li></ul>
+  <a href="topics/041-sql-for-web.html" class="chapter-start-btn">Start Chapter →</a>
+</div><div class="chapter-card">
+  <div class="chapter-card-head">
+    <h3 class="chapter-card-title">Web Security</h3>
+    <span class="chapter-pill">4 topics</span>
+  </div>
+  <ul class="chapter-topic-list"><li><span class="t-num">045</span><a href="topics/045-owasp-top-10.html">OWASP Top 10 Vulnerabilities</a></li><li><span class="t-num">046</span><a href="topics/046-xss-csrf.html">XSS, CSRF & Injection Attacks</a></li><li><span class="t-num">047</span><a href="topics/047-https-certificates.html">HTTPS, TLS & SSL Certificates</a></li><li><span class="t-num">048</span><a href="topics/048-cors-csp.html">CORS & Content Security Policy</a></li></ul>
+  <a href="topics/045-owasp-top-10.html" class="chapter-start-btn">Start Chapter →</a>
+</div><div class="chapter-card">
+  <div class="chapter-card-head">
+    <h3 class="chapter-card-title">DevOps & Deployment</h3>
+    <span class="chapter-pill">5 topics</span>
+  </div>
+  <ul class="chapter-topic-list"><li><span class="t-num">049</span><a href="topics/049-git-github.html">Git & GitHub Workflows</a></li><li><span class="t-num">050</span><a href="topics/050-docker-containers.html">Docker & Containerization</a></li><li><span class="t-num">051</span><a href="topics/051-ci-cd.html">CI/CD Pipelines (GitHub Actions)</a></li><li><span class="t-num">052</span><a href="topics/052-cloud-hosting.html">Cloud Hosting — Vercel, Railway, AWS</a></li><li><span class="t-num">053</span><a href="topics/053-nginx-reverse-proxy.html">Nginx & Reverse Proxy Configuration</a></li></ul>
+  <a href="topics/049-git-github.html" class="chapter-start-btn">Start Chapter →</a>
+</div><div class="chapter-card">
+  <div class="chapter-card-head">
+    <h3 class="chapter-card-title">Performance & Optimization</h3>
+    <span class="chapter-pill">4 topics</span>
+  </div>
+  <ul class="chapter-topic-list"><li><span class="t-num">054</span><a href="topics/054-core-web-vitals.html">Core Web Vitals & Lighthouse Metrics</a></li><li><span class="t-num">055</span><a href="topics/055-caching-strategies.html">Caching Strategies (CDN, Browser, Server)</a></li><li><span class="t-num">056</span><a href="topics/056-lazy-loading.html">Lazy Loading & Code Splitting</a></li><li><span class="t-num">057</span><a href="topics/057-web-performance.html">Web Performance Deep Dive</a></li></ul>
+  <a href="topics/054-core-web-vitals.html" class="chapter-start-btn">Start Chapter →</a>
+</div><div class="chapter-card">
+  <div class="chapter-card-head">
+    <h3 class="chapter-card-title">System Design for Web</h3>
+    <span class="chapter-pill">5 topics</span>
+  </div>
+  <ul class="chapter-topic-list"><li><span class="t-num">058</span><a href="topics/058-scalability.html">Scalability — Horizontal vs Vertical Scaling</a></li><li><span class="t-num">059</span><a href="topics/059-load-balancing.html">Load Balancing & Rate Limiting</a></li><li><span class="t-num">060</span><a href="topics/060-microservices.html">Microservices Architecture</a></li><li><span class="t-num">061</span><a href="topics/061-message-queues.html">Message Queues (Redis, RabbitMQ, Kafka)</a></li><li><span class="t-num">062</span><a href="topics/062-system-design-interview.html">System Design Interview Framework</a></li></ul>
+  <a href="topics/058-scalability.html" class="chapter-start-btn">Start Chapter →</a>
+</div>
+  </div>
+</div>
+
+<script src="../../../assets/script.js?v=12"></script>
+</body>
+</html>

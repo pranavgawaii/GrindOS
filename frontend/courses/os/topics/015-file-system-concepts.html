@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+  (function() {
+    const saved = localStorage.getItem('GrindOS-theme');
+    if (saved) {
+      document.documentElement.classList.add(saved);
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.documentElement.classList.add('dark');
+    }
+  })();
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>File System Concepts — Operations, Access Methods — Operating Systems — GrindOS</title>
+<link rel="stylesheet" href="../../../assets/style.css?v=13">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+  <link rel="icon" type="image/png" href="../../../logo.png">
+  
+  <link rel="apple-touch-icon" href="../../../logo.png">
+</head>
+<body>
+
+<div id="reading-progress"></div>
+
+<header class="topbar">
+  <button class="icon-btn menu-toggle" id="menu-toggle" aria-label="Menu">☰</button>
+  <a href="dashboard.html" class="topbar-brand">
+    <img src="../../../logo.png" alt="GrindOS Logo" class="brand-logo" style="width: 34px; height: 34px; object-fit: contain; border-radius: 4px; flex-shrink: 0; display: inline-block; vertical-align: middle;">
+    <span class="brand-wordmark">GrindOS</span>
+  </a>
+  <nav class="topbar-nav">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="dashboard.html" class="active">💻 Operating Systems</a>
+    <a href="../../../interview-prep/index.html" class="nav-cta">🎯 Interview Prep</a>
+  </nav>
+  <div class="topbar-right">
+    <button class="icon-btn" id="theme-toggle" aria-label="Toggle theme"><span class="theme-icon">☾</span></button>
+  </div>
+</header>
+
+<div class="page-layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-course-label"><span class="course-emoji">💻</span>Operating Systems</div>
+    </div>
+    <div class="sidebar-progress">
+      <div class="progress-label-row">
+        <span>Progress</span>
+        <span class="progress-count">15 / 17</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" style="width:88%"></div></div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-search">
+        <input type="text" id="sidebar-search" placeholder="Search topics…  /" autocomplete="off">
+        <span class="sidebar-search-icon">⌕</span>
+      </div>
+      <details class="chapter-group" >
+        <summary class="chapter-summary"><span>Processes and CPU Scheduling</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item "><a href="../../../courses/os/topics/001-process-vs-thread.html"><span class="topic-num">001</span>Process vs Thread</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/002-cpu-scheduling-algorithms-fcfs-sjf-rr.html"><span class="topic-num">002</span>CPU Scheduling Algorithms</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/003-context-switching-and-dispatcher.html"><span class="topic-num">003</span>Context Switching & Dispatcher</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/004-multilevel-queue-scheduling.html"><span class="topic-num">004</span>Multilevel Queue Scheduling</a></li>
+        </ul>
+      </details>
+      <details class="chapter-group" >
+        <summary class="chapter-summary"><span>Memory Management</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item "><a href="../../../courses/os/topics/005-paging-and-page-tables.html"><span class="topic-num">005</span>Paging and Page Tables</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/006-segmentation.html"><span class="topic-num">006</span>Segmentation</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/007-virtual-memory-and-demand-paging.html"><span class="topic-num">007</span>Virtual Memory & Demand Paging</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/008-page-replacement-algorithms.html"><span class="topic-num">008</span>Page Replacement Algorithms</a></li>
+        </ul>
+      </details>
+      <details class="chapter-group" >
+        <summary class="chapter-summary"><span>Process Synchronization</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item "><a href="../../../courses/os/topics/009-critical-section-problem.html"><span class="topic-num">009</span>Critical Section Problem</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/010-mutex-vs-semaphore-vs-monitor.html"><span class="topic-num">010</span>Mutex vs Semaphore vs Monitor</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/011-classic-synchronisation-problems.html"><span class="topic-num">011</span>Classic Synchronisation Problems</a></li>
+        </ul>
+      </details>
+      <details class="chapter-group" >
+        <summary class="chapter-summary"><span>Deadlocks</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item "><a href="../../../courses/os/topics/012-deadlock-conditions-and-prevention.html"><span class="topic-num">012</span>Deadlock Conditions & Prevention</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/013-deadlock-avoidance-bankers-algorithm.html"><span class="topic-num">013</span>Deadlock Avoidance & Banker's Algorithm</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/014-deadlock-detection-and-recovery.html"><span class="topic-num">014</span>Deadlock Detection & Recovery</a></li>
+        </ul>
+      </details>
+      <details class="chapter-group" open>
+        <summary class="chapter-summary"><span>File Systems & Disk Scheduling</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item active"><a href="../../../courses/os/topics/015-file-system-concepts.html"><span class="topic-num">015</span>File System Concepts</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/016-directory-structure-and-inode.html"><span class="topic-num">016</span>Directory Structure and Inode</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/017-disk-scheduling-algorithms.html"><span class="topic-num">017</span>Disk Scheduling Algorithms</a></li>
+        </ul>
+      </details>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    <div class="breadcrumb">
+      <a href="dashboard.html">Dashboard</a>
+      <span class="breadcrumb-sep">/</span>
+      <a href="dashboard.html">Operating Systems</a>
+      <span class="breadcrumb-sep">/</span>
+      <span>File Systems</span>
+    </div>
+
+    <div class="topic-meta">
+      <div class="topic-meta-chip">📂 File Systems</div>
+      <div class="topic-meta-chip">📄 Topic 15</div>
+      <div class="topic-meta-chip" id="reading-time">…</div>
+    </div>
+
+    <article class="topic-article">
+      <div class="editorial-content max-w-3xl px-4 mt-2">
+        <div class="coreSubject dark:text-zinc-300">
+          <br/>
+          
+<h2>1. What is a File?</h2>
+<p>A <strong>File</strong> is a contiguous logical address space mapped onto physical sectors of non-volatile secondary storage by the operating system. It represents the smallest allocation unit on disk.</p>
+
+<h3>File Attributes</h3>
+<ul>
+  <li><strong>Name:</strong> Human-readable string identifier.</li>
+  <li><strong>Identifier:</strong> Unique integer tag (inode number) inside the file system.</li>
+  <li><strong>Type:</strong> Differentiates text, executable, directory, or media files.</li>
+  <li><strong>Size:</strong> Current byte capacity.</li>
+  <li><strong>Protection:</strong> Read, write, execute permissions flags.</li>
+</ul>
+
+<hr class="line-break"/>
+
+<h2>2. File Operations</h2>
+<p>The OS provides atomic system calls to manipulate files:</p>
+<ul>
+  <li><code>create()</code>: Allocates space and creates a directory entry.</li>
+  <li><code>open()</code>: Loads the file's metadata/inode into active memory.</li>
+  <li><code>read()</code>/<code>write()</code>: Moves data to/from user buffers, updating the active file pointer.</li>
+  <li><code>reposition()</code> (lseek): Updates the current file pointer index.</li>
+  <li><code>delete()</code>: Removes directory entry, freeing disk block allocations.</li>
+</ul>
+
+<hr class="line-break"/>
+
+<h2>3. File Access Methods</h2>
+<table border="1" cellpadding="8" style="width:100%;">
+  <thead>
+    <tr>
+      <th>Access Method</th>
+      <th>Operation Details</th>
+      <th>Use Case</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Sequential Access</strong></td>
+      <td>Information is processed in order, one record after another (e.g., read next block).</td>
+      <td>Compilers, editors, log parsing.</td>
+    </tr>
+    <tr>
+      <td><strong>Direct Access (Random)</strong></td>
+      <td>CPU can read/write blocks directly by block number index (e.g., read block 15) in O(1) time.</td>
+      <td>Databases, key-value storage index queries.</td>
+    </tr>
+  </tbody>
+</table>
+
+          
+<div class="interview-qna">
+  <h3>🎯 Topic Q&A</h3>
+  <div class="qna-item">
+    <strong>Q1: What are file system access methods?</strong>
+    <p>Access methods define how blocks inside a file are read and written. The two main types are: <strong>Sequential Access</strong> (processed in order) and <strong>Direct Access</strong> (any block read directly via index pointer).</p>
+  </div>
+  <div class="qna-item">
+    <strong>Q2: Why do OS kernels require an open-file table?</strong>
+    <p>Opening a file requires resolving pathnames and loading inodes from disk (slow). To optimize, the OS loads open file details into an active memory open-file table, returning a lightweight file descriptor (FD) index to the user.</p>
+  </div>
+  <div class="qna-item">
+    <strong>Q3: Explain the difference between file metadata and file data.</strong>
+    <p>File data is the actual content written by the user (text, binary). File metadata (stored in inodes) is structural information about the file (size, permissions, timestamps, owner, block pointers).</p>
+  </div>
+  <div class="qna-item">
+    <strong>Q4: What is the purpose of the lseek system call?</strong>
+    <p>The `lseek()` system call repositions the read/write file pointer offset in the open-file table without reading or writing data, enabling random access within a file.</p>
+  </div>
+  <div class="qna-item">
+    <strong>Q5: Can you write a Python snippet reading a file in blocks?</strong>
+    <pre><code class="language-python"># Read file in 1024-byte chunks
+def read_chunks(file_path):
+    with open(file_path, 'rb') as f:
+        while True:
+            chunk = f.read(1024)
+            if not chunk:
+                break
+            yield chunk</code></pre>
+  </div>
+</div>
+
+        </div>
+      </div>
+    </article>
+
+    <div class="topic-nav"><a href="014-deadlock-detection-and-recovery.html" class="nav-btn nav-prev"><span class="nav-btn-label">← Previous</span><span class="nav-btn-title">Deadlock Detection & Recovery</span></a><a href="016-directory-structure-and-inode.html" class="nav-btn nav-next"><span class="nav-btn-label">Next →</span><span class="nav-btn-title">Directory Structure and Inode</span></a></div>
+  </main>
+</div>
+
+<button id="back-to-top" aria-label="Back to top">↑</button>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="../../../assets/script.js?v=12"></script>
+</body>
+</html>

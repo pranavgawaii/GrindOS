@@ -1,0 +1,44 @@
+[
+  {
+    "id": "dbms",
+    "title": "Database Management Systems",
+    "icon": "🗄️",
+    "topics": 94
+  },
+  {
+    "id": "cn",
+    "title": "Computer Networks",
+    "icon": "🌐",
+    "topics": 40
+  },
+  {
+    "id": "os",
+    "title": "Operating Systems",
+    "icon": "💻",
+    "topics": 17
+  },
+  {
+    "id": "oops",
+    "title": "Object-Oriented Programming",
+    "icon": "📦",
+    "topics": 15
+  },
+  {
+    "id": "dsa",
+    "title": "Data Structures & Algorithms",
+    "icon": "polyline",
+    "topics": 72
+  },
+  {
+    "id": "webdev",
+    "title": "Web Development",
+    "icon": "globe",
+    "topics": 62
+  },
+  {
+    "id": "aptitude",
+    "title": "Quantitative & Logical Aptitude",
+    "icon": "🧠",
+    "topics": 35
+  }
+]

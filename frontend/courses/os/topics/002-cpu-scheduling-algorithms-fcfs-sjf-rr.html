@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+  (function() {
+    const saved = localStorage.getItem('GrindOS-theme');
+    if (saved) {
+      document.documentElement.classList.add(saved);
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.documentElement.classList.add('dark');
+    }
+  })();
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>CPU Scheduling Algorithms — FCFS, SJF, RR, Priority — Operating Systems — GrindOS</title>
+<link rel="stylesheet" href="../../../assets/style.css?v=13">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+  <link rel="icon" type="image/png" href="../../../logo.png">
+  
+  <link rel="apple-touch-icon" href="../../../logo.png">
+</head>
+<body>
+
+<div id="reading-progress"></div>
+
+<header class="topbar">
+  <button class="icon-btn menu-toggle" id="menu-toggle" aria-label="Menu">☰</button>
+  <a href="dashboard.html" class="topbar-brand">
+    <img src="../../../logo.png" alt="GrindOS Logo" class="brand-logo" style="width: 34px; height: 34px; object-fit: contain; border-radius: 4px; flex-shrink: 0; display: inline-block; vertical-align: middle;">
+    <span class="brand-wordmark">GrindOS</span>
+  </a>
+  <nav class="topbar-nav">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="dashboard.html" class="active">💻 Operating Systems</a>
+    <a href="../../../interview-prep/index.html" class="nav-cta">🎯 Interview Prep</a>
+  </nav>
+  <div class="topbar-right">
+    <button class="icon-btn" id="theme-toggle" aria-label="Toggle theme"><span class="theme-icon">☾</span></button>
+  </div>
+</header>
+
+<div class="page-layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-course-label"><span class="course-emoji">💻</span>Operating Systems</div>
+    </div>
+    <div class="sidebar-progress">
+      <div class="progress-label-row">
+        <span>Progress</span>
+        <span class="progress-count">2 / 17</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" style="width:12%"></div></div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-search">
+        <input type="text" id="sidebar-search" placeholder="Search topics…  /" autocomplete="off">
+        <span class="sidebar-search-icon">⌕</span>
+      </div>
+      <details class="chapter-group" open>
+        <summary class="chapter-summary"><span>Processes and CPU Scheduling</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item "><a href="../../../courses/os/topics/001-process-vs-thread.html"><span class="topic-num">001</span>Process vs Thread</a></li>
+          <li class="topic-item active"><a href="../../../courses/os/topics/002-cpu-scheduling-algorithms-fcfs-sjf-rr.html"><span class="topic-num">002</span>CPU Scheduling Algorithms</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/003-context-switching-and-dispatcher.html"><span class="topic-num">003</span>Context Switching & Dispatcher</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/004-multilevel-queue-scheduling.html"><span class="topic-num">004</span>Multilevel Queue Scheduling</a></li>
+        </ul>
+      </details>
+      <details class="chapter-group" >
+        <summary class="chapter-summary"><span>Memory Management</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item "><a href="../../../courses/os/topics/005-paging-and-page-tables.html"><span class="topic-num">005</span>Paging and Page Tables</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/006-segmentation.html"><span class="topic-num">006</span>Segmentation</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/007-virtual-memory-and-demand-paging.html"><span class="topic-num">007</span>Virtual Memory & Demand Paging</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/008-page-replacement-algorithms.html"><span class="topic-num">008</span>Page Replacement Algorithms</a></li>
+        </ul>
+      </details>
+      <details class="chapter-group" >
+        <summary class="chapter-summary"><span>Process Synchronization</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item "><a href="../../../courses/os/topics/009-critical-section-problem.html"><span class="topic-num">009</span>Critical Section Problem</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/010-mutex-vs-semaphore-vs-monitor.html"><span class="topic-num">010</span>Mutex vs Semaphore vs Monitor</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/011-classic-synchronisation-problems.html"><span class="topic-num">011</span>Classic Synchronisation Problems</a></li>
+        </ul>
+      </details>
+      <details class="chapter-group" >
+        <summary class="chapter-summary"><span>Deadlocks</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item "><a href="../../../courses/os/topics/012-deadlock-conditions-and-prevention.html"><span class="topic-num">012</span>Deadlock Conditions & Prevention</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/013-deadlock-avoidance-bankers-algorithm.html"><span class="topic-num">013</span>Deadlock Avoidance & Banker's Algorithm</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/014-deadlock-detection-and-recovery.html"><span class="topic-num">014</span>Deadlock Detection & Recovery</a></li>
+        </ul>
+      </details>
+      <details class="chapter-group" >
+        <summary class="chapter-summary"><span>File Systems & Disk Scheduling</span><span class="chapter-chevron">▶</span></summary>
+        <ul class="topic-list">
+          <li class="topic-item "><a href="../../../courses/os/topics/015-file-system-concepts.html"><span class="topic-num">015</span>File System Concepts</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/016-directory-structure-and-inode.html"><span class="topic-num">016</span>Directory Structure and Inode</a></li>
+          <li class="topic-item "><a href="../../../courses/os/topics/017-disk-scheduling-algorithms.html"><span class="topic-num">017</span>Disk Scheduling Algorithms</a></li>
+        </ul>
+      </details>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    <div class="breadcrumb">
+      <a href="dashboard.html">Dashboard</a>
+      <span class="breadcrumb-sep">/</span>
+      <a href="dashboard.html">Operating Systems</a>
+      <span class="breadcrumb-sep">/</span>
+      <span>Processes and CPU Scheduling</span>
+    </div>
+
+    <div class="topic-meta">
+      <div class="topic-meta-chip">📂 Processes and CPU Scheduling</div>
+      <div class="topic-meta-chip">📄 Topic 2</div>
+      <div class="topic-meta-chip" id="reading-time">…</div>
+    </div>
+
+    <article class="topic-article">
+      <div class="editorial-content max-w-3xl px-4 mt-2">
+        <div class="coreSubject dark:text-zinc-300">
+          <br/>
+          
+<h2>1. CPU Scheduling Overview</h2>
+<p>CPU scheduling is the process by which the operating system decides which process in the ready queue receives CPU core cycles. It is divided into two primary modes:</p>
+<ul>
+  <li><strong>Preemptive Scheduling:</strong> The OS can interrupt a running process to assign the CPU to another process (e.g., when a higher-priority process arrives or a time slice expires).</li>
+  <li><strong>Non-Preemptive Scheduling:</strong> Once a process is allocated the CPU, it holds it until it voluntary terminates or blocks for I/O.</li>
+</ul>
+
+<hr class="line-break"/>
+
+<h2>2. Core Scheduling Algorithms</h2>
+
+<h3>A. First-Come, First-Served (FCFS)</h3>
+<p>Non-preemptive scheduling based on arrival order. Suffer from the **Convoy Effect**, where short processes are blocked behind a massive, long-running process, ballooning the average waiting time.</p>
+
+<h3>B. Shortest Job First (SJF)</h3>
+<p>Selects the process with the shortest CPU burst time next. It is mathematically optimal for minimizing average waiting time. Its preemptive variant is called **Shortest Remaining Time First (SRTF)**. Its primary drawback is **Starvation** of longer jobs.</p>
+
+<h3>C. Round Robin (RR)</h3>
+<p>Preemptive, time-sliced algorithm designed for interactive systems. Each process runs for a small, fixed unit of time called a **Time Quantum (TQ)**. If a process does not complete within the TQ, it is preempted and returned to the end of the ready queue.</p>
+
+<h3>D. Priority Scheduling</h3>
+<p>Each process is assigned a priority integer. The CPU is allocated to the highest-priority process. To prevent starvation of low-priority processes, **Aging** is used (gradually increasing the priority of processes as they wait).</p>
+
+<hr class="line-break"/>
+
+<h2>3. Numerical Trace & Gantt Chart Example</h2>
+<p>Consider 3 processes arriving at time 0 with the following burst times:</p>
+<table border="1" cellpadding="8">
+  <thead>
+    <tr>
+      <th>Process</th>
+      <th>Burst Time</th>
+      <th>Priority (Lower = Higher)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>P1</td>
+      <td>24</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>P2</td>
+      <td>3</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>P3</td>
+      <td>3</td>
+      <td>2</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3>Gantt Chart for FCFS (P1 &rarr; P2 &rarr; P3)</h3>
+<table border="1" cellpadding="12" style="text-align: center; font-family: var(--font-mono); font-weight: bold; width: 100%;">
+  <tr>
+    <td style="background: var(--brand-light); width: 80%;">P1 (24ms)</td>
+    <td style="background: var(--bg-3); width: 10%;">P2 (3ms)</td>
+    <td style="background: var(--bg-2); width: 10%;">P3 (3ms)</td>
+  </tr>
+  <tr style="font-size: 0.85rem; font-weight: normal;">
+    <td style="text-align: left; border: none;">0</td>
+    <td style="text-align: left; border: none;">24</td>
+    <td style="text-align: left; border: none;">27</td>
+    <td style="text-align: right; border: none; width: 1px;">30</td>
+  </tr>
+</table>
+<ul>
+  <li>Waiting Time: P1 = 0, P2 = 24, P3 = 27.</li>
+  <li>Average Waiting Time: <strong>17.0ms</strong>.</li>
+</ul>
+
+<h3>Gantt Chart for SJF / Priority (P2 &rarr; P3 &rarr; P1)</h3>
+<table border="1" cellpadding="12" style="text-align: center; font-family: var(--font-mono); font-weight: bold; width: 100%;">
+  <tr>
+    <td style="background: var(--bg-3); width: 10%;">P2 (3ms)</td>
+    <td style="background: var(--bg-2); width: 10%;">P3 (3ms)</td>
+    <td style="background: var(--brand-light); width: 80%;">P1 (24ms)</td>
+  </tr>
+  <tr style="font-size: 0.85rem; font-weight: normal;">
+    <td style="text-align: left; border: none;">0</td>
+    <td style="text-align: left; border: none;">3</td>
+    <td style="text-align: left; border: none;">6</td>
+    <td style="text-align: right; border: none; width: 1px;">30</td>
+  </tr>
+</table>
+<ul>
+  <li>Waiting Time: P1 = 6, P2 = 0, P3 = 3.</li>
+  <li>Average Waiting Time: <strong>3.0ms</strong>! (Mathematically optimal reduction).</li>
+</ul>
+
+          
+<div class="interview-qna">
+  <h3>🎯 Topic Q&A</h3>
+  <div class="qna-item">
+    <strong>Q1: What is the Convoy Effect in FCFS scheduling?</strong>
+    <p>The Convoy Effect is a phenomenon where several short processes wait in the ready queue behind one long-running, CPU-bound process. This severely degrades CPU utilization and average waiting time, as all other resources remain idle waiting for the giant job to finish.</p>
+  </div>
+  <div class="qna-item">
+    <strong>Q2: How does Round Robin perform under different time quantum lengths?</strong>
+    <p>If the time quantum is too long, Round Robin behaves exactly like FCFS. If the quantum is too short, the CPU spends too much time context switching instead of executing useful code, creating massive system overhead.</p>
+  </div>
+  <div class="qna-item">
+    <strong>Q3: What is Starvation in CPU scheduling and how is it resolved?</strong>
+    <p>Starvation occurs when low-priority or long burst-time processes wait indefinitely in the queue because high-priority or shorter jobs keep arriving. It is resolved using <strong>Aging</strong>, which gradually increases the priority of waiting processes over time.</p>
+  </div>
+  <div class="qna-item">
+    <strong>Q4: Why is Shortest Job First (SJF) considered optimal?</strong>
+    <p>SJF is optimal because it schedules the shortest CPU burst first. This mathematically minimizes the average waiting time for any given set of processes by moving long-waiting processes to the back of the queue.</p>
+  </div>
+  <div class="qna-item">
+    <strong>Q5: What is the difference between preemptive and non-preemptive scheduling?</strong>
+    <p>In non-preemptive scheduling, a process retains CPU ownership until it voluntary terminates or blocks for I/O. In preemptive scheduling, the OS can forcefully interrupt a running process to allocate the CPU to another thread (e.g., when a time slice ends or higher-priority thread arrives).</p>
+  </div>
+</div>
+
+        </div>
+      </div>
+    </article>
+
+    <div class="topic-nav"><a href="001-process-vs-thread.html" class="nav-btn nav-prev"><span class="nav-btn-label">← Previous</span><span class="nav-btn-title">Process vs Thread</span></a><a href="003-context-switching-and-dispatcher.html" class="nav-btn nav-next"><span class="nav-btn-label">Next →</span><span class="nav-btn-title">Context Switching & Dispatcher</span></a></div>
+  </main>
+</div>
+
+<button id="back-to-top" aria-label="Back to top">↑</button>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="../../../assets/script.js?v=12"></script>
+</body>
+</html>

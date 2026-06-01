@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<script>
+  (function() {
+    const saved = localStorage.getItem('GrindOS-theme');
+    if (saved) {
+      document.documentElement.classList.add(saved);
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.documentElement.classList.add('dark');
+    }
+  })();
+</script>
+<title>Object-Oriented Programming — GrindOS</title>
+<link rel="stylesheet" href="../../assets/style.css?v=13">
+  <link rel="icon" type="image/png" href="../../logo.png">
+  
+  <link rel="apple-touch-icon" href="../../logo.png">
+</head>
+<body>
+
+<header class="topbar">
+  <a href="dashboard.html" class="topbar-brand">
+    <img src="../../logo.png" alt="GrindOS Logo" class="brand-logo" style="width: 34px; height: 34px; object-fit: contain; border-radius: 4px; flex-shrink: 0; display: inline-block; vertical-align: middle;">
+    <span class="brand-wordmark">GrindOS</span>
+  </a>
+  <nav class="topbar-nav">
+    <a href="dashboard.html" class="learn-nav active">Learn</a>
+    <a href="../../tracker.html" class="practice-nav">Practice</a>
+    <a href="../../interview-prep/index.html" class="prep-nav">Prep</a>
+  </nav>
+  <div class="topbar-right">
+    <button class="icon-btn" id="theme-toggle" aria-label="Toggle theme"><span class="theme-icon">☾</span></button>
+  </div>
+</header>
+
+<div class="course-page">
+  <div class="course-hero">
+    <div class="course-hero-icon">📦</div>
+    <div class="course-hero-body">
+      <h1>Object-Oriented Programming</h1>
+      <p>Classes, encapsulation, inheritance, polymorphism, abstraction, dunder magic protocols, and OOP design patterns in Python.</p>
+      <div class="course-hero-meta">
+        <span class="meta-chip">📖 15 topics</span>
+        <span class="meta-chip">📂 4 chapters</span>
+      </div>
+    </div>
+    <a href="topics/001-introduction-to-oops.html" class="start-btn">Start Course →</a>
+  </div>
+
+  <div class="chapter-grid">
+    <div class="chapter-card">
+      <div class="chapter-card-head">
+        <h3 class="chapter-card-title">Fundamentals</h3>
+        <span class="chapter-pill">6 topics</span>
+      </div>
+      <ul class="chapter-topic-list">
+        <li><span class="t-num">001</span><a href="topics/001-introduction-to-oops.html">Introduction to OOPs</a></li>
+        <li><span class="t-num">002</span><a href="topics/002-classes-and-objects.html">Classes and Objects</a></li>
+        <li><span class="t-num">003</span><a href="topics/003-encapsulation.html">Encapsulation</a></li>
+        <li><span class="t-num">004</span><a href="topics/004-inheritance.html">Inheritance</a></li>
+        <li><span class="t-num">005</span><a href="topics/005-polymorphism.html">Polymorphism</a></li>
+        <li><span class="t-num">006</span><a href="topics/006-abstraction.html">Abstraction</a></li>
+      </ul>
+      <a href="topics/001-introduction-to-oops.html" class="chapter-start-btn">Start Chapter →</a>
+    </div>
+
+    <div class="chapter-card">
+      <div class="chapter-card-head">
+        <h3 class="chapter-card-title">Advanced Concepts</h3>
+        <span class="chapter-pill">4 topics</span>
+      </div>
+      <ul class="chapter-topic-list">
+        <li><span class="t-num">007</span><a href="topics/007-constructors-in-python.html">Constructors in Python</a></li>
+        <li><span class="t-num">008</span><a href="topics/008-dunder-magic-methods.html">Dunder Magic Methods</a></li>
+        <li><span class="t-num">009</span><a href="topics/009-static-and-class-methods.html">Static and Class Methods</a></li>
+        <li><span class="t-num">010</span><a href="topics/010-composition-vs-inheritance.html">Composition vs Inheritance</a></li>
+      </ul>
+      <a href="topics/007-constructors-in-python.html" class="chapter-start-btn">Start Chapter →</a>
+    </div>
+
+    <div class="chapter-card">
+      <div class="chapter-card-head">
+        <h3 class="chapter-card-title">Design Patterns</h3>
+        <span class="chapter-pill">3 topics</span>
+      </div>
+      <ul class="chapter-topic-list">
+        <li><span class="t-num">011</span><a href="topics/011-singleton-pattern.html">Singleton Pattern</a></li>
+        <li><span class="t-num">012</span><a href="topics/012-factory-pattern.html">Factory Pattern</a></li>
+        <li><span class="t-num">013</span><a href="topics/013-observer-pattern.html">Observer Pattern</a></li>
+      </ul>
+      <a href="topics/011-singleton-pattern.html" class="chapter-start-btn">Start Chapter →</a>
+    </div>
+
+    <div class="chapter-card">
+      <div class="chapter-card-head">
+        <h3 class="chapter-card-title">Interview Special</h3>
+        <span class="chapter-pill">2 topics</span>
+      </div>
+      <ul class="chapter-topic-list">
+        <li><span class="t-num">014</span><a href="topics/014-oops-interview-questions.html">OOPs Interview Qs</a></li>
+        <li><span class="t-num">015</span><a href="topics/015-oops-in-python-vs-java.html">OOPs Python vs Java</a></li>
+      </ul>
+      <a href="topics/014-oops-interview-questions.html" class="chapter-start-btn">Start Chapter →</a>
+    </div>
+  </div>
+</div>
+
+<script src="../../assets/script.js?v=12"></script>
+</body>
+</html>
