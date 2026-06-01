@@ -212,19 +212,34 @@ def list_waitlist():
         if not entries:
             print("ℹ️ No waitlist entries found.")
             return
-            
-        pending_entries = [e for e in entries if e.get("status") == "pending"]
-        if not pending_entries:
-            print("ℹ️ No pending waitlist entries found.")
-            return
-            
-        print(f"\n{ 'Email Address':<35} | { 'Status':<10} | { 'ID':<30}")
-        print("-" * 81)
-        for e in pending_entries:
-            email = e.get("email_address") or (e.get("identifier") if "identifier" in e else "—")
-            print(f"{email:<35} | {e.get('status'):<10} | {e.get('id'):<30}")
+
+        # Show all entries regardless of status
+        print(f"\n{ 'Email Address':<35} | { 'Status':<12} | { 'ID':<30}")
+        print("-" * 83)
+        for e in entries:
+            email = (e.get("email_address")
+                     or e.get("identifier")
+                     or "—")
+            s = e.get("status", "—")
+            print(f"{email:<35} | {s:<12} | {e.get('id', '—'):<30}")
+
+        pending = [e for e in entries if e.get("status") == "pending"]
+        print(f"\n  Total: {len(entries)}  |  Pending: {len(pending)}")
+    elif status == 403:
+        print("❌ 403 Forbidden — Clerk is blocking this request.")
+        print()
+        print("  Most likely cause: Waitlist is not enabled in your Clerk instance.")
+        print("  Fix it in 3 steps:")
+        print("   1. Go to https://dashboard.clerk.com → select your app")
+        print("   2. User & Authentication → Restrictions")
+        print("   3. Toggle ON 'Enable waitlist' and SAVE")
+        print()
+        print("  Also check that your CLERK_SECRET_KEY in backend/.env starts with")
+        print("  'sk_test_' (for dev) or 'sk_live_' (for prod) and matches your")
+        print("  current Clerk instance in the dashboard.")
     else:
-        print(f"❌ Failed to list waitlist entries: {status} - {json.dumps(res)}")
+        print(f"❌ Failed to list waitlist entries: HTTP {status}")
+        print(f"   Response: {json.dumps(res, indent=2)}")
 
 def approve_waitlist(email):
     print(f"⏳ Searching waitlist for email: {email}...")

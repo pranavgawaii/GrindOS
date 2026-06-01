@@ -1714,7 +1714,7 @@
     document.getElementById('waitlist-modal').classList.remove('active');
   }
 
-  function submitWaitlistFollowup(e) {
+  async function submitWaitlistFollowup(e) {
     e.preventDefault();
     const college = document.getElementById('wl-college').value.trim();
     const grad = document.getElementById('wl-grad').value;
@@ -1728,13 +1728,46 @@
 
     closeWaitlistModal();
 
+    // ── Submit to Clerk Waitlist API ─────────────────────────────────────────
+    // This is the ONLY source of truth. localStorage is kept as a local UX aid.
+    let clerkSuccess = false;
+    try {
+      const resp = await fetch(
+        'https://api.clerk.com/v1/waitlist_entries',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email_address: tempEmail })
+        }
+      );
+      if (resp.ok) {
+        clerkSuccess = true;
+      } else {
+        const body = await resp.json().catch(() => ({}));
+        // 422 with code "already_on_waitlist" = they already joined → treat as success
+        const alreadyOn = (body.errors || []).some(err => err.code === 'already_on_waitlist');
+        if (alreadyOn) {
+          showToast('👋 You\'re already on the waitlist!', false);
+          tempEmail = '';
+          return;
+        }
+        console.warn('Clerk waitlist API error:', resp.status, body);
+      }
+    } catch (err) {
+      console.warn('Failed to reach Clerk waitlist API:', err);
+    }
+
+    // ── Local UX storage (college / grad / goal metadata for your own reference) ──
     let list = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-    list.push({ email: tempEmail, college, grad, goal });
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+    if (!list.some(item => item.email === tempEmail)) {
+      list.push({ email: tempEmail, college, grad, goal, ts: Date.now() });
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+    }
 
     // Update count
     const count = 247 + list.length;
-    document.getElementById('waitlist-num').textContent = `${count} students already waiting`;
+    const numEl = document.getElementById('waitlist-num');
+    if (numEl) numEl.textContent = `${count} students already waiting`;
 
     // Update button if it exists
     const btn = document.getElementById('waitlist-btn');
@@ -1745,15 +1778,17 @@
     if (btnArrow) btnArrow.style.display = 'none';
 
     // Show toast
-    showToast('🎉 You\'re on the waitlist! We\'ll notify you when access opens.');
+    const msg = clerkSuccess
+      ? '🎉 You\'re on the waitlist! We\'ll notify you when access opens.'
+      : '🎉 Registered! We\'ll be in touch soon.';
+    showToast(msg);
 
     // Clear input
-    document.getElementById('waitlist-email').value = '';
-    
-    // Reset tempEmail
+    const emailInput = document.getElementById('waitlist-email');
+    if (emailInput) emailInput.value = '';
     tempEmail = '';
 
-    // Redirect to sign in after 2.5s
+    // Redirect to login after 2.5s
     setTimeout(() => {
       window.location.href = 'auth/login.html';
     }, 2500);
