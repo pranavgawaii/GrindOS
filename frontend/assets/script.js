@@ -1,6 +1,17 @@
 // ── GrindOS Platform — Script ──────────────────────────────────────────────────
 
 (function () {
+  // ── Vercel Analytics Dynamic Injection ─────────────────────────────────────
+  (function() {
+    if (!window.va) {
+      window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+      const script = document.createElement('script');
+      script.src = '/_vercel/insights/script.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    }
+  })();
+
   // ── Theme ─────────────────────────────────────────────────────────────────
   const html = document.documentElement;
   const saved = localStorage.getItem('GrindOS-theme');
