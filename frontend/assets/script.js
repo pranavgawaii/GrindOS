@@ -2162,7 +2162,10 @@
       threadEl.scrollTop = threadEl.scrollHeight;
 
       try {
-        const res = await fetch('http://localhost:8000/ask', {
+        const apiBase = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+          ? 'http://localhost:8000'
+          : '';
+        const res = await fetch(`${apiBase}/ask`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ question: text, mode: currentMode })
