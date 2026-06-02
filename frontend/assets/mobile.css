@@ -1,0 +1,911 @@
+/* ══════════════════════════════════════════════════════════════════════
+   GrindOS — Premium Mobile UI Overhaul
+   Layered on top of style.css for surgical mobile-first enhancement
+   ════════════════════════════════════════════════════════════════════ */
+
+/* ── Safe area / env() support for notched devices ─────────────────── */
+:root {
+  --safe-top:    env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left:   env(safe-area-inset-left, 0px);
+  --safe-right:  env(safe-area-inset-right, 0px);
+  --mobile-nav-h: 68px;
+}
+
+/* ── iOS-style momentum scrolling ──────────────────────────────────── */
+html, body {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Remove tap blue highlight everywhere ─────────────────────────────── */
+* {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+}
+a, button, [role="button"] {
+  touch-action: manipulation;
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   BOTTOM NAV BAR — App-like mobile navigation (≤ 768px)
+   Shows on dashboard, tracker, and inner pages. Hidden on landing.
+   ════════════════════════════════════════════════════════════════════ */
+.mobile-bottom-nav {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .mobile-bottom-nav {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 200;
+    background: var(--card);
+    border-top: 1px solid var(--border);
+    padding: 8px 0 calc(8px + var(--safe-bottom));
+    box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.12);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    align-items: stretch;
+    justify-content: space-around;
+    gap: 0;
+  }
+
+  .dark .mobile-bottom-nav {
+    background: rgba(13, 13, 16, 0.92);
+    box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.4);
+  }
+
+  .mobile-nav-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 4px 0;
+    text-decoration: none;
+    color: var(--text-4);
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    transition: color 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    min-height: 44px;
+  }
+
+  .mobile-nav-item.active {
+    color: var(--brand);
+  }
+
+  .mobile-nav-item.active::before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 32px;
+    height: 2.5px;
+    background: var(--brand);
+    border-radius: 0 0 4px 4px;
+    box-shadow: 0 0 8px rgba(234, 118, 63, 0.5);
+  }
+
+  .mobile-nav-icon {
+    font-size: 1.25rem;
+    line-height: 1;
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .mobile-nav-item:hover .mobile-nav-icon,
+  .mobile-nav-item.active .mobile-nav-icon {
+    transform: translateY(-2px) scale(1.1);
+  }
+
+  /* Offset content so it doesn't hide behind bottom nav */
+  .dashboard,
+  .page-layout,
+  .course-page {
+    padding-bottom: calc(var(--mobile-nav-h) + var(--safe-bottom)) !important;
+  }
+
+  #back-to-top {
+    bottom: calc(var(--mobile-nav-h) + 16px + var(--safe-bottom)) !important;
+    right: 20px !important;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   TOPBAR — Mobile overhaul
+   ════════════════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  /* Float pill nav — shrink and reposition */
+  .topbar {
+    top: 10px !important;
+    width: calc(100% - 20px) !important;
+    padding: 0 16px !important;
+    height: 52px !important;
+    border-radius: 9999px !important;
+  }
+
+  /* Hide text nav on mobile — use bottom nav instead */
+  .topbar-nav {
+    display: none !important;
+  }
+
+  /* Topbar brand: always show logo + name */
+  .topbar-brand .brand-wordmark {
+    display: inline-block !important;
+    font-size: 1rem !important;
+  }
+
+  .topbar-right {
+    gap: 6px !important;
+  }
+
+  .icon-btn {
+    width: 32px !important;
+    height: 32px !important;
+    font-size: 0.9rem !important;
+  }
+
+  /* Floating menu toggle — hide on mobile since we use bottom nav */
+  .floating-menu-toggle {
+    display: none !important;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   SIDEBAR — Full drawer overlay on mobile
+   ════════════════════════════════════════════════════════════════════ */
+@media (max-width: 900px) {
+  .sidebar {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    height: 100vh !important;
+    width: min(280px, 85vw) !important;
+    padding-top: calc(56px + var(--safe-top)) !important;
+    z-index: 150 !important;
+    transform: translateX(-100%) !important;
+    transition: transform 0.35s cubic-bezier(0.32, 0, 0, 1) !important;
+    box-shadow: none !important;
+  }
+
+  .sidebar.open {
+    transform: translateX(0) !important;
+    box-shadow: 8px 0 40px rgba(0, 0, 0, 0.25) !important;
+  }
+
+  /* Sidebar backdrop overlay */
+  .sidebar-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    z-index: 145;
+    opacity: 0;
+    transition: opacity 0.35s;
+  }
+
+  .sidebar-overlay.active {
+    display: block;
+    opacity: 1;
+  }
+
+  /* Better touch targets inside sidebar */
+  .topic-item a {
+    padding: 10px 16px 10px 20px !important;
+    min-height: 44px !important;
+  }
+
+  .chapter-summary {
+    padding: 13px 16px !important;
+    min-height: 44px !important;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   MAIN CONTENT — Mobile padding & readability
+   ════════════════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  .main-content {
+    padding: 20px 16px 80px !important;
+    max-width: 100% !important;
+  }
+
+  .topic-article {
+    font-size: 0.95rem !important;
+    line-height: 1.75 !important;
+  }
+
+  .topic-article h1, .editorial-content h1 {
+    font-size: 1.55rem !important;
+  }
+
+  .topic-article h2 {
+    font-size: 1.2rem !important;
+  }
+
+  /* Better code block scrolling on mobile */
+  .topic-article pre, .editorial-content pre {
+    border-radius: 10px !important;
+    padding: 14px 14px !important;
+    font-size: 0.78rem !important;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Tables: horizontal scroll on mobile */
+  .topic-article table, .editorial-content table {
+    display: block !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+    font-size: 0.82rem !important;
+  }
+
+  /* Topic nav stacked */
+  .topic-nav {
+    flex-direction: column !important;
+    gap: 10px !important;
+    margin-top: 40px !important;
+  }
+
+  .nav-btn {
+    padding: 12px 16px !important;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   DASHBOARD — Full mobile overhaul
+   ════════════════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  /* Hero section on dashboard */
+  .hero {
+    padding: 32px 20px 28px !important;
+  }
+
+  .hero h1 {
+    font-size: 1.55rem !important;
+    letter-spacing: -0.025em !important;
+    margin-bottom: 10px !important;
+  }
+
+  .hero p {
+    font-size: 0.88rem !important;
+    margin-bottom: 24px !important;
+  }
+
+  .hero-stats {
+    gap: 20px !important;
+  }
+
+  .hero-stat-num {
+    font-size: 1.5rem !important;
+  }
+
+  /* Dashboard header row */
+  .dashboard-header-row {
+    margin: 16px 16px 12px !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 12px !important;
+  }
+
+  .dashboard-title-area h2 {
+    font-size: 1.35rem !important;
+  }
+
+  .dashboard-meta-badges {
+    gap: 8px !important;
+    flex-wrap: wrap !important;
+  }
+
+  .meta-badge {
+    font-size: 0.72rem !important;
+    padding: 5px 10px !important;
+  }
+
+  /* Search bar */
+  .dashboard-search-container {
+    padding: 0 16px !important;
+    margin-bottom: 20px !important;
+  }
+
+  /* Courses section */
+  .courses-section {
+    padding: 0 16px 0 !important;
+  }
+
+  .courses-grid {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+
+  /* Landscape card stacks on mobile */
+  .courses-grid .course-card.landscape {
+    grid-template-columns: 1fr !important;
+    padding: 16px !important;
+    gap: 12px !important;
+  }
+
+  .course-card.landscape .landscape-right-panel {
+    align-items: stretch !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    border-top: 1px solid var(--border) !important;
+    padding-top: 12px !important;
+  }
+
+  /* Course cards: better touch targets */
+  .course-card-top {
+    padding: 16px 16px 12px !important;
+  }
+
+  .course-card-footer {
+    padding: 10px 16px 14px !important;
+  }
+
+  /* Cockpit grid */
+  .cockpit-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+    margin-top: 12px !important;
+  }
+
+  .cockpit-card {
+    padding: 14px 16px !important;
+  }
+
+  .cockpit-num {
+    font-size: 1.65rem !important;
+  }
+
+  /* Quick access grid */
+  .quick-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+    margin-top: 10px !important;
+  }
+
+  .quick-card {
+    padding: 14px 12px !important;
+    font-size: 0.82rem !important;
+    gap: 10px !important;
+  }
+
+  .quick-icon {
+    font-size: 1.2rem !important;
+  }
+
+  /* Dashboard section padding */
+  .dashboard-section {
+    padding: 0 16px !important;
+    margin-top: 28px !important;
+  }
+
+  .dashboard-section-title {
+    font-size: 1rem !important;
+  }
+
+  /* Negotiables card */
+  .negotiables-card {
+    padding: 18px 16px !important;
+  }
+
+  .negotiable-item {
+    padding: 10px 14px !important;
+    min-height: 44px !important;
+  }
+
+  /* Quote card */
+  .quote-card {
+    margin-bottom: 24px !important;
+    padding: 16px 18px !important;
+  }
+
+  /* Stats cards row */
+  .dashboard-stats-row {
+    grid-template-columns: 1fr !important;
+    margin: 16px 16px 24px !important;
+    gap: 12px !important;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   LANDING (index.html) — Mobile premium treatment
+   ════════════════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  /* Hero: reduce padding, keep visual impact */
+  .hero {
+    padding: 100px 20px 72px !important;
+    min-height: 100svh !important;
+  }
+
+  .hero-badge {
+    padding: 5px 12px !important;
+    font-size: 0.72rem !important;
+    margin-bottom: 20px !important;
+  }
+
+  .hero h1 {
+    font-size: clamp(1.9rem, 7vw, 2.6rem) !important;
+    margin-bottom: 16px !important;
+  }
+
+  .hero-sub {
+    font-size: 0.95rem !important;
+    margin-bottom: 28px !important;
+  }
+
+  /* Waitlist form: stacked pill on mobile */
+  .waitlist-form {
+    flex-direction: column !important;
+    border-radius: 16px !important;
+    padding: 10px !important;
+    gap: 10px !important;
+  }
+
+  .waitlist-input {
+    padding: 12px 16px !important;
+    font-size: 0.9rem !important;
+    border-radius: 10px !important;
+    background: rgba(255,255,255,0.05) !important;
+    border: 1px solid rgba(255,255,255,0.1) !important;
+    color: #fff !important;
+  }
+
+  .waitlist-input::placeholder {
+    color: rgba(255,255,255,0.35) !important;
+  }
+
+  .waitlist-btn {
+    width: 100% !important;
+    justify-content: center !important;
+    padding: 14px 20px !important;
+    border-radius: 10px !important;
+    font-size: 0.95rem !important;
+  }
+
+  /* Hero meta pills: horizontal scroll */
+  .hero-meta {
+    gap: 8px !important;
+    margin-top: 32px !important;
+    justify-content: flex-start !important;
+    flex-wrap: wrap !important;
+  }
+
+  .hero-meta-pill {
+    font-size: 0.78rem !important;
+    padding: 7px 12px !important;
+  }
+
+  /* Hero cards showcase: hide on mobile (too heavy) */
+  .hero-cards-container {
+    display: none !important;
+  }
+
+  /* Hero terminal: full width + smaller text */
+  .hero-terminal {
+    margin-top: 32px !important;
+    max-width: 100% !important;
+    border-radius: 12px !important;
+  }
+
+  .ht-pre {
+    font-size: 0.67rem !important;
+    line-height: 1.65 !important;
+  }
+
+  /* Stats strip: 2-col scrollable on mobile */
+  .stats-strip {
+    padding: 20px 20px !important;
+    flex-wrap: wrap !important;
+    gap: 0 !important;
+    justify-content: flex-start !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+  }
+
+  .stats-strip::-webkit-scrollbar { display: none !important; }
+
+  .stat-item {
+    flex: 1 1 45% !important;
+    min-width: 120px !important;
+    max-width: none !important;
+    border-right: none !important;
+    border-bottom: 1px solid var(--border) !important;
+    padding: 16px 0 !important;
+  }
+
+  .stat-item:nth-child(odd) {
+    border-right: 1px solid var(--border) !important;
+    padding-right: 16px !important;
+  }
+
+  .stat-item:nth-last-child(-n+2) {
+    border-bottom: none !important;
+  }
+
+  .stat-num {
+    font-size: 1.7rem !important;
+  }
+
+  /* Features section */
+  .section {
+    padding: 52px 20px !important;
+  }
+
+  .section-title {
+    font-size: 1.45rem !important;
+  }
+
+  .section-sub {
+    font-size: 0.88rem !important;
+    margin-bottom: 28px !important;
+  }
+
+  /* Features bento — stack on mobile */
+  .features-bento {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+
+  .fb-code-runner {
+    grid-column: 1 !important;
+  }
+
+  .fb {
+    padding: 20px !important;
+  }
+
+  /* Features grid (inner pages) */
+  .features-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1px !important;
+  }
+
+  /* Subjects table */
+  .subjects-table {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  .subjects-row {
+    grid-template-columns: 28px 1fr !important;
+    gap: 12px !important;
+    padding: 12px 14px !important;
+  }
+
+  .subjects-row .sr-topics,
+  .subjects-row .sr-badge {
+    display: none !important;
+  }
+
+  /* Steps grid */
+  .steps-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1px !important;
+  }
+
+  .step-card {
+    padding: 22px 20px !important;
+  }
+
+  /* CTA section: stack */
+  .cta-section {
+    padding: 40px 20px !important;
+  }
+
+  .cta-card {
+    padding: 32px 24px !important;
+    flex-direction: column !important;
+    gap: 24px !important;
+    align-items: flex-start !important;
+  }
+
+  .cta-card h2 {
+    font-size: 1.4rem !important;
+  }
+
+  .cta-buttons {
+    width: 100% !important;
+    flex-direction: column !important;
+  }
+
+  .btn-primary-lg,
+  .btn-outline-lg {
+    width: 100% !important;
+    justify-content: center !important;
+    padding: 13px 20px !important;
+    font-size: 0.95rem !important;
+  }
+
+  /* Footer: stack */
+  footer {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    padding: 28px 20px calc(28px + var(--safe-bottom)) !important;
+    gap: 16px !important;
+  }
+
+  .footer-links {
+    gap: 16px !important;
+    flex-wrap: wrap !important;
+  }
+
+  /* Topbar on landing: adjust */
+  .topbar {
+    top: 12px !important;
+    width: calc(100% - 24px) !important;
+    padding: 0 16px !important;
+    height: 52px !important;
+  }
+
+  /* Toast: full width on mobile */
+  .toast {
+    right: 16px !important;
+    left: 16px !important;
+    bottom: 16px !important;
+    max-width: none !important;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   CHAPTER / COURSE PAGE — Mobile
+   ════════════════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  .course-hero {
+    padding: 28px 20px 24px !important;
+    flex-direction: column !important;
+    gap: 20px !important;
+    align-items: flex-start !important;
+  }
+
+  .course-hero-body h1 {
+    font-size: 1.5rem !important;
+  }
+
+  .chapter-grid {
+    grid-template-columns: 1fr !important;
+    padding: 20px 16px 60px !important;
+    gap: 12px !important;
+  }
+
+  .chapter-card {
+    padding: 18px !important;
+  }
+
+  .start-btn {
+    width: 100% !important;
+    justify-content: center !important;
+    padding: 11px 20px !important;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   LOGIN PAGE — Premium mobile card treatment
+   ════════════════════════════════════════════════════════════════════ */
+@media (max-width: 480px) {
+  .auth-card {
+    padding: 28px 20px 24px !important;
+    border-radius: 20px !important;
+    margin: 0 !important;
+    width: 100% !important;
+  }
+
+  .auth-tagline h2 {
+    font-size: 1.3rem !important;
+  }
+}
+
+/* Full-screen login on very small screens */
+@media (max-width: 380px) {
+  body {
+    padding: 16px !important;
+    align-items: flex-start !important;
+    padding-top: 40px !important;
+  }
+
+  .auth-card {
+    border-radius: 16px !important;
+    padding: 24px 16px !important;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   QUIZ MODAL — Full-screen on mobile
+   ════════════════════════════════════════════════════════════════════ */
+@media (max-width: 600px) {
+  .quiz-modal-overlay {
+    align-items: flex-end !important;
+  }
+
+  .quiz-modal-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    max-height: 92vh !important;
+    border-radius: 20px 20px 0 0 !important;
+    padding-bottom: var(--safe-bottom) !important;
+    transform: translateY(100%) !important;
+  }
+
+  .quiz-modal-overlay.active .quiz-modal-container {
+    transform: translateY(0) !important;
+  }
+
+  .quiz-modal-header {
+    padding: 16px 20px !important;
+    border-radius: 20px 20px 0 0 !important;
+  }
+
+  /* Drag handle indicator on bottom sheet */
+  .quiz-modal-header::before {
+    content: '';
+    display: block;
+    width: 36px;
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    margin: 0 auto 12px;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   WAITLIST MODAL — Full-screen on mobile
+   ════════════════════════════════════════════════════════════════════ */
+@media (max-width: 600px) {
+  .waitlist-modal-overlay {
+    align-items: flex-end !important;
+  }
+
+  .waitlist-modal-card {
+    width: 100% !important;
+    border-radius: 24px 24px 0 0 !important;
+    padding: 32px 24px calc(24px + var(--safe-bottom)) !important;
+    transform: translateY(100%) !important;
+  }
+
+  .waitlist-modal-overlay.active .waitlist-modal-card {
+    transform: translateY(0) !important;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   INTERVIEW PREP + TRACKER — Mobile card stacking
+   ════════════════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  /* Tracker-specific wide tables: horizontal scroll */
+  .tracker-table-wrapper,
+  .applications-table-wrapper,
+  [class*="table-wrapper"] {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    margin: 0 -16px !important;
+    padding: 0 16px !important;
+  }
+
+  /* Make any grid with >2 cols collapse */
+  [style*="grid-template-columns: repeat(3"],
+  [style*="grid-template-columns: repeat(4"],
+  [style*="grid-template-columns: repeat(5"] {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   MICRO-ANIMATIONS — Reduced on mobile for performance
+   ════════════════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  /* Disable hover-lift effects (no hover on touch) */
+  .course-card:hover,
+  .chapter-card:hover,
+  .feature-card:hover {
+    transform: none !important;
+  }
+
+  /* Active press effect instead */
+  .course-card:active,
+  .chapter-card:active,
+  .quick-card:active,
+  .negotiable-item:active {
+    transform: scale(0.97) !important;
+    transition: transform 0.1s !important;
+  }
+
+  .btn-primary:active,
+  .btn-primary-lg:active,
+  .waitlist-btn:active {
+    transform: scale(0.96) !important;
+    transition: transform 0.1s !important;
+  }
+
+  /* Disable aurora animation for battery */
+  .aurora-1 {
+    animation: none !important;
+    opacity: 0.15 !important;
+  }
+
+  /* Disable grid drift on hero for perf */
+  .hero-grid {
+    animation: none !important;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   SEARCH BAR — Mobile fix
+   ════════════════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  .search-wrapper input {
+    font-size: 16px !important; /* prevents iOS zoom on focus */
+    padding: 12px 16px 12px 42px !important;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   GLOBAL SEARCH DROPDOWN — Full screen on mobile
+   ════════════════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  .global-search-results {
+    position: fixed !important;
+    top: 70px !important;
+    left: 12px !important;
+    right: 12px !important;
+    max-height: 60vh !important;
+    border-radius: var(--radius-lg) !important;
+    z-index: 1100 !important;
+  }
+
+  .search-result-item {
+    padding: 14px 16px !important;
+    min-height: 44px !important;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   PREMIUM MOBILE TYPOGRAPHY SCALE
+   ════════════════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  .section-title {
+    font-size: 1.4rem !important;
+  }
+
+  .topic-article h1 {
+    font-size: 1.5rem !important;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   SCROLLBAR — Hide on mobile for cleaner look
+   ════════════════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  ::-webkit-scrollbar {
+    width: 0 !important;
+    height: 0 !important;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   LANDSCAPE PHONE — Compact mode
+   ════════════════════════════════════════════════════════════════════ */
+@media (max-height: 500px) and (orientation: landscape) {
+  .hero {
+    min-height: auto !important;
+    padding: 80px 24px 48px !important;
+  }
+
+  .mobile-bottom-nav {
+    display: none !important;
+  }
+
+  .dashboard,
+  .page-layout {
+    padding-bottom: 24px !important;
+  }
+}

@@ -15,6 +15,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Performance Tracker — GrindOS</title>
 <link rel="stylesheet" href="assets/style.css?v=13">
+<link rel="stylesheet" href="assets/mobile.css?v=1">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
 <link rel="icon" type="image/png" href="logo.png">
 <link rel="apple-touch-icon" href="logo.png">
@@ -762,6 +763,29 @@
     <div id="clerk-user-widget"></div>
   </div>
 </header>
+
+<!-- Mobile Sidebar Overlay -->
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<!-- Mobile Bottom Nav -->
+<nav class="mobile-bottom-nav" id="mobile-bottom-nav">
+  <a href="dashboard.html" class="mobile-nav-item" id="mnav-learn">
+    <span class="mobile-nav-icon">📚</span>
+    <span>Learn</span>
+  </a>
+  <a href="tracker.html" class="mobile-nav-item active" id="mnav-practice">
+    <span class="mobile-nav-icon">⚡</span>
+    <span>Practice</span>
+  </a>
+  <a href="interview-prep/index.html" class="mobile-nav-item" id="mnav-prep">
+    <span class="mobile-nav-icon">🎯</span>
+    <span>Prep</span>
+  </a>
+  <a href="company-prep.html" class="mobile-nav-item" id="mnav-companies">
+    <span class="mobile-nav-icon">🏢</span>
+    <span>Companies</span>
+  </a>
+</nav>
 
 <div class="page-layout">
   <aside class="sidebar" id="sidebar">
@@ -3505,6 +3529,33 @@
   });
 </script>
 <script src="assets/script.js?v=12"></script>
+<script>
+  // ── Mobile sidebar overlay support (tracker) ────────────────────────
+  (function() {
+    const sidebarOverlay = document.getElementById('sidebar-overlay');
+    const sidebar = document.getElementById('sidebar');
+    const menuToggle = document.getElementById('menu-toggle');
+    function openSidebar() {
+      if (sidebar) sidebar.classList.add('open');
+      if (sidebarOverlay) sidebarOverlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeSidebar() {
+      if (sidebar) sidebar.classList.remove('open');
+      if (sidebarOverlay) sidebarOverlay.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+    if (menuToggle) menuToggle.addEventListener('click', openSidebar);
+    if (sidebarOverlay) sidebarOverlay.addEventListener('click', closeSidebar);
+    let touchStartX = 0;
+    document.addEventListener('touchstart', (e) => { touchStartX = e.touches[0].clientX; }, { passive: true });
+    document.addEventListener('touchend', (e) => {
+      const dx = e.changedTouches[0].clientX - touchStartX;
+      if (touchStartX < 24 && dx > 60) openSidebar();
+      else if (dx < -60 && sidebar && sidebar.classList.contains('open')) closeSidebar();
+    }, { passive: true });
+  })();
+</script>
 </body>
 </html>
 

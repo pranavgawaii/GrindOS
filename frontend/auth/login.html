@@ -16,6 +16,30 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
 
+  <!-- Mobile-first premium CSS -->
+  <style id="mobile-login-extra">
+    @media (max-width: 480px) {
+      body { padding: 16px; padding-top: max(40px, env(safe-area-inset-top, 20px)); }
+      .auth-card { width: 100%; border-radius: 20px; padding: 28px 20px; }
+      /* iOS font-size 16px prevents auto-zoom on input focus */
+      .cl-formFieldInput { font-size: 16px !important; }
+    }
+    @media (max-width: 360px) {
+      .auth-card { padding: 24px 16px; }
+      .auth-tagline h2 { font-size: 1.2rem; }
+    }
+    /* Smooth entrance on mobile */
+    @media (prefers-reduced-motion: no-preference) {
+      .auth-card {
+        animation: cardRise 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      }
+      @keyframes cardRise {
+        from { opacity: 0; transform: translateY(20px); }
+        to   { opacity: 1; transform: translateY(0); }
+      }
+    }
+  </style>
+
   <script>window.__CLERK_PUBLISHABLE_KEY__ = 'pk_test_Z29yZ2VvdXMtamF3ZmlzaC0zMy5jbGVyay5hY2NvdW50cy5kZXYk';</script>
   <script
     async
