@@ -12,7 +12,7 @@
 
 // ── CONFIG ────────────────────────────────────────────────────────────────────
 const CLERK_PUBLISHABLE_KEY = window.__CLERK_PUBLISHABLE_KEY__ || 'pk_test_Z29yZ2VvdXMtamF3ZmlzaC0zMy5jbGVyay5hY2NvdW50cy5kZXYk';
-const LOGIN_PATH = '/auth/login.html';
+const LOGIN_PATH = '/auth/signin.html';
 
 // Detect root path relative to current page depth
 function getRootPath() {
@@ -45,12 +45,12 @@ function getRootPath() {
     });
 
     const user = window.Clerk.user;
-    const isLoginPage = window.location.pathname.includes('/auth/login');
+    const isLoginPage = window.location.pathname.includes('/auth/signin');
 
     if (!user && !isLoginPage) {
       // Not signed in → redirect to login
       const root = getRootPath();
-      window.location.replace(root + 'auth/login.html');
+      window.location.replace(root + 'auth/signin.html');
     }
 
     if (user && isLoginPage) {
