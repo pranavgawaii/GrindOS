@@ -91,7 +91,7 @@ class handler(BaseHTTPRequestHandler):
                 self._cors_headers()
                 self.send_header('Content-Type', 'application/json')
                 self.end_headers()
-                self.wfile.write(json.dumps({'error': str(errors)}).encode())
+                self.wfile.write(json.dumps({'error': err_body, 'http_status': e.code}).encode())
         except Exception as ex:
             self.send_response(503)
             self._cors_headers()
