@@ -21,7 +21,8 @@ app.add_middleware(
         "http://localhost:5500",
         "http://127.0.0.1:5500",
         "http://localhost:8080",
-        # Add your production domain here e.g. "https://grindos.in"
+        "https://grindos.pranavx.in",
+        "https://grindos.vercel.app",
     ],
     allow_methods=["GET", "POST"],
     allow_headers=["Content-Type", "Authorization"],
@@ -30,6 +31,14 @@ app.add_middleware(
 _PROFILE_PATH = Path(__file__).parent / "pranav_profile.json"
 with open(_PROFILE_PATH, encoding="utf-8") as f:
     PRANAV = json.load(f)
+
+CLERK_SECRET_KEY = os.environ.get("CLERK_SECRET_KEY", "")
+
+class WaitlistRequest(BaseModel):
+    email: str
+    college: str = ""
+    grad: str = ""
+    goal: str = ""
 
 class AskRequest(BaseModel):
     question: str
@@ -62,6 +71,39 @@ def build_system_prompt(mode: str) -> str:
     3. PROJECT DEEP-DIVES: Be ready to explain the architecture, tech choices, trade-offs, and scaling decisions for Pranav's projects (like PlacePro or Mnemo).
     4. GENERAL & GATE PREP: Give mathematically precise, campus-focused advice for aptitude, core subjects, and GATE questions.
     """
+
+@app.post("/waitlist")
+async def join_waitlist(req: WaitlistRequest):
+    """Securely adds email to Clerk Waitlist using the backend secret key."""
+    secret = os.environ.get("CLERK_SECRET_KEY", CLERK_SECRET_KEY)
+    if not secret:
+        raise HTTPException(status_code=500, detail="Clerk secret key not configured")
+    
+    async with httpx.AsyncClient() as client:
+        try:
+            resp = await client.post(
+                "https://api.clerk.com/v1/waitlist_entries",
+                headers={
+                    "Authorization": f"Bearer {secret}",
+                    "Content-Type": "application/json",
+                },
+                json={"email_address": req.email},
+                timeout=10.0,
+            )
+            data = resp.json()
+            if resp.status_code in (200, 201):
+                return {"success": True, "id": data.get("id"), "status": data.get("status")}
+            # Already on list is fine
+            errors = data.get("errors", [])
+            already = any(
+                e.get("code") in ("already_on_waitlist", "form_identifier_exists")
+                for e in errors
+            )
+            if already:
+                return {"success": True, "already_registered": True}
+            raise HTTPException(status_code=resp.status_code, detail=str(errors))
+        except httpx.RequestError as e:
+            raise HTTPException(status_code=503, detail=f"Could not reach Clerk: {e}")
 
 @app.post("/ask")
 async def ask(req: AskRequest):

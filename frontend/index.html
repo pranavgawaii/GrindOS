@@ -1839,40 +1839,27 @@
     submitBtn.disabled = true;
     btnLabel.textContent = 'Securing your spot…';
 
-    // ── Submit to Clerk Frontend API ─────────────────────────────────────────
-    // Must use the Clerk Frontend API URL derived from the publishable key
+    // ── Submit to our backend /waitlist endpoint (uses Clerk Backend API securely) ──
     let clerkSuccess = false;
     let alreadyOnList = false;
     try {
-      let fapiDomain = 'gorgeous-jawfish-33.clerk.accounts.dev';
-      try {
-        const pKey = typeof CLERK_PUBLISHABLE_KEY !== 'undefined' ? CLERK_PUBLISHABLE_KEY : (window.__CLERK_PUBLISHABLE_KEY__ || '');
-        if (pKey) {
-          const b64 = pKey.split('_')[2];
-          if (b64) {
-            fapiDomain = atob(b64).replace('$', '');
-          }
-        }
-      } catch (e) {
-        console.warn('Could not decode Clerk key', e);
-      }
-
-      const body = new URLSearchParams({ email_address: tempEmail });
-      const resp = await fetch(
-        `https://${fapiDomain}/v1/client/waitlist_entries`,
-        { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body }
-      );
-      if (resp.ok || resp.status === 200) {
+      const apiBase = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+        ? 'http://localhost:8000'
+        : '';
+      const resp = await fetch(`${apiBase}/waitlist`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: tempEmail, college, grad, goal }),
+      });
+      const data = await resp.json().catch(() => ({}));
+      if (resp.ok) {
         clerkSuccess = true;
+        alreadyOnList = data.already_registered === true;
       } else {
-        const data = await resp.json().catch(() => ({}));
-        alreadyOnList = (data.errors || []).some(err =>
-          err.code === 'already_on_waitlist' || err.code === 'form_identifier_exists'
-        );
-        if (!alreadyOnList) console.warn('Clerk waitlist:', resp.status, data);
+        console.warn('Waitlist error:', resp.status, data);
       }
     } catch (err) {
-      console.warn('Clerk waitlist fetch error:', err);
+      console.warn('Waitlist fetch error:', err);
     }
 
     // ── Local metadata storage (college / grad / goal — Clerk doesn't store these) ──

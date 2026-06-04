@@ -13,7 +13,7 @@
   ],
   "routes": [
     {
-      "src": "/(ask|mock-interview|generate-script|last-minute|health)(.*)",
+      "src": "/(ask|mock-interview|generate-script|last-minute|health|waitlist)(.*)",
       "dest": "backend/main.py"
     },
     {
