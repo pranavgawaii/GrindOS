@@ -1,7 +1,7 @@
 from http.server import BaseHTTPRequestHandler
 import json
 import os
-import urllib.request
+import httpx
 
 
 class handler(BaseHTTPRequestHandler):
@@ -17,87 +17,64 @@ class handler(BaseHTTPRequestHandler):
         try:
             data = json.loads(body)
         except Exception:
-            self.send_response(400)
-            self._cors_headers()
-            self.send_header('Content-Type', 'application/json')
-            self.end_headers()
-            self.wfile.write(json.dumps({'error': 'Invalid JSON'}).encode())
+            self._respond(400, {'error': 'Invalid JSON'})
             return
 
         email = data.get('email', '').strip()
-        college = data.get('college', '')
-        grad = data.get('grad', '')
-        goal = data.get('goal', '')
 
         if not email:
-            self.send_response(400)
-            self._cors_headers()
-            self.send_header('Content-Type', 'application/json')
-            self.end_headers()
-            self.wfile.write(json.dumps({'error': 'Email is required'}).encode())
+            self._respond(400, {'error': 'Email is required'})
             return
 
         secret = os.environ.get('CLERK_SECRET_KEY', '')
         if not secret:
-            self.send_response(500)
-            self._cors_headers()
-            self.send_header('Content-Type', 'application/json')
-            self.end_headers()
-            self.wfile.write(json.dumps({'error': 'Server config error'}).encode())
+            self._respond(500, {'error': 'Server config error: missing CLERK_SECRET_KEY'})
             return
 
-        # Call Clerk Backend API
         try:
-            payload = json.dumps({'email_address': email}).encode('utf-8')
-            req = urllib.request.Request(
-                'https://api.clerk.com/v1/waitlist_entries',
-                data=payload,
-                headers={
-                    'Authorization': f'Bearer {secret}',
-                    'Content-Type': 'application/json',
-                },
-                method='POST'
-            )
-            with urllib.request.urlopen(req, timeout=10) as resp:
-                resp_data = json.loads(resp.read().decode())
-                self.send_response(200)
-                self._cors_headers()
-                self.send_header('Content-Type', 'application/json')
-                self.end_headers()
-                self.wfile.write(json.dumps({
+            with httpx.Client(timeout=10.0) as client:
+                resp = client.post(
+                    'https://api.clerk.com/v1/waitlist_entries',
+                    headers={
+                        'Authorization': f'Bearer {secret}',
+                        'Content-Type': 'application/json',
+                    },
+                    json={'email_address': email},
+                )
+
+            resp_data = resp.json() if resp.content else {}
+
+            if resp.status_code in (200, 201):
+                self._respond(200, {
                     'success': True,
                     'id': resp_data.get('id'),
                     'status': resp_data.get('status')
-                }).encode())
-        except urllib.error.HTTPError as e:
-            err_body = e.read().decode()
-            try:
-                err_data = json.loads(err_body)
-            except Exception:
-                err_data = {}
-            errors = err_data.get('errors', [])
+                })
+                return
+
+            errors = resp_data.get('errors', [])
             already = any(
-                er.get('code') in ('already_on_waitlist', 'form_identifier_exists')
-                for er in errors
+                e.get('code') in ('already_on_waitlist', 'form_identifier_exists')
+                for e in errors
             )
             if already:
-                self.send_response(200)
-                self._cors_headers()
-                self.send_header('Content-Type', 'application/json')
-                self.end_headers()
-                self.wfile.write(json.dumps({'success': True, 'already_registered': True}).encode())
+                self._respond(200, {'success': True, 'already_registered': True})
             else:
-                self.send_response(500)
-                self._cors_headers()
-                self.send_header('Content-Type', 'application/json')
-                self.end_headers()
-                self.wfile.write(json.dumps({'error': err_body, 'http_status': e.code}).encode())
+                self._respond(500, {
+                    'error': f'Clerk error {resp.status_code}',
+                    'details': errors,
+                    'raw': resp.text[:500]
+                })
+
         except Exception as ex:
-            self.send_response(503)
-            self._cors_headers()
-            self.send_header('Content-Type', 'application/json')
-            self.end_headers()
-            self.wfile.write(json.dumps({'error': str(ex)}).encode())
+            self._respond(503, {'error': str(ex)})
+
+    def _respond(self, status, payload):
+        self.send_response(status)
+        self._cors_headers()
+        self.send_header('Content-Type', 'application/json')
+        self.end_headers()
+        self.wfile.write(json.dumps(payload).encode())
 
     def _cors_headers(self):
         self.send_header('Access-Control-Allow-Origin', '*')
@@ -105,4 +82,4 @@ class handler(BaseHTTPRequestHandler):
         self.send_header('Access-Control-Allow-Headers', 'Content-Type')
 
     def log_message(self, format, *args):
-        pass  # suppress default logs
+        pass
