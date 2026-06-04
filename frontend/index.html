@@ -1339,43 +1339,62 @@
 <div class="waitlist-modal-overlay" id="waitlist-modal">
   <div class="waitlist-modal-card">
     <button class="waitlist-modal-close" onclick="closeWaitlistModal()">&times;</button>
-    <div class="waitlist-modal-header">
-      <h2>Complete Your Request 🎯</h2>
-      <p>Tell us a bit about your prep goals to secure early access.</p>
+    <div id="wl-form-state">
+      <div class="waitlist-modal-header">
+        <h2>Complete Your Request 🎯</h2>
+        <p>Tell us a bit about your prep goals to secure early access.</p>
+      </div>
+      <form class="waitlist-modal-form" id="waitlist-followup-form" onsubmit="submitWaitlistFollowup(event)">
+        <div class="waitlist-modal-field" id="wl-email-field" style="display: none;">
+          <label for="wl-email">Email Address</label>
+          <input type="email" id="wl-email" placeholder="you@example.com">
+        </div>
+        <div class="waitlist-modal-field">
+          <label for="wl-college">College / University</label>
+          <input type="text" id="wl-college" placeholder="e.g. MIT Pune" required>
+        </div>
+        <div class="waitlist-modal-field">
+          <label for="wl-grad">Graduation Year</label>
+          <select id="wl-grad" required>
+            <option value="" disabled selected>Select your year</option>
+            <option value="2026">2026</option>
+            <option value="2027">2027</option>
+            <option value="2028">2028</option>
+            <option value="2029+">2029 or later</option>
+          </select>
+        </div>
+        <div class="waitlist-modal-field">
+          <label for="wl-goal">What are you preparing for?</label>
+          <select id="wl-goal" required>
+            <option value="" disabled selected>Select your primary goal</option>
+            <option value="SDE Interviews">SDE Product Interviews</option>
+            <option value="Startups">Startup & Core Engineering</option>
+            <option value="GATE exam">GATE Computer Science Exam</option>
+            <option value="Core CS Prep">General CS Fundamentals</option>
+          </select>
+        </div>
+        <button type="submit" id="wl-submit-btn" class="waitlist-modal-submit-btn">
+          <span id="wl-btn-label">Submit & Secure Spot 🚀</span>
+        </button>
+      </form>
     </div>
-    <form class="waitlist-modal-form" id="waitlist-followup-form" onsubmit="submitWaitlistFollowup(event)">
-      <div class="waitlist-modal-field" id="wl-email-field" style="display: none;">
-        <label for="wl-email">Email Address</label>
-        <input type="email" id="wl-email" placeholder="you@example.com">
+    
+    <div id="wl-success-state" class="wl-success">
+      <div class="wl-success-check">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
       </div>
-      <div class="waitlist-modal-field">
-        <label for="wl-college">College / University</label>
-        <input type="text" id="wl-college" placeholder="e.g. MIT Pune" required>
+      <h2>You're on the list! 🎉</h2>
+      <p>We've reserved your place in line. Keep an eye on your inbox for early access.</p>
+      <div class="wl-spot-badge" id="wl-spot-num">Spot #--</div>
+      
+      <div class="wl-meta-pills" id="wl-meta-pills" style="display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin: 20px 0;">
+        <!-- Filled by JS -->
       </div>
-      <div class="waitlist-modal-field">
-        <label for="wl-grad">Graduation Year</label>
-        <select id="wl-grad" required>
-          <option value="" disabled selected>Select your year</option>
-          <option value="2026">2026</option>
-          <option value="2027">2027</option>
-          <option value="2028">2028</option>
-          <option value="2029+">2029 or later</option>
-        </select>
-      </div>
-      <div class="waitlist-modal-field">
-        <label for="wl-goal">What are you preparing for?</label>
-        <select id="wl-goal" required>
-          <option value="" disabled selected>Select your primary goal</option>
-          <option value="SDE Interviews">SDE Product Interviews</option>
-          <option value="Startups">Startup & Core Engineering</option>
-          <option value="GATE exam">GATE Computer Science Exam</option>
-          <option value="Core CS Prep">General CS Fundamentals</option>
-        </select>
-      </div>
-      <button type="submit" id="wl-submit-btn" class="waitlist-modal-submit-btn">
-        <span id="wl-btn-label">Submit & Secure Spot 🚀</span>
-      </button>
-    </form>
+      
+      <button class="wl-success-cta" onclick="closeWaitlistModal()">Close & Return</button>
+    </div>
   </div>
 </div>
 
@@ -1821,14 +1840,26 @@
     btnLabel.textContent = 'Securing your spot…';
 
     // ── Submit to Clerk Frontend API ─────────────────────────────────────────
-    // Must use the Clerk Frontend API URL derived from the publishable key,
-    // NOT the backend API (api.clerk.com). Content-type must be form-encoded.
+    // Must use the Clerk Frontend API URL derived from the publishable key
     let clerkSuccess = false;
     let alreadyOnList = false;
     try {
+      let fapiDomain = 'gorgeous-jawfish-33.clerk.accounts.dev';
+      try {
+        const pKey = typeof CLERK_PUBLISHABLE_KEY !== 'undefined' ? CLERK_PUBLISHABLE_KEY : (window.__CLERK_PUBLISHABLE_KEY__ || '');
+        if (pKey) {
+          const b64 = pKey.split('_')[2];
+          if (b64) {
+            fapiDomain = atob(b64).replace('$', '');
+          }
+        }
+      } catch (e) {
+        console.warn('Could not decode Clerk key', e);
+      }
+
       const body = new URLSearchParams({ email_address: tempEmail });
       const resp = await fetch(
-        'https://gorgeous-jawfish-33.clerk.accounts.dev/v1/client/waitlist_entries',
+        `https://${fapiDomain}/v1/client/waitlist_entries`,
         { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body }
       );
       if (resp.ok || resp.status === 200) {
