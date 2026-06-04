@@ -3,6 +3,10 @@
   "cleanUrls": true,
   "builds": [
     {
+      "src": "api/waitlist.py",
+      "use": "@vercel/python"
+    },
+    {
       "src": "backend/main.py",
       "use": "@vercel/python"
     },
@@ -13,7 +17,11 @@
   ],
   "routes": [
     {
-      "src": "/(ask|mock-interview|generate-script|last-minute|health|waitlist)(.*)",
+      "src": "/waitlist",
+      "dest": "api/waitlist.py"
+    },
+    {
+      "src": "/(ask|mock-interview|generate-script|last-minute|health)(.*)",
       "dest": "backend/main.py"
     },
     {
