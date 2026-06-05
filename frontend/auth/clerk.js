@@ -1,9 +1,9 @@
 /**
  * GrindOS — Clerk Auth Guard
- * 
+ *
  * Include this script on any page you want to protect.
- * It will redirect unauthenticated users to /auth/login.html
- * 
+ * Uses absolute paths for all redirects (required for Vercel cleanUrls).
+ *
  * Usage (add to <head> of protected pages):
  *   <script src="/auth/clerk.js"></script>
  *   OR (with relative path from nested pages):
@@ -12,13 +12,6 @@
 
 // ── CONFIG ────────────────────────────────────────────────────────────────────
 const CLERK_PUBLISHABLE_KEY = window.__CLERK_PUBLISHABLE_KEY__ || 'pk_test_Z29yZ2VvdXMtamF3ZmlzaC0zMy5jbGVyay5hY2NvdW50cy5kZXYk';
-const LOGIN_PATH = '/auth/signin.html';
-
-// Detect root path relative to current page depth
-function getRootPath() {
-  const depth = (window.location.pathname.match(/\//g) || []).length - 1;
-  return depth <= 0 ? './' : '../'.repeat(depth);
-}
 
 // ── CLERK INIT ────────────────────────────────────────────────────────────────
 (function () {
@@ -44,18 +37,21 @@ function getRootPath() {
       publishableKey: CLERK_PUBLISHABLE_KEY
     });
 
+    // Use session (more reliable than user immediately after sign-in redirect)
+    const session = window.Clerk.session;
     const user = window.Clerk.user;
     const isLoginPage = window.location.pathname.includes('/auth/signin');
 
-    if (!user && !isLoginPage) {
-      // Not signed in → redirect to login
-      const root = getRootPath();
-      window.location.replace(root + 'auth/signin.html');
+    if (!session && !isLoginPage) {
+      // Not signed in → redirect to sign-in (absolute, no .html — works with cleanUrls)
+      window.location.replace('/auth/signin');
+      return;
     }
 
-    if (user && isLoginPage) {
+    if (session && isLoginPage) {
       // Already signed in on login page → go to dashboard
-      window.location.replace(getRootPath() + 'dashboard.html');
+      window.location.replace('/dashboard');
+      return;
     }
 
     // Inject user info into the topbar if element exists
@@ -67,7 +63,7 @@ function getRootPath() {
     if (!container || !user) return;
 
     container.innerHTML = '';
-    const afterSignOutUrl = new URL(getRootPath() + 'index.html', window.location.href).href;
+    const afterSignOutUrl = window.location.origin + '/';
     const isDark = document.documentElement.classList.contains('dark');
 
     window.Clerk.mountUserButton(container, {
