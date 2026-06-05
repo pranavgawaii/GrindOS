@@ -29,20 +29,8 @@
       "dest": "backend/main.py"
     },
     {
-      "src": "/",
-      "dest": "frontend/index.html"
-    },
-    {
-      "src": "/(.*)/",
-      "dest": "frontend/$1/index.html"
-    },
-    {
-      "src": "/(.*)\\.html$",
-      "dest": "frontend/$1.html"
-    },
-    {
       "src": "/(.*)",
-      "dest": "frontend/$1.html"
+      "dest": "frontend/$1"
     }
   ]
 }
