@@ -88,7 +88,7 @@
         rootPath = href.split('assets/style.css')[0];
       }
     }
-    const logoPath = rootPath + 'logo.png';
+    const logoPath = '/logo.png';
 
     const path = window.location.pathname.toLowerCase();
 
