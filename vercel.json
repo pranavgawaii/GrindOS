@@ -22,7 +22,7 @@
       "dest": "api/waitlist.py"
     },
     {
-      "src": "/(ask|mock-interview|generate-script|last-minute|health)(.*)",
+      "src": "/(ask|mock-interview|generate-script|last-minute|health|generate-resume)(.*)",
       "dest": "backend/main.py"
     },
     {

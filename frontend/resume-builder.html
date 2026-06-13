@@ -402,7 +402,7 @@
     try {
       const apiBase = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
           ? 'http://localhost:8000' 
-          : 'https://grindos.pranavx.in/api';
+          : '';
           
       const response = await fetch(`${apiBase}/generate-resume`, {
         method: 'POST',
