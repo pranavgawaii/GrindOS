@@ -29,8 +29,11 @@ app.add_middleware(
 )
 
 _PROFILE_PATH = Path(__file__).parent / "pranav_profile.json"
-with open(_PROFILE_PATH, encoding="utf-8") as f:
-    PRANAV = json.load(f)
+try:
+    with open(_PROFILE_PATH, encoding="utf-8") as f:
+        PRANAV = json.load(f)
+except Exception as e:
+    PRANAV = {"error": str(e)}
 
 CLERK_SECRET_KEY = os.environ.get("CLERK_SECRET_KEY", "")
 
