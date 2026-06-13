@@ -51,7 +51,7 @@ async def ask_llm(system_prompt: str, user_message: str) -> str:
             api_key=os.environ.get("OPENROUTER_API_KEY", ""),
         )
         response = await openai_client.chat.completions.create(
-            model="meta-llama/llama-3.3-70b-instruct:free",
+            model="meta-llama/llama-3.3-70b-instruct",
             messages=[
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": user_message},

@@ -52,6 +52,10 @@ class MockRequest(BaseModel):
 class ScriptRequest(BaseModel):
     scenario: str
 
+class ResumeRequest(BaseModel):
+    target_job: str = ""
+    focus_skills: list[str] = []
+
 # Build system prompt based on mode
 def build_system_prompt(mode: str) -> str:
     return f"""You are an elite campus placement preparation copilot and personal AI assistant representing Pranav Gawai.
@@ -190,6 +194,27 @@ async def last_minute(subject: str):
         return json.loads(result)
     except:
         return {"subject": subject, "content": result}
+
+@app.post("/generate-resume")
+async def generate_resume(req: ResumeRequest):
+    try:
+        rules_path = Path(__file__).parent / "prompts" / "resume_rules.txt"
+        with open(rules_path, "r", encoding="utf-8") as f:
+            rules = f.read()
+        
+        system = f"{rules}\n\nHere is the user profile data:\n{json.dumps(PRANAV, indent=2)}"
+        prompt = f"Target Job Description:\n{req.target_job}\n\nFocus Skills:\n{', '.join(req.focus_skills)}\n\nPlease generate the LaTeX resume now."
+        
+        latex = await ask_llm(system, prompt)
+        
+        # Strip potential markdown code blocks if the LLM ignores instructions
+        latex = re.sub(r"^```latex\\s*", "", latex, flags=re.IGNORECASE|re.MULTILINE)
+        latex = re.sub(r"^```\\s*", "", latex, flags=re.MULTILINE)
+        latex = latex.strip()
+        
+        return {"latex": latex}
+    except Exception as e:
+        raise HTTPException(status_code=503, detail=f"Resume generation failed: {str(e)}")
 
 @app.get("/health")
 def health():
