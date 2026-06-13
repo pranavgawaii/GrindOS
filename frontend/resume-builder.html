@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<script>
+  (function() {
+    const saved = localStorage.getItem('GrindOS-theme');
+    if (saved) {
+      document.documentElement.classList.add(saved);
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.documentElement.classList.add('dark');
+    }
+  })();
+</script>
+<title>AI Resume Engine — GrindOS</title>
+<link rel="stylesheet" href="assets/style.css?v=15">
+<link rel="stylesheet" href="assets/mobile.css?v=2">
+<link rel="icon" type="image/png" href="/logo.png">
+<link rel="apple-touch-icon" href="/logo.png">
+
+<script>window.__CLERK_PUBLISHABLE_KEY__ = 'pk_test_Z29yZ2VvdXMtamF3ZmlzaC0zMy5jbGVyay5hY2NvdW50cy5kZXYk';</script>
+<script src="auth/clerk.js"></script>
+
+<style>
+  /* Super Compact Layout */
+  .resume-dashboard {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 100px 30px 30px; /* Account for topbar */
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .resume-layout {
+    display: flex;
+    gap: 20px;
+    flex: 1;
+    min-height: 0; /* Important for scrollable children */
+  }
+
+  @media (max-width: 1000px) {
+    .resume-layout {
+      flex-direction: column;
+      height: auto;
+    }
+    .resume-dashboard {
+      height: auto;
+    }
+  }
+
+  /* Left Panel (Compact) */
+  .resume-sidebar {
+    width: 380px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    display: flex;
+    flex-direction: column;
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+  }
+
+  .sidebar-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg-2);
+  }
+  .sidebar-header h2 {
+    font-size: 1.1rem;
+    font-weight: 800;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .sidebar-content {
+    padding: 20px;
+    overflow-y: auto;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  /* Compact Template Scroller */
+  .template-scroller {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+    /* Hide scrollbar */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .template-scroller::-webkit-scrollbar { display: none; }
+
+  .mini-template {
+    min-width: 120px;
+    border: 2px solid var(--border);
+    border-radius: var(--radius);
+    padding: 6px;
+    cursor: pointer;
+    text-align: center;
+    background: var(--bg-1);
+    transition: all 0.2s;
+  }
+  .mini-template.selected {
+    border-color: var(--brand);
+    background: var(--brand-light);
+  }
+  .mini-template-img {
+    height: 100px;
+    background: #fff;
+    border-radius: 4px;
+    border: 1px solid #e2e0d8;
+    margin-bottom: 6px;
+    background-size: cover;
+  }
+  .mini-template-title {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--text-1);
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .form-group label {
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-2);
+  }
+  .form-group textarea {
+    padding: 12px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    background: var(--bg-1);
+    color: var(--text-1);
+    font-size: 0.85rem;
+    resize: none;
+    height: 100px;
+  }
+
+  /* Pill Checkboxes */
+  .pill-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .pill-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 6px 12px;
+    border-radius: 20px;
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    color: var(--text-2);
+    cursor: pointer;
+    transition: all 0.2s;
+    user-select: none;
+  }
+  .pill-label input { display: none; }
+  .pill-label:has(input:checked) {
+    background: var(--brand);
+    color: #fff;
+    border-color: var(--brand);
+  }
+
+  .sidebar-footer {
+    padding: 16px 20px;
+    border-top: 1px solid var(--border);
+    background: var(--card);
+  }
+
+  .primary-btn {
+    width: 100%;
+    padding: 14px;
+    background: var(--brand);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius);
+    font-weight: 800;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .primary-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(234, 118, 63, 0.3);
+  }
+
+  /* Right Panel */
+  .resume-main {
+    flex: 1;
+    background: #0d1117;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .code-header {
+    background: #161b22;
+    padding: 12px 20px;
+    border-bottom: 1px solid #30363d;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .code-title {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #c9d1d9;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .btn-overleaf {
+    background: #10b981;
+    color: white;
+    border: none;
+    padding: 6px 14px;
+    border-radius: var(--radius);
+    font-weight: 700;
+    font-size: 0.8rem;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .btn-overleaf:hover { background: #059669; }
+
+  .latex-code-view {
+    flex: 1;
+    width: 100%;
+    padding: 20px;
+    background: transparent;
+    color: #c9d1d9;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    border: none;
+    outline: none;
+    resize: none;
+    line-height: 1.6;
+  }
+
+  .loader-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(13, 17, 23, 0.8);
+    backdrop-filter: blur(4px);
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+  }
+  .spinner {
+    width: 36px; height: 36px;
+    border: 3px solid #30363d; border-top-color: var(--brand);
+    border-radius: 50%; animation: spin 1s linear infinite;
+  }
+  @keyframes spin { 100% { transform: rotate(360deg); } }
+  .loader-text { margin-top: 12px; color: #c9d1d9; font-weight: 600; font-size: 0.9rem; }
+
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <a href="dashboard.html" class="topbar-brand">
+    <img src="/logo.png" alt="GrindOS Logo" class="brand-logo" style="width: 34px; height: 34px; object-fit: contain; border-radius: 4px; flex-shrink: 0; display: inline-block; vertical-align: middle; margin-right: 4px;">
+    <span class="brand-wordmark">GrindOS</span>
+  </a>
+  <nav class="topbar-nav">
+    <a href="dashboard.html" class="learn-nav">Learn</a>
+    <a href="tracker.html" class="practice-nav">Practice</a>
+    <a href="interview-prep/index.html" class="prep-nav">Prep</a>
+    <a href="resume-builder.html" class="resume-nav" style="display: inline-block;">Resume</a>
+    <a href="resume-builder.html" class="resume-nav active">Resume</a>
+  </nav>
+  <div class="topbar-right">
+    <button class="icon-btn" id="theme-toggle" aria-label="Toggle theme"><span class="theme-icon">☾</span></button>
+    <div id="clerk-user-widget"></div>
+  </div>
+</header>
+
+<div class="resume-dashboard">
+  <div class="resume-layout">
+    
+    <!-- Sidebar -->
+    <div class="resume-sidebar">
+      <div class="sidebar-header">
+        <h2>🚀 AI Resume Engine</h2>
+      </div>
+      
+      <div class="sidebar-content">
+        <!-- 1. Template -->
+        <div class="form-group">
+          <label>1. Select Template</label>
+          <div class="template-scroller">
+            <div class="mini-template selected" data-id="jakes">
+              <div class="mini-template-img" style="background-image: url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 200 280%22><rect width=%22200%22 height=%22280%22 fill=%22%23fff%22/><text x=%22100%22 y=%2230%22 font-family=%22sans-serif%22 font-size=%2214%22 font-weight=%22bold%22 text-anchor=%22middle%22 fill=%22%23333%22>JOHN DOE</text><text x=%22100%22 y=%2245%22 font-family=%22sans-serif%22 font-size=%226%22 text-anchor=%22middle%22 fill=%22%23666%22>john@example.com</text><line x1=%2220%22 y1=%2255%22 x2=%22180%22 y2=%2255%22 stroke=%22%23333%22 stroke-width=%221%22/><rect x=%2220%22 y=%2270%22 width=%22160%22 height=%224%22 fill=%22%23eee%22/><rect x=%2220%22 y=%2280%22 width=%22120%22 height=%224%22 fill=%22%23eee%22/></svg>');"></div>
+              <div class="mini-template-title">Standard</div>
+            </div>
+            <div class="mini-template" data-id="modern">
+              <div class="mini-template-img" style="background-image: url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 200 280%22><rect width=%22200%22 height=%22280%22 fill=%22%23f9fafb%22/><rect x=%220%22 y=%220%22 width=%2260%22 height=%22280%22 fill=%22%231f2937%22/><circle cx=%2230%22 cy=%2235%22 r=%2215%22 fill=%22%23374151%22/></svg>'); opacity: 0.5;"></div>
+              <div class="mini-template-title">Modern (Soon)</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. Job Desc -->
+        <div class="form-group">
+          <label>2. Target Job Description</label>
+          <textarea id="target-job" placeholder="Paste JD here for AI keyword optimization..."></textarea>
+        </div>
+
+        <!-- 3. Focus -->
+        <div class="form-group">
+          <label>3. Focus Areas</label>
+          <div class="pill-group">
+            <label class="pill-label"><input type="checkbox" value="Backend" class="skill-checkbox"> Backend</label>
+            <label class="pill-label"><input type="checkbox" value="AI" class="skill-checkbox"> AI & Data</label>
+            <label class="pill-label"><input type="checkbox" value="Frontend" class="skill-checkbox"> Frontend</label>
+            <label class="pill-label"><input type="checkbox" value="DevOps" class="skill-checkbox"> DevOps</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="sidebar-footer">
+        <button class="primary-btn" id="generate-btn">✨ Generate LaTeX</button>
+      </div>
+    </div>
+
+    <!-- Main Code View -->
+    <div class="resume-main">
+      <div class="code-header">
+        <div class="code-title">
+          <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+          LaTeX Source
+        </div>
+        <div>
+          <form method="POST" action="https://www.overleaf.com/docs" target="_blank" id="overleaf-form" style="display:inline-block;">
+            <input type="hidden" name="snip" id="overleaf-snip" value="">
+            <input type="hidden" name="engine" value="pdflatex">
+            <button type="submit" class="btn-overleaf" id="open-overleaf-btn" style="display:none;">
+              <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+              Open in Overleaf
+            </button>
+          </form>
+          <button class="icon-btn" id="copy-btn" style="font-size: 0.8rem; font-weight: 700; padding: 6px 12px; width: auto; background: transparent; color: #c9d1d9; border-color: #30363d; margin-left: 8px;">Copy</button>
+        </div>
+      </div>
+      
+      <div class="loader-overlay" id="loader">
+        <div class="spinner"></div>
+        <div class="loader-text" id="loader-text">Writing perfect layout...</div>
+      </div>
+
+      <textarea id="latex-code" class="latex-code-view" placeholder="% Your flawless LaTeX code will appear here..."></textarea>
+    </div>
+    
+  </div>
+</div>
+
+<script src="assets/script.js?v=12"></script>
+<script>
+  // Template Select
+  document.querySelectorAll('.mini-template').forEach(card => {
+    card.addEventListener('click', () => {
+      if(card.dataset.id !== 'jakes') return;
+      document.querySelectorAll('.mini-template').forEach(c => c.classList.remove('selected'));
+      card.classList.add('selected');
+    });
+  });
+
+  document.getElementById('generate-btn').addEventListener('click', async () => {
+    const jobDesc = document.getElementById('target-job').value;
+    const checkboxes = document.querySelectorAll('.skill-checkbox:checked');
+    const focusSkills = Array.from(checkboxes).map(cb => cb.value);
+
+    const btn = document.getElementById('generate-btn');
+    const loader = document.getElementById('loader');
+    const codeView = document.getElementById('latex-code');
+    const overleafSnip = document.getElementById('overleaf-snip');
+    const overleafBtn = document.getElementById('open-overleaf-btn');
+    
+    btn.disabled = true;
+    loader.style.display = 'flex';
+    
+    try {
+      const apiBase = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
+          ? 'http://localhost:8000' 
+          : 'https://grindos.pranavx.in/api';
+          
+      const response = await fetch(`${apiBase}/generate-resume`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          target_job: jobDesc,
+          focus_skills: focusSkills
+        })
+      });
+
+      if (!response.ok) throw new Error("Failed to generate resume text");
+      
+      const data = await response.json();
+      const latex = data.latex;
+      
+      codeView.value = latex;
+      overleafSnip.value = latex;
+      overleafBtn.style.display = 'inline-flex';
+
+    } catch (e) {
+      console.error(e);
+      alert("Error generating resume. Is your backend server running?");
+    } finally {
+      loader.style.display = 'none';
+      btn.disabled = false;
+    }
+  });
+
+  // Copy click handler
+  document.getElementById('copy-btn').addEventListener('click', function() {
+    const codeView = document.getElementById('latex-code');
+    if (!codeView.value) return;
+    
+    navigator.clipboard.writeText(codeView.value);
+    const originalText = this.innerText;
+    this.innerText = 'Copied!';
+    this.style.color = '#10b981';
+    
+    setTimeout(() => {
+      this.innerText = originalText;
+      this.style.color = '#c9d1d9';
+    }, 2000);
+  });
+</script>
+</body>
+</html>

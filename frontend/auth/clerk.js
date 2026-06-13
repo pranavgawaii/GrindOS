@@ -43,14 +43,14 @@ const CLERK_PUBLISHABLE_KEY = window.__CLERK_PUBLISHABLE_KEY__ || 'pk_test_Z29yZ
     const isLoginPage = window.location.pathname.includes('/auth/signin');
 
     if (!session && !isLoginPage) {
-      // Not signed in → redirect to sign-in (absolute, no .html — works with cleanUrls)
-      window.location.replace('/auth/signin');
+      // Not signed in → redirect to sign-in
+      window.location.replace('/auth/signin.html');
       return;
     }
 
     if (session && isLoginPage) {
       // Already signed in on login page → go to dashboard
-      window.location.replace('/dashboard');
+      window.location.replace('/dashboard.html');
       return;
     }
 
@@ -59,6 +59,10 @@ const CLERK_PUBLISHABLE_KEY = window.__CLERK_PUBLISHABLE_KEY__ || 'pk_test_Z29yZ
   }
 
   function renderUserWidget(user) {
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => renderUserWidget(user));
+      return;
+    }
     const container = document.getElementById('clerk-user-widget');
     if (!container || !user) return;
 

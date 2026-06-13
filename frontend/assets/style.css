@@ -260,15 +260,11 @@ img { max-width: 100%; height: auto; display: block; }
   left: 50%;
   transform: translateX(-50%);
   flex-shrink: 0;
-  transition: background .4s, border-color .4s, opacity .15s ease;
-  opacity: 0;
+  transition: background .4s, border-color .4s;
 }
 .dark .topbar-nav {
   background: rgba(0, 0, 0, 0.4) !important;
   border-color: rgba(255, 255, 255, 0.06) !important;
-}
-.topbar-nav.loaded {
-  opacity: 1;
 }
 .topbar-nav a {
   display: none;
@@ -286,6 +282,8 @@ img { max-width: 100%; height: auto; display: block; }
 .topbar-nav a.learn-nav,
 .topbar-nav a.practice-nav,
 .topbar-nav a.prep-nav,
+.topbar-nav a.company-nav,
+.topbar-nav a.resume-nav,
 .topbar-nav a.test-nav {
   display: inline-block;
 }

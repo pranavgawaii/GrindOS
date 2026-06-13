@@ -292,10 +292,10 @@
       try {
         await window.Clerk.load({
           publishableKey: 'pk_test_Z29yZ2VvdXMtamF3ZmlzaC0zMy5jbGVyay5hY2NvdW50cy5kZXYk',
-          signInUrl: '/auth/signin',
-          signUpUrl: '/auth/signin?mode=signup',
-          afterSignInUrl: '/dashboard',
-          afterSignUpUrl: '/dashboard',
+          signInUrl: '/auth/signin.html',
+          signUpUrl: '/auth/signin.html?mode=signup',
+          afterSignInUrl: '/dashboard.html',
+          afterSignUpUrl: '/dashboard.html',
         });
 
         const urlParams = new URLSearchParams(window.location.search);
@@ -363,7 +363,7 @@
         new MutationObserver(stripBranding).observe(container, { childList: true, subtree: true });
 
         if (window.Clerk.user) {
-          window.location.replace('/dashboard');
+          window.location.replace('/dashboard.html');
         }
       } catch (err) {
         console.error('Failed to initialize Clerk:', err);

@@ -1,0 +1,83 @@
+{
+  "name": "Pranav Gawai",
+  "college": "MIT Art Design and Technology University, Pune",
+  "degree": "B.Tech CSE (AI/ML), graduating May 2027",
+  "current_role": "Tech Lead at early-stage AI SaaS startup (pre-funding, building MVP)",
+  "target_roles": ["AI Engineer", "Full Stack SDE", "Founding Engineer"],
+  "target_lpa_min": 5,
+  
+  "about": "I am Pranav Gawai, a final-year CSE student at MITADT Pune. I have been building real products since second year. Currently Tech Lead at an AI SaaS startup where I architect the entire stack — LLM integrations, RAG pipelines, FastAPI backends. I build AI-powered products. I think in products, not just code.",
+  
+  "strengths": "I learn by building, not by studying. I shipped Travio in 7 days. I understand AI infrastructure deeply — memory layers, retrieval systems, production RAG pipelines. I take ownership.",
+  
+  "weakness": "DSA under time pressure. I recognised this and started a structured plan — Striver's sheet, one problem daily, pattern-based. Improving consistently.",
+  
+  "projects": [
+    {
+      "name": "PlacePro",
+      "what": "Full-stack campus placement management platform for MITADT Pune",
+      "stack": "FastAPI, PostgreSQL, React, Redis, Docker, Railway, JWT, RLS",
+      "impact": "Manages 200+ student records. Proposed to TPO office for official adoption.",
+      "hardest_part": "PostgreSQL RLS for multi-tenant access — enforcing role-based data isolation at database layer not application layer",
+      "scale": "Would add WebSockets for real-time updates, horizontal scaling with Redis pub/sub",
+      "url": "placepro.in"
+    },
+    {
+      "name": "Mnemo",
+      "what": "Persistent long-term memory layer for LLM assistants",
+      "stack": "Node.js, TypeScript, OpenAI, pgvector, PostgreSQL, RLS",
+      "impact": "Decay-scored memory — older memories lose relevance weight over time. RLS multi-user isolation.",
+      "hardest_part": "Designing the decay algorithm and making retrieval consider both semantic similarity and memory recency simultaneously",
+      "differentiator": "Unlike Mem0, uses decay scoring so memories age naturally"
+    },
+    {
+      "name": "Travio",
+      "what": "Collaborative trip planning SaaS",
+      "stack": "Next.js 16, React 19, MongoDB, Clerk, Cloudinary, Vercel, Framer Motion",
+      "impact": "Live at travio.fun. Shipped in 7 days for Buildathon.",
+      "hardest_part": "RBAC with three roles (Owner/Editor/Viewer) enforced at both API and UI layer",
+      "url": "travio.fun"
+    },
+    {
+      "name": "Detectra", 
+      "what": "AI anomaly detection combining ML classification with LLM reasoning",
+      "stack": "Python, FastAPI, Scikit-learn, OpenAI API, PostgreSQL, Docker",
+      "hardest_part": "Combining Scikit-learn anomaly scores with OpenAI contextual reasoning in a single pipeline"
+    },
+    {
+      "name": "CraftaStudio",
+      "what": "AI code generation startup — Tech Lead role",
+      "stack": "LangChain, FastAPI, DAG engine using Kahn + Tarjan algorithms, multi-model fallback",
+      "note": "Confidential — early stage startup with professor"
+    }
+  ],
+  
+  "achievements": [
+    "1st Place — National Cybersecurity Hackathon, Healthcare Track (24 hours)",
+    "2nd Place — AI Grand Challenge, National Level (Fintech Track)",
+    "Top 10 out of 800+ Teams — Smart India Hackathon 2025 (built Sahara mental health AI)",
+    "MacMonium open source — macOS harmonium via lid-angle sensor — 7299 LinkedIn impressions",
+    "Placement Coordinator at MITADT Pune — manages company visits and student placement process"
+  ],
+  
+  "skills": {
+    "ai": ["OpenAI API", "Gemini API", "LangChain", "pgvector", "RAG Pipelines", "Prompt Engineering", "Context Engineering"],
+    "languages": ["Python", "TypeScript", "JavaScript", "Go", "SQL"],
+    "backend": ["FastAPI", "Node.js", "Express.js", "REST APIs", "JWT", "WebSockets"],
+    "frontend": ["React", "Next.js", "Tailwind CSS"],
+    "databases": ["PostgreSQL", "MongoDB", "Redis", "Supabase"],
+    "devops": ["Docker", "Railway", "Vercel", "GitHub Actions"]
+  },
+  
+  "hr_answers": {
+    "tell_me_about_yourself": "My name is Pranav Gawai. I am a final-year CSE student specialising in AI and ML at MITADT Pune. I have been building and shipping real products since my second year. Currently I serve as Tech Lead at an early-stage AI SaaS startup where I architect the entire stack — LLM integrations, RAG pipelines, and FastAPI backends. Before that I built PlacePro, a campus placement management system proposed to my university's TPO office. I built Travio, a collaborative trip planning SaaS live at travio.fun. I won 1st place at a national Cybersecurity Hackathon and 2nd place at the AI Grand Challenge. I am looking for an AI Engineer or SDE role where I can build impactful products from day one.",
+    
+    "strengths": "My biggest strength is that I learn by building. I shipped Travio in 7 days from zero to live. I understand AI infrastructure deeply — not just calling APIs but designing memory and retrieval layers around them. I think in products, not just code, which is why PlacePro was proposed to our university TPO office.",
+    
+    "weakness": "Honestly, DSA problem solving under time pressure. I recognised this gap and started a structured plan — Striver's sheet, one problem every morning, pattern-based approach. I have improved from struggling with Easy problems to consistently solving Mediums. I treat it as a skill to train.",
+    
+    "why_hire": "Because I am already doing the job. I am Tech Lead at a startup at 20. PlacePro is live at my university. Travio is live at travio.fun. I won a national hackathon in 24 hours. Most candidates talk about what they will do. I can show you what I have already done.",
+    
+    "five_years": "In two years I want to be a strong senior AI or full stack engineer deep in a product I care about. In four years a technical lead or architect. In five years either building my own product or leading a technical team solving a genuinely hard problem."
+  }
+}
