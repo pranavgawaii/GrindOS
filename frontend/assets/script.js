@@ -591,13 +591,13 @@
     // 2. Topbar Nav items injection - Premium unified uncluttered navbar
     const topNav = document.querySelector('.topbar-nav');
     if (topNav) {
-      const hasCompanyNav = topNav.querySelector('.company-nav');
-      if (!hasCompanyNav) {
+      const hasResumeNav = topNav.querySelector('.resume-nav');
+      if (!hasResumeNav) {
         topNav.innerHTML = `
           <a href="${rootPath}dashboard.html" class="learn-nav">Learn</a>
           <a href="${rootPath}tracker.html" class="practice-nav">Practice</a>
           <a href="${rootPath}interview-prep/index.html" class="prep-nav">Prep</a>
-          <a href="${rootPath}company-prep.html" class="company-nav">Companies</a>
+          <a href="${rootPath}resume-builder.html" class="resume-nav">Resume</a>
         `;
       }
 
@@ -611,8 +611,8 @@
         topNav.querySelector('.practice-nav')?.classList.add('active');
       } else if (path.includes('interview-prep')) {
         topNav.querySelector('.prep-nav')?.classList.add('active');
-      } else if (path.includes('company-prep')) {
-        topNav.querySelector('.company-nav')?.classList.add('active');
+      } else if (path.includes('resume-builder')) {
+        topNav.querySelector('.resume-nav')?.classList.add('active');
       }
       topNav.classList.add('loaded');
     }
