@@ -43,17 +43,37 @@ async def ask_gemini_json(system_prompt: str, user_message: str) -> dict:
         raise HTTPException(status_code=500, detail="GEMINI_API_KEY is not set.")
 
     def _call_gemini():
-        client = genai.Client(api_key=api_key)
-        response = client.models.generate_content(
-            model="gemini-2.5-flash",
-            contents=user_message,
-            config=types.GenerateContentConfig(
-                system_instruction=system_prompt,
-                temperature=0.2,
-                response_mime_type="application/json"
-            ),
-        )
-        return response.text
+        try:
+            client = genai.Client(api_key=api_key)
+            response = client.models.generate_content(
+                model="gemini-2.5-flash",
+                contents=user_message,
+                config=types.GenerateContentConfig(
+                    system_instruction=system_prompt,
+                    temperature=0.2,
+                    response_mime_type="application/json"
+                ),
+            )
+            return response.text
+        except Exception as e:
+            err_str = str(e).lower()
+            if "429" in err_str or "quota" in err_str or "exhausted" in err_str:
+                print("Gemini rate limited in ask_gemini_json. Falling back to Groq Llama 3.3 70B...")
+                try:
+                    from groq import Groq
+                    groq_client = Groq(api_key=os.environ.get("GROQ_API_KEY", ""))
+                    groq_response = groq_client.chat.completions.create(
+                        model="llama-3.3-70b-versatile",
+                        response_format={"type": "json_object"},
+                        messages=[
+                            {"role": "system", "content": system_prompt},
+                            {"role": "user", "content": user_message}
+                        ]
+                    )
+                    return groq_response.choices[0].message.content
+                except Exception as groq_err:
+                    print(f"Groq fallback failed: {groq_err}")
+            raise e
 
     try:
         content = await asyncio.to_thread(_call_gemini)
