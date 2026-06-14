@@ -950,3 +950,39 @@ a, button, [role="button"] {
     padding-bottom: 24px !important;
   }
 }
+
+/* ══════════════════════════════════════════════════════════════════════
+   GLOBAL UI FIXES FOR PREMIUM MOBILE
+   ════════════════════════════════════════════════════════════════════ */
+@media (max-width: 900px) {
+  /* Practice page fixes */
+  .form-row {
+    flex-direction: column !important;
+    gap: 16px !important;
+  }
+  
+  /* Tracker table overflow fix */
+  .problem-table-container {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+    border-radius: var(--radius) !important;
+  }
+
+  /* Tracker DSA stats grid stack */
+  .dsa-stats-grid {
+    grid-template-columns: 1fr 1fr !important;
+  }
+  
+  /* Increase touch targets for form inputs */
+  input, select, textarea, button.icon-btn, .pill-label {
+    min-height: 44px;
+  }
+}
+
+@media (max-width: 600px) {
+  /* Stack stats grid fully on small phones */
+  .dsa-stats-grid {
+    grid-template-columns: 1fr !important;
+  }
+}

@@ -595,7 +595,8 @@
       if (!hasResumeNav) {
         topNav.innerHTML = `
           <a href="${rootPath}dashboard.html" class="learn-nav">Learn</a>
-          <a href="${rootPath}tracker.html" class="practice-nav">Practice</a>
+          <a href="${rootPath}tracker.html" class="tracker-nav">Tracker</a>
+          <a href="${rootPath}practice.html" class="practice-nav">Practice</a>
           <a href="${rootPath}interview-prep/index.html" class="prep-nav">Prep</a>
           <a href="${rootPath}resume-builder.html" class="resume-nav">Resume</a>
         `;
@@ -607,8 +608,10 @@
       // Apply active class based on current path
       if (path.includes('/courses/') || path.includes('dashboard.html')) {
         topNav.querySelector('.learn-nav')?.classList.add('active');
-      } else if (path.includes('tracker')) {
+      } else if (path.includes('practice.html')) {
         topNav.querySelector('.practice-nav')?.classList.add('active');
+      } else if (path.includes('tracker')) {
+        topNav.querySelector('.tracker-nav')?.classList.add('active');
       } else if (path.includes('interview-prep')) {
         topNav.querySelector('.prep-nav')?.classList.add('active');
       } else if (path.includes('resume-builder')) {

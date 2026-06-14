@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3 *)",
+      "Bash(curl -s -o /dev/null -w \"login.html → HTTP %{http_code}\\\\n\" http://127.0.0.1:8080/auth/login.html)",
+      "Bash(curl -s -o /dev/null -w \"index.html → HTTP %{http_code}\\\\n\" http://127.0.0.1:8080/index.html)",
+      "Bash(curl -s -o /dev/null -w \"logo.png   → HTTP %{http_code}\\\\n\" http://127.0.0.1:8080/logo.png)",
+      "Bash(curl *)"
+    ]
+  }
+}
