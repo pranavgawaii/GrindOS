@@ -2,6 +2,8 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 import json
 import os
+from dotenv import load_dotenv
+load_dotenv()
 from pathlib import Path
 from llm_router import ask_llm
 from pydantic import BaseModel
@@ -9,10 +11,12 @@ import httpx
 import base64
 import re
 from judge0_router import router as judge0_router
+from practice_router import router as practice_router
 
 app = FastAPI()
 
 app.include_router(judge0_router)
+app.include_router(practice_router, prefix="/api/practice")
 
 app.add_middleware(
     CORSMiddleware,
