@@ -26,34 +26,36 @@ if SUPABASE_URL and SUPABASE_KEY:
     except Exception as e:
         print(f"Failed to initialize Supabase: {e}")
 
-async def ask_claude_json(system_prompt: str, user_message: str) -> dict:
-    from openai import AsyncOpenAI
-    api_key = os.environ.get("OPENROUTER_API_KEY", "")
+async def ask_gemini_json(system_prompt: str, user_message: str) -> dict:
+    import asyncio
+    from google import genai
+    from google.genai import types
+
+    api_key = os.environ.get("GEMINI_API_KEY", "")
     if not api_key:
-        raise HTTPException(status_code=500, detail="OPENROUTER_API_KEY is not set.")
-        
-    client = AsyncOpenAI(
-        base_url="https://openrouter.ai/api/v1",
-        api_key=api_key,
-    )
-    
-    try:
-        response = await client.chat.completions.create(
-            model="anthropic/claude-3.5-sonnet",
-            response_format={"type": "json_object"},
-            messages=[
-                {"role": "system", "content": system_prompt},
-                {"role": "user", "content": user_message},
-            ],
-            temperature=0.2
+        raise HTTPException(status_code=500, detail="GEMINI_API_KEY is not set.")
+
+    def _call_gemini():
+        client = genai.Client(api_key=api_key)
+        response = client.models.generate_content(
+            model="gemini-2.5-flash",
+            contents=user_message,
+            config=types.GenerateContentConfig(
+                system_instruction=system_prompt,
+                temperature=0.2,
+                response_mime_type="application/json"
+            ),
         )
-        content = response.choices[0].message.content
-        # Ensure we strip any markdown blocks if the LLM adds them despite response_format
+        return response.text
+
+    try:
+        content = await asyncio.to_thread(_call_gemini)
+        # Ensure we strip any markdown blocks if the LLM adds them despite response_mime_type
         content = re.sub(r"^```json\s*", "", content, flags=re.IGNORECASE|re.MULTILINE)
         content = re.sub(r"^```\s*", "", content, flags=re.MULTILINE)
         return json.loads(content.strip())
     except Exception as e:
-        print(f"Claude JSON Error: {e}")
+        print(f"Gemini JSON Error: {e}")
         raise Exception(f"Failed to generate analysis: {str(e)}")
 
 def build_system_prompt(language: str) -> str:
@@ -87,8 +89,8 @@ async def analyze_practice(req: PracticeRequest):
         user_msg += f"My Attempt:\n{req.userAttempt}\n\n"
         
     try:
-        # Step 1: Generate analysis and code via Claude
-        analysis = await ask_claude_json(system_prompt, user_msg)
+        # Step 1: Generate analysis and code via Gemini
+        analysis = await ask_gemini_json(system_prompt, user_msg)
         
         # Step 2: Verify code via Judge0
         driver_code = analysis.get("driverCode", "")
