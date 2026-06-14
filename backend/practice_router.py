@@ -43,37 +43,21 @@ async def ask_gemini_json(system_prompt: str, user_message: str) -> dict:
         raise HTTPException(status_code=500, detail="GEMINI_API_KEY is not set.")
 
     def _call_gemini():
-        import time
-        last_e = None
-        for attempt in range(3):
-            try:
-                client = genai.Client(api_key=api_key)
-                response = client.models.generate_content(
-                    model="gemini-2.5-flash",
-                    contents=user_message,
-                    config=types.GenerateContentConfig(
-                        system_instruction=system_prompt,
-                        temperature=0.2,
-                        response_mime_type="application/json"
-                    ),
-                )
-                return response.text
-            except Exception as e:
-                last_e = e
-                err_str = str(e).lower()
-                if "429" in err_str or "quota" in err_str or "exhausted" in err_str:
-                    if attempt < 2:
-                        import re
-                        sleep_time = 30
-                        match = re.search(r"retry in (\d+\.?\d*)s", str(e))
-                        if match:
-                            sleep_time = float(match.group(1)) + 1.0
-                        print(f"Rate limited by Gemini in analysis. Retrying in {sleep_time} seconds...")
-                        time.sleep(sleep_time)
-                        continue
-                break
-                
-        print("Gemini failed or rate limited after retries. Falling back to Groq Llama 3.3 70B...")
+        try:
+            client = genai.Client(api_key=api_key)
+            response = client.models.generate_content(
+                model="gemini-2.5-flash",
+                contents=user_message,
+                config=types.GenerateContentConfig(
+                    system_instruction=system_prompt,
+                    temperature=0.2,
+                    response_mime_type="application/json"
+                ),
+            )
+            return response.text
+        except Exception as e:
+            print(f"Gemini failed in analysis: {e}. Falling back to Groq Llama 3.3 70B...")
+            
         try:
             from groq import Groq
             groq_client = Groq(api_key=os.environ.get("GROQ_API_KEY", ""))
@@ -93,11 +77,10 @@ async def ask_gemini_json(system_prompt: str, user_message: str) -> dict:
                 api_key=os.environ.get("OPENROUTER_API_KEY", ""),
             )
             free_models = [
-                "openrouter/free",
                 "qwen/qwen3-coder:free",
                 "google/gemma-4-31b-it:free",
-                "nousresearch/hermes-3-llama-3.1-405b:free",
-                "meta-llama/llama-3.3-70b-instruct:free"
+                "meta-llama/llama-3.3-70b-instruct:free",
+                "openrouter/free"
             ]
             last_openrouter_err = None
             for fallback_model in free_models:
@@ -173,8 +156,6 @@ async def extract_text(req: ExtractTextRequest):
         raise HTTPException(status_code=500, detail="GEMINI_API_KEY is not set.")
 
     def _call_gemini_vision():
-        import time
-        last_e = None
         # remove data:image/png;base64, prefix if present
         b64 = req.image_base64
         if "," in b64:
@@ -182,36 +163,22 @@ async def extract_text(req: ExtractTextRequest):
         
         image_bytes = base64.b64decode(b64)
 
-        for attempt in range(3):
-            try:
-                client = genai.Client(api_key=api_key)
-                response = client.models.generate_content(
-                    model="gemini-2.5-flash",
-                    contents=[
-                        types.Part.from_bytes(
-                            data=image_bytes,
-                            mime_type="image/jpeg",
-                        ),
-                        "Extract all the text from this image exactly as written, but format it cleanly using GitHub Flavored Markdown. Use proper headers (e.g. ## Example 1), bullet points for constraints, bold text for labels (e.g. **Input:**), and backticks for code snippets. You MUST preserve all line breaks, mathematical formulas, and visual structure perfectly. Return ONLY the Markdown text, no conversational filler."
-                    ]
-                )
-                return response.text
-            except Exception as e:
-                last_e = e
-                err_str = str(e).lower()
-                if "429" in err_str or "quota" in err_str or "exhausted" in err_str:
-                    if attempt < 2:
-                        import re
-                        sleep_time = 30
-                        match = re.search(r"retry in (\d+\.?\d*)s", str(e))
-                        if match:
-                            sleep_time = float(match.group(1)) + 1.0
-                        print(f"Rate limited by Gemini in vision. Retrying in {sleep_time} seconds...")
-                        time.sleep(sleep_time)
-                        continue
-                break
+        try:
+            client = genai.Client(api_key=api_key)
+            response = client.models.generate_content(
+                model="gemini-2.5-flash",
+                contents=[
+                    types.Part.from_bytes(
+                        data=image_bytes,
+                        mime_type="image/jpeg",
+                    ),
+                    "Extract all the text from this image exactly as written, but format it cleanly using GitHub Flavored Markdown. Use proper headers (e.g. ## Example 1), bullet points for constraints, bold text for labels (e.g. **Input:**), and backticks for code snippets. You MUST preserve all line breaks, mathematical formulas, and visual structure perfectly. Return ONLY the Markdown text, no conversational filler."
+                ]
+            )
+            return response.text
+        except Exception as e:
+            print(f"Gemini vision failed: {e}. Falling back to Groq Llama 3.2 90B Vision...")
         
-        print("Gemini vision failed or rate limited after retries. Falling back to Groq Llama 3.2 90B Vision...")
         try:
             from groq import Groq
             groq_client = Groq(api_key=os.environ.get("GROQ_API_KEY", ""))
@@ -234,9 +201,8 @@ async def extract_text(req: ExtractTextRequest):
                 api_key=os.environ.get("OPENROUTER_API_KEY", ""),
             )
             free_vision_models = [
-                "openrouter/free",
                 "nvidia/nemotron-nano-12b-v2-vl:free",
-                "meta-llama/llama-3.2-11b-vision-instruct:free"
+                "openrouter/free"
             ]
             last_openrouter_err = None
             for fallback_model in free_vision_models:
