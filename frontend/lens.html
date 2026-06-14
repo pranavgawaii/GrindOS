@@ -23,26 +23,17 @@
 </head>
 <body>
 
-  <!-- Top Navigation (Standard GrindOS header) -->
-  <header class="topbar">
-    <a href="dashboard.html" class="topbar-brand">
-      <img src="./logo.png" alt="GrindOS Logo" class="brand-logo" style="width: 34px; height: 34px; object-fit: contain; border-radius: 4px; flex-shrink: 0; display: inline-block; vertical-align: middle; margin-right: 4px;">
-      <span class="brand-wordmark">GrindOS</span>
-    </a>
-    <nav class="topbar-nav">
-      <a href="dashboard.html" class="learn-nav">Learn</a>
-      <a href="tracker.html" class="tracker-nav">Tracker</a>
-      <a href="practice.html" class="practice-nav active">Practice</a>
-      <a href="interview-prep/index.html" class="prep-nav">Prep</a>
-      <a href="resume-builder.html" class="resume-nav" style="display: inline-block;">Resume</a>
-    </nav>
-    <div class="topbar-right auth-buttons" id="auth-container">
-      <button class="icon-btn theme-toggle" id="theme-toggle" aria-label="Toggle Dark Mode" style="margin-right: 12px;">
-        <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 18px; height: 18px;"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
-        <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 18px; height: 18px;"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+  <!-- Minimal Navigation -->
+  <nav class="navbar" style="padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); background: rgba(13, 13, 16, 0.8); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); position: sticky; top: 0; z-index: 100;">
+    <div class="logo" style="display: flex; align-items: center; gap: 8px;">
+      <span style="font-weight: 800; font-size: 1.25rem; color: var(--text-1); letter-spacing: -0.02em;">GrindOS <span style="color: var(--brand);">Lens</span></span>
+    </div>
+    <div style="display: flex; align-items: center; gap: 16px;" id="auth-container">
+      <button class="icon-btn theme-toggle" id="theme-toggle" aria-label="Toggle Dark Mode" style="background: transparent; border: none; color: var(--text-2); cursor: pointer; padding: 0;">
+        <!-- Dynamically injected morphing icon -->
       </button>
     </div>
-  </header>
+  </nav>
 
   <div class="lens-container">
     <div class="back-link-wrapper">
