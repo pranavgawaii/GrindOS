@@ -51,14 +51,25 @@
         
         <!-- Welcome View -->
         <div class="view-panel" id="view-welcome" style="align-items: center; justify-content: center; text-align: center; padding: 40px 20px;">
-          <h2 style="margin-bottom: 24px; color: var(--text-1);">Select an Input Method</h2>
-          <div style="display: flex; gap: 16px; flex-direction: column; width: 100%; max-width: 300px;">
-            <button class="submit-btn" id="startCameraBtn" style="width: 100%;">
-              📸 Open Live Camera
-            </button>
-            <button class="submit-btn" id="startUploadBtn" style="width: 100%; background: var(--surface-2); color: var(--text-1); border: 1px solid var(--border);">
-              📁 Upload Image
-            </button>
+          <h2 style="margin-bottom: 32px; color: var(--text-1); font-weight: 700;">Select an Input Method</h2>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; width: 100%; max-width: 500px;">
+            
+            <div id="startCameraBtn" style="background: var(--surface-2); border: 2px solid var(--border); border-radius: 16px; padding: 32px 16px; cursor: pointer; transition: all 0.2s ease; display: flex; flex-direction: column; align-items: center; gap: 12px;" onmouseover="this.style.borderColor='var(--brand)'; this.style.transform='translateY(-4px)';" onmouseout="this.style.borderColor='var(--border)'; this.style.transform='translateY(0)';">
+              <div style="width: 48px; height: 48px; border-radius: 50%; background: rgba(139, 92, 246, 0.1); display: flex; align-items: center; justify-content: center; color: var(--brand);">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+              </div>
+              <h3 style="color: var(--text-1); font-size: 1.1rem; margin: 0;">Live Camera</h3>
+              <p style="color: var(--text-3); font-size: 0.85rem; margin: 0;">Capture directly from your webcam</p>
+            </div>
+
+            <div id="startUploadBtn" style="background: var(--surface-2); border: 2px solid var(--border); border-radius: 16px; padding: 32px 16px; cursor: pointer; transition: all 0.2s ease; display: flex; flex-direction: column; align-items: center; gap: 12px;" onmouseover="this.style.borderColor='var(--brand)'; this.style.transform='translateY(-4px)';" onmouseout="this.style.borderColor='var(--border)'; this.style.transform='translateY(0)';">
+              <div style="width: 48px; height: 48px; border-radius: 50%; background: rgba(139, 92, 246, 0.1); display: flex; align-items: center; justify-content: center; color: var(--brand);">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+              </div>
+              <h3 style="color: var(--text-1); font-size: 1.1rem; margin: 0;">Upload Image</h3>
+              <p style="color: var(--text-3); font-size: 0.85rem; margin: 0;">Browse or drag & drop a file</p>
+            </div>
+
           </div>
         </div>
 

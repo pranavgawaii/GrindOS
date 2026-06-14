@@ -79,8 +79,8 @@
   height: 100%;
 }
 
-.view-panel.hidden {
-  display: none;
+.hidden {
+  display: none !important;
 }
 
 /* Camera Mode */
