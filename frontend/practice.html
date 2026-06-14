@@ -10,8 +10,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   
-  <link rel="stylesheet" href="assets/style.css?v=2" />
-  <link rel="stylesheet" href="assets/mobile.css?v=2" />
+  <link rel="stylesheet" href="assets/style.css?v=3" />
+  <link rel="stylesheet" href="assets/mobile.css?v=3" />
   
   <link rel="icon" type="image/png" href="./logo.png">
   <link rel="apple-touch-icon" href="./logo.png">
@@ -235,17 +235,23 @@
       position: absolute;
       top: 12px;
       right: 12px;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      color: var(--text-2);
-      padding: 6px 12px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #fff;
+      padding: 6px;
       border-radius: 6px;
-      font-size: 0.8rem;
-      font-family: var(--font-sans);
       cursor: pointer;
+      font-size: 0.85rem;
       transition: all 0.2s;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
-    .copy-btn:hover { background: var(--hover-bg); color: var(--text-1); }
+    .copy-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: scale(1.05);
+    }
     
     /* Tabs */
     .tabs {
@@ -418,8 +424,8 @@
         <div class="form-group" style="flex: 1.5;">
           <label for="environment">Environment Context</label>
           <select id="environment">
-            <option value="leetcode">LeetCode Style (Class/Function)</option>
-            <option value="oa" selected>OA Style (Full sys.stdin script)</option>
+            <option value="leetcode" selected>LeetCode Style (Class/Function)</option>
+            <option value="oa">OA Style (Full sys.stdin script)</option>
           </select>
         </div>
         <div class="form-group" style="flex: 1.5;">
@@ -496,7 +502,7 @@
   </nav>
 
   <!-- External clerk library for auth injected by script.js -->
-  <script src="assets/script.js?v=2"></script>
-  <script src="assets/practice.js?v=2"></script>
+  <script src="assets/script.js?v=3"></script>
+  <script src="assets/practice.js?v=3"></script>
 </body>
 </html>
