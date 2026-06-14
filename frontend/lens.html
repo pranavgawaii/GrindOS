@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>GrindOS Lens</title>
+  <title>GrindOS Lens | Premium OCR Vision</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   
   <link rel="stylesheet" href="assets/style.css?v=3" />
@@ -20,69 +20,77 @@
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/tokyo-night-dark.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
-
 </head>
 <body>
 
   <!-- Minimal Navigation -->
-  <nav class="navbar" style="padding: 20px 40px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); background: var(--surface-1); backdrop-filter: blur(10px);">
+  <nav class="navbar" style="padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); background: rgba(13, 13, 16, 0.8); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); position: sticky; top: 0; z-index: 100;">
     <div class="logo" style="display: flex; align-items: center; gap: 8px;">
       <span style="font-weight: 800; font-size: 1.25rem; color: var(--text-1); letter-spacing: -0.02em;">GrindOS <span style="color: var(--brand);">Lens</span></span>
+      <span style="background: rgba(139, 92, 246, 0.15); color: var(--brand); font-size: 0.7rem; font-weight: 700; padding: 2px 8px; border-radius: 20px; border: 1px solid rgba(139, 92, 246, 0.3);">VISION</span>
     </div>
     <div style="display: flex; align-items: center; gap: 16px;" id="auth-container">
       <button class="icon-btn theme-toggle" id="theme-toggle" aria-label="Toggle Dark Mode" style="background: transparent; border: none; color: var(--text-2); cursor: pointer; padding: 0;">
-        <!-- script.js will dynamically inject the morphing icon here -->
+        <!-- Dynamically injected morphing icon -->
       </button>
     </div>
   </nav>
 
   <div class="lens-container">
-    <a href="practice.html" style="display: inline-block; color: var(--text-2); text-decoration: none; font-size: 0.95rem; font-weight: 500; margin-bottom: 24px; transition: color 0.2s;" onmouseover="this.style.color='var(--text-1)'" onmouseout="this.style.color='var(--text-2)'">&larr; Back to Practice</a>
+    <div class="back-link-wrapper">
+      <a href="practice.html" class="back-to-practice">&larr; Back to Practice</a>
+    </div>
     
     <div class="lens-header">
       <h1>Vision Extraction</h1>
       <p>Instantly extract perfectly formatted code and text from your screen or physical paper using AI.</p>
     </div>
 
-    <!-- Toggle Buttons (Hidden initially) -->
+    <!-- Toggle Buttons (Hidden initially until an image is loaded) -->
     <div class="lens-mode-toggle hidden" id="mode-toggle-container">
-      <button class="mode-btn active" id="btn-camera">Live Camera</button>
-      <button class="mode-btn" id="btn-upload">Upload Image</button>
+      <button class="mode-btn" id="btn-camera">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-right: 6px;"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+        Take Photo
+      </button>
+      <button class="mode-btn" id="btn-upload">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-right: 6px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+        Upload Image
+      </button>
     </div>
+
+    <!-- Camera Input (Native Device Camera) -->
+    <input type="file" id="cameraInput" accept="image/*" capture="environment" style="display: none;" />
 
     <div class="lens-content-wrapper">
       
       <!-- Input Section (Left) -->
-      <div class="lens-input-section">
+      <div class="lens-input-section glass-card">
         
         <!-- Welcome View -->
-        <div class="view-panel" id="view-welcome" style="align-items: center; justify-content: center; text-align: center; padding: 40px 20px;">
-          <h2 style="margin-bottom: 32px; color: var(--text-1); font-weight: 700;">Select an Input Method</h2>
-          <div class="welcome-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; width: 100%; max-width: 500px;">
+        <div class="view-panel" id="view-welcome">
+          <h2 class="section-subtitle">Select an Input Method</h2>
+          <div class="welcome-grid">
             
-            <div id="startCameraBtn" style="background: var(--surface-2); border: 2px solid var(--border); border-radius: 16px; padding: 32px 16px; cursor: pointer; transition: all 0.2s ease; display: flex; flex-direction: column; align-items: center; gap: 12px;" onmouseover="this.style.borderColor='var(--brand)'; this.style.transform='translateY(-4px)';" onmouseout="this.style.borderColor='var(--border)'; this.style.transform='translateY(0)';">
-              <div style="width: 48px; height: 48px; border-radius: 50%; background: rgba(139, 92, 246, 0.1); display: flex; align-items: center; justify-content: center; color: var(--brand);">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+            <div id="startCameraBtn" class="welcome-card">
+              <div class="welcome-icon-box camera-glow">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
               </div>
-              <h3 style="color: var(--text-1); font-size: 1.1rem; margin: 0;">Live Camera</h3>
-              <p style="color: var(--text-3); font-size: 0.85rem; margin: 0;">Capture directly from your webcam</p>
+              <h3>Live Camera</h3>
+              <p>Capture directly using your device's camera</p>
             </div>
 
-            <div id="startUploadBtn" style="background: var(--surface-2); border: 2px solid var(--border); border-radius: 16px; padding: 32px 16px; cursor: pointer; transition: all 0.2s ease; display: flex; flex-direction: column; align-items: center; gap: 12px;" onmouseover="this.style.borderColor='var(--brand)'; this.style.transform='translateY(-4px)';" onmouseout="this.style.borderColor='var(--border)'; this.style.transform='translateY(0)';">
-              <div style="width: 48px; height: 48px; border-radius: 50%; background: rgba(139, 92, 246, 0.1); display: flex; align-items: center; justify-content: center; color: var(--brand);">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+            <div id="startUploadBtn" class="welcome-card">
+              <div class="welcome-icon-box upload-glow">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
               </div>
-              <h3 style="color: var(--text-1); font-size: 1.1rem; margin: 0;">Upload Image</h3>
-              <p style="color: var(--text-3); font-size: 0.85rem; margin: 0;">Browse or drag & drop a file</p>
+              <h3>Upload Image</h3>
+              <p>Drag & drop or browse local files</p>
             </div>
 
           </div>
         </div>
 
-        <!-- Camera Input (Native Device Camera) -->
-        <input type="file" id="cameraInput" accept="image/*" capture="environment" style="display: none;" />
-
-        <!-- Upload View -->
+        <!-- Upload & Preview View -->
         <div class="view-panel hidden" id="view-upload">
           <div class="upload-zone" id="drop-zone">
             <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color: var(--brand); margin-bottom: 16px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
@@ -90,10 +98,34 @@
             <p>or click to browse your files</p>
             <input type="file" id="fileInput" accept="image/png, image/jpeg, image/webp" style="display: none;" />
           </div>
-          <!-- Image Preview -->
+          
+          <!-- Image Preview Card -->
           <div class="image-preview-container hidden" id="image-preview-container">
-            <img id="image-preview" src="" alt="Preview" />
-            <button class="submit-btn" id="analyzeImageBtn" style="margin-top: 16px;">
+            <div class="preview-wrapper">
+              <img id="image-preview" src="" alt="Preview" title="Click to view full screen" />
+              <div class="preview-overlay-info">
+                <span>Click image to expand ⛶</span>
+              </div>
+            </div>
+            
+            <!-- Controls below the image -->
+            <div class="preview-controls">
+              <button class="control-btn" id="btn-rotate" title="Rotate image 90 degrees clockwise">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path></svg>
+                Rotate ↻
+              </button>
+              <button class="control-btn" id="btn-expand" title="Open full screen lightbox">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+                Expand ⛶
+              </button>
+              <button class="control-btn danger" id="btn-change-image" title="Discard this image and choose another">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                Discard ✕
+              </button>
+            </div>
+
+            <!-- Redesigned, Large, highly readable CTA Button -->
+            <button class="submit-btn extract-cta" id="analyzeImageBtn">
               ✨ Extract Text from Image
             </button>
           </div>
@@ -101,17 +133,21 @@
       </div>
 
       <!-- Result Section (Right) -->
-      <div class="lens-result-section">
+      <div class="lens-result-section glass-card">
         <div class="result-header">
-          <h3>Extracted Text</h3>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <div class="status-indicator-dot pulsing"></div>
+            <h3>Extracted Output</h3>
+          </div>
           <button id="copyBtn" class="icon-btn hidden" title="Copy to clipboard">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+            <span>Copy Code</span>
           </button>
         </div>
         
         <div class="loading-state hidden" id="loading-state">
           <div class="spinner"></div>
-          <p>Analyzing image with Vision AI...</p>
+          <p>Extracting text using Vision AI...</p>
         </div>
 
         <div class="result-content empty" id="result-content">
@@ -119,6 +155,12 @@
         </div>
       </div>
     </div>
+  </div>
+
+  <!-- Fullscreen Lightbox Modal -->
+  <div id="lightboxModal" class="lightbox-modal">
+    <span class="lightbox-close" id="closeLightbox">&times;</span>
+    <img class="lightbox-content" id="lightboxImage" alt="Expanded view">
   </div>
 
   <script src="assets/script.js?v=3"></script>

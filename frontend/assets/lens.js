@@ -24,6 +24,16 @@ document.addEventListener("DOMContentLoaded", () => {
   const startUploadBtn = document.getElementById("startUploadBtn");
   const modeToggleContainer = document.getElementById("mode-toggle-container");
 
+  // Redesigned Control Elements
+  const btnRotate = document.getElementById("btn-rotate");
+  const btnExpand = document.getElementById("btn-expand");
+  const btnChangeImage = document.getElementById("btn-change-image");
+  
+  // Lightbox elements
+  const lightboxModal = document.getElementById("lightboxModal");
+  const lightboxImage = document.getElementById("lightboxImage");
+  const closeLightbox = document.getElementById("closeLightbox");
+
   let capturedBase64 = null;
 
   // Initial State is Welcome View. Tabs inactive.
@@ -155,6 +165,97 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  // Discard & Reset flow
+  btnChangeImage.addEventListener("click", () => {
+    capturedBase64 = null;
+    imagePreview.src = "";
+    
+    // Reset inputs
+    cameraInput.value = "";
+    fileInput.value = "";
+    
+    // Display welcome panel
+    imagePreviewContainer.classList.add("hidden");
+    dropZone.classList.remove("hidden");
+    viewUpload.classList.add("hidden");
+    modeToggleContainer.classList.add("hidden");
+    viewWelcome.classList.remove("hidden");
+    
+    // Reset tabs
+    btnCamera.classList.remove("active");
+    btnUpload.classList.remove("active");
+    
+    // Clear results
+    resultContent.innerHTML = '<p class="placeholder-text">Capture or upload an image to see the extracted text here.</p>';
+    resultContent.classList.add("empty");
+    resultContent.classList.remove("hidden");
+    copyBtn.classList.add("hidden");
+    loadingState.classList.add("hidden");
+  });
+
+  // Canvas Image Rotation (90 degrees clockwise)
+  btnRotate.addEventListener("click", () => {
+    if (!capturedBase64) return;
+
+    // Show loading indicators
+    resultContent.classList.add("hidden");
+    copyBtn.classList.add("hidden");
+    loadingState.classList.remove("hidden");
+
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement("canvas");
+      // Swap width and height for 90 degree rotation
+      canvas.width = img.height;
+      canvas.height = img.width;
+      
+      const ctx = canvas.getContext("2d");
+      
+      // Translate to center, rotate 90 deg clockwise, and draw
+      ctx.translate(canvas.width / 2, canvas.height / 2);
+      ctx.rotate((90 * Math.PI) / 180);
+      ctx.drawImage(img, -img.width / 2, -img.height / 2);
+      
+      // Regenerate base64 image data
+      capturedBase64 = canvas.toDataURL("image/jpeg", 0.85);
+      imagePreview.src = capturedBase64;
+      
+      // Auto-extract rotated text
+      extractText(capturedBase64);
+    };
+    img.src = capturedBase64;
+  });
+
+  // Fullscreen Expand (Lightbox modal)
+  const openLightbox = () => {
+    if (!capturedBase64) return;
+    lightboxImage.src = capturedBase64;
+    lightboxModal.style.display = "flex";
+  };
+
+  imagePreview.addEventListener("click", openLightbox);
+  btnExpand.addEventListener("click", openLightbox);
+
+  // Close Lightbox
+  const closeLightboxModal = () => {
+    lightboxModal.style.display = "none";
+    lightboxImage.src = "";
+  };
+
+  closeLightbox.addEventListener("click", closeLightboxModal);
+  lightboxModal.addEventListener("click", (e) => {
+    if (e.target === lightboxModal) {
+      closeLightboxModal();
+    }
+  });
+
+  // ESC key to close lightbox
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && lightboxModal.style.display === "flex") {
+      closeLightboxModal();
+    }
+  });
+
   // Vision API Call
   async function extractText(base64Data) {
     resultContent.classList.add("hidden");
@@ -210,8 +311,12 @@ document.addEventListener("DOMContentLoaded", () => {
   copyBtn.addEventListener("click", () => {
     const textToCopy = resultContent.getAttribute("data-raw") || resultContent.innerText;
     navigator.clipboard.writeText(textToCopy).then(() => {
+      const copyBtnSvg = copyBtn.querySelector("svg");
+      const copyBtnSpan = copyBtn.querySelector("span");
+      
       const originalHTML = copyBtn.innerHTML;
-      copyBtn.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
+      
+      copyBtn.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> <span style="color: #10b981;">Copied!</span>`;
       setTimeout(() => {
         copyBtn.innerHTML = originalHTML;
       }, 2000);
