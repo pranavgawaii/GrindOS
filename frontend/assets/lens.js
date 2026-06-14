@@ -23,33 +23,6 @@ document.addEventListener("DOMContentLoaded", () => {
   let stream = null;
   let capturedBase64 = null;
 
-  // --- THEME TOGGLE ---
-  const themeToggle = document.getElementById("theme-toggle");
-  if (themeToggle) {
-    // Restore saved theme
-    const savedTheme = localStorage.getItem("GrindOS-theme");
-    if (savedTheme === "light") {
-      document.documentElement.classList.remove("dark");
-      document.documentElement.classList.add("light");
-    } else {
-      document.documentElement.classList.add("dark");
-      document.documentElement.classList.remove("light");
-    }
-
-    themeToggle.addEventListener("click", () => {
-      const isDark = document.documentElement.classList.contains("dark");
-      if (isDark) {
-        document.documentElement.classList.remove("dark");
-        document.documentElement.classList.add("light");
-        localStorage.setItem("GrindOS-theme", "light");
-      } else {
-        document.documentElement.classList.remove("light");
-        document.documentElement.classList.add("dark");
-        localStorage.setItem("GrindOS-theme", "dark");
-      }
-    });
-  }
-
   // --- TABS ---
   const viewWelcome = document.getElementById("view-welcome");
   const startCameraBtn = document.getElementById("startCameraBtn");
