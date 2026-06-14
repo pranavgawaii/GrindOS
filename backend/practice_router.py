@@ -111,6 +111,7 @@ async def extract_text(req: ExtractTextRequest):
         raise HTTPException(status_code=500, detail="GEMINI_API_KEY is not set.")
 
     def _call_gemini_vision():
+        import time
         client = genai.Client(api_key=api_key)
         # remove data:image/png;base64, prefix if present
         b64 = req.image_base64
@@ -119,17 +120,27 @@ async def extract_text(req: ExtractTextRequest):
         
         image_bytes = base64.b64decode(b64)
         
-        response = client.models.generate_content(
-            model="gemini-2.5-flash",
-            contents=[
-                types.Part.from_bytes(
-                    data=image_bytes,
-                    mime_type="image/jpeg",
-                ),
-                "Extract all the text from this image exactly as written. Preserve formatting, mathematical formulas, constraints, and code snippets. Return ONLY the extracted text, no conversational filler."
-            ]
-        )
-        return response.text
+        for attempt in range(3):
+            try:
+                response = client.models.generate_content(
+                    model="gemini-2.5-flash",
+                    contents=[
+                        types.Part.from_bytes(
+                            data=image_bytes,
+                            mime_type="image/jpeg",
+                        ),
+                        "Extract all the text from this image exactly as written. Preserve formatting, mathematical formulas, constraints, and code snippets. Return ONLY the extracted text, no conversational filler. DO NOT summarize."
+                    ]
+                )
+                return response.text
+            except Exception as e:
+                err_str = str(e).lower()
+                if "429" in err_str or "quota" in err_str or "exhausted" in err_str:
+                    if attempt < 2:
+                        print("Rate limited by Gemini on image extraction. Retrying in 30 seconds...")
+                        time.sleep(30)
+                        continue
+                raise e
 
     try:
         text = await asyncio.to_thread(_call_gemini_vision)
