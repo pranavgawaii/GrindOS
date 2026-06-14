@@ -78,7 +78,7 @@ async def ask_gemini_json(system_prompt: str, user_message: str) -> dict:
                         api_key=os.environ.get("OPENROUTER_API_KEY", ""),
                     )
                     openrouter_response = openai_client.chat.completions.create(
-                        model="google/gemini-2.5-flash:free",
+                        model="meta-llama/llama-3.3-70b-instruct:free",
                         messages=[
                             {"role": "system", "content": system_prompt},
                             {"role": "user", "content": user_message}
