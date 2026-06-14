@@ -210,6 +210,13 @@ document.addEventListener('DOMContentLoaded', () => {
     
     resultsContainer.innerHTML = html;
     
+    // Apply highlight.js to dynamically inserted code blocks
+    resultsContainer.querySelectorAll('pre code').forEach((block) => {
+      if (window.hljs) {
+        hljs.highlightElement(block);
+      }
+    });
+    
     // Setup tab switching
     const tabBtns = resultsContainer.querySelectorAll('.tab-btn');
     const tabContents = resultsContainer.querySelectorAll('.tab-content');

@@ -72,9 +72,9 @@ async def ask_gemini_json(system_prompt: str, user_message: str) -> dict:
 def build_system_prompt(language: str, environment: str, verbosity: str) -> str:
     env_instruction = ""
     if environment == "leetcode":
-        env_instruction = "Provide ONLY the class/function definition (LeetCode style)."
+        env_instruction = "Provide ONLY the class/function definition (LeetCode style). Do NOT include sys.stdin or __main__."
     else:
-        env_instruction = "Provide a FULL script that parses input from sys.stdin and prints to stdout (OA style)."
+        env_instruction = "Provide a pure sys.stdin/stdout script (OA style). Do NOT use 'class Solution'. Do NOT mix formats."
 
     concise_instruction = ""
     if verbosity == "concise":
@@ -89,7 +89,7 @@ You must return a raw JSON object with EXACTLY the following structure. ENSURE A
   "naiveApproach": "Explain the brute force approach and why it's too slow.",
   "optimizedApproach": "Explain the optimal approach in plain, intuitive English.",
   "pseudocode": "Write high-level pseudocode for the optimal approach.",
-  "solutionCode": "Write the final optimal code in {language}. CRITICAL HUMANIZATION RULES: 1. Use short names (i, j, n, res, left, right). 2. NO docstrings. NO comments. NO type hints. 3. Do not include 'if __name__ == \\"__main__\\":' unless it's specifically a stdin/stdout script. 4. If it's a famous problem (e.g. Two Sum, Trapping Rain Water), pick a correct but slightly less ubiquitous approach to avoid looking like a textbook copy. 5. Include slight defensive checks (e.g. 'if not arr: return 0') to look realistic. {env_instruction}",
+  "solutionCode": "Write the final optimal code in {language}. CRITICAL HUMANIZATION RULES: 1. Use short names (i, j, n, res, left, right). 2. NO docstrings. NO comments. NO type hints. 3. STRICT FORMATTING: Choose exactly ONE format based on the environment. NEVER mix 'class Solution' with 'sys.stdin'. 4. If it's a famous problem (e.g. Two Sum), pick a correct but slightly less ubiquitous approach to avoid looking like a textbook copy. 5. Include slight defensive checks (e.g. 'if not arr: return 0') to look realistic. {env_instruction}",
   "driverCode": "Write the COMPLETE, EXECUTABLE code in {language} (including all imports/includes, the solutionCode, and a main execution block). The main block MUST run a comprehensive set of test cases (normal, boundary, edge, and stress cases). For each test case, execute the solution, compare actual vs expected, and build a JSON array of the results. The script MUST output the exact string '---TEST_RESULTS_JSON---' followed by the valid JSON array of objects: [{{\\"passed\\": true/false, \\"actual\\": \\"...\\", \\"expected\\": \\"...\\", \\"inputs\\": [...]}}]. Ensure the code catches exceptions. Do NOT print anything else to stdout.",
   "complexity": {{ "time": "O(...)", "space": "O(...)" }},
   "comparisonTable": [ {{"feature": "...", "humanStyle": "...", "aiStyle": "..."}} ],
