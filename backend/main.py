@@ -1,10 +1,13 @@
+import sys
+from pathlib import Path
+sys.path.append(str(Path(__file__).parent))
+
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 import json
 import os
 from dotenv import load_dotenv
 load_dotenv()
-from pathlib import Path
 from llm_router import ask_llm
 from pydantic import BaseModel
 import httpx
