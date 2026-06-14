@@ -235,9 +235,9 @@
       position: absolute;
       top: 12px;
       right: 12px;
-      background: rgba(255,255,255,0.1);
-      border: 1px solid rgba(255,255,255,0.15);
-      color: #fff;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--text-2);
       padding: 6px 12px;
       border-radius: 6px;
       font-size: 0.8rem;
@@ -245,7 +245,7 @@
       cursor: pointer;
       transition: all 0.2s;
     }
-    .copy-btn:hover { background: rgba(255,255,255,0.2); }
+    .copy-btn:hover { background: var(--hover-bg); color: var(--text-1); }
     
     /* Tabs */
     .tabs {
