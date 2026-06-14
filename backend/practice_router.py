@@ -7,6 +7,7 @@ from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 from typing import Optional, List, Dict, Any
 from supabase import create_client, Client
+from judge0_router import execute_on_judge0, parse_driver_results
 
 router = APIRouter()
 
@@ -17,6 +18,7 @@ class PracticeRequest(BaseModel):
     userAttempt: str = ""
     environment: str = "leetcode"
     verbosity: str = "detailed"
+    verify_code: bool = True
 
 class ExtractTextRequest(BaseModel):
     image_base64: str
@@ -189,19 +191,33 @@ async def analyze_practice(req: PracticeRequest):
         user_msg += f"My Attempt:\n{req.userAttempt}\n\n"
         
     try:
-        # Step 1: Generate analysis and code via Gemini
-        analysis = await ask_gemini_json(system_prompt, user_msg)
-        
-        # Step 2: Verify code via Piston API (Much faster than Judge0)
+        # Aggressively strip comments from solution code
+        if "solutionCode" in analysis:
+            raw_code = analysis["solutionCode"]
+            cleaned_lines = []
+            for line in raw_code.splitlines():
+                if line.strip().startswith("#") or line.strip().startswith("//"):
+                    continue
+                cleaned_lines.append(line)
+            analysis["solutionCode"] = "\\n".join(cleaned_lines)
+            
+        # Step 2: Verify code via Judge0 (if enabled)
         driver_code = analysis.get("driverCode", "")
         verification_results = []
-        if driver_code:
-            verification_results = await execute_on_piston(driver_code, req.language)
-            analysis["verification"] = verification_results
-        
-        # We don't need to send driverCode back to frontend
-        if "driverCode" in analysis:
-            del analysis["driverCode"]
+        if driver_code and req.verify_code:
+            try:
+                res = await execute_on_judge0(driver_code, req.language)
+                stdout = res.get("stdout", "")
+                parsed_results, _ = parse_driver_results(stdout)
+                
+                if parsed_results is not None:
+                    verification_results = parsed_results
+                else:
+                    verification_results = [{"passed": False, "error": "Failed to parse driver results.", "stdout": stdout}]
+            except Exception as e:
+                verification_results = [{"passed": False, "error": f"Execution failed: {str(e)}"}]
+                
+        analysis["verification"] = verification_results
             
         # Step 3: Log to Supabase
         if supabase:

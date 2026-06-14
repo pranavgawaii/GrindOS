@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const constraints = document.getElementById('constraints').value.trim();
     const environment = document.getElementById('environment').value;
     const verbosity = document.getElementById('verbosity').value;
+    const verifyCode = document.getElementById('verifyCode').checked;
     
     // OCR Logic
     const ocrTrigger = document.getElementById('ocrTrigger');
@@ -85,7 +86,8 @@ document.addEventListener('DOMContentLoaded', () => {
           constraints,
           userAttempt: "",
           environment,
-          verbosity
+          verbosity,
+          verify_code: verifyCode
         })
       });
       
@@ -164,16 +166,17 @@ document.addEventListener('DOMContentLoaded', () => {
       html += `</div>`;
     }
     
-    // Tab 3: Verification
-    if (tabs.find(t => t.id === 'tab-verify')) {
-      html += `<div id="tab-verify" class="tab-content ${tabs[0].id === 'tab-verify' ? 'active' : ''}">`;
-      html += `<h4>Code Verification (Piston)</h4><div class="badge-container">`;
+      html += `<h4>Code Verification (Judge0)</h4><div class="badge-container">`;
       let passedAll = true;
+      if (!data.verification || data.verification.length === 0) {
+        html += `<p style="color: var(--text-3); font-size: 0.95rem;">Verification was skipped or no test cases were run.</p>`;
+      } else {
       data.verification.forEach((tc, idx) => {
          const pass = tc.passed;
          if (!pass) passedAll = false;
          html += `<div class="test-badge ${pass ? 'pass' : 'fail'}">${pass ? '✅' : '❌'} Test ${idx + 1}</div>`;
       });
+      }
       html += `</div>`;
       if (!passedAll) {
         html += `<p style="color:var(--error);font-size:0.9rem;">Warning: Some test cases failed during automated verification.</p>`;
