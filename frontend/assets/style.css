@@ -281,8 +281,8 @@ img { max-width: 100%; height: auto; display: block; }
 }
 .topbar-nav a.learn-nav,
 .topbar-nav a.practice-nav,
-.topbar-nav a.prep-nav,
 .topbar-nav a.company-nav,
+.topbar-nav a.tracker-nav,
 .topbar-nav a.resume-nav,
 .topbar-nav a.test-nav {
   display: inline-block;
@@ -379,6 +379,25 @@ img { max-width: 100%; height: auto; display: block; }
   border-color: var(--brand) !important;
   color: var(--brand) !important;
   transform: translateY(-1px);
+}
+
+/* Specific overrides for Focus Timer and Calendar buttons to remove background and border */
+#global-timer-toggle,
+#global-calendar-toggle,
+.dark #global-timer-toggle,
+.dark #global-calendar-toggle {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+#global-timer-toggle:hover,
+#global-calendar-toggle:hover,
+.dark #global-timer-toggle:hover,
+.dark #global-calendar-toggle:hover {
+  background: transparent !important;
+  border: none !important;
+  color: var(--brand) !important;
 }
 
 /* Clerk user widget dark header overrides */

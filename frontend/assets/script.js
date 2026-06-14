@@ -2,7 +2,7 @@
 
 (function () {
   // ── Vercel Analytics Dynamic Injection ─────────────────────────────────────
-  (function() {
+  (function () {
     if (!window.va) {
       window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
       const script = document.createElement('script');
@@ -186,7 +186,7 @@
             <button class="revision-done-btn" data-key="${t.courseId}__${t.topicId}">✓ Done</button>
           </div>
         `;
-        card.querySelector('.revision-done-btn').addEventListener('click', function() {
+        card.querySelector('.revision-done-btn').addEventListener('click', function () {
           srsMarkComplete(t.courseId, t.topicId, t.topicTitle);
           srsRenderDashboard();
         });
@@ -212,7 +212,7 @@
       pill.className = alreadyDone ? 'srs-pill srs-pill--done' : 'srs-pill';
       pill.setAttribute('title', alreadyDone ? 'Already completed — click to re-schedule revision' : 'Mark topic as read and schedule revision');
 
-      pill.addEventListener('click', function() {
+      pill.addEventListener('click', function () {
         srsMarkComplete(courseId, topicId, topicTitle);
         pill.className = 'srs-pill srs-pill--done';
         pill.innerHTML = `<span class="srs-check">✓</span> Completed — Revision Scheduled`;
@@ -277,7 +277,7 @@
           <pre id="code-output-pre" class="code-output-pre">// Click ▶ Run to execute your code</pre>
         </div>
       `;
-      document.querySelector('.topic-content, main, .topic-body, .content-area, article, .page-content, body > div:last-child') && 
+      document.querySelector('.topic-content, main, .topic-body, .content-area, article, .page-content, body > div:last-child') &&
         document.querySelector('.topic-content, main, .topic-body, .content-area, article, .page-content, body > div:last-child').appendChild(editorPanel);
       if (!document.getElementById('grindos-code-editor').parentNode || document.getElementById('grindos-code-editor').parentNode === document.createElement('div')) {
         document.body.appendChild(editorPanel);
@@ -302,9 +302,9 @@
       // Load Monaco
       const monacoScript = document.createElement('script');
       monacoScript.src = 'https://cdn.jsdelivr.net/npm/monaco-editor@0.44.0/min/vs/loader.js';
-      monacoScript.onload = function() {
+      monacoScript.onload = function () {
         require.config({ paths: { vs: 'https://cdn.jsdelivr.net/npm/monaco-editor@0.44.0/min/vs' } });
-        require(['vs/editor/editor.main'], function() {
+        require(['vs/editor/editor.main'], function () {
           const isDark = document.documentElement.classList.contains('dark');
           monacoEditor = monaco.editor.create(document.getElementById('monaco-container'), {
             value: STARTER.python,
@@ -332,7 +332,7 @@
           }).observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
 
           // Lang selector
-          document.getElementById('code-lang-select').addEventListener('change', function() {
+          document.getElementById('code-lang-select').addEventListener('change', function () {
             currentLang = this.value;
             monaco.editor.setModelLanguage(monacoEditor.getModel(), MONACO_LANG[currentLang]);
             monacoEditor.setValue(STARTER[currentLang]);
@@ -342,7 +342,7 @@
       document.head.appendChild(monacoScript);
 
       // Run button
-      document.getElementById('code-run-btn').addEventListener('click', async function() {
+      document.getElementById('code-run-btn').addEventListener('click', async function () {
         const btn = this;
         const code = monacoEditor ? monacoEditor.getValue() : '';
         const outputEl = document.getElementById('code-output-pre');
@@ -378,7 +378,7 @@
       });
 
       // Reset button
-      document.getElementById('code-reset-btn').addEventListener('click', function() {
+      document.getElementById('code-reset-btn').addEventListener('click', function () {
         if (monacoEditor) monacoEditor.setValue(STARTER[currentLang]);
         document.getElementById('code-output-pre').textContent = '// Click ▶ Run to execute your code';
         document.getElementById('code-run-time').textContent = '';
@@ -386,7 +386,7 @@
     }
 
 
-    
+
     document.querySelectorAll('.topbar-brand').forEach(brand => {
       if (path.includes('tracker.html')) {
         brand.innerHTML = `<img src="${logoPath}" alt="GrindOS Logo" class="brand-logo" style="width: 34px; height: 34px; object-fit: contain; border-radius: 50% !important; flex-shrink: 0; display: inline-block; vertical-align: middle; margin-right: 6px;"><span class="brand-wordmark">GrindOS <span style="font-size: 0.82rem; font-weight: 500; color: var(--text-3); margin-left: 8px; padding-left: 8px; border-left: 1px solid var(--border);">Code Arena</span></span>`;
@@ -449,7 +449,7 @@
     document.querySelectorAll('#theme-toggle').forEach(el => {
       el.className = 'theme-switchatt';
       el.removeAttribute('aria-label');
-      
+
       const attId = 'att_' + Math.random().toString(36).substr(2, 9);
       el.innerHTML = `
         <svg class="att-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="overflow: visible; transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);">
@@ -476,9 +476,9 @@
         const maskCircle = el.querySelector('.att-mask-circle');
         const centerCircle = el.querySelector('.att-center-circle');
         const rays = el.querySelector('.att-rays');
-        
+
         if (!svg || !maskCircle || !centerCircle || !rays) return;
-        
+
         if (theme === 'dark') {
           svg.style.transform = 'rotate(270deg)';
           maskCircle.setAttribute('cx', '17');
@@ -539,8 +539,8 @@
       const iconOpen = `<svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><line x1="3" y1="6" x2="13" y2="6"></line><line x1="3" y1="12" x2="13" y2="12"></line><line x1="3" y1="18" x2="13" y2="18"></line><polyline points="19 7 14 12 19 17"></polyline></svg>`;
 
       function updateMenuIcon() {
-        const isCollapsed = window.innerWidth > 900 
-          ? body.classList.contains('sidebar-collapsed') 
+        const isCollapsed = window.innerWidth > 900
+          ? body.classList.contains('sidebar-collapsed')
           : !sidebar.classList.contains('open');
         menuBtn.innerHTML = isCollapsed ? iconCollapsed : iconOpen;
       }
@@ -597,7 +597,6 @@
           <a href="${rootPath}dashboard.html" class="learn-nav">Learn</a>
           <a href="${rootPath}tracker.html" class="tracker-nav">Tracker</a>
           <a href="${rootPath}practice.html" class="practice-nav">Practice</a>
-          <a href="${rootPath}interview-prep/index.html" class="prep-nav">Prep</a>
           <a href="${rootPath}resume-builder.html" class="resume-nav">Resume</a>
         `;
       }
@@ -612,8 +611,6 @@
         topNav.querySelector('.practice-nav')?.classList.add('active');
       } else if (path.includes('tracker')) {
         topNav.querySelector('.tracker-nav')?.classList.add('active');
-      } else if (path.includes('interview-prep')) {
-        topNav.querySelector('.prep-nav')?.classList.add('active');
       } else if (path.includes('resume-builder')) {
         topNav.querySelector('.resume-nav')?.classList.add('active');
       }
@@ -653,7 +650,7 @@
           await navigator.clipboard.writeText(txt);
           btn.textContent = 'copied!'; btn.classList.add('copied');
           setTimeout(() => { btn.textContent = 'copy'; btn.classList.remove('copied'); }, 2000);
-        } catch(_) { btn.textContent = 'error'; }
+        } catch (_) { btn.textContent = 'error'; }
       });
     });
 
@@ -761,12 +758,12 @@
     // ── Topic Completion Tracker & Sidebar Sync ──────────────────────────
     const topicMatch = window.location.pathname.match(/\/courses\/([^/]+)\/topics\/(\d+)-/i);
     const topicMeta = document.querySelector('.topic-meta');
-    
+
     function syncSidebarProgress(courseId, completions) {
       const allTopicItems = document.querySelectorAll('.topic-item');
       let completedInCourse = 0;
       let totalInCourse = allTopicItems.length;
-      
+
       allTopicItems.forEach(li => {
         const link = li.querySelector('a');
         if (link) {
@@ -776,7 +773,7 @@
             const itemCourseId = match[1];
             const itemTopicNum = match[2];
             const itemKey = `${itemCourseId}/${itemTopicNum}`;
-            
+
             if (completions[itemKey]) {
               completedInCourse++;
               if (!link.querySelector('.topic-checkmark')) {
@@ -792,7 +789,7 @@
           }
         }
       });
-      
+
       const progressCount = document.querySelector('.sidebar-progress .progress-count');
       const progressFill = document.querySelector('.sidebar-progress .progress-fill');
       if (progressCount && progressFill && totalInCourse > 0) {
@@ -846,7 +843,7 @@
       const container = document.createElement('div');
       container.className = 'dynamic-island-container';
       container.id = 'island-container';
-      
+
       const closedDiv = document.createElement('div');
       closedDiv.className = 'island-closed';
       closedDiv.id = 'island-closed';
@@ -883,7 +880,7 @@
         const item = document.createElement('button');
         item.className = 'island-toc-item';
         item.setAttribute('data-id', h.id);
-        
+
         const indentLevel = Math.max(0, h.level - minLevel);
         const paddingLeft = indentLevel * 14 + 12;
         item.style.paddingLeft = `${paddingLeft}px`;
@@ -892,7 +889,7 @@
           <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; transition: transform 0.2s ease;">${h.text}</span>
           <span class="island-toc-dot"></span>
         `;
-        
+
         item.addEventListener('click', (e) => {
           e.stopPropagation();
           const yOffset = -80;
@@ -1001,25 +998,25 @@
       const courseId = topicMatch[1];
       const topicNum = topicMatch[2];
       const storageKey = `${courseId}/${topicNum}`;
-      
+
       let completions = JSON.parse(localStorage.getItem('GrindOS-completed-topics') || '{}');
       let isCompleted = !!completions[storageKey];
-      
+
       const completeBtn = document.createElement('button');
       completeBtn.className = 'topic-complete-btn' + (isCompleted ? ' completed' : '');
       completeBtn.id = 'toggle-complete-btn';
-      completeBtn.innerHTML = isCompleted 
+      completeBtn.innerHTML = isCompleted
         ? `<span class="btn-icon">✓</span> <span class="btn-text">Completed</span>`
         : `<span class="btn-icon">○</span> <span class="btn-text">Mark Completed</span>`;
-      
+
       topicMeta.appendChild(completeBtn);
-      
+
       syncSidebarProgress(courseId, completions);
-      
+
       // Initialize dynamic island TOC for documentation
       initDynamicIslandTOC();
-      
-      completeBtn.addEventListener('click', function() {
+
+      completeBtn.addEventListener('click', function () {
         completions = JSON.parse(localStorage.getItem('GrindOS-completed-topics') || '{}');
         isCompleted = !completions[storageKey];
         if (isCompleted) {
@@ -1028,12 +1025,12 @@
           delete completions[storageKey];
         }
         localStorage.setItem('GrindOS-completed-topics', JSON.stringify(completions));
-        
+
         completeBtn.classList.toggle('completed', isCompleted);
         completeBtn.innerHTML = isCompleted
           ? `<span class="btn-icon">✓</span> <span class="btn-text">Completed</span>`
           : `<span class="btn-icon">○</span> <span class="btn-text">Mark Completed</span>`;
-          
+
         syncSidebarProgress(courseId, completions);
       });
     } else {
@@ -1057,7 +1054,7 @@
         webdev: 62,
         aptitude: 35
       };
-      
+
       document.querySelectorAll('.course-card').forEach(card => {
         const href = card.getAttribute('href');
         const match = href.match(/courses\/([^/]+)\/index.html/);
@@ -1070,7 +1067,7 @@
               completed++;
             }
           });
-          
+
           const pct = total > 0 ? Math.round((completed / total) * 100) : 0;
           const pctLabel = card.querySelector('.card-progress-percent');
           if (pctLabel) pctLabel.textContent = `${pct}%`;
@@ -1098,7 +1095,7 @@
     if (courseLandingMatch) {
       const courseId = courseLandingMatch[1];
       const startBtn = document.querySelector('.course-hero .start-btn');
-      
+
       if (startBtn && !document.getElementById('start-quiz-btn')) {
         const quizBtn = document.createElement('a');
         quizBtn.href = '#';
@@ -1113,7 +1110,7 @@
         quizBtn.style.justifyContent = 'center';
         quizBtn.innerHTML = 'Practice Quiz 📝';
         startBtn.parentNode.appendChild(quizBtn);
-        
+
         quizBtn.addEventListener('click', (e) => {
           e.preventDefault();
           loadScript(rootPath + 'assets/quiz_questions.js')
@@ -1134,29 +1131,29 @@
       const completedTopics = Object.keys(completions)
         .filter(key => key.startsWith(courseId + '/'))
         .map(key => key.split('/')[1]);
-      
+
       const courseQuestions = QUIZ_QUESTIONS[courseId] || [];
       const activeQuestions = courseQuestions.filter(q => completedTopics.includes(q.topic));
-      
+
       let modalOverlay = document.getElementById('quiz-modal-overlay');
       if (!modalOverlay) {
         modalOverlay = document.createElement('div');
         modalOverlay.id = 'quiz-modal-overlay';
         modalOverlay.className = 'quiz-modal-overlay';
         document.body.appendChild(modalOverlay);
-        
+
         modalOverlay.addEventListener('click', (e) => {
           if (e.target === modalOverlay) closeQuiz();
         });
       }
-      
+
       function closeQuiz() {
         modalOverlay.classList.remove('active');
         setTimeout(() => {
           modalOverlay.innerHTML = '';
         }, 300);
       }
-      
+
       const courseTitles = {
         dbms: "Database Management Systems",
         cn: "Computer Networks",
@@ -1199,14 +1196,14 @@
           </div>
         </div>
       `;
-      
+
       const closeBtn = modalOverlay.querySelector('#quiz-close-btn-direct');
       if (closeBtn) closeBtn.addEventListener('click', closeQuiz);
-      
+
       modalOverlay.classList.add('active');
       const body = document.getElementById('quiz-body');
       const footer = document.getElementById('quiz-footer');
-      
+
       if (activeQuestions.length === 0) {
         if (closeBtn) closeBtn.style.display = 'inline-flex';
         body.innerHTML = `
@@ -1226,15 +1223,15 @@
         document.getElementById('quiz-close-warning-btn').addEventListener('click', closeQuiz);
         return;
       }
-      
+
       // Show navigation bar
       const navBar = document.getElementById('quiz-header-nav');
       if (navBar) navBar.style.display = 'flex';
       document.getElementById('quiz-close-btn').addEventListener('click', closeQuiz);
-      
+
       let currentIndex = 0;
       let score = 0;
-      
+
       // Mathematically sound random shuffle for questions selection
       const quizQuestions = [...activeQuestions]
         .map(q => ({ q, sort: Math.random() }))
@@ -1246,19 +1243,19 @@
           return q;
         })
         .slice(0, 10);
-      
+
       function renderQuestion() {
         const q = quizQuestions[currentIndex];
-        
+
         // Update header counter
         document.getElementById('quiz-header-counter').textContent = `${currentIndex + 1} of ${quizQuestions.length}`;
-        
+
         // Disable header chevrons based on bounds
         const prevChevron = document.getElementById('quiz-prev-chevron-btn');
         const nextChevron = document.getElementById('quiz-next-chevron-btn');
         if (prevChevron) prevChevron.disabled = (currentIndex === 0);
         if (nextChevron) nextChevron.disabled = (currentIndex === quizQuestions.length - 1);
-        
+
         // Shuffle options if we haven't rendered this question yet
         if (!q.shuffledOptions) {
           const originalOptions = q.options.map((opt, idx) => ({ opt, originalIdx: idx }));
@@ -1268,11 +1265,11 @@
             .map(({ o }) => o);
         }
         const shuffledOptions = q.shuffledOptions;
-        
+
         // Check if this question was already answered
         const isAnswered = q.hasOwnProperty('userAnswer');
         const isSkipped = q.userAnswer === 'skipped';
-        
+
         body.innerHTML = `
           <div class="quiz-question-header-row">
             <span class="quiz-question-index-badge">${currentIndex + 1}</span>
@@ -1281,24 +1278,24 @@
           
           <div class="quiz-options-list" id="options-list" style="margin-top: 16px;">
             ${shuffledOptions.map((optObj, idx) => {
-              let classes = 'quiz-option-card';
-              if (isAnswered && !isSkipped) {
-                if (optObj.originalIdx === q.answer) {
-                  classes += ' correct';
-                } else if (optObj.originalIdx === q.userAnswer) {
-                  classes += ' incorrect';
-                }
-              } else if (q.tempAnswer === optObj.originalIdx) {
-                classes += ' selected';
-              }
-              
-              return `
+          let classes = 'quiz-option-card';
+          if (isAnswered && !isSkipped) {
+            if (optObj.originalIdx === q.answer) {
+              classes += ' correct';
+            } else if (optObj.originalIdx === q.userAnswer) {
+              classes += ' incorrect';
+            }
+          } else if (q.tempAnswer === optObj.originalIdx) {
+            classes += ' selected';
+          }
+
+          return `
                 <button class="${classes}" data-original-idx="${optObj.originalIdx}" type="button" ${isAnswered ? 'disabled' : ''}>
                   <span class="quiz-option-letter">${String.fromCharCode(65 + idx)}</span>
                   <span class="quiz-option-text">${optObj.opt}</span>
                 </button>
               `;
-            }).join('')}
+        }).join('')}
           </div>
           <div id="explanation-container">
             ${isAnswered && !isSkipped ? `
@@ -1309,7 +1306,7 @@
             ` : ''}
           </div>
         `;
-        
+
         // Render Footer matching the component buttons
         let actionBtnText = 'Submit Answer';
         let actionBtnDisabled = !isAnswered && q.tempAnswer === undefined;
@@ -1317,7 +1314,7 @@
           actionBtnText = (currentIndex === quizQuestions.length - 1) ? 'Finish Quiz' : 'Next Question';
           actionBtnDisabled = false;
         }
-        
+
         footer.innerHTML = `
           <div class="quiz-footer-left">
             <button type="button" class="quiz-nav-text-btn" id="quiz-prev-btn" ${currentIndex === 0 ? 'disabled' : ''}>Previous</button>
@@ -1328,7 +1325,7 @@
             <button type="button" class="quiz-btn-primary" id="quiz-action-btn" ${actionBtnDisabled ? 'disabled' : ''}>${actionBtnText}</button>
           </div>
         `;
-        
+
         // Hook up option selections
         const cards = body.querySelectorAll('.quiz-option-card');
         cards.forEach(card => {
@@ -1340,7 +1337,7 @@
             document.getElementById('quiz-action-btn').removeAttribute('disabled');
           });
         });
-        
+
         // Hook up buttons
         const actionBtn = document.getElementById('quiz-action-btn');
         actionBtn.addEventListener('click', () => {
@@ -1349,7 +1346,7 @@
             q.userAnswer = q.tempAnswer;
             const isCorrect = (q.userAnswer === q.answer);
             if (isCorrect) score++;
-            
+
             // Re-render to show feedback
             renderQuestion();
           } else {
@@ -1362,7 +1359,7 @@
             }
           }
         });
-        
+
         document.getElementById('quiz-skip-btn').addEventListener('click', () => {
           q.userAnswer = 'skipped';
           if (currentIndex < quizQuestions.length - 1) {
@@ -1372,14 +1369,14 @@
             renderResults();
           }
         });
-        
+
         document.getElementById('quiz-prev-btn').addEventListener('click', () => {
           if (currentIndex > 0) {
             currentIndex--;
             renderQuestion();
           }
         });
-        
+
         document.getElementById('quiz-next-btn').addEventListener('click', () => {
           if (currentIndex < quizQuestions.length - 1) {
             currentIndex++;
@@ -1387,7 +1384,7 @@
           }
         });
       }
-      
+
       // Hook up chevron buttons in header
       const prevChevronBtn = document.getElementById('quiz-prev-chevron-btn');
       const nextChevronBtn = document.getElementById('quiz-next-chevron-btn');
@@ -1407,17 +1404,17 @@
           }
         });
       }
-      
+
       function renderResults() {
         const total = quizQuestions.length;
         const correctCount = quizQuestions.filter(q => q.userAnswer === q.answer).length;
         const pct = Math.round((correctCount / total) * 100);
-        
+
         let feedbackText = "Keep studying to master these concepts!";
         if (pct === 100) feedbackText = "Perfect score! You have fully mastered these topics!";
         else if (pct >= 80) feedbackText = "Excellent job! You are well prepared.";
         else if (pct >= 50) feedbackText = "Good effort! Review the explanations to improve.";
-        
+
         const summaryText = quizQuestions.map((q, idx) => {
           let ansText = "Skipped";
           if (q.userAnswer !== 'skipped' && q.userAnswer !== undefined) {
@@ -1427,7 +1424,7 @@
           }
           return `${idx + 1}: ${ansText}`;
         }).join(' • ');
-        
+
         body.innerHTML = `
           <div class="quiz-result-score-circle">
             <span class="quiz-result-score-num">${correctCount}</span>
@@ -1440,17 +1437,17 @@
             ${summaryText}
           </div>
         `;
-        
+
         footer.innerHTML = `
           <button class="quiz-btn-secondary" id="quiz-retry-btn">Retry Quiz</button>
           <button class="quiz-btn-primary" id="quiz-finish-btn">Close</button>
         `;
-        
+
         document.getElementById('quiz-finish-btn').addEventListener('click', closeQuiz);
         document.getElementById('quiz-retry-btn').addEventListener('click', () => {
           currentIndex = 0;
           score = 0;
-          
+
           const reshuffled = [...activeQuestions]
             .map(q => ({ q, sort: Math.random() }))
             .sort((a, b) => a.sort - b.sort)
@@ -1461,21 +1458,21 @@
               return q;
             })
             .slice(0, 10);
-            
+
           quizQuestions.length = 0;
           quizQuestions.push(...reshuffled);
-          
+
           renderQuestion();
         });
       }
-      
+
       renderQuestion();
     }
 
     // ── Mermaid.js Dynamic Loader ──────────────────────────────────────────
     const isDark = document.documentElement.classList.contains('dark');
     const themeName = isDark ? 'dark' : 'default';
-    
+
     if (!window.mermaid) {
       const s = document.createElement('script');
       s.src = 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js';
@@ -1945,10 +1942,10 @@
 
     function parseMarkdown(text) {
       if (!text) return '';
-      
+
       let html = text;
       const codeBlocks = [];
-      
+
       // Match fenced code blocks (```mermaid or ```javascript etc)
       html = html.replace(/```(mermaid|[\w-]+)?\n([\s\S]*?)```/g, (match, lang, code) => {
         const index = codeBlocks.length;
@@ -1979,23 +1976,23 @@
           // Italics: *text*
           .replace(/\*(.*?)\*/g, '<em>$1</em>');
       }
-      
+
       html = parts.join('');
 
       // Split into structural blocks (paragraphs, lists)
       const blocks = html.split(/\n\s*\n/);
       let result = [];
-      
+
       for (let block of blocks) {
         block = block.trim();
         if (!block) continue;
-        
+
         if (block.startsWith('__BLOCK_PLACEHOLDER_')) {
           const index = parseInt(block.match(/\d+/)[0]);
           result.push(codeBlocks[index]);
           continue;
         }
-        
+
         // Bullet list
         if (block.startsWith('* ') || block.startsWith('- ')) {
           const items = block.split(/\n[\*\-]\s+/);
@@ -2027,7 +2024,7 @@
           result.push(`<p style="margin: 0 0 12px 0; line-height: 1.5; text-align: justify;">${block.replace(/\n/g, '<br>')}</p>`);
         }
       }
-      
+
       return result.join('');
     }
 
@@ -2136,7 +2133,7 @@
 
     // Mode Pill Selector clicks
     document.querySelectorAll('.ai-chat-mode-btn').forEach(btn => {
-      btn.addEventListener('click', function() {
+      btn.addEventListener('click', function () {
         document.querySelectorAll('.ai-chat-mode-btn').forEach(b => b.classList.remove('active'));
         this.classList.add('active');
         currentMode = this.getAttribute('data-mode');
@@ -2173,7 +2170,7 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ question: text, mode: currentMode })
         });
-        
+
         loadingBubble.remove();
 
         if (res.ok) {
@@ -2206,7 +2203,7 @@
     function playAlarmSound() {
       try {
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        
+
         // Chime 1 (A5)
         let osc1 = audioCtx.createOscillator();
         let gain1 = audioCtx.createGain();
@@ -2218,7 +2215,7 @@
         gain1.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
         osc1.start();
         osc1.stop(audioCtx.currentTime + 0.4);
-        
+
         // Chime 2 (C6)
         setTimeout(() => {
           let osc2 = audioCtx.createOscillator();
@@ -2232,11 +2229,11 @@
           osc2.start();
           osc2.stop(audioCtx.currentTime + 0.5);
         }, 150);
-      } catch (_) {}
+      } catch (_) { }
     }
 
     // 3. Calendar Event Persistence & List Rendering
-    window.renderEvents = function() {
+    window.renderEvents = function () {
       const events = JSON.parse(localStorage.getItem('GrindOS-calendar-events') || '[]');
       events.sort((a, b) => new Date(a.date) - new Date(b.date));
 
@@ -2304,7 +2301,7 @@
     };
 
     // Calendar deletion handler (uses delegation)
-    document.addEventListener('click', function(e) {
+    document.addEventListener('click', function (e) {
       if (e.target.classList.contains('upcoming-event-delete') || e.target.closest('.upcoming-event-delete')) {
         const target = e.target.classList.contains('upcoming-event-delete') ? e.target : e.target.closest('.upcoming-event-delete');
         const id = parseInt(target.getAttribute('data-id'));
@@ -2312,7 +2309,7 @@
         events = events.filter(ev => ev.id !== id);
         localStorage.setItem('GrindOS-calendar-events', JSON.stringify(events));
         window.renderEvents();
-        
+
         // Dynamically refresh Apple Calendar modal details if open
         if (typeof updateAppleCalendarGrid === 'function' && document.getElementById('apple-calendar-modal')?.style.display === 'flex') {
           updateAppleCalendarGrid();
@@ -2322,7 +2319,7 @@
     });
 
     // Calendar adding helper
-    window.addCalendarEvent = function(dateVal, titleVal) {
+    window.addCalendarEvent = function (dateVal, titleVal) {
       if (!dateVal || !titleVal.trim()) return;
       const events = JSON.parse(localStorage.getItem('GrindOS-calendar-events') || '[]');
       events.push({
@@ -2352,30 +2349,30 @@
       const dbLabelInput = document.getElementById('dashboard-timer-label');
       const popoverDurationInput = document.getElementById('popover-timer-duration');
       const popoverLabelInput = document.getElementById('popover-timer-label');
-      
+
       let mins = 25;
       let label = 'Focus Session';
-      
+
       if (dbDurationInput) {
         mins = parseInt(dbDurationInput.value) || 25;
       } else if (popoverDurationInput) {
         mins = parseInt(popoverDurationInput.value) || 25;
       }
-      
+
       if (dbLabelInput && dbLabelInput.value.trim()) {
         label = dbLabelInput.value.trim();
       } else if (popoverLabelInput && popoverLabelInput.value.trim()) {
         label = popoverLabelInput.value.trim();
       }
-      
+
       return { mins, label };
     }
 
-    window.startTimer = function(durationMinutes, labelText) {
+    window.startTimer = function (durationMinutes, labelText) {
       const duration = parseInt(durationMinutes) || 25;
       const label = labelText.trim() || 'Focus Session';
       const endTime = Date.now() + duration * 60 * 1000;
-      
+
       saveActiveTimer({
         endTime: endTime,
         duration: duration,
@@ -2388,7 +2385,7 @@
       }
     };
 
-    window.pauseTimer = function() {
+    window.pauseTimer = function () {
       const timer = getActiveTimer();
       if (!timer || timer.isPaused) return;
 
@@ -2399,7 +2396,7 @@
       saveActiveTimer(timer);
     };
 
-    window.resumeTimer = function() {
+    window.resumeTimer = function () {
       const timer = getActiveTimer();
       if (!timer || !timer.isPaused) return;
 
@@ -2410,18 +2407,18 @@
       saveActiveTimer(timer);
     };
 
-    window.resetTimer = function() {
+    window.resetTimer = function () {
       saveActiveTimer(null);
     };
 
     // Synchronize UI display loop
     // Helper to update timer displays with individual digit animations
-    window.updateTimerDisplay = function(displayEl, mins, secs) {
+    window.updateTimerDisplay = function (displayEl, mins, secs) {
       if (!displayEl) return;
-      
+
       const minStr = String(mins).padStart(2, '0');
       const secStr = String(secs).padStart(2, '0');
-      
+
       // If the container doesn't have the timer-digits-container yet, build it
       if (!displayEl.querySelector('.timer-digits-container')) {
         displayEl.innerHTML = `
@@ -2435,7 +2432,7 @@
         `;
         return;
       }
-      
+
       const digitWraps = displayEl.querySelectorAll('.timer-digit-wrap');
       if (digitWraps.length !== 4) {
         displayEl.innerHTML = `
@@ -2449,27 +2446,27 @@
         `;
         return;
       }
-      
+
       const targetChars = [minStr[0], minStr[1], secStr[0], secStr[1]];
       for (let i = 0; i < 4; i++) {
         const wrapEl = digitWraps[i];
         const targetChar = targetChars[i];
         let currentDigitEl = wrapEl.querySelector('.timer-digit:not(.digit-leaving)');
-        
+
         if (!currentDigitEl) {
           wrapEl.innerHTML = `<span class="timer-digit">${targetChar}</span>`;
         } else if (currentDigitEl.textContent !== targetChar) {
           const nextDigitEl = document.createElement('span');
           nextDigitEl.className = 'timer-digit digit-entering';
           nextDigitEl.textContent = targetChar;
-          
+
           currentDigitEl.classList.add('digit-leaving');
           wrapEl.appendChild(nextDigitEl);
-          
+
           // Force reflow
           void nextDigitEl.offsetWidth;
-          
-           const oldEl = currentDigitEl;
+
+          const oldEl = currentDigitEl;
           setTimeout(() => {
             if (oldEl.parentNode === wrapEl) {
               wrapEl.removeChild(oldEl);
@@ -2481,15 +2478,15 @@
     };
 
     // Synchronize UI display loop
-    window.syncTimerUI = function() {
+    window.syncTimerUI = function () {
       const timer = getActiveTimer();
-      
+
       const dbDisplay = document.getElementById('dashboard-timer-display');
       const dbLabel = document.getElementById('dashboard-timer-current-label');
       const dbStartBtn = document.getElementById('dashboard-timer-start-btn');
       const dbDurationInput = document.getElementById('dashboard-timer-duration');
       const dbLabelInput = document.getElementById('dashboard-timer-label');
-      
+
       const popoverDisplay = document.getElementById('popover-timer-display');
       const popoverLabel = document.getElementById('popover-timer-current-label');
       const popoverStartBtn = document.getElementById('popover-timer-start-btn');
@@ -2500,13 +2497,13 @@
       const fsLabel = document.getElementById('fullscreen-timer-label');
       const fsProgressFill = document.getElementById('fullscreen-timer-progress-fill');
       const fsStartBtn = document.getElementById('fullscreen-timer-start-btn');
-      
+
       const navBadge = document.getElementById('global-timer-badge');
 
       if (!timer) {
         // No timer active
         const { mins: defaultMins, label: defaultLabel } = getDurationAndLabelFromInputs();
-        
+
         if (dbDisplay) window.updateTimerDisplay(dbDisplay, defaultMins, 0);
         if (dbLabel) dbLabel.textContent = defaultLabel;
         if (dbStartBtn) {
@@ -2545,7 +2542,7 @@
 
       const mins = Math.floor(remainingSecs / 60);
       const secs = remainingSecs % 60;
-      
+
       if (dbDisplay) window.updateTimerDisplay(dbDisplay, mins, secs);
       if (dbLabel) dbLabel.textContent = timer.label || 'Focus Session';
       if (popoverDisplay) window.updateTimerDisplay(popoverDisplay, mins, secs);
@@ -2601,7 +2598,7 @@
           const remainingForBadge = timer.isPaused ? (timer.remainingTimeSecs || 0) : Math.max(0, Math.round((timer.endTime - Date.now()) / 1000));
           const bMins = Math.floor(remainingForBadge / 60);
           const bSecs = remainingForBadge % 60;
-          navBadge.textContent = `${String(bMins).padStart(2,'0')}:${String(bSecs).padStart(2,'0')}`;
+          navBadge.textContent = `${String(bMins).padStart(2, '0')}:${String(bSecs).padStart(2, '0')}`;
           navBadge.style.display = 'block';
           navBadge.style.background = 'var(--brand)';
         }
@@ -2668,12 +2665,12 @@
       }
 
       // Event Listeners for Toggles
-      timerBtn.addEventListener('click', function(e) {
+      timerBtn.addEventListener('click', function (e) {
         e.stopPropagation();
         togglePopover('timer');
       });
 
-      calendarBtn.addEventListener('click', function(e) {
+      calendarBtn.addEventListener('click', function (e) {
         e.stopPropagation();
         togglePopover('calendar');
       });
@@ -2682,7 +2679,7 @@
     // Toggle popover function
     function togglePopover(type) {
       const existing = document.getElementById(`global-${type}-popover`);
-      
+
       // Close all popovers first
       document.querySelectorAll('.global-popover').forEach(p => p.remove());
 
@@ -2734,16 +2731,16 @@
         const startBtn = document.getElementById('popover-timer-start-btn');
         const resetBtn = document.getElementById('popover-timer-reset-btn');
         const popoverFsBtn = document.getElementById('popover-timer-fullscreen-btn');
-        
+
         if (popoverFsBtn) {
-          popoverFsBtn.addEventListener('click', function(e) {
+          popoverFsBtn.addEventListener('click', function (e) {
             e.stopPropagation();
             window.openFullscreenTimer();
             popover.remove();
           });
         }
-        
-        startBtn.addEventListener('click', function() {
+
+        startBtn.addEventListener('click', function () {
           const timer = getActiveTimer();
           if (!timer) {
             const mins = document.getElementById('popover-timer-duration').value;
@@ -2757,7 +2754,7 @@
           window.syncTimerUI();
         });
 
-        resetBtn.addEventListener('click', function() {
+        resetBtn.addEventListener('click', function () {
           window.resetTimer();
           window.syncTimerUI();
         });
@@ -2787,7 +2784,7 @@
 
         // Bind controls
         const popoverAddBtn = document.getElementById('popover-event-add-btn');
-        popoverAddBtn.addEventListener('click', function() {
+        popoverAddBtn.addEventListener('click', function () {
           const dateVal = document.getElementById('popover-event-date').value;
           const titleInput = document.getElementById('popover-event-title');
           const titleVal = titleInput.value;
@@ -2798,7 +2795,7 @@
 
         const popoverTitleInput = document.getElementById('popover-event-title');
         if (popoverTitleInput) {
-          popoverTitleInput.addEventListener('keydown', function(e) {
+          popoverTitleInput.addEventListener('keydown', function (e) {
             if (e.key === 'Enter') {
               e.preventDefault();
               popoverAddBtn.click();
@@ -2808,13 +2805,13 @@
       }
 
       // Bind close button
-      popover.querySelector('.popover-close-btn').addEventListener('click', function(e) {
+      popover.querySelector('.popover-close-btn').addEventListener('click', function (e) {
         e.stopPropagation();
         popover.remove();
       });
 
       // Stop propagation inside popover to prevent clicking outside from closing it
-      popover.addEventListener('click', function(e) {
+      popover.addEventListener('click', function (e) {
         e.stopPropagation();
       });
 
@@ -2827,14 +2824,14 @@
     }
 
     // Close popovers clicking outside
-    document.addEventListener('click', function() {
+    document.addEventListener('click', function () {
       document.querySelectorAll('.global-popover').forEach(p => p.remove());
     });
 
     // 6. Bind Dashboard inputs/buttons if present
     const dbTimerStart = document.getElementById('dashboard-timer-start-btn');
     if (dbTimerStart) {
-      dbTimerStart.addEventListener('click', function() {
+      dbTimerStart.addEventListener('click', function () {
         const timer = getActiveTimer();
         if (!timer) {
           const mins = document.getElementById('dashboard-timer-duration').value;
@@ -2851,7 +2848,7 @@
 
     const dbTimerReset = document.getElementById('dashboard-timer-reset-btn');
     if (dbTimerReset) {
-      dbTimerReset.addEventListener('click', function() {
+      dbTimerReset.addEventListener('click', function () {
         window.resetTimer();
         window.syncTimerUI();
       });
@@ -2862,7 +2859,7 @@
       const dateInput = document.getElementById('scheduler-date');
       if (dateInput) dateInput.value = getTodayLocalDateStr();
 
-      dbAddBtn.addEventListener('click', function() {
+      dbAddBtn.addEventListener('click', function () {
         const dateVal = dateInput.value;
         const titleInput = document.getElementById('scheduler-title');
         const titleVal = titleInput.value;
@@ -2873,7 +2870,7 @@
 
       const titleInput = document.getElementById('scheduler-title');
       if (titleInput) {
-        titleInput.addEventListener('keydown', function(e) {
+        titleInput.addEventListener('keydown', function (e) {
           if (e.key === 'Enter') {
             e.preventDefault();
             dbAddBtn.click();
@@ -2883,18 +2880,18 @@
     }
 
     // 7. Define window.updateSmartDailySchedule
-    window.updateSmartDailySchedule = function() {
+    window.updateSmartDailySchedule = function () {
       const monthEl = document.getElementById('calendar-header-month');
       const dateEl = document.getElementById('calendar-header-date');
       const dayNameEl = document.getElementById('calendar-header-dayname');
-      
+
       if (!monthEl || !dateEl || !dayNameEl) return;
 
       const todayDate = new Date();
       const monthName = todayDate.toLocaleDateString('en-US', { month: 'short' }).toUpperCase();
       const dateNum = todayDate.getDate();
       const dayName = todayDate.toLocaleDateString('en-US', { weekday: 'short' }).toUpperCase();
-      
+
       monthEl.textContent = monthName;
       dateEl.textContent = dateNum;
       dayNameEl.textContent = dayName;
@@ -2905,7 +2902,7 @@
         const d = String(date.getDate()).padStart(2, '0');
         return `${y}-${m}-${d}`;
       }
-      
+
       const todayStr = formatLocalDate(todayDate);
 
       const activityLog = JSON.parse(localStorage.getItem('GrindOS-activity-log') || '{}');
@@ -2913,29 +2910,29 @@
       const habits = JSON.parse(localStorage.getItem('GrindOS-habits') || '[]');
       const dsaSolved = JSON.parse(localStorage.getItem('GrindOS-dsa-solved') || '{}');
       const gateSessions = JSON.parse(localStorage.getItem('GrindOS-gate-sessions') || '[]');
-      
+
       const tasksList = document.getElementById('calendar-tasks-list');
       if (!tasksList) return;
-      
+
       tasksList.innerHTML = '';
       let pendingCount = 0;
 
       // Task 1: LeetCode Solve
       const dsaTask = document.createElement('div');
       dsaTask.className = 'calendar-task-item';
-      
+
       const todayStart = new Date();
-      todayStart.setHours(0,0,0,0);
+      todayStart.setHours(0, 0, 0, 0);
       const todayEnd = new Date();
-      todayEnd.setHours(23,59,59,999);
-      
+      todayEnd.setHours(23, 59, 59, 999);
+
       let solvedToday = false;
       Object.values(dsaSolved).forEach(val => {
         if (typeof val === 'number' && val >= todayStart.getTime() && val <= todayEnd.getTime()) {
           solvedToday = true;
         }
       });
-      
+
       if (solvedToday || (todayActivity.lc && todayActivity.lc > 0)) {
         dsaTask.innerHTML = `
           <div class="calendar-task-left">
@@ -2964,7 +2961,7 @@
       const totalHabits = habits.length || 5;
       const completedHabits = habits.filter(h => h.completedToday).length;
       const allHabitsDone = completedHabits === totalHabits && totalHabits > 0;
-      
+
       if (allHabitsDone) {
         habitsTask.innerHTML = `
           <div class="calendar-task-left">
@@ -2990,7 +2987,7 @@
       // Task 3: Focus Study Session
       const focusTask = document.createElement('div');
       focusTask.className = 'calendar-task-item';
-      
+
       let loggedToday = false;
       const localDateStr = todayDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
       gateSessions.forEach(s => {
@@ -2998,7 +2995,7 @@
           loggedToday = true;
         }
       });
-      
+
       if (loggedToday) {
         focusTask.innerHTML = `
           <div class="calendar-task-left">
@@ -3062,10 +3059,10 @@
       document.body.appendChild(fsOverlay);
 
       // Event listeners for Fullscreen controls
-      document.getElementById('fullscreen-timer-exit').addEventListener('click', function() {
+      document.getElementById('fullscreen-timer-exit').addEventListener('click', function () {
         exitFullscreenTimer();
       });
-      document.getElementById('fullscreen-timer-start-btn').addEventListener('click', function() {
+      document.getElementById('fullscreen-timer-start-btn').addEventListener('click', function () {
         const timer = getActiveTimer();
         if (!timer) {
           const { mins, label } = getDurationAndLabelFromInputs();
@@ -3077,18 +3074,18 @@
         }
         window.syncTimerUI();
       });
-      document.getElementById('fullscreen-timer-reset-btn').addEventListener('click', function() {
+      document.getElementById('fullscreen-timer-reset-btn').addEventListener('click', function () {
         window.resetTimer();
         window.syncTimerUI();
       });
     }
 
-    window.openFullscreenTimer = function() {
+    window.openFullscreenTimer = function () {
       const overlay = document.getElementById('fullscreen-timer-overlay');
       if (overlay) {
         overlay.style.display = 'flex';
         window.syncTimerUI();
-        
+
         // Enter native fullscreen (like YouTube)
         if (overlay.requestFullscreen) {
           overlay.requestFullscreen().catch(err => console.log(err));
@@ -3100,12 +3097,12 @@
       }
     };
 
-    window.exitFullscreenTimer = function() {
+    window.exitFullscreenTimer = function () {
       const overlay = document.getElementById('fullscreen-timer-overlay');
       if (overlay) {
         overlay.style.display = 'none';
       }
-      
+
       // Exit native fullscreen if active
       if (document.fullscreenElement || document.webkitFullscreenElement) {
         if (document.exitFullscreen) {
@@ -3133,7 +3130,7 @@
     // Bind triggers for fullscreen on dashboard timer card
     const dbFsBtn = document.getElementById('dashboard-timer-fullscreen-btn');
     if (dbFsBtn) {
-      dbFsBtn.addEventListener('click', function(e) {
+      dbFsBtn.addEventListener('click', function (e) {
         e.stopPropagation();
         window.openFullscreenTimer();
       });
@@ -3231,26 +3228,26 @@
       document.body.appendChild(calModal);
 
       // Event listeners for Apple Calendar Modal controls
-      document.getElementById('apple-calendar-close').addEventListener('click', function() {
+      document.getElementById('apple-calendar-close').addEventListener('click', function () {
         closeAppleCalendar();
       });
-      document.getElementById('apple-calendar-modal').addEventListener('click', function(e) {
+      document.getElementById('apple-calendar-modal').addEventListener('click', function (e) {
         if (e.target === document.getElementById('apple-calendar-modal')) {
           closeAppleCalendar();
         }
       });
 
-      document.getElementById('cal-modal-prev-month').addEventListener('click', function() {
+      document.getElementById('cal-modal-prev-month').addEventListener('click', function () {
         calCurrentDate.setMonth(calCurrentDate.getMonth() - 1);
         updateAppleCalendarGrid();
       });
 
-      document.getElementById('cal-modal-next-month').addEventListener('click', function() {
+      document.getElementById('cal-modal-next-month').addEventListener('click', function () {
         calCurrentDate.setMonth(calCurrentDate.getMonth() + 1);
         updateAppleCalendarGrid();
       });
 
-      document.getElementById('cal-modal-add-btn').addEventListener('click', function() {
+      document.getElementById('cal-modal-add-btn').addEventListener('click', function () {
         const titleInput = document.getElementById('cal-modal-add-title');
         const title = titleInput.value.trim();
         if (!title) return;
@@ -3264,7 +3261,7 @@
         renderAppleCalendarAgenda();
       });
 
-      document.getElementById('cal-modal-add-title').addEventListener('keydown', function(e) {
+      document.getElementById('cal-modal-add-title').addEventListener('keydown', function (e) {
         if (e.key === 'Enter') {
           e.preventDefault();
           document.getElementById('cal-modal-add-btn').click();
@@ -3272,7 +3269,7 @@
       });
     }
 
-    window.openAppleCalendar = function() {
+    window.openAppleCalendar = function () {
       const modal = document.getElementById('apple-calendar-modal');
       if (modal) {
         modal.style.display = 'flex';
@@ -3283,7 +3280,7 @@
       }
     };
 
-    window.closeAppleCalendar = function() {
+    window.closeAppleCalendar = function () {
       const modal = document.getElementById('apple-calendar-modal');
       if (modal) {
         modal.style.display = 'none';
@@ -3337,7 +3334,7 @@
           cell.appendChild(dot);
         }
 
-        cell.addEventListener('click', function() {
+        cell.addEventListener('click', function () {
           calSelectedDay = day;
           document.querySelectorAll('.cal-day-cell').forEach(c => c.classList.remove('selected-day'));
           cell.classList.add('selected-day');
@@ -3455,7 +3452,7 @@
 
     // Connect topbar calendar trigger to Apple Calendar instead of Popover
     // Using delegation to avoid the outerHTML listener-removal hack
-    document.addEventListener('click', function(e) {
+    document.addEventListener('click', function (e) {
       const calToggle = e.target.closest('#global-calendar-toggle');
       if (calToggle) {
         e.stopPropagation();
@@ -3470,14 +3467,14 @@
     if (dbCalSheet) {
       dbCalSheet.style.cursor = 'pointer';
       dbCalSheet.title = 'Open Apple Calendar Planner';
-      dbCalSheet.addEventListener('click', function() {
+      dbCalSheet.addEventListener('click', function () {
         window.openAppleCalendar();
       });
     }
 
     const dbOpenCalBtn = document.getElementById('dashboard-open-calendar-btn');
     if (dbOpenCalBtn) {
-      dbOpenCalBtn.addEventListener('click', function() {
+      dbOpenCalBtn.addEventListener('click', function () {
         window.openAppleCalendar();
       });
     }
@@ -3487,7 +3484,7 @@
     window.renderEvents();
     window.syncTimerUI();
     if (!timerCheckInterval) {
-      timerCheckInterval = setInterval(function() {
+      timerCheckInterval = setInterval(function () {
         window.syncTimerUI();
       }, 1000);
     }

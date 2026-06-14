@@ -8,6 +8,20 @@ document.addEventListener('DOMContentLoaded', () => {
       : '';
 
   if (!analyzeBtn) return;
+
+  // Claude model toggling logic
+  const modelProviderEl = document.getElementById('modelProvider');
+  const claudeModelGroupEl = document.getElementById('claudeModelGroup');
+
+  if (modelProviderEl && claudeModelGroupEl) {
+    modelProviderEl.addEventListener('change', () => {
+      if (modelProviderEl.value === 'claude') {
+        claudeModelGroupEl.classList.remove('hidden');
+      } else {
+        claudeModelGroupEl.classList.add('hidden');
+      }
+    });
+  }
   
   // OCR Logic
   const ocrTrigger = document.getElementById('ocrTrigger');
@@ -61,12 +75,18 @@ document.addEventListener('DOMContentLoaded', () => {
   analyzeBtn.addEventListener('click', async () => {
     const problem = document.getElementById('problem').value.trim();
     const language = document.getElementById('language').value;
-    const constraints = document.getElementById('constraints').value.trim();
-    const environment = document.getElementById('environment').value;
-    const verbosity = document.getElementById('verbosity').value;
-    const verifyCode = document.getElementById('verifyCode').checked;
     
-
+    const modelProvider = document.getElementById('modelProvider').value;
+    const model = modelProvider === 'claude' ? document.getElementById('claudeModel').value : 'gemini';
+    
+    const constraints = '';
+    const environment = 'auto';
+    const verbosity = 'concise';
+    const verifyCode = false;
+    
+    const starterCode = document.getElementById('starterCode').value.trim();
+    const isCompletionMode = starterCode.length > 0;
+    const completionFormat = document.getElementById('completionFormat').value;
     
     if (!problem) {
       alert("Please paste a problem statement first!");
@@ -90,7 +110,11 @@ document.addEventListener('DOMContentLoaded', () => {
           userAttempt: "",
           environment,
           verbosity,
-          verify_code: verifyCode
+          verify_code: verifyCode,
+          isCompletionMode,
+          starterCode,
+          completionOutputFormat: completionFormat,
+          model
         })
       });
       
@@ -115,131 +139,114 @@ document.addEventListener('DOMContentLoaded', () => {
       loading.style.display = 'none';
     }
   });
-  
-  function renderResults(data, language) {
-    let html = `<div class="tabs">`;
-    const tabs = [];
-    
-    // Determine which tabs to show
-    if (data.constraintsCheck || data.complexity || data.naiveApproach || data.optimizedApproach) {
-      tabs.push({ id: 'tab-breakdown', label: '🧠 Breakdown' });
-    }
-    if (data.solutionCode) {
-      tabs.push({ id: 'tab-code', label: '💻 Code' });
-    }
+   function renderResults(data, language) {
+    let verificationBadgeRow = '';
     if (data.verification && data.verification.length > 0) {
-      tabs.push({ id: 'tab-verify', label: '✅ Verification' });
-    }
-    if (data.comparisonTable && data.comparisonTable.length > 0) {
-      tabs.push({ id: 'tab-compare', label: '🤖 AI vs Human' });
-    }
-    if (data.feedback || data.rederivePrompt) {
-      tabs.push({ id: 'tab-next', label: '🎯 Next Steps' });
-    }
-    
-    tabs.forEach((t, i) => {
-      html += `<button class="tab-btn ${i===0 ? 'active' : ''}" data-target="${t.id}">${t.label}</button>`;
-    });
-    html += `</div>`;
-    
-    // Tab 1: Breakdown
-    if (tabs.find(t => t.id === 'tab-breakdown')) {
-      html += `<div id="tab-breakdown" class="tab-content ${tabs[0].id === 'tab-breakdown' ? 'active' : ''}">`;
-      if (data.constraintsCheck) html += `<h4>Constraints</h4><p>${marked.parse(data.constraintsCheck)}</p>`;
-      if (data.complexity) {
-        html += `<div style="margin-bottom: 20px;">
-          <span class="complexity-pill">⏱️ ${data.complexity.time || '?'}</span>
-          <span class="complexity-pill">💾 ${data.complexity.space || '?'}</span>
-        </div>`;
-      }
-      if (data.naiveApproach) html += `<h4>Naive Approach</h4><p>${marked.parse(data.naiveApproach)}</p>`;
-      if (data.optimizedApproach) html += `<h4>Optimized Approach</h4><p>${marked.parse(data.optimizedApproach)}</p>`;
-      if (data.pseudocode) html += `<h4>Pseudocode</h4><p>${marked.parse(data.pseudocode)}</p>`;
-      html += `</div>`;
-    }
-    
-    // Tab 2: Code
-    if (tabs.find(t => t.id === 'tab-code')) {
-      html += `<div id="tab-code" class="tab-content ${tabs[0].id === 'tab-code' ? 'active' : ''}">`;
-      html += `<h4>Optimal Code</h4>
-               <div class="code-container" style="position: relative; margin-bottom: 16px;">
-                 <button class="copy-btn" title="Copy code" style="position: absolute; top: 12px; right: 12px; background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255, 255, 255, 0.3); color: #fff; padding: 6px; border-radius: 6px; cursor: pointer; z-index: 1000; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(4px);">
-                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-                 </button>
-                 <pre><code class="language-${language}">${data.solutionCode.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</code></pre>
-               </div>`;
-      html += `</div>`;
-    }
-    // Tab 3: Verification
-    if (tabs.find(t => t.id === 'tab-verify')) {
-      html += `<div id="tab-verify" class="tab-content ${tabs[0].id === 'tab-verify' ? 'active' : ''}">`;
-      html += `<h4>Code Verification (Judge0)</h4><div class="badge-container">`;
-      let passedAll = true;
-      if (!data.verification || data.verification.length === 0) {
-        html += `<p style="color: var(--text-3); font-size: 0.95rem;">Verification was skipped or no test cases were run.</p>`;
-      } else {
-        data.verification.forEach((tc, idx) => {
-           const pass = tc.passed;
-           if (!pass) passedAll = false;
-           html += `<div class="test-badge ${pass ? 'pass' : 'fail'}">${pass ? '✅' : '❌'} Test ${idx + 1}</div>`;
-        });
-      }
-      html += `</div>`;
-      if (!passedAll) {
-        html += `<p style="color:var(--error);font-size:0.9rem;">Warning: Some test cases failed during automated verification.</p>`;
-      }
-      html += `</div>`;
-    }
-    
-    // Tab 4: Comparison
-    if (tabs.find(t => t.id === 'tab-compare')) {
-      html += `<div id="tab-compare" class="tab-content ${tabs[0].id === 'tab-compare' ? 'active' : ''}">`;
-      let tableHtml = `<table><tr><th>Feature</th><th>Robotic/AI Style</th><th>Human/Interview Style</th></tr>`;
-      data.comparisonTable.forEach(row => {
-        tableHtml += `<tr><td>${row.feature}</td><td>${row.aiStyle}</td><td>${row.humanStyle}</td></tr>`;
+      let passedCount = 0;
+      let totalCount = data.verification.length;
+      let badgeHtml = '';
+      
+      data.verification.forEach((tc, idx) => {
+        if (tc.passed) passedCount++;
+        badgeHtml += `
+          <div class="test-badge ${tc.passed ? 'pass' : 'fail'}" style="padding: 6px 12px; font-size: 0.8rem; font-weight: 600; border-radius: 6px; display: inline-flex; align-items: center; gap: 6px;">
+            ${tc.passed ? '✅' : '❌'} Test ${idx + 1}
+          </div>
+        `;
       });
-      tableHtml += `</table>`;
-      html += tableHtml + `</div>`;
+
+      const passRatio = passedCount / totalCount;
+      const statusText = passRatio === 1 
+        ? 'All Tests Passed Successfully' 
+        : `Tests: ${passedCount}/${totalCount} Passed`;
+      
+      verificationBadgeRow = `
+        <div class="verification-status-panel" style="background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; box-shadow: var(--shadow-sm); margin-bottom: 20px;">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <span style="font-size: 1.2rem;">${passRatio === 1 ? '🎉' : '⚠️'}</span>
+            <span style="font-weight: 600; font-size: 0.95rem; color: var(--text-1);">${statusText}</span>
+          </div>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            ${badgeHtml}
+          </div>
+        </div>
+      `;
     }
-    
-    // Tab 5: Next Steps
-    if (tabs.find(t => t.id === 'tab-next')) {
-      html += `<div id="tab-next" class="tab-content ${tabs[0].id === 'tab-next' ? 'active' : ''}">`;
-      if (data.feedback) html += `<h4>Feedback</h4><p>${marked.parse(data.feedback)}</p>`;
-      if (data.rederivePrompt) html += `<h4>Try it yourself</h4><p>${marked.parse(data.rederivePrompt)}</p>`;
-      html += `</div>`;
+
+    let complexityPills = '';
+    if (data.complexity) {
+      complexityPills = `
+        <div style="display: flex; gap: 8px;">
+          <span class="complexity-pill" style="margin-right: 0; padding: 6px 12px; font-size: 0.85rem;">⏱️ Time: ${data.complexity.time || 'O(?)'}</span>
+          <span class="complexity-pill" style="margin-right: 0; padding: 6px 12px; font-size: 0.85rem;">💾 Space: ${data.complexity.space || 'O(?)'}</span>
+        </div>
+      `;
     }
-    
+
+    let html = `
+      <div class="results-layout" style="display: flex; flex-direction: column; gap: 24px; animation: slideUp 0.4s ease;">
+        <!-- Verification Header -->
+        ${verificationBadgeRow}
+
+        <!-- Code Showcase Card -->
+        <div class="code-showcase-card" style="background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-md); position: relative;">
+          <div class="code-card-header" style="padding: 16px 20px; background: var(--bg-2); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between;">
+            <span style="font-weight: 600; font-size: 0.95rem; color: var(--text-2); text-transform: uppercase; letter-spacing: 0.05em; display: flex; align-items: center; gap: 8px;">
+              💻 Optimal Code
+            </span>
+            <span style="font-size: 0.85rem; font-family: var(--font-mono); color: var(--brand); font-weight: 600; background: var(--brand-light); padding: 4px 8px; border-radius: 4px;">
+              ${language === 'cpp' ? 'C++' : language.charAt(0).toUpperCase() + language.slice(1)}
+            </span>
+          </div>
+          
+          <div class="code-container" style="position: relative; display: flex; background: var(--code-bg); overflow: hidden;">
+            <div class="line-numbers-gutter" style="padding: 20px 12px; font-family: var(--font-mono); font-size: 0.95rem; line-height: 1.5; color: var(--text-4); text-align: right; user-select: none; border-right: 1px solid var(--border); background: rgba(0, 0, 0, 0.15); min-width: 45px; box-sizing: border-box;">
+              ${Array.from({length: data.solutionCode.split('\n').length}, (_, i) => `<div style="line-height: 1.5;">${i + 1}</div>`).join('')}
+            </div>
+            <div class="code-content-wrapper" style="flex: 1; overflow-x: auto;">
+              <pre style="margin: 0; background: transparent; border: none; padding: 20px 24px; box-sizing: border-box;"><code class="language-${language}" style="background: transparent; border: none; padding: 0; font-family: var(--font-mono); font-size: 0.95rem; line-height: 1.5; display: block; white-space: pre; overflow: visible;">${data.solutionCode.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</code></pre>
+            </div>
+            <button class="copy-btn" title="Copy code" style="position: absolute; top: 12px; right: 12px; background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255, 255, 255, 0.3); color: #fff; padding: 6px 12px; border-radius: 6px; cursor: pointer; z-index: 1000; display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 0.8rem; font-weight: 500; backdrop-filter: blur(4px); opacity: 1 !important; transition: all 0.2s;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              <span>Copy</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Explanation & Complexity Card -->
+        <div class="explanation-card" style="background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px; box-shadow: var(--shadow-sm); margin-bottom: 24px;">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; flex-wrap: wrap; gap: 12px; border-bottom: 1px solid var(--border); padding-bottom: 16px;">
+            <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--text-1); margin: 0; display: flex; align-items: center; gap: 8px;">
+              💡 Complexity & Explanation
+            </h3>
+            ${complexityPills}
+          </div>
+          
+          <div class="explanation-content" style="color: var(--text-2); font-size: 1rem; line-height: 1.65;">
+            ${marked.parse(data.explanation || 'No explanation provided.')}
+          </div>
+        </div>
+      </div>
+    `;
+
     resultsContainer.innerHTML = html;
-    
+
     // Apply highlight.js to dynamically inserted code blocks
     resultsContainer.querySelectorAll('pre code').forEach((block) => {
       if (window.hljs) {
         hljs.highlightElement(block);
       }
     });
-    
-    // Setup tab switching
-    const tabBtns = resultsContainer.querySelectorAll('.tab-btn');
-    const tabContents = resultsContainer.querySelectorAll('.tab-content');
-    
-    tabBtns.forEach(btn => {
-      btn.addEventListener('click', () => {
-        tabBtns.forEach(b => b.classList.remove('active'));
-        tabContents.forEach(c => c.classList.remove('active'));
-        btn.classList.add('active');
-        document.getElementById(btn.getAttribute('data-target')).classList.add('active');
-      });
-    });
-    
+
     // Setup Copy Buttons
     resultsContainer.querySelectorAll('.copy-btn').forEach(btn => {
       btn.addEventListener('click', (e) => {
-        const codeElement = e.target.closest('.code-container').querySelector('code');
+        const codeElement = btn.closest('.code-container').querySelector('code');
         if (codeElement) {
           navigator.clipboard.writeText(codeElement.innerText).then(() => {
+            const labelSpan = btn.querySelector('span');
             const oldHtml = btn.innerHTML;
-            btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+            btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> <span>Copied!</span>';
             setTimeout(() => btn.innerHTML = oldHtml, 2000);
           });
         }

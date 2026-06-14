@@ -55,7 +55,15 @@ const CLERK_PUBLISHABLE_KEY = window.__CLERK_PUBLISHABLE_KEY__ || 'pk_test_Z29yZ
     }
 
     // Inject user info into the topbar if element exists
-    renderUserWidget(user);
+    debouncedRenderUserWidget(user);
+  }
+
+  let renderTimeout = null;
+  function debouncedRenderUserWidget(user) {
+    if (renderTimeout) clearTimeout(renderTimeout);
+    renderTimeout = setTimeout(() => {
+      renderUserWidget(user);
+    }, 50);
   }
 
   function renderUserWidget(user) {
@@ -66,9 +74,17 @@ const CLERK_PUBLISHABLE_KEY = window.__CLERK_PUBLISHABLE_KEY__ || 'pk_test_Z29yZ
     const container = document.getElementById('clerk-user-widget');
     if (!container || !user) return;
 
+    const isDark = document.documentElement.classList.contains('dark');
+    const currentTheme = isDark ? 'dark' : 'light';
+
+    // Guard: only mount if theme actually changed or the button isn't mounted yet
+    if (container.dataset.renderedTheme === currentTheme && container.querySelector('.cl-userButtonTrigger')) {
+      return;
+    }
+
+    container.dataset.renderedTheme = currentTheme;
     container.innerHTML = '';
     const afterSignOutUrl = window.location.origin + '/';
-    const isDark = document.documentElement.classList.contains('dark');
 
     window.Clerk.mountUserButton(container, {
       afterSignOutUrl: afterSignOutUrl,
@@ -76,11 +92,11 @@ const CLERK_PUBLISHABLE_KEY = window.__CLERK_PUBLISHABLE_KEY__ || 'pk_test_Z29yZ
         variables: {
           colorPrimary: '#ea763f',
           colorBackground: 'transparent',
-          colorText:            isDark ? '#fafafa'              : '#18181b',
-          colorTextSecondary:   isDark ? '#a1a1aa'              : '#71717a',
-          colorInputBackground: isDark ? '#0f0f13'              : '#ffffff',
-          colorInputText:       isDark ? '#fafafa'              : '#18181b',
-          colorBorder:          isDark ? 'rgba(255,255,255,0.08)': '#e2e0d8',
+          colorText: isDark ? '#fafafa' : '#18181b',
+          colorTextSecondary: isDark ? '#a1a1aa' : '#71717a',
+          colorInputBackground: isDark ? '#0f0f13' : '#ffffff',
+          colorInputText: isDark ? '#fafafa' : '#18181b',
+          colorBorder: isDark ? 'rgba(255,255,255,0.08)' : '#e2e0d8',
           borderRadius: '10px',
           fontFamily: 'DM Sans, -apple-system, sans-serif',
         },
@@ -117,6 +133,6 @@ const CLERK_PUBLISHABLE_KEY = window.__CLERK_PUBLISHABLE_KEY__ || 'pk_test_Z29yZ
 
   // Re-render widget when theme toggles (light ↔ dark)
   new MutationObserver(() => {
-    if (window.Clerk?.user) renderUserWidget(window.Clerk.user);
+    if (window.Clerk?.user) debouncedRenderUserWidget(window.Clerk.user);
   }).observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
 })();

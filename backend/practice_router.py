@@ -16,9 +16,14 @@ class PracticeRequest(BaseModel):
     language: str
     constraints: str = ""
     userAttempt: str = ""
-    environment: str = "leetcode"
+    environment: str = "auto"
     verbosity: str = "detailed"
     verify_code: bool = True
+    isCompletionMode: bool = False
+    starterCode: str = ""
+    completionOutputFormat: str = "snippet"
+    attemptedFirst: bool = False
+    model: str = "gemini"
 
 class ExtractTextRequest(BaseModel):
     image_base64: str
@@ -33,7 +38,7 @@ if SUPABASE_URL and SUPABASE_KEY:
     except Exception as e:
         print(f"Failed to initialize Supabase: {e}")
 
-async def ask_gemini_json(system_prompt: str, user_message: str) -> dict:
+async def ask_gemini_json(system_prompt: str, user_message: str, model_choice: str = "gemini") -> dict:
     import asyncio
     from google import genai
     from google.genai import types
@@ -42,7 +47,59 @@ async def ask_gemini_json(system_prompt: str, user_message: str) -> dict:
     if not api_key:
         raise HTTPException(status_code=500, detail="GEMINI_API_KEY is not set.")
 
-    def _call_gemini():
+    def _call_llm():
+        if model_choice.startswith("claude"):
+            model_map = {
+                "claude-3-5-sonnet": {
+                    "anthropic": "claude-3-5-sonnet-20241022",
+                    "openrouter": "anthropic/claude-sonnet-4"
+                },
+                "claude-3-5-haiku": {
+                    "anthropic": "claude-3-5-haiku-20241022",
+                    "openrouter": "anthropic/claude-3.5-haiku"
+                },
+                "claude-3-opus": {
+                    "anthropic": "claude-3-opus-20240229",
+                    "openrouter": "anthropic/claude-opus-4"
+                }
+            }
+            choice_info = model_map.get(model_choice, model_map["claude-3-5-sonnet"])
+            
+            anthropic_key = os.environ.get("ANTHROPIC_API_KEY", "")
+            if anthropic_key:
+                try:
+                    from anthropic import Anthropic
+                    client = Anthropic(api_key=anthropic_key)
+                    response = client.messages.create(
+                        model=choice_info["anthropic"],
+                        max_tokens=4000,
+                        system=system_prompt,
+                        messages=[{"role": "user", "content": user_message}]
+                    )
+                    return response.content[0].text
+                except Exception as e:
+                    print(f"Anthropic Claude API failed: {e}. Trying OpenRouter Claude...")
+            
+            openrouter_key = os.environ.get("OPENROUTER_API_KEY", "")
+            if openrouter_key:
+                try:
+                    import openai
+                    client = openai.OpenAI(
+                        base_url="https://openrouter.ai/api/v1",
+                        api_key=openrouter_key,
+                    )
+                    response = client.chat.completions.create(
+                        model=choice_info["openrouter"],
+                        max_tokens=2000,
+                        messages=[
+                            {"role": "system", "content": system_prompt},
+                            {"role": "user", "content": user_message}
+                        ]
+                    )
+                    return response.choices[0].message.content
+                except Exception as e:
+                    print(f"OpenRouter Claude fallback failed: {e}. Falling back to default Gemini/Llama pipeline...")
+
         try:
             client = genai.Client(api_key=api_key)
             response = client.models.generate_content(
@@ -101,7 +158,7 @@ async def ask_gemini_json(system_prompt: str, user_message: str) -> dict:
             raise last_openrouter_err
 
     try:
-        content = await asyncio.to_thread(_call_gemini)
+        content = await asyncio.to_thread(_call_llm)
         # Ensure we strip any markdown blocks if the LLM adds them despite response_mime_type
         content = re.sub(r"^```json\s*", "", content, flags=re.IGNORECASE|re.MULTILINE)
         content = re.sub(r"^```\s*", "", content, flags=re.MULTILINE)
@@ -114,34 +171,50 @@ async def ask_gemini_json(system_prompt: str, user_message: str) -> dict:
             pass
         raise Exception(f"Failed to generate analysis: {str(e)}")
 
-def build_system_prompt(language: str, environment: str, verbosity: str) -> str:
+def build_system_prompt(language: str, environment: str, verbosity: str, is_completion: bool = False, starter_code: str = "", output_format: str = "snippet") -> str:
     env_instruction = ""
     if environment == "leetcode":
         env_instruction = "Provide ONLY the class/function definition (LeetCode style). Do NOT include sys.stdin or __main__."
-    else:
+    elif environment == "oa":
         env_instruction = 'Provide a pure sys.stdin/stdout script (OA style). Do NOT use "class Solution". Do NOT wrap the logic in ANY functions (like "def main()" or "def solve()"). Do NOT use "if __name__ == \\\'__main__\\\':". Write the sys.stdin parsing and solution logic completely flat at the root level.'
+    else:
+        # Default/Auto format selection per SKILL.md guidelines
+        env_instruction = 'Automatically select the code structure format based on the problem statement context. 1. If the problem statement explicitly mentions standard input, stdin, or reading lines/input (e.g. "Read from stdin", "Print the output", "The first line contains"), then write a flat sys.stdin/stdout script (OA style) at the root level without "class Solution" or any wrapping functions. 2. Otherwise, write a class/function template (LeetCode style) wrapped in a Solution class or standard function signature. DO NOT mix both styles. Choose exactly one.'
 
-    concise_instruction = ""
-    if verbosity == "concise":
-        concise_instruction = "Since the user requested CONCISE mode, leave `naiveApproach`, `pseudocode`, `comparisonTable`, and `rederivePrompt` as empty strings or empty arrays."
+    completion_instruction = ""
+    if is_completion:
+        completion_instruction = f"""
+The user has provided a starter code / stub with blanks/TODOs/comments. 
+Starter Code / Stub:
+{starter_code}
+
+You MUST generate the missing code to fill the blanks/TODOs.
+CRITICAL FORMATTING & REASONING RULES FOR COMPLETION MODE:
+1. BEFORE WRITING THE CODE, carefully analyze:
+   - The exact function/class signatures and any import statements.
+   - The parameter and return types (e.g. typing or type hints, if any) to align with them perfectly.
+   - Surrounding variable names, bindings, helper methods, and overall coding style.
+2. DO NOT rewrite, rename, or alter the style of the existing starter code. Keep everything else intact.
+3. Make sure the generated solution integrates seamlessly into the provided stub without introducing compilation, syntax, or runtime errors.
+4. If the output format is "snippet":
+   - Return ONLY the missing lines/code snippet in the "solutionCode" field of the JSON.
+   - In the "explanation" field, start with a clear, step-by-step guide on exactly where and how to insert this snippet (e.g. line numbers or code blocks to search for).
+5. If the output format is "full":
+   - Return the ENTIRE completed file with all blanks/TODOs filled in the "solutionCode" field.
+6. Keep the solution code fully humanized and consistent with the target language ({language}).
+"""
 
     return f"""You are an elite competitive programming coach and AI software engineer. 
-The user will provide a DSA problem, their target language ({language}), and optionally their attempt.
+The user will provide a DSA problem, their target language ({language}), optionally user constraints/requirements, and optionally their attempt.
 
 You must return a raw JSON object with EXACTLY the following structure. ENSURE ALL CODE STRINGS ARE PROPERLY ESCAPED FOR JSON (e.g., escape double quotes as \\" and newlines as \\n):
 {{
-  "constraintsCheck": "Briefly analyze the required time/space complexity based on typical constraints.",
-  "naiveApproach": "Explain the brute force approach and why it's too slow.",
-  "optimizedApproach": "Explain the optimal approach in plain, intuitive English.",
-  "pseudocode": "Write high-level pseudocode for the optimal approach.",
   "solutionCode": "Write the final optimal code in {language}. CRITICAL HUMANIZATION RULES: 1. Use short names (i, j, n, res, left, right). 2. NO docstrings. NO comments. NO type hints. 3. STRICT FORMATTING: Choose exactly ONE format based on the environment. NEVER mix 'class Solution' with 'sys.stdin'. 4. If it's a famous problem (e.g. Two Sum), pick a correct but slightly less ubiquitous approach to avoid looking like a textbook copy. 5. Include slight defensive checks (e.g. 'if not arr: return 0') to look realistic. {env_instruction}",
-  "driverCode": "Write the COMPLETE, EXECUTABLE code in {language} (including all imports/includes, the solutionCode, and a main execution block). The main block MUST run a comprehensive set of test cases (normal, boundary, edge, and stress cases). For each test case, execute the solution, compare actual vs expected, and build a JSON array of the results. The script MUST output the exact string '---TEST_RESULTS_JSON---' followed by the valid JSON array of objects: [{{\\"passed\\": true/false, \\"actual\\": \\"...\\", \\"expected\\": \\"...\\", \\"inputs\\": [...]}}]. Ensure the code catches exceptions. Do NOT print anything else to stdout.",
+  "explanation": "Provide a clean, concise explanation of the optimal approach in plain, intuitive English. Explicitly address how the solution satisfies any user-specified constraints/requirements (e.g. O(N) time, O(1) space, no built-in sort).",
   "complexity": {{ "time": "O(...)", "space": "O(...)" }},
-  "comparisonTable": [ {{"feature": "...", "humanStyle": "...", "aiStyle": "..."}} ],
-  "feedback": "Actionable feedback on the user's attempt (if provided), or a tip on what to learn.",
-  "rederivePrompt": "A short prompt the user can read to try re-deriving the solution themselves."
+  "driverCode": "Write the COMPLETE, EXECUTABLE code in {language} (including all imports/includes, the solutionCode, and a main execution block). The main block MUST run a comprehensive set of test cases (normal, boundary, edge, and stress cases). For each test case, execute the solution, compare actual vs expected, and build a JSON array of the results. The script MUST output the exact string '---TEST_RESULTS_JSON---' followed by the valid JSON array of objects: [{{\\"passed\\": true/false, \\"actual\\": \\"...\\", \\"expected\\": \\"...\\", \\"inputs\\": [...]}}]. Ensure the code catches exceptions. Do NOT print anything else to stdout."
 }}
-{concise_instruction}
+{completion_instruction}
 IMPORTANT: Output ONLY valid JSON.
 """
 
@@ -280,7 +353,6 @@ async def execute_on_piston(code: str, language: str) -> list:
 
 @router.post("/analyze")
 async def analyze_practice(req: PracticeRequest):
-    system_prompt = build_system_prompt(req.language, req.environment, req.verbosity)
     
     user_msg = f"Problem Statement:\n{req.problem}\n\n"
     if req.constraints:
@@ -290,7 +362,15 @@ async def analyze_practice(req: PracticeRequest):
         
     try:
         # Step 1: Generate analysis and code via Gemini
-        analysis = await ask_gemini_json(system_prompt, user_msg)
+        system_prompt = build_system_prompt(
+            req.language, 
+            req.environment, 
+            req.verbosity, 
+            req.isCompletionMode, 
+            req.starterCode, 
+            req.completionOutputFormat
+        )
+        analysis = await ask_gemini_json(system_prompt, user_msg, req.model)
         
         # Aggressively strip comments from solution code
         if "solutionCode" in analysis:
