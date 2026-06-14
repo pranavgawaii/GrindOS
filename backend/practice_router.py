@@ -93,9 +93,10 @@ async def ask_gemini_json(system_prompt: str, user_message: str) -> dict:
                 api_key=os.environ.get("OPENROUTER_API_KEY", ""),
             )
             free_models = [
-                "google/gemini-2.0-flash-lite-preview-02-05:free",
-                "google/gemini-2.0-flash-exp:free",
-                "mistralai/mistral-nemo:free",
+                "openrouter/free",
+                "qwen/qwen3-coder:free",
+                "google/gemma-4-31b-it:free",
+                "nousresearch/hermes-3-llama-3.1-405b:free",
                 "meta-llama/llama-3.3-70b-instruct:free"
             ]
             last_openrouter_err = None
@@ -173,35 +174,76 @@ async def extract_text(req: ExtractTextRequest):
 
     def _call_gemini_vision():
         import time
-        client = genai.Client(api_key=api_key)
+        last_e = None
         # remove data:image/png;base64, prefix if present
         b64 = req.image_base64
         if "," in b64:
             b64 = b64.split(",")[1]
         
         image_bytes = base64.b64decode(b64)
+
+        for attempt in range(3):
+            try:
+                client = genai.Client(api_key=api_key)
+                response = client.models.generate_content(
+                    model="gemini-2.5-flash",
+                    contents=[
+                        types.Part.from_bytes(
+                            data=image_bytes,
+                            mime_type="image/jpeg",
+                        ),
+                        "Extract all the text from this image exactly as written. Preserve formatting, mathematical formulas, constraints, and code snippets. Return ONLY the extracted text, no conversational filler. DO NOT summarize."
+                    ]
+                )
+                return response.text
+            except Exception as e:
+                last_e = e
+                err_str = str(e).lower()
+                if "429" in err_str or "quota" in err_str or "exhausted" in err_str:
+                    if attempt < 2:
+                        import re
+                        sleep_time = 30
+                        match = re.search(r"retry in (\d+\.?\d*)s", str(e))
+                        if match:
+                            sleep_time = float(match.group(1)) + 1.0
+                        print(f"Rate limited by Gemini in vision. Retrying in {sleep_time} seconds...")
+                        time.sleep(sleep_time)
+                        continue
+                break
         
+        print("Gemini vision failed or rate limited after retries. Falling back to Groq Llama 3.2 90B Vision...")
         try:
-            response = client.models.generate_content(
-                model="gemini-2.5-flash",
-                contents=[
-                    types.Part.from_bytes(
-                        data=image_bytes,
-                        mime_type="image/jpeg",
-                    ),
-                    "Extract all the text from this image exactly as written. Preserve formatting, mathematical formulas, constraints, and code snippets. Return ONLY the extracted text, no conversational filler. DO NOT summarize."
-                ]
+            from groq import Groq
+            groq_client = Groq(api_key=os.environ.get("GROQ_API_KEY", ""))
+            groq_response = groq_client.chat.completions.create(
+                model="llama-3.2-90b-vision-preview",
+                messages=[{
+                    "role": "user",
+                    "content": [
+                        {"type": "text", "text": "Extract all the text from this image exactly as written. Preserve formatting, mathematical formulas, constraints, and code snippets. Return ONLY the extracted text, no conversational filler. DO NOT summarize."},
+                        {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{b64}"}}
+                    ]
+                }]
             )
-            return response.text
-        except Exception as e:
-            err_str = str(e).lower()
-            if "429" in err_str or "quota" in err_str or "exhausted" in err_str:
-                print("Gemini rate limited. Falling back to Groq Llama 3.2 90B Vision...")
+            return groq_response.choices[0].message.content
+        except Exception as groq_err:
+            print(f"Groq vision fallback failed: {groq_err}. Falling back to OpenRouter free tier...")
+            import openai
+            openai_client = openai.OpenAI(
+                base_url="https://openrouter.ai/api/v1",
+                api_key=os.environ.get("OPENROUTER_API_KEY", ""),
+            )
+            free_vision_models = [
+                "openrouter/free",
+                "nvidia/nemotron-nano-12b-v2-vl:free",
+                "meta-llama/llama-3.2-11b-vision-instruct:free"
+            ]
+            last_openrouter_err = None
+            for fallback_model in free_vision_models:
                 try:
-                    from groq import Groq
-                    groq_client = Groq(api_key=os.environ.get("GROQ_API_KEY", ""))
-                    groq_response = groq_client.chat.completions.create(
-                        model="llama-3.2-90b-vision-preview",
+                    print(f"Trying OpenRouter free vision model: {fallback_model}...")
+                    openrouter_response = openai_client.chat.completions.create(
+                        model=fallback_model,
                         messages=[{
                             "role": "user",
                             "content": [
@@ -210,10 +252,12 @@ async def extract_text(req: ExtractTextRequest):
                             ]
                         }]
                     )
-                    return groq_response.choices[0].message.content
-                except Exception as groq_err:
-                    print(f"Groq fallback failed: {groq_err}")
-            raise e
+                    return openrouter_response.choices[0].message.content
+                except Exception as openrouter_err:
+                    last_openrouter_err = openrouter_err
+                    print(f"OpenRouter {fallback_model} failed: {openrouter_err}")
+                    continue
+            raise last_openrouter_err
 
     try:
         text = await asyncio.to_thread(_call_gemini_vision)
