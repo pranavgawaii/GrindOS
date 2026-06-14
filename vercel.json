@@ -4,10 +4,6 @@
   "trailingSlash": false,
   "builds": [
     {
-      "src": "api/waitlist.py",
-      "use": "@vercel/python"
-    },
-    {
       "src": "backend/main.py",
       "use": "@vercel/python",
       "config": {
@@ -22,7 +18,7 @@
   "routes": [
     {
       "src": "/waitlist",
-      "dest": "api/waitlist.py"
+      "dest": "backend/main.py"
     },
     {
       "src": "/api/(.*)",
