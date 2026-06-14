@@ -167,7 +167,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Tab 3: Verification
     if (tabs.find(t => t.id === 'tab-verify')) {
       html += `<div id="tab-verify" class="tab-content ${tabs[0].id === 'tab-verify' ? 'active' : ''}">`;
-      html += `<h4>Execution Verification (Judge0)</h4><div class="badge-container">`;
+      html += `<h4>Code Verification (Piston)</h4><div class="badge-container">`;
       let passedAll = true;
       data.verification.forEach((tc, idx) => {
          const pass = tc.passed;
