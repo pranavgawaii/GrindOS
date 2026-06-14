@@ -284,4 +284,7 @@
   .lens-content-wrapper {
     flex-direction: column;
   }
+  .welcome-grid {
+    grid-template-columns: 1fr !important;
+  }
 }
