@@ -74,7 +74,7 @@ def build_system_prompt(language: str, environment: str, verbosity: str) -> str:
     if environment == "leetcode":
         env_instruction = "Provide ONLY the class/function definition (LeetCode style). Do NOT include sys.stdin or __main__."
     else:
-        env_instruction = 'Provide a pure sys.stdin/stdout script (OA style). Do NOT use "class Solution". Do NOT use "def main()" or "if __name__ == \\\'__main__\\\':". Write the sys.stdin parsing logic flat at the root level at the bottom.'
+        env_instruction = 'Provide a pure sys.stdin/stdout script (OA style). Do NOT use "class Solution". Do NOT wrap the logic in ANY functions (like "def main()" or "def solve()"). Do NOT use "if __name__ == \\\'__main__\\\':". Write the sys.stdin parsing and solution logic completely flat at the root level.'
 
     concise_instruction = ""
     if verbosity == "concise":
