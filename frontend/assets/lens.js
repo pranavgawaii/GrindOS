@@ -92,7 +92,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // Core handler to load, downscale, and auto-process selected image
-  function handleImageSelection(file, source) {
+  async function handleImageSelection(file, source) {
     if (!file.type.startsWith("image/")) {
       alert("Please select an image file.");
       return;
@@ -113,50 +113,104 @@ document.addEventListener("DOMContentLoaded", () => {
     copyBtn.classList.add("hidden");
     loadingState.classList.remove("hidden");
 
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      const img = new Image();
-      img.onload = () => {
-        // Downscale image if it exceeds 1600px to ensure Vercel 4.5MB payload limit is respected
-        const canvas = document.createElement("canvas");
-        let width = img.width;
-        let height = img.height;
-        const maxDim = 1600;
+    try {
+      let width, height, imageSource;
+      let isBitmap = false;
 
-        if (width > maxDim || height > maxDim) {
-          if (width > height) {
-            height = Math.round((height * maxDim) / width);
-            width = maxDim;
-          } else {
-            width = Math.round((width * maxDim) / height);
-            height = maxDim;
-          }
+      if (typeof window.createImageBitmap === "function") {
+        // createImageBitmap automatically respects EXIF orientation
+        const bitmap = await createImageBitmap(file);
+        width = bitmap.width;
+        height = bitmap.height;
+        imageSource = bitmap;
+        isBitmap = true;
+      } else {
+        // Fallback for older browsers
+        const dataUrl = await new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = (e) => resolve(e.target.result);
+          reader.onerror = reject;
+          reader.readAsDataURL(file);
+        });
+        const img = await new Promise((resolve, reject) => {
+          const image = new Image();
+          image.onload = () => resolve(image);
+          image.onerror = reject;
+          image.src = dataUrl;
+        });
+        width = img.width;
+        height = img.height;
+        imageSource = img;
+      }
+
+      // Downscale image if it exceeds 1600px to ensure Vercel 4.5MB payload limit is respected
+      const canvas = document.createElement("canvas");
+      const maxDim = 1600;
+
+      if (width > maxDim || height > maxDim) {
+        if (width > height) {
+          height = Math.round((height * maxDim) / width);
+          width = maxDim;
+        } else {
+          width = Math.round((width * maxDim) / height);
+          height = maxDim;
         }
+      }
 
-        canvas.width = width;
-        canvas.height = height;
-        const ctx = canvas.getContext("2d");
-        ctx.drawImage(img, 0, 0, width, height);
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(imageSource, 0, 0, width, height);
 
-        // Convert to high quality compressed JPEG (saving size dramatically)
-        capturedBase64 = canvas.toDataURL("image/jpeg", 0.85);
+      // Clean up bitmap if used
+      if (isBitmap && typeof imageSource.close === "function") {
+        imageSource.close();
+      }
 
-        // Update preview image
+      // Convert to high quality compressed JPEG (saving size dramatically)
+      capturedBase64 = canvas.toDataURL("image/jpeg", 0.85);
+
+      // Update preview image
+      imagePreview.src = capturedBase64;
+      
+      // Hide welcome screen and show preview container
+      viewWelcome.classList.add("hidden");
+      viewUpload.classList.remove("hidden");
+      dropZone.classList.add("hidden");
+      imagePreviewContainer.classList.remove("hidden");
+      modeToggleContainer.classList.remove("hidden");
+
+      // Automatically call vision API extraction
+      extractText(capturedBase64);
+
+    } catch (err) {
+      console.error("Error loading image:", err);
+      // Fallback: load using simple FileReader without downscaling to keep orientation
+      try {
+        const dataUrl = await new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = (e) => resolve(e.target.result);
+          reader.onerror = reject;
+          reader.readAsDataURL(file);
+        });
+        capturedBase64 = dataUrl;
         imagePreview.src = capturedBase64;
         
-        // Hide welcome screen and show preview container
         viewWelcome.classList.add("hidden");
         viewUpload.classList.remove("hidden");
         dropZone.classList.add("hidden");
         imagePreviewContainer.classList.remove("hidden");
         modeToggleContainer.classList.remove("hidden");
 
-        // Automatically call vision API extraction
         extractText(capturedBase64);
-      };
-      img.src = event.target.result;
-    };
-    reader.readAsDataURL(file);
+      } catch (fallbackErr) {
+        console.error("Fallback image load failed:", fallbackErr);
+        alert("Failed to load image. Please try another one.");
+        loadingState.classList.add("hidden");
+        resultContent.classList.remove("hidden");
+        resultContent.classList.add("empty");
+      }
+    }
   }
 
   analyzeImageBtn.addEventListener("click", () => {

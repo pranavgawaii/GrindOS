@@ -563,4 +563,16 @@
     padding: 16px 20px !important;
     font-size: 1.05rem !important;
   }
+  #copyBtn.icon-btn {
+    width: auto !important;
+    height: auto !important;
+    padding: 8px 16px !important;
+    aspect-ratio: auto !important;
+    border-radius: 20px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 6px !important;
+    white-space: nowrap !important;
+  }
 }
