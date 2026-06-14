@@ -43,48 +43,63 @@ async def ask_gemini_json(system_prompt: str, user_message: str) -> dict:
         raise HTTPException(status_code=500, detail="GEMINI_API_KEY is not set.")
 
     def _call_gemini():
+        import time
+        last_e = None
+        for attempt in range(3):
+            try:
+                client = genai.Client(api_key=api_key)
+                response = client.models.generate_content(
+                    model="gemini-2.5-flash",
+                    contents=user_message,
+                    config=types.GenerateContentConfig(
+                        system_instruction=system_prompt,
+                        temperature=0.2,
+                        response_mime_type="application/json"
+                    ),
+                )
+                return response.text
+            except Exception as e:
+                last_e = e
+                err_str = str(e).lower()
+                if "429" in err_str or "quota" in err_str or "exhausted" in err_str:
+                    if attempt < 2:
+                        import re
+                        sleep_time = 30
+                        match = re.search(r"retry in (\d+\.?\d*)s", str(e))
+                        if match:
+                            sleep_time = float(match.group(1)) + 1.0
+                        print(f"Rate limited by Gemini in analysis. Retrying in {sleep_time} seconds...")
+                        time.sleep(sleep_time)
+                        continue
+                break
+                
+        print("Gemini failed or rate limited after retries. Falling back to Groq Llama 3.3 70B...")
         try:
-            client = genai.Client(api_key=api_key)
-            response = client.models.generate_content(
-                model="gemini-2.5-flash",
-                contents=user_message,
-                config=types.GenerateContentConfig(
-                    system_instruction=system_prompt,
-                    temperature=0.2,
-                    response_mime_type="application/json"
-                ),
+            from groq import Groq
+            groq_client = Groq(api_key=os.environ.get("GROQ_API_KEY", ""))
+            groq_response = groq_client.chat.completions.create(
+                model="llama-3.3-70b-versatile",
+                messages=[
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": user_message}
+                ]
             )
-            return response.text
-        except Exception as e:
-            err_str = str(e).lower()
-            if "429" in err_str or "quota" in err_str or "exhausted" in err_str:
-                print("Gemini rate limited in ask_gemini_json. Falling back to Groq Llama 3.3 70B...")
-                try:
-                    from groq import Groq
-                    groq_client = Groq(api_key=os.environ.get("GROQ_API_KEY", ""))
-                    groq_response = groq_client.chat.completions.create(
-                        model="llama-3.3-70b-versatile",
-                        messages=[
-                            {"role": "system", "content": system_prompt},
-                            {"role": "user", "content": user_message}
-                        ]
-                    )
-                    return groq_response.choices[0].message.content
-                except Exception as groq_err:
-                    print(f"Groq fallback failed: {groq_err}. Falling back to OpenRouter free tier...")
-                    import openai
-                    openai_client = openai.OpenAI(
-                        base_url="https://openrouter.ai/api/v1",
-                        api_key=os.environ.get("OPENROUTER_API_KEY", ""),
-                    )
-                    openrouter_response = openai_client.chat.completions.create(
-                        model="meta-llama/llama-3.3-70b-instruct:free",
-                        messages=[
-                            {"role": "system", "content": system_prompt},
-                            {"role": "user", "content": user_message}
-                        ]
-                    )
-                    return openrouter_response.choices[0].message.content
+            return groq_response.choices[0].message.content
+        except Exception as groq_err:
+            print(f"Groq fallback failed: {groq_err}. Falling back to OpenRouter free tier...")
+            import openai
+            openai_client = openai.OpenAI(
+                base_url="https://openrouter.ai/api/v1",
+                api_key=os.environ.get("OPENROUTER_API_KEY", ""),
+            )
+            openrouter_response = openai_client.chat.completions.create(
+                model="meta-llama/llama-3.3-70b-instruct:free",
+                messages=[
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": user_message}
+                ]
+            )
+            return openrouter_response.choices[0].message.content
 
     try:
         content = await asyncio.to_thread(_call_gemini)
