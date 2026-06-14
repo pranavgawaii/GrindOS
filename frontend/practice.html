@@ -138,25 +138,6 @@
       box-shadow: none;
     }
 
-    .attempted-toggle {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 24px;
-      padding: 16px;
-      background: var(--brand-light);
-      border: 1px solid var(--brand-glow);
-      border-radius: var(--radius);
-      color: var(--text-1);
-    }
-    
-    .attempted-toggle input[type="checkbox"] {
-      width: 20px;
-      height: 20px;
-      accent-color: var(--brand);
-      cursor: pointer;
-    }
-
     /* Results Section */
     .results-container {
       display: none;
@@ -464,11 +445,7 @@
         <textarea id="problem" placeholder="Paste the full problem description here, or paste your code and ask for help..."></textarea>
       </div>
       
-      <div class="attempted-toggle">
-        <input type="checkbox" id="attemptedFirst" />
-        <label for="attemptedFirst">I have tried solving this for at least 15 minutes before asking for the solution.</label>
-      </div>
-      
+
       <button id="analyzeBtn" class="submit-btn">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
         Analyze & Solve

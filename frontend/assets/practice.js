@@ -15,7 +15,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const constraints = document.getElementById('constraints').value.trim();
     const environment = document.getElementById('environment').value;
     const verbosity = document.getElementById('verbosity').value;
-    const attemptedFirst = document.getElementById('attemptedFirst').checked;
     
     // OCR Logic
     const ocrTrigger = document.getElementById('ocrTrigger');
@@ -85,7 +84,6 @@ document.addEventListener('DOMContentLoaded', () => {
           language,
           constraints,
           userAttempt: "",
-          attemptedFirst,
           environment,
           verbosity
         })

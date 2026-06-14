@@ -800,6 +800,47 @@ a, button, [role="button"] {
 }
 
 /* ══════════════════════════════════════════════════════════════════════
+   PRACTICE PAGE — Mobile adjustments
+   ════════════════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  .practice-container {
+    margin-top: 40px !important;
+    padding: 0 16px !important;
+  }
+  
+  .practice-header h1 {
+    font-size: 1.6rem !important;
+  }
+  
+  .input-card {
+    padding: 16px !important;
+  }
+  
+  .input-card .form-row {
+    flex-direction: column !important;
+    gap: 12px !important;
+  }
+  
+  .tabs {
+    overflow-x: auto !important;
+    white-space: nowrap !important;
+    -webkit-overflow-scrolling: touch !important;
+    padding-bottom: 4px !important;
+    gap: 16px !important;
+    scrollbar-width: none !important;
+  }
+  
+  .tabs::-webkit-scrollbar {
+    display: none !important;
+  }
+  
+  .tab-btn {
+    font-size: 0.95rem !important;
+    padding: 10px 0 !important;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════════
    MICRO-ANIMATIONS — Reduced on mobile for performance
    ════════════════════════════════════════════════════════════════════ */
 @media (max-width: 768px) {

@@ -2,12 +2,11 @@ import json
 import os
 import re
 import base64
-import re
+import httpx
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 from typing import Optional, List, Dict, Any
 from supabase import create_client, Client
-from judge0_router import execute_on_judge0, parse_driver_results
 
 router = APIRouter()
 
@@ -16,7 +15,6 @@ class PracticeRequest(BaseModel):
     language: str
     constraints: str = ""
     userAttempt: str = ""
-    attemptedFirst: bool
     environment: str = "leetcode"
     verbosity: str = "detailed"
 
@@ -134,6 +132,52 @@ async def extract_text(req: ExtractTextRequest):
         print(f"OCR Error: {e}")
         raise HTTPException(status_code=500, detail=f"Failed to extract text: {str(e)}")
 
+async def execute_on_piston(code: str, language: str) -> list:
+    PISTON_LANGUAGES = {
+        "python": "python",
+        "cpp": "c++",
+        "java": "java",
+        "javascript": "javascript"
+    }
+    PISTON_VERSIONS = {
+        "python": "3.10.0",
+        "cpp": "10.2.0",
+        "java": "15.0.2",
+        "javascript": "16.3.0"
+    }
+    
+    lang = PISTON_LANGUAGES.get(language, "python")
+    version = PISTON_VERSIONS.get(language, "3.10.0")
+
+    payload = {
+        "language": lang,
+        "version": version,
+        "files": [{"content": code}],
+        "compile_timeout": 10000,
+        "run_timeout": 10000
+    }
+
+    try:
+        async with httpx.AsyncClient() as client:
+            response = await client.post("https://emkc.org/api/v2/piston/execute", json=payload, timeout=25.0)
+            if response.status_code != 200:
+                print(f"Piston API Error: {response.status_code} {response.text}")
+                return []
+            
+            data = response.json()
+            run_output = data.get("run", {}).get("output", "")
+            
+            if "---TEST_RESULTS_JSON---" in run_output:
+                json_str = run_output.split("---TEST_RESULTS_JSON---")[-1].strip()
+                try:
+                    return json.loads(json_str)
+                except Exception as e:
+                    print(f"JSON Parse Error from Piston: {e}, Output: {run_output}")
+            return []
+    except Exception as e:
+        print(f"Piston execution exception: {e}")
+        return []
+
 @router.post("/analyze")
 async def analyze_practice(req: PracticeRequest):
     system_prompt = build_system_prompt(req.language, req.environment, req.verbosity)
@@ -148,25 +192,12 @@ async def analyze_practice(req: PracticeRequest):
         # Step 1: Generate analysis and code via Gemini
         analysis = await ask_gemini_json(system_prompt, user_msg)
         
-        # Step 2: Verify code via Judge0
+        # Step 2: Verify code via Piston API (Much faster than Judge0)
         driver_code = analysis.get("driverCode", "")
         verification_results = []
         if driver_code:
-            try:
-                res = await execute_on_judge0(driver_code, req.language)
-                stdout = res.get("stdout", "")
-                parsed_results, _ = parse_driver_results(stdout)
-                
-                if parsed_results is not None:
-                    verification_results = parsed_results
-                else:
-                    verification_results = [{"passed": False, "error": "Failed to parse driver results.", "stdout": stdout}]
-            except Exception as e:
-                verification_results = [{"passed": False, "error": f"Execution failed: {str(e)}"}]
-        
-        # Categorize test cases into normal/boundary/edge/stress based on index or just pass them raw
-        # For simplicity, we'll just pass the raw verification array to the frontend
-        analysis["verification"] = verification_results
+            verification_results = await execute_on_piston(driver_code, req.language)
+            analysis["verification"] = verification_results
         
         # We don't need to send driverCode back to frontend
         if "driverCode" in analysis:
