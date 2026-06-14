@@ -64,7 +64,6 @@ async def ask_gemini_json(system_prompt: str, user_message: str) -> dict:
                     groq_client = Groq(api_key=os.environ.get("GROQ_API_KEY", ""))
                     groq_response = groq_client.chat.completions.create(
                         model="llama-3.3-70b-versatile",
-                        response_format={"type": "json_object"},
                         messages=[
                             {"role": "system", "content": system_prompt},
                             {"role": "user", "content": user_message}
@@ -72,8 +71,20 @@ async def ask_gemini_json(system_prompt: str, user_message: str) -> dict:
                     )
                     return groq_response.choices[0].message.content
                 except Exception as groq_err:
-                    print(f"Groq fallback failed: {groq_err}")
-            raise e
+                    print(f"Groq fallback failed: {groq_err}. Falling back to OpenRouter free tier...")
+                    import openai
+                    openai_client = openai.OpenAI(
+                        base_url="https://openrouter.ai/api/v1",
+                        api_key=os.environ.get("OPENROUTER_API_KEY", ""),
+                    )
+                    openrouter_response = openai_client.chat.completions.create(
+                        model="google/gemini-2.5-flash:free",
+                        messages=[
+                            {"role": "system", "content": system_prompt},
+                            {"role": "user", "content": user_message}
+                        ]
+                    )
+                    return openrouter_response.choices[0].message.content
 
     try:
         content = await asyncio.to_thread(_call_gemini)
