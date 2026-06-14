@@ -63,6 +63,10 @@ async def ask_gemini_json(system_prompt: str, user_message: str) -> dict:
         return json.loads(content.strip())
     except Exception as e:
         print(f"Gemini JSON Error: {e}")
+        try:
+            print(f"Raw output: {content}")
+        except:
+            pass
         raise Exception(f"Failed to generate analysis: {str(e)}")
 
 def build_system_prompt(language: str, environment: str, verbosity: str) -> str:
@@ -79,7 +83,7 @@ def build_system_prompt(language: str, environment: str, verbosity: str) -> str:
     return f"""You are an elite competitive programming coach and AI software engineer. 
 The user will provide a DSA problem, their target language ({language}), and optionally their attempt.
 
-You must return a raw JSON object with EXACTLY the following structure:
+You must return a raw JSON object with EXACTLY the following structure. ENSURE ALL CODE STRINGS ARE PROPERLY ESCAPED FOR JSON (e.g., escape double quotes as \\" and newlines as \\n):
 {{
   "constraintsCheck": "Briefly analyze the required time/space complexity based on typical constraints.",
   "naiveApproach": "Explain the brute force approach and why it's too slow.",
