@@ -17,6 +17,54 @@ document.addEventListener('DOMContentLoaded', () => {
     const verbosity = document.getElementById('verbosity').value;
     const attemptedFirst = document.getElementById('attemptedFirst').checked;
     
+    // OCR Logic
+    const ocrTrigger = document.getElementById('ocrTrigger');
+    const ocrInput = document.getElementById('ocrInput');
+    const problemTextarea = document.getElementById('problem');
+
+    if (ocrTrigger && ocrInput) {
+      ocrTrigger.addEventListener('click', () => {
+        ocrInput.click();
+      });
+
+      ocrInput.addEventListener('change', async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        ocrTrigger.disabled = true;
+        ocrTrigger.innerHTML = '<div class="spinner" style="width: 14px; height: 14px; border-width: 2px; border-top-color: var(--text-2); margin-right: 4px;"></div> Extracting...';
+
+        const reader = new FileReader();
+        reader.onload = async (event) => {
+          const base64Data = event.target.result;
+          
+          try {
+            const res = await fetch(`${apiBase}/api/practice/extract-text`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ image_base64: base64Data })
+            });
+            
+            if (!res.ok) {
+              throw new Error(`Extraction failed: ${await res.text()}`);
+            }
+            
+            const data = await res.json();
+            problemTextarea.value = data.extracted_text + "\\n\\n" + problemTextarea.value;
+            
+          } catch (err) {
+            console.error(err);
+            alert(err.message);
+          } finally {
+            ocrTrigger.disabled = false;
+            ocrTrigger.innerHTML = '<span class="premium-star">✨</span> Extract from Image';
+            ocrInput.value = ''; // reset
+          }
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+    
     if (!problem) {
       alert("Please paste a problem statement first!");
       return;

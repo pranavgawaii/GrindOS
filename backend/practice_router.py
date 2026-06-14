@@ -1,6 +1,8 @@
 import json
 import os
 import re
+import base64
+import re
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 from typing import Optional, List, Dict, Any
@@ -17,6 +19,9 @@ class PracticeRequest(BaseModel):
     attemptedFirst: bool
     environment: str = "leetcode"
     verbosity: str = "detailed"
+
+class ExtractTextRequest(BaseModel):
+    image_base64: str
 
 # Initialize Supabase client
 SUPABASE_URL = os.environ.get("SUPABASE_URL")
@@ -90,6 +95,44 @@ You must return a raw JSON object with EXACTLY the following structure:
 {concise_instruction}
 IMPORTANT: Output ONLY valid JSON.
 """
+
+@router.post("/extract-text")
+async def extract_text(req: ExtractTextRequest):
+    import asyncio
+    from google import genai
+    from google.genai import types
+
+    api_key = os.environ.get("GEMINI_API_KEY", "")
+    if not api_key:
+        raise HTTPException(status_code=500, detail="GEMINI_API_KEY is not set.")
+
+    def _call_gemini_vision():
+        client = genai.Client(api_key=api_key)
+        # remove data:image/png;base64, prefix if present
+        b64 = req.image_base64
+        if "," in b64:
+            b64 = b64.split(",")[1]
+        
+        image_bytes = base64.b64decode(b64)
+        
+        response = client.models.generate_content(
+            model="gemini-2.5-flash",
+            contents=[
+                types.Part.from_bytes(
+                    data=image_bytes,
+                    mime_type="image/jpeg",
+                ),
+                "Extract all the text from this image exactly as written. Preserve formatting, mathematical formulas, constraints, and code snippets. Return ONLY the extracted text, no conversational filler."
+            ]
+        )
+        return response.text
+
+    try:
+        text = await asyncio.to_thread(_call_gemini_vision)
+        return {"extracted_text": text}
+    except Exception as e:
+        print(f"OCR Error: {e}")
+        raise HTTPException(status_code=500, detail=f"Failed to extract text: {str(e)}")
 
 @router.post("/analyze")
 async def analyze_practice(req: PracticeRequest):
