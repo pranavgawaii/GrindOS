@@ -137,8 +137,13 @@ async def extract_text(req: ExtractTextRequest):
                 err_str = str(e).lower()
                 if "429" in err_str or "quota" in err_str or "exhausted" in err_str:
                     if attempt < 2:
-                        print("Rate limited by Gemini on image extraction. Retrying in 30 seconds...")
-                        time.sleep(30)
+                        import re
+                        sleep_time = 30
+                        match = re.search(r"retry in (\d+\.?\d*)s", str(e))
+                        if match:
+                            sleep_time = float(match.group(1)) + 1.0
+                        print(f"Rate limited by Gemini on image extraction. Retrying in {sleep_time} seconds...")
+                        time.sleep(sleep_time)
                         continue
                 raise e
 
