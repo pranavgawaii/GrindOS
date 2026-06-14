@@ -27,6 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const viewWelcome = document.getElementById("view-welcome");
   const startCameraBtn = document.getElementById("startCameraBtn");
   const startUploadBtn = document.getElementById("startUploadBtn");
+  const modeToggleContainer = document.getElementById("mode-toggle-container");
 
   // Initial State is Welcome View. Tabs inactive.
   btnCamera.classList.remove("active");
@@ -34,11 +35,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
   startCameraBtn.addEventListener("click", () => {
     viewWelcome.classList.add("hidden");
+    modeToggleContainer.classList.remove("hidden");
     btnCamera.click();
   });
 
   startUploadBtn.addEventListener("click", () => {
     viewWelcome.classList.add("hidden");
+    modeToggleContainer.classList.remove("hidden");
     btnUpload.click();
   });
 

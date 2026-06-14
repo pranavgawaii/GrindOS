@@ -192,7 +192,7 @@ async def extract_text(req: ExtractTextRequest):
                             data=image_bytes,
                             mime_type="image/jpeg",
                         ),
-                        "Extract all the text from this image exactly as written. Preserve formatting, mathematical formulas, constraints, and code snippets. Return ONLY the extracted text, no conversational filler. DO NOT summarize."
+                        "Extract all the text from this image exactly as written, but format it cleanly using GitHub Flavored Markdown. Use proper headers (e.g. ## Example 1), bullet points for constraints, bold text for labels (e.g. **Input:**), and backticks for code snippets. You MUST preserve all line breaks, mathematical formulas, and visual structure perfectly. Return ONLY the Markdown text, no conversational filler."
                     ]
                 )
                 return response.text
@@ -220,7 +220,7 @@ async def extract_text(req: ExtractTextRequest):
                 messages=[{
                     "role": "user",
                     "content": [
-                        {"type": "text", "text": "Extract all the text from this image exactly as written. Preserve formatting, mathematical formulas, constraints, and code snippets. Return ONLY the extracted text, no conversational filler. DO NOT summarize."},
+                        {"type": "text", "text": "Extract all the text from this image exactly as written, but format it cleanly using GitHub Flavored Markdown. Use proper headers (e.g. ## Example 1), bullet points for constraints, bold text for labels (e.g. **Input:**), and backticks for code snippets. You MUST preserve all line breaks, mathematical formulas, and visual structure perfectly. Return ONLY the Markdown text, no conversational filler."},
                         {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{b64}"}}
                     ]
                 }]
@@ -247,7 +247,7 @@ async def extract_text(req: ExtractTextRequest):
                         messages=[{
                             "role": "user",
                             "content": [
-                                {"type": "text", "text": "Extract all the text from this image exactly as written. Preserve formatting, mathematical formulas, constraints, and code snippets. Return ONLY the extracted text, no conversational filler. DO NOT summarize."},
+                                {"type": "text", "text": "Extract all the text from this image exactly as written, but format it cleanly using GitHub Flavored Markdown. Use proper headers (e.g. ## Example 1), bullet points for constraints, bold text for labels (e.g. **Input:**), and backticks for code snippets. You MUST preserve all line breaks, mathematical formulas, and visual structure perfectly. Return ONLY the Markdown text, no conversational filler."},
                                 {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{b64}"}}
                             ]
                         }]
