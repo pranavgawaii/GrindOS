@@ -24,7 +24,26 @@ document.addEventListener("DOMContentLoaded", () => {
   let capturedBase64 = null;
 
   // --- TABS ---
+  const viewWelcome = document.getElementById("view-welcome");
+  const startCameraBtn = document.getElementById("startCameraBtn");
+  const startUploadBtn = document.getElementById("startUploadBtn");
+
+  // Initial State is Welcome View. Tabs inactive.
+  btnCamera.classList.remove("active");
+  btnUpload.classList.remove("active");
+
+  startCameraBtn.addEventListener("click", () => {
+    viewWelcome.classList.add("hidden");
+    btnCamera.click();
+  });
+
+  startUploadBtn.addEventListener("click", () => {
+    viewWelcome.classList.add("hidden");
+    btnUpload.click();
+  });
+
   btnCamera.addEventListener("click", () => {
+    viewWelcome.classList.add("hidden");
     btnCamera.classList.add("active");
     btnUpload.classList.remove("active");
     viewCamera.classList.remove("hidden");
@@ -33,6 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   btnUpload.addEventListener("click", () => {
+    viewWelcome.classList.add("hidden");
     btnUpload.classList.add("active");
     btnCamera.classList.remove("active");
     viewUpload.classList.remove("hidden");
@@ -188,6 +208,5 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // Start camera by default
-  startCamera();
+  // Start camera by default removed for better UX
 });

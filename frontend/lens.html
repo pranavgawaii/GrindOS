@@ -27,8 +27,7 @@
   <!-- Navigation -->
   <nav class="navbar" style="padding: 20px 40px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(10, 10, 15, 0.8); backdrop-filter: blur(10px);">
     <div class="logo">
-      <img src="./logo_cropped.png" alt="GrindOS Logo" height="32">
-      <span style="font-weight: 700; font-size: 1.2rem; margin-left: 10px; background: linear-gradient(90deg, #fff, #a0a0a0); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">GrindOS <span style="color: var(--brand); -webkit-text-fill-color: var(--brand);">Lens</span></span>
+      <span style="font-weight: 700; font-size: 1.2rem; background: linear-gradient(90deg, #fff, #a0a0a0); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">GrindOS <span style="color: var(--brand); -webkit-text-fill-color: var(--brand);">Lens</span></span>
     </div>
     <a href="practice.html" style="color: var(--text-2); text-decoration: none; font-size: 0.95rem; font-weight: 500; transition: color 0.2s;">&larr; Back to Practice</a>
   </nav>
@@ -50,8 +49,21 @@
       <!-- Input Section (Left) -->
       <div class="lens-input-section">
         
+        <!-- Welcome View -->
+        <div class="view-panel" id="view-welcome" style="align-items: center; justify-content: center; text-align: center; padding: 40px 20px;">
+          <h2 style="margin-bottom: 24px; color: var(--text-1);">Select an Input Method</h2>
+          <div style="display: flex; gap: 16px; flex-direction: column; width: 100%; max-width: 300px;">
+            <button class="submit-btn" id="startCameraBtn" style="width: 100%;">
+              📸 Open Live Camera
+            </button>
+            <button class="submit-btn" id="startUploadBtn" style="width: 100%; background: var(--surface-2); color: var(--text-1); border: 1px solid var(--border);">
+              📁 Upload Image
+            </button>
+          </div>
+        </div>
+
         <!-- Camera View -->
-        <div class="view-panel" id="view-camera">
+        <div class="view-panel hidden" id="view-camera">
           <div class="camera-wrapper">
             <video id="videoElement" autoplay playsinline></video>
             <div class="camera-overlay">
