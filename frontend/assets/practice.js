@@ -168,17 +168,19 @@ document.addEventListener('DOMContentLoaded', () => {
                </div>`;
       html += `</div>`;
     }
-    
+    // Tab 3: Verification
+    if (tabs.find(t => t.id === 'tab-verify')) {
+      html += `<div id="tab-verify" class="tab-content ${tabs[0].id === 'tab-verify' ? 'active' : ''}">`;
       html += `<h4>Code Verification (Judge0)</h4><div class="badge-container">`;
       let passedAll = true;
       if (!data.verification || data.verification.length === 0) {
         html += `<p style="color: var(--text-3); font-size: 0.95rem;">Verification was skipped or no test cases were run.</p>`;
       } else {
-      data.verification.forEach((tc, idx) => {
-         const pass = tc.passed;
-         if (!pass) passedAll = false;
-         html += `<div class="test-badge ${pass ? 'pass' : 'fail'}">${pass ? '✅' : '❌'} Test ${idx + 1}</div>`;
-      });
+        data.verification.forEach((tc, idx) => {
+           const pass = tc.passed;
+           if (!pass) passedAll = false;
+           html += `<div class="test-badge ${pass ? 'pass' : 'fail'}">${pass ? '✅' : '❌'} Test ${idx + 1}</div>`;
+        });
       }
       html += `</div>`;
       if (!passedAll) {
