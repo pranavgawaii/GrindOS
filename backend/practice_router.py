@@ -202,7 +202,7 @@ async def analyze_practice(req: PracticeRequest):
                 if line.strip().startswith("#") or line.strip().startswith("//"):
                     continue
                 cleaned_lines.append(line)
-            analysis["solutionCode"] = "\\n".join(cleaned_lines)
+            analysis["solutionCode"] = "\n".join(cleaned_lines)
             
         # Step 2: Verify code via Judge0 (if enabled)
         driver_code = analysis.get("driverCode", "")
