@@ -170,7 +170,14 @@ document.addEventListener("DOMContentLoaded", () => {
       });
 
       if (!response.ok) {
-        throw new Error(`API Error: ${response.status}`);
+        let errorMsg = `API Error: ${response.status}`;
+        try {
+          const errData = await response.json();
+          if (errData && errData.detail) {
+            errorMsg = `${errData.detail}`;
+          }
+        } catch (_) {}
+        throw new Error(errorMsg);
       }
 
       const data = await response.json();
