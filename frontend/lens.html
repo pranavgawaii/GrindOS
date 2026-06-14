@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GrindOS Lens</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="assets/style.css?v=3" />
+  <link rel="stylesheet" href="assets/lens.css" />
+  
+  <link rel="icon" type="image/png" href="./logo.png">
+  <link rel="apple-touch-icon" href="./logo.png">
+
+  <!-- Marked and Highlight.js for rendering -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/tokyo-night-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar" style="padding: 20px 40px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(10, 10, 15, 0.8); backdrop-filter: blur(10px);">
+    <div class="logo">
+      <img src="./logo_cropped.png" alt="GrindOS Logo" height="32">
+      <span style="font-weight: 700; font-size: 1.2rem; margin-left: 10px; background: linear-gradient(90deg, #fff, #a0a0a0); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">GrindOS <span style="color: var(--brand); -webkit-text-fill-color: var(--brand);">Lens</span></span>
+    </div>
+    <a href="practice.html" style="color: var(--text-2); text-decoration: none; font-size: 0.95rem; font-weight: 500; transition: color 0.2s;">&larr; Back to Practice</a>
+  </nav>
+
+  <div class="lens-container">
+    <div class="lens-header">
+      <h1>Vision Extraction</h1>
+      <p>Instantly extract perfectly formatted code and text from your screen or physical paper using AI.</p>
+    </div>
+
+    <!-- Toggle Buttons -->
+    <div class="lens-mode-toggle">
+      <button class="mode-btn active" id="btn-camera">Live Camera</button>
+      <button class="mode-btn" id="btn-upload">Upload Image</button>
+    </div>
+
+    <div class="lens-content-wrapper">
+      
+      <!-- Input Section (Left) -->
+      <div class="lens-input-section">
+        
+        <!-- Camera View -->
+        <div class="view-panel" id="view-camera">
+          <div class="camera-wrapper">
+            <video id="videoElement" autoplay playsinline></video>
+            <div class="camera-overlay">
+              <div class="corners corner-tl"></div>
+              <div class="corners corner-tr"></div>
+              <div class="corners corner-bl"></div>
+              <div class="corners corner-br"></div>
+            </div>
+            <button id="captureBtn" class="capture-btn">
+              <span class="capture-inner"></span>
+            </button>
+          </div>
+          <canvas id="canvasElement" style="display:none;"></canvas>
+          <p class="helper-text" id="camera-status">Initializing camera...</p>
+        </div>
+
+        <!-- Upload View -->
+        <div class="view-panel hidden" id="view-upload">
+          <div class="upload-zone" id="drop-zone">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color: var(--brand); margin-bottom: 16px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+            <h3>Drag & Drop</h3>
+            <p>or click to browse your files</p>
+            <input type="file" id="fileInput" accept="image/png, image/jpeg, image/webp" style="display: none;" />
+          </div>
+          <!-- Image Preview -->
+          <div class="image-preview-container hidden" id="image-preview-container">
+            <img id="image-preview" src="" alt="Preview" />
+            <button class="submit-btn" id="analyzeImageBtn" style="margin-top: 16px;">
+              ✨ Extract Text from Image
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Result Section (Right) -->
+      <div class="lens-result-section">
+        <div class="result-header">
+          <h3>Extracted Text</h3>
+          <button id="copyBtn" class="icon-btn hidden" title="Copy to clipboard">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+          </button>
+        </div>
+        
+        <div class="loading-state hidden" id="loading-state">
+          <div class="spinner"></div>
+          <p>Analyzing image with Vision AI...</p>
+        </div>
+
+        <div class="result-content empty" id="result-content">
+          <p class="placeholder-text">Capture or upload an image to see the extracted text here.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/lens.js"></script>
+</body>
+</html>
