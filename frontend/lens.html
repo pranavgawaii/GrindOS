@@ -33,11 +33,12 @@
       <button class="icon-btn theme-toggle" id="theme-toggle" aria-label="Toggle Dark Mode" style="background: transparent; border: none; color: var(--text-2); cursor: pointer; padding: 0;">
         <!-- script.js will dynamically inject the morphing icon here -->
       </button>
-      <a href="practice.html" style="color: var(--text-2); text-decoration: none; font-size: 0.95rem; font-weight: 500; transition: color 0.2s;">&larr; Back to Practice</a>
     </div>
   </nav>
 
   <div class="lens-container">
+    <a href="practice.html" style="display: inline-block; color: var(--text-2); text-decoration: none; font-size: 0.95rem; font-weight: 500; margin-bottom: 24px; transition: color 0.2s;" onmouseover="this.style.color='var(--text-1)'" onmouseout="this.style.color='var(--text-2)'">&larr; Back to Practice</a>
+    
     <div class="lens-header">
       <h1>Vision Extraction</h1>
       <p>Instantly extract perfectly formatted code and text from your screen or physical paper using AI.</p>
