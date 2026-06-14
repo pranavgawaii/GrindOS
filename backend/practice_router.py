@@ -191,6 +191,9 @@ async def analyze_practice(req: PracticeRequest):
         user_msg += f"My Attempt:\n{req.userAttempt}\n\n"
         
     try:
+        # Step 1: Generate analysis and code via Gemini
+        analysis = await ask_gemini_json(system_prompt, user_msg)
+        
         # Aggressively strip comments from solution code
         if "solutionCode" in analysis:
             raw_code = analysis["solutionCode"]
