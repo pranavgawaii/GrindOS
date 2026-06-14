@@ -25,6 +25,10 @@
       "dest": "api/waitlist.py"
     },
     {
+      "src": "/api/(.*)",
+      "dest": "backend/main.py"
+    },
+    {
       "src": "/(ask|mock-interview|generate-script|last-minute|health|generate-resume)(.*)",
       "dest": "backend/main.py"
     },

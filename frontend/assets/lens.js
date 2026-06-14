@@ -1,4 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
+  const apiBase = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
+      ? 'http://localhost:8000' 
+      : '';
+
   // Elements
   const btnCamera = document.getElementById("btn-camera");
   const btnUpload = document.getElementById("btn-upload");
@@ -163,7 +167,7 @@ document.addEventListener("DOMContentLoaded", () => {
     loadingState.classList.remove("hidden");
 
     try {
-      const response = await fetch("http://localhost:8000/api/practice/extract-text", {
+      const response = await fetch(`${apiBase}/api/practice/extract-text`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ image_base64: base64Data })
