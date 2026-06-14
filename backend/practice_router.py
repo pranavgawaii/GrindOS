@@ -92,14 +92,29 @@ async def ask_gemini_json(system_prompt: str, user_message: str) -> dict:
                 base_url="https://openrouter.ai/api/v1",
                 api_key=os.environ.get("OPENROUTER_API_KEY", ""),
             )
-            openrouter_response = openai_client.chat.completions.create(
-                model="meta-llama/llama-3.3-70b-instruct:free",
-                messages=[
-                    {"role": "system", "content": system_prompt},
-                    {"role": "user", "content": user_message}
-                ]
-            )
-            return openrouter_response.choices[0].message.content
+            free_models = [
+                "google/gemini-2.0-flash-lite-preview-02-05:free",
+                "google/gemini-2.0-flash-exp:free",
+                "mistralai/mistral-nemo:free",
+                "meta-llama/llama-3.3-70b-instruct:free"
+            ]
+            last_openrouter_err = None
+            for fallback_model in free_models:
+                try:
+                    print(f"Trying OpenRouter free model: {fallback_model}...")
+                    openrouter_response = openai_client.chat.completions.create(
+                        model=fallback_model,
+                        messages=[
+                            {"role": "system", "content": system_prompt},
+                            {"role": "user", "content": user_message}
+                        ]
+                    )
+                    return openrouter_response.choices[0].message.content
+                except Exception as openrouter_err:
+                    last_openrouter_err = openrouter_err
+                    print(f"OpenRouter {fallback_model} failed: {openrouter_err}")
+                    continue
+            raise last_openrouter_err
 
     try:
         content = await asyncio.to_thread(_call_gemini)
