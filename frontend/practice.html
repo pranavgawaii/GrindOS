@@ -28,20 +28,20 @@
     
     .practice-container {
       max-width: 900px;
-      margin: 100px auto 120px;
+      margin: 60px auto 120px;
       padding: 0 24px;
     }
     
     .practice-header {
       text-align: center;
-      margin-bottom: 40px;
+      margin-bottom: 30px;
     }
 
     .practice-header h1 {
-      font-size: 2.2rem;
+      font-size: 2rem;
       font-weight: 700;
       color: var(--text-1);
-      margin-bottom: 12px;
+      margin-bottom: 8px;
       letter-spacing: -0.02em;
     }
     
@@ -51,32 +51,32 @@
     
     .practice-header p {
       color: var(--text-3);
-      font-size: 1.1rem;
+      font-size: 1.05rem;
     }
 
     .input-card {
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: var(--radius-lg);
-      padding: 32px;
-      margin-bottom: 30px;
+      padding: 24px;
+      margin-bottom: 24px;
       box-shadow: var(--shadow-sm);
     }
     
     .form-row {
       display: flex;
-      gap: 20px;
-      margin-bottom: 24px;
+      gap: 16px;
+      margin-bottom: 20px;
     }
     
     .form-group {
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 6px;
     }
     
     .form-group label {
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       font-weight: 600;
       color: var(--text-2);
       text-transform: uppercase;
@@ -88,9 +88,9 @@
       border: 1px solid var(--border);
       color: var(--text-1);
       border-radius: var(--radius);
-      padding: 14px 16px;
+      padding: 12px 14px;
       font-family: var(--font-sans);
-      font-size: 1rem;
+      font-size: 0.95rem;
       transition: all 0.2s ease;
     }
     
@@ -102,9 +102,9 @@
     
     .form-group textarea {
       resize: vertical;
-      min-height: 160px;
+      min-height: 120px;
       font-family: var(--font-mono);
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       line-height: 1.5;
     }
 
@@ -237,7 +237,53 @@
       font-size: 0.95rem;
       background: var(--code-bg) !important;
       border: 1px solid var(--border);
+      display: block;
+      overflow-x: auto;
     }
+    
+    /* Code container & Copy Btn */
+    .code-container {
+      position: relative;
+      margin-bottom: 16px;
+    }
+    .copy-btn {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: #fff;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-family: var(--font-sans);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .copy-btn:hover { background: rgba(255,255,255,0.2); }
+    
+    /* Tabs */
+    .tabs {
+      display: flex;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 24px;
+      gap: 32px;
+    }
+    .tab-btn {
+      background: none;
+      border: none;
+      color: var(--text-2);
+      padding: 12px 0;
+      font-size: 1.05rem;
+      font-weight: 600;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      transition: all 0.2s;
+    }
+    .tab-btn:hover { color: var(--text-1); }
+    .tab-btn.active { color: var(--brand); border-bottom-color: var(--brand); }
+    .tab-content { display: none; animation: slideUp 0.3s ease; }
+    .tab-content.active { display: block; }
     
     .badge-container {
       display: flex;
@@ -356,10 +402,25 @@
             <option value="javascript">JavaScript</option>
           </select>
         </div>
-        <div class="form-group" style="flex: 2;">
-          <label for="constraints">Constraints / Requirements (Optional)</label>
-          <input type="text" id="constraints" placeholder="e.g. O(N) time, O(1) space, no built-in sort" />
+        <div class="form-group" style="flex: 1.5;">
+          <label for="environment">Environment Context</label>
+          <select id="environment">
+            <option value="leetcode">LeetCode Style (Class/Function)</option>
+            <option value="oa">OA Style (Full sys.stdin script)</option>
+          </select>
         </div>
+        <div class="form-group" style="flex: 1.5;">
+          <label for="verbosity">Analysis Mode</label>
+          <select id="verbosity">
+            <option value="detailed">Detailed Analysis</option>
+            <option value="concise">Just Code & Explanation</option>
+          </select>
+        </div>
+      </div>
+      
+      <div class="form-group" style="margin-bottom: 24px;">
+        <label for="constraints">Constraints / Requirements (Optional)</label>
+        <input type="text" id="constraints" placeholder="e.g. O(N) time, O(1) space, no built-in sort" />
       </div>
       
       <div class="form-group" style="margin-bottom: 24px;">

@@ -15,6 +15,8 @@ class PracticeRequest(BaseModel):
     constraints: str = ""
     userAttempt: str = ""
     attemptedFirst: bool
+    environment: str = "leetcode"
+    verbosity: str = "detailed"
 
 # Initialize Supabase client
 SUPABASE_URL = os.environ.get("SUPABASE_URL")
@@ -58,7 +60,17 @@ async def ask_gemini_json(system_prompt: str, user_message: str) -> dict:
         print(f"Gemini JSON Error: {e}")
         raise Exception(f"Failed to generate analysis: {str(e)}")
 
-def build_system_prompt(language: str) -> str:
+def build_system_prompt(language: str, environment: str, verbosity: str) -> str:
+    env_instruction = ""
+    if environment == "leetcode":
+        env_instruction = "Provide ONLY the class/function definition (LeetCode style)."
+    else:
+        env_instruction = "Provide a FULL script that parses input from sys.stdin and prints to stdout (OA style)."
+
+    concise_instruction = ""
+    if verbosity == "concise":
+        concise_instruction = "Since the user requested CONCISE mode, leave `naiveApproach`, `pseudocode`, `comparisonTable`, and `rederivePrompt` as empty strings or empty arrays."
+
     return f"""You are an elite competitive programming coach and AI software engineer. 
 The user will provide a DSA problem, their target language ({language}), and optionally their attempt.
 
@@ -68,19 +80,20 @@ You must return a raw JSON object with EXACTLY the following structure:
   "naiveApproach": "Explain the brute force approach and why it's too slow.",
   "optimizedApproach": "Explain the optimal approach in plain, intuitive English.",
   "pseudocode": "Write high-level pseudocode for the optimal approach.",
-  "solutionCode": "Write the final optimal code in {language}. Use natural, human-readable variable names. No docstrings, minimal comments. Provide ONLY the class/function definition.",
+  "solutionCode": "Write the final optimal code in {language}. Use natural, human-readable variable names. No docstrings, minimal comments. {env_instruction}",
   "driverCode": "Write the COMPLETE, EXECUTABLE code in {language} (including all imports/includes, the solutionCode, and a main execution block). The main block MUST run a comprehensive set of test cases (normal, boundary, edge, and stress cases). For each test case, execute the solution, compare actual vs expected, and build a JSON array of the results. The script MUST output the exact string '---TEST_RESULTS_JSON---' followed by the valid JSON array of objects: [{{\"passed\": true/false, \"actual\": \"...\", \"expected\": \"...\", \"inputs\": [...]}}]. Ensure the code catches exceptions. Do NOT print anything else to stdout.",
   "complexity": {{ "time": "O(...)", "space": "O(...)" }},
   "comparisonTable": [ {{"feature": "...", "humanStyle": "...", "aiStyle": "..."}} ],
   "feedback": "Actionable feedback on the user's attempt (if provided), or a tip on what to learn.",
   "rederivePrompt": "A short prompt the user can read to try re-deriving the solution themselves."
 }}
+{concise_instruction}
 IMPORTANT: Output ONLY valid JSON.
 """
 
 @router.post("/analyze")
 async def analyze_practice(req: PracticeRequest):
-    system_prompt = build_system_prompt(req.language)
+    system_prompt = build_system_prompt(req.language, req.environment, req.verbosity)
     
     user_msg = f"Problem Statement:\n{req.problem}\n\n"
     if req.constraints:
