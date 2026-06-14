@@ -79,23 +79,8 @@
           </div>
         </div>
 
-        <!-- Camera View -->
-        <div class="view-panel hidden" id="view-camera">
-          <div class="camera-wrapper">
-            <video id="videoElement" autoplay playsinline></video>
-            <div class="camera-overlay">
-              <div class="corners corner-tl"></div>
-              <div class="corners corner-tr"></div>
-              <div class="corners corner-bl"></div>
-              <div class="corners corner-br"></div>
-            </div>
-            <button id="captureBtn" class="capture-btn">
-              <span class="capture-inner"></span>
-            </button>
-          </div>
-          <canvas id="canvasElement" style="display:none;"></canvas>
-          <p class="helper-text" id="camera-status">Initializing camera...</p>
-        </div>
+        <!-- Camera Input (Native Device Camera) -->
+        <input type="file" id="cameraInput" accept="image/*" capture="environment" style="display: none;" />
 
         <!-- Upload View -->
         <div class="view-panel hidden" id="view-upload">

@@ -804,7 +804,7 @@ a, button, [role="button"] {
    ════════════════════════════════════════════════════════════════════ */
 @media (max-width: 768px) {
   .practice-container {
-    margin-top: 40px !important;
+    margin-top: 88px !important;
     padding: 0 16px !important;
   }
   

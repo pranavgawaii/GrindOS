@@ -6,16 +6,11 @@ document.addEventListener("DOMContentLoaded", () => {
   // Elements
   const btnCamera = document.getElementById("btn-camera");
   const btnUpload = document.getElementById("btn-upload");
-  const viewCamera = document.getElementById("view-camera");
   const viewUpload = document.getElementById("view-upload");
   
-  const videoElement = document.getElementById("videoElement");
-  const canvasElement = document.getElementById("canvasElement");
-  const captureBtn = document.getElementById("captureBtn");
-  const cameraStatus = document.getElementById("camera-status");
-
-  const dropZone = document.getElementById("drop-zone");
+  const cameraInput = document.getElementById("cameraInput");
   const fileInput = document.getElementById("fileInput");
+  const dropZone = document.getElementById("drop-zone");
   const imagePreviewContainer = document.getElementById("image-preview-container");
   const imagePreview = document.getElementById("image-preview");
   const analyzeImageBtn = document.getElementById("analyzeImageBtn");
@@ -24,93 +19,49 @@ document.addEventListener("DOMContentLoaded", () => {
   const loadingState = document.getElementById("loading-state");
   const copyBtn = document.getElementById("copyBtn");
 
-  let stream = null;
-  let capturedBase64 = null;
-
-  // --- TABS ---
   const viewWelcome = document.getElementById("view-welcome");
   const startCameraBtn = document.getElementById("startCameraBtn");
   const startUploadBtn = document.getElementById("startUploadBtn");
   const modeToggleContainer = document.getElementById("mode-toggle-container");
 
+  let capturedBase64 = null;
+
   // Initial State is Welcome View. Tabs inactive.
   btnCamera.classList.remove("active");
   btnUpload.classList.remove("active");
 
+  // Welcome Screen actions
   startCameraBtn.addEventListener("click", () => {
-    viewWelcome.classList.add("hidden");
-    modeToggleContainer.classList.remove("hidden");
-    btnCamera.click();
+    cameraInput.click();
   });
 
   startUploadBtn.addEventListener("click", () => {
-    viewWelcome.classList.add("hidden");
-    modeToggleContainer.classList.remove("hidden");
-    btnUpload.click();
+    fileInput.click();
   });
 
+  // Top toggle tab actions
   btnCamera.addEventListener("click", () => {
-    viewWelcome.classList.add("hidden");
-    btnCamera.classList.add("active");
-    btnUpload.classList.remove("active");
-    viewCamera.classList.remove("hidden");
-    viewUpload.classList.add("hidden");
-    startCamera();
+    cameraInput.click();
   });
 
   btnUpload.addEventListener("click", () => {
-    viewWelcome.classList.add("hidden");
-    btnUpload.classList.add("active");
-    btnCamera.classList.remove("active");
-    viewUpload.classList.remove("hidden");
-    viewCamera.classList.add("hidden");
-    stopCamera();
+    fileInput.click();
   });
 
-  // --- CAMERA LOGIC ---
-  async function startCamera() {
-    try {
-      stream = await navigator.mediaDevices.getUserMedia({ 
-        video: { facingMode: "environment", width: { ideal: 1920 }, height: { ideal: 1080 } } 
-      });
-      videoElement.srcObject = stream;
-      cameraStatus.innerText = "Align code within the frame and capture";
-    } catch (err) {
-      console.error("Camera error:", err);
-      cameraStatus.innerText = "Could not access camera. Please check permissions.";
+  // Listen for file selections
+  cameraInput.addEventListener("change", (e) => {
+    if (e.target.files && e.target.files.length > 0) {
+      handleImageSelection(e.target.files[0], "camera");
     }
-  }
-
-  function stopCamera() {
-    if (stream) {
-      stream.getTracks().forEach(track => track.stop());
-      stream = null;
-    }
-  }
-
-  captureBtn.addEventListener("click", () => {
-    if (!stream) return;
-    
-    // Draw current frame to canvas
-    canvasElement.width = videoElement.videoWidth;
-    canvasElement.height = videoElement.videoHeight;
-    const ctx = canvasElement.getContext("2d");
-    ctx.drawImage(videoElement, 0, 0, canvasElement.width, canvasElement.height);
-    
-    // Convert to base64
-    capturedBase64 = canvasElement.toDataURL("image/jpeg", 0.9);
-    
-    // Visual flash
-    const overlay = document.querySelector(".camera-overlay");
-    overlay.style.background = "rgba(255,255,255,0.8)";
-    setTimeout(() => {
-      overlay.style.background = "transparent";
-    }, 100);
-
-    extractText(capturedBase64);
   });
 
-  // --- UPLOAD LOGIC ---
+  fileInput.addEventListener("change", (e) => {
+    if (e.target.files && e.target.files.length > 0) {
+      handleImageSelection(e.target.files[0], "upload");
+    }
+  });
+
+  // Drag-and-drop
   dropZone.addEventListener("click", () => fileInput.click());
 
   dropZone.addEventListener("dragover", (e) => {
@@ -126,28 +77,74 @@ document.addEventListener("DOMContentLoaded", () => {
     e.preventDefault();
     dropZone.classList.remove("dragover");
     if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-      handleFile(e.dataTransfer.files[0]);
+      handleImageSelection(e.dataTransfer.files[0], "upload");
     }
   });
 
-  fileInput.addEventListener("change", (e) => {
-    if (e.target.files && e.target.files.length > 0) {
-      handleFile(e.target.files[0]);
-    }
-  });
-
-  function handleFile(file) {
+  // Core handler to load, downscale, and auto-process selected image
+  function handleImageSelection(file, source) {
     if (!file.type.startsWith("image/")) {
-      alert("Please upload an image file.");
+      alert("Please select an image file.");
       return;
     }
 
+    // Set active tab styling
+    if (source === "camera") {
+      btnCamera.classList.add("active");
+      btnUpload.classList.remove("active");
+    } else {
+      btnUpload.classList.add("active");
+      btnCamera.classList.remove("active");
+    }
+
+    // Show loading indicators
+    resultContent.classList.add("hidden");
+    resultContent.classList.remove("empty");
+    copyBtn.classList.add("hidden");
+    loadingState.classList.remove("hidden");
+
     const reader = new FileReader();
-    reader.onload = (e) => {
-      capturedBase64 = e.target.result;
-      imagePreview.src = capturedBase64;
-      dropZone.classList.add("hidden");
-      imagePreviewContainer.classList.remove("hidden");
+    reader.onload = (event) => {
+      const img = new Image();
+      img.onload = () => {
+        // Downscale image if it exceeds 1600px to ensure Vercel 4.5MB payload limit is respected
+        const canvas = document.createElement("canvas");
+        let width = img.width;
+        let height = img.height;
+        const maxDim = 1600;
+
+        if (width > maxDim || height > maxDim) {
+          if (width > height) {
+            height = Math.round((height * maxDim) / width);
+            width = maxDim;
+          } else {
+            width = Math.round((width * maxDim) / height);
+            height = maxDim;
+          }
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0, width, height);
+
+        // Convert to high quality compressed JPEG (saving size dramatically)
+        capturedBase64 = canvas.toDataURL("image/jpeg", 0.85);
+
+        // Update preview image
+        imagePreview.src = capturedBase64;
+        
+        // Hide welcome screen and show preview container
+        viewWelcome.classList.add("hidden");
+        viewUpload.classList.remove("hidden");
+        dropZone.classList.add("hidden");
+        imagePreviewContainer.classList.remove("hidden");
+        modeToggleContainer.classList.remove("hidden");
+
+        // Automatically call vision API extraction
+        extractText(capturedBase64);
+      };
+      img.src = event.target.result;
     };
     reader.readAsDataURL(file);
   }
@@ -158,9 +155,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // --- API CALL ---
+  // Vision API Call
   async function extractText(base64Data) {
-    // Show loading
     resultContent.classList.add("hidden");
     resultContent.classList.remove("empty");
     copyBtn.classList.add("hidden");
@@ -203,7 +199,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // --- COPY LOGIC ---
+  // Copy to clipboard
   copyBtn.addEventListener("click", () => {
     const textToCopy = resultContent.getAttribute("data-raw") || resultContent.innerText;
     navigator.clipboard.writeText(textToCopy).then(() => {
@@ -214,6 +210,4 @@ document.addEventListener("DOMContentLoaded", () => {
       }, 2000);
     });
   });
-
-  // Start camera by default removed for better UX
 });
