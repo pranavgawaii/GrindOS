@@ -175,30 +175,12 @@ async def ask_gemini_json(system_prompt: str, user_message: str, model_choice: s
 def build_system_prompt(language: str, environment: str, verbosity: str, is_completion: bool = False, starter_code: str = "", output_format: str = "snippet", is_error_fix: bool = False) -> str:
     env_instruction = ""
     if environment == "leetcode":
-        env_instruction = "Provide a class/function template (LeetCode style) containing the core solution logic. At the top of the file, include necessary standard library imports/headers (e.g. '#include <vector>' or 'from typing import List'). At the bottom of the file, write a simple human-style main execution block (e.g., 'if __name__ == \"__main__\":' in Python, or a standard 'int main()' in C++) that initializes the class, calls the function with a sample test case, and prints the result to standard output so that it is instantly executable in a terminal."
+        env_instruction = "Provide ONLY the class/function definition (LeetCode style). Do NOT include sys.stdin or __main__."
     elif environment == "oa":
-        env_instruction = (
-            "Provide a pure sys.stdin/stdout flat script (OA style) that writes all imports, parsing, solution, and stdout prints at the root level. "
-            "To be 100% robust and pass all test cases on various online assessment platforms, the parsing logic MUST be resilient. "
-            "Specifically for Python, read standard input and attempt to parse it as JSON using 'json.loads' inside a try-except block. "
-            "If it parses as a dictionary (e.g. {'n': 8456986}), extract the value (e.g., data.get('n', data.get('x', list(data.values())[0]))); "
-            "if it parses as a list or a single value, use it directly. "
-            "If the JSON parsing fails (throws an exception) or the input is empty/plain text, catch the exception and fall back to standard text-based parsing "
-            "methods (like sys.stdin.read().split() or sys.stdin.readline().strip() mapped to int/float/string). "
-            "This resilient approach allows the script to pass test cases on both JSON-passing sandboxes and standard raw-text terminals. "
-            "Do NOT wrap the core logic inside a class or nested solve functions, and do NOT include any main guard block."
-        )
+        env_instruction = 'Provide a pure sys.stdin/stdout script (OA style). Do NOT use "class Solution". Do NOT wrap the logic in ANY functions (like "def main()" or "def solve()"). Do NOT use "if __name__ == \\\'__main__\\\':". Write the sys.stdin parsing and solution logic completely flat at the root level.'
     else:
         # Default/Auto format selection per SKILL.md guidelines
-        env_instruction = (
-            "Automatically select the code structure format based on the problem statement context. "
-            "1. If the problem statement mentions standard input, stdin, or reading lines/input, write a flat sys.stdin/stdout script (OA style) "
-            "with resilient parsing logic: in Python, try to parse input as JSON using 'json.loads' inside a try-except block (if it's a dict like {'n': 8456986}, "
-            "extract the key value; if a list/integer, use it). If it fails or is raw text, fall back to standard text parsing (sys.stdin.read().split() "
-            "or sys.stdin.readline().strip()). This makes the script run perfectly on both JSON-input platforms and normal terminal streams. "
-            "2. Otherwise, write a class/function template (LeetCode style) wrapped in a Solution class. "
-            "In both cases, ensure the file has all standard imports/headers at the top."
-        )
+        env_instruction = 'Automatically select the code structure format based on the problem statement context. 1. If the problem statement explicitly mentions standard input, stdin, or reading lines/input (e.g. "Read from stdin", "Print the output", "The first line contains"), then write a flat sys.stdin/stdout script (OA style) at the root level without "class Solution" or any wrapping functions. 2. Otherwise, write a class/function template (LeetCode style) wrapped in a Solution class or standard function signature. DO NOT mix both styles. Choose exactly one.'
 
     completion_instruction = ""
     if is_completion:
@@ -234,19 +216,15 @@ The user is reporting an execution, compilation, or runtime error with the code 
 4. Ensure the new code has NO errors, handles boundary/edge cases safely, and respects all constraints.
 """
 
-    return f"""You are an elite competitive programming coach and AI software engineer executing in OA (Online Assessment) humanization mode.
+    return f"""You are an elite competitive programming coach and AI software engineer. 
 The user will provide a DSA problem, their target language ({language}), optionally user constraints/requirements, and optionally their attempt.
 
 You must return a raw JSON object with EXACTLY the following structure. ENSURE ALL CODE STRINGS ARE PROPERLY ESCAPED FOR JSON (e.g., escape double quotes as \\" and newlines as \\n):
 {{
-  "solutionCode": "Write the final optimal code in {language}. You MUST follow these strict OA humanization rules to ensure the code looks like it was written by a real student under time pressure and passes all plagiarism detectors:
-1. LOCK-IN A CONSISTENT PERSONA: Pick one result-variable name (e.g., 'res' or 'ans') and standard pointers (e.g., 'l, r' or 'left, right') and use them consistently. Add a mild human habit (like writing 'n = len(arr)' near the top or early return check).
-2. NO AI TELLS: Absolutely NO comments, docstrings, type hints, dataclasses, or verbose helper functions.
-3. FAMOUS-PROBLEM VARIATION: For very famous problems (e.g., Two Sum, Trapping Rain Water, contains duplicates), deliberately restructure loops/branches or choose a standard but less tutorial-canonical variant to bypass MOSS/AI detectors while keeping optimal time/space complexity.
-4. RESILIENT PARSING: Choose exactly ONE structure format per the following rules: {env_instruction}",
-  "explanation": "Provide a clean, concise explanation of the optimal approach in plain, intuitive English.",
+  "solutionCode": "Write the final optimal code in {language}. CRITICAL HUMANIZATION RULES: 1. Use short names (i, j, n, res, left, right). 2. NO docstrings. NO comments. NO type hints. 3. STRICT FORMATTING: Choose exactly ONE format based on the environment. NEVER mix 'class Solution' with 'sys.stdin'. 4. If it's a famous problem (e.g. Two Sum), pick a correct but slightly less ubiquitous approach to avoid looking like a textbook copy. 5. Include slight defensive checks (e.g. 'if not arr: return 0') to look realistic. {env_instruction}",
+  "explanation": "Provide a clean, concise explanation of the optimal approach in plain, intuitive English. Explicitly address how the solution satisfies any user-specified constraints/requirements (e.g. O(N) time, O(1) space, no built-in sort).",
   "complexity": {{ "time": "O(...)", "space": "O(...)" }},
-  "driverCode": "Write the COMPLETE, EXECUTABLE code in {language} (including all imports/includes, the solutionCode, and a main execution block). The main block MUST run a comprehensive set of test cases (normal, boundary, edge, and stress cases). For each test case, execute the solution, compare actual vs expected, and build a JSON array of the results. The script MUST output the exact string '---TEST_RESULTS_JSON---' followed by the valid JSON array of objects: [{{\\"passed\\": true/false, \\"actual\\": \\"...\\", \\"expected\\": \\"...\\", \\"inputs\\": [...]}}]. Ensure the code catches exceptions. Do NOT print anything else to stdout."
+  "driverCode": "Write the COMPLETE, EXECUTABLE code in {language} (including all imports/includes, the solutionCode, and a main execution block). The main block MUST run a comprehensive set of test cases (normal, boundary, edge, and stress cases). IMPORTANT: If testing an OA style flat script (where solutionCode reads from stdin), the driverCode's test runner MUST mock standard input (sys.stdin in Python, Scanner in Java, cin in C++) using the raw text format of the inputs (e.g. write plain space-separated or newline-separated values to the mocked stream), and MUST NOT write JSON-serialized objects (like dicts/lists stringified directly) into standard input, to prevent the solutionCode from throwing parsing errors. For each test case, execute the solution, compare actual vs expected, and build a JSON array of the results. The script MUST output the exact string '---TEST_RESULTS_JSON---' followed by the valid JSON array of objects: [{{\\"passed\\": true/false, \\"actual\\": \\"...\\", \\"expected\\": \\"...\\", \\"inputs\\": [...]}}]. Ensure the code catches exceptions. Do NOT print anything else to stdout."
 }}
 {completion_instruction}
 {error_fix_instruction}
