@@ -1041,4 +1041,11 @@ button,
   right: 16px !important;
   max-width: calc(100vw - 32px) !important;
 }
+
+/* Stack workspace layout vertically on mobile devices */
+.workspace-layout {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 20px !important;
+}
 }

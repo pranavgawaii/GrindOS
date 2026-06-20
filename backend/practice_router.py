@@ -24,6 +24,7 @@ class PracticeRequest(BaseModel):
     completionOutputFormat: str = "snippet"
     attemptedFirst: bool = False
     model: str = "gemini"
+    errorMessage: str = ""
 
 class ExtractTextRequest(BaseModel):
     image_base64: str
@@ -171,7 +172,7 @@ async def ask_gemini_json(system_prompt: str, user_message: str, model_choice: s
             pass
         raise Exception(f"Failed to generate analysis: {str(e)}")
 
-def build_system_prompt(language: str, environment: str, verbosity: str, is_completion: bool = False, starter_code: str = "", output_format: str = "snippet") -> str:
+def build_system_prompt(language: str, environment: str, verbosity: str, is_completion: bool = False, starter_code: str = "", output_format: str = "snippet", is_error_fix: bool = False) -> str:
     env_instruction = ""
     if environment == "leetcode":
         env_instruction = "Provide ONLY the class/function definition (LeetCode style). Do NOT include sys.stdin or __main__."
@@ -204,6 +205,17 @@ CRITICAL FORMATTING & REASONING RULES FOR COMPLETION MODE:
 6. Keep the solution code fully humanized and consistent with the target language ({language}).
 """
 
+    error_fix_instruction = ""
+    if is_error_fix:
+        error_fix_instruction = f"""
+CRITICAL ERROR DEBUGGING & FIXING RULES:
+The user is reporting an execution, compilation, or runtime error with the code provided in the user attempt (which is the previous generated code).
+1. Carefully analyze the error message/stack trace and the previous code attempt to pinpoint the bug.
+2. In the "explanation" field, explain exactly what was causing the root bug and how you fixed it.
+3. Write the fully corrected optimal code in the "solutionCode" field.
+4. Ensure the new code has NO errors, handles boundary/edge cases safely, and respects all constraints.
+"""
+
     return f"""You are an elite competitive programming coach and AI software engineer. 
 The user will provide a DSA problem, their target language ({language}), optionally user constraints/requirements, and optionally their attempt.
 
@@ -215,6 +227,7 @@ You must return a raw JSON object with EXACTLY the following structure. ENSURE A
   "driverCode": "Write the COMPLETE, EXECUTABLE code in {language} (including all imports/includes, the solutionCode, and a main execution block). The main block MUST run a comprehensive set of test cases (normal, boundary, edge, and stress cases). For each test case, execute the solution, compare actual vs expected, and build a JSON array of the results. The script MUST output the exact string '---TEST_RESULTS_JSON---' followed by the valid JSON array of objects: [{{\\"passed\\": true/false, \\"actual\\": \\"...\\", \\"expected\\": \\"...\\", \\"inputs\\": [...]}}]. Ensure the code catches exceptions. Do NOT print anything else to stdout."
 }}
 {completion_instruction}
+{error_fix_instruction}
 IMPORTANT: Output ONLY valid JSON.
 """
 
@@ -358,7 +371,9 @@ async def analyze_practice(req: PracticeRequest):
     if req.constraints:
         user_msg += f"Constraints:\n{req.constraints}\n\n"
     if req.userAttempt:
-        user_msg += f"My Attempt:\n{req.userAttempt}\n\n"
+        user_msg += f"My Attempt (Code containing error):\n{req.userAttempt}\n\n" if req.errorMessage else f"My Attempt:\n{req.userAttempt}\n\n"
+    if req.errorMessage:
+        user_msg += f"Execution Error / Runtime Error / Compilation Error:\n{req.errorMessage}\n\n"
         
     try:
         # Step 1: Generate analysis and code via Gemini
@@ -368,7 +383,8 @@ async def analyze_practice(req: PracticeRequest):
             req.verbosity, 
             req.isCompletionMode, 
             req.starterCode, 
-            req.completionOutputFormat
+            req.completionOutputFormat,
+            is_error_fix=bool(req.errorMessage)
         )
         analysis = await ask_gemini_json(system_prompt, user_msg, req.model)
         

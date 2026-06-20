@@ -17,9 +17,21 @@ class CodeRequest(BaseModel):
 
 JUDGE0_LANG_IDS = {
     "python": 100,      # Python (3.12.5)
+    "python3": 100,
+    "python2": 70,      # Python (2.7.17)
     "cpp": 105,         # C++ (GCC 14.1.0)
+    "cpp14": 52,        # C++ (GCC 7.4.0)
+    "cpp17": 54,        # C++ (GCC 9.2.0)
+    "cpp20": 75,        # C++ (GCC 11.2.0)
     "java": 91,         # Java (JDK 17.0.6)
-    "javascript": 102   # JavaScript (Node.js 22.08.0)
+    "java17": 91,
+    "java11": 62,       # Java (OpenJDK 11.0.12)
+    "java8": 62,        # Fallback to JDK 11 or standard
+    "javascript": 102,  # JavaScript (Node.js 22.08.0)
+    "sql": 82,          # SQL (SQLite 3.39.3)
+    "go": 95,           # Go (1.22.2)
+    "rust": 73,         # Rust (1.78.0)
+    "typescript": 101   # TypeScript (5.4.3)
 }
 
 PROBLEMS_TEST_CASES = {
