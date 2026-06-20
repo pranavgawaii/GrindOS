@@ -4,7 +4,7 @@ import re
 import base64
 import httpx
 from fastapi import APIRouter, HTTPException
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from typing import Optional, List, Dict, Any
 from supabase import create_client, Client
 from judge0_router import execute_on_judge0, parse_driver_results
@@ -26,6 +26,28 @@ class PracticeRequest(BaseModel):
     model: str = "gemini"
     errorMessage: str = ""
 
+class ComplexityInfo(BaseModel):
+    time: str
+    space: str
+
+class ComparisonRow(BaseModel):
+    feature: str
+    aiStyle: str
+    humanStyle: str
+
+class AnalysisResponse(BaseModel):
+    solutionCode: str
+    explanation: str
+    complexity: ComplexityInfo
+    driverCode: str
+    constraintsCheck: Optional[str] = None
+    naiveApproach: Optional[str] = None
+    optimizedApproach: Optional[str] = None
+    pseudocode: Optional[str] = None
+    comparisonTable: Optional[List[ComparisonRow]] = None
+    feedback: Optional[str] = None
+    rederivePrompt: Optional[str] = None
+
 class ExtractTextRequest(BaseModel):
     image_base64: str
 
@@ -45,10 +67,17 @@ async def ask_gemini_json(system_prompt: str, user_message: str, model_choice: s
     from google.genai import types
 
     api_key = os.environ.get("GEMINI_API_KEY", "")
-    if not api_key:
-        raise HTTPException(status_code=500, detail="GEMINI_API_KEY is not set.")
+    openrouter_key = os.environ.get("OPENROUTER_API_KEY", "")
+
+    def _validate_and_dump(content_str: str) -> dict:
+        clean_content = re.sub(r"^```json\s*", "", content_str, flags=re.IGNORECASE|re.MULTILINE)
+        clean_content = re.sub(r"^```\s*", "", clean_content, flags=re.MULTILINE)
+        parsed = json.loads(clean_content.strip())
+        validated = AnalysisResponse.model_validate(parsed)
+        return validated.model_dump()
 
     def _call_llm():
+        # 1. Claude/Anthropic blocks
         if model_choice.startswith("claude"):
             model_map = {
                 "claude-3-5-sonnet": {
@@ -77,11 +106,13 @@ async def ask_gemini_json(system_prompt: str, user_message: str, model_choice: s
                         system=system_prompt,
                         messages=[{"role": "user", "content": user_message}]
                     )
-                    return response.content[0].text
+                    try:
+                        return _validate_and_dump(response.content[0].text)
+                    except Exception as parse_err:
+                        print(f"Anthropic Claude parsing failed: {parse_err}")
                 except Exception as e:
                     print(f"Anthropic Claude API failed: {e}. Trying OpenRouter Claude...")
             
-            openrouter_key = os.environ.get("OPENROUTER_API_KEY", "")
             if openrouter_key:
                 try:
                     import openai
@@ -92,47 +123,89 @@ async def ask_gemini_json(system_prompt: str, user_message: str, model_choice: s
                     response = client.chat.completions.create(
                         model=choice_info["openrouter"],
                         max_tokens=2000,
+                        response_format={"type": "json_object"},
                         messages=[
                             {"role": "system", "content": system_prompt},
                             {"role": "user", "content": user_message}
                         ]
                     )
-                    return response.choices[0].message.content
+                    try:
+                        return _validate_and_dump(response.choices[0].message.content)
+                    except Exception as parse_err:
+                        print(f"OpenRouter Claude parsing failed: {parse_err}")
                 except Exception as e:
                     print(f"OpenRouter Claude fallback failed: {e}. Falling back to default Gemini/Llama pipeline...")
 
-        try:
-            client = genai.Client(api_key=api_key)
-            response = client.models.generate_content(
-                model="gemini-2.5-flash",
-                contents=user_message,
-                config=types.GenerateContentConfig(
-                    system_instruction=system_prompt,
-                    temperature=0.2,
-                    response_mime_type="application/json"
-                ),
-            )
-            return response.text
-        except Exception as e:
-            print(f"Gemini failed in analysis: {e}. Falling back to Groq Llama 3.3 70B...")
-            
+        # 2. Primary Gemini call via google-genai response_schema
+        if api_key:
+            try:
+                client = genai.Client(api_key=api_key)
+                response = client.models.generate_content(
+                    model="gemini-2.5-flash",
+                    contents=user_message,
+                    config=types.GenerateContentConfig(
+                        system_instruction=system_prompt,
+                        temperature=0.2,
+                        response_mime_type="application/json",
+                        response_schema=AnalysisResponse
+                    ),
+                )
+                try:
+                    return _validate_and_dump(response.text)
+                except Exception as parse_err:
+                    print(f"Gemini response parsing failed: {parse_err}")
+            except Exception as e:
+                print(f"Gemini failed in analysis: {e}. Falling back to OpenRouter Gemini 2.5 Flash...")
+
+        # 3. Fallback to OpenRouter Gemini 2.5 Flash (Paid, extremely cheap/reliable, using credits)
+        if openrouter_key:
+            try:
+                import openai
+                client = openai.OpenAI(
+                    base_url="https://openrouter.ai/api/v1",
+                    api_key=openrouter_key,
+                )
+                response = client.chat.completions.create(
+                    model="google/gemini-2.5-flash",
+                    max_tokens=2000,
+                    response_format={"type": "json_object"},
+                    messages=[
+                        {"role": "system", "content": system_prompt},
+                        {"role": "user", "content": user_message}
+                    ]
+                )
+                try:
+                    return _validate_and_dump(response.choices[0].message.content)
+                except Exception as parse_err:
+                    print(f"OpenRouter Gemini 2.5 Flash parsing failed: {parse_err}. Trying Groq Llama...")
+            except Exception as e:
+                print(f"OpenRouter Gemini 2.5 Flash failed: {e}. Trying Groq Llama...")
+
+        # 4. Fallback to Groq Llama 3.3 70B
         try:
             from groq import Groq
             groq_client = Groq(api_key=os.environ.get("GROQ_API_KEY", ""))
             groq_response = groq_client.chat.completions.create(
                 model="llama-3.3-70b-versatile",
+                response_format={"type": "json_object"},
                 messages=[
                     {"role": "system", "content": system_prompt},
                     {"role": "user", "content": user_message}
                 ]
             )
-            return groq_response.choices[0].message.content
+            try:
+                return _validate_and_dump(groq_response.choices[0].message.content)
+            except Exception as parse_err:
+                print(f"Groq parsing failed: {parse_err}. Trying OpenRouter free models...")
         except Exception as groq_err:
             print(f"Groq fallback failed: {groq_err}. Falling back to OpenRouter free tier...")
+
+        # 5. Fallback to OpenRouter free models
+        if openrouter_key:
             import openai
             openai_client = openai.OpenAI(
                 base_url="https://openrouter.ai/api/v1",
-                api_key=os.environ.get("OPENROUTER_API_KEY", ""),
+                api_key=openrouter_key,
             )
             free_models = [
                 "qwen/qwen3-coder:free",
@@ -146,30 +219,29 @@ async def ask_gemini_json(system_prompt: str, user_message: str, model_choice: s
                     print(f"Trying OpenRouter free model: {fallback_model}...")
                     openrouter_response = openai_client.chat.completions.create(
                         model=fallback_model,
+                        max_tokens=2000,
                         messages=[
                             {"role": "system", "content": system_prompt},
                             {"role": "user", "content": user_message}
                         ]
                     )
-                    return openrouter_response.choices[0].message.content
+                    try:
+                        return _validate_and_dump(openrouter_response.choices[0].message.content)
+                    except Exception as parse_err:
+                        print(f"OpenRouter free model {fallback_model} parsing failed: {parse_err}")
+                        last_openrouter_err = parse_err
                 except Exception as openrouter_err:
                     last_openrouter_err = openrouter_err
                     print(f"OpenRouter {fallback_model} failed: {openrouter_err}")
                     continue
             raise last_openrouter_err
+        else:
+            raise Exception("No active LLM providers or fallbacks succeeded.")
 
     try:
         content = await asyncio.to_thread(_call_llm)
-        # Ensure we strip any markdown blocks if the LLM adds them despite response_mime_type
-        content = re.sub(r"^```json\s*", "", content, flags=re.IGNORECASE|re.MULTILINE)
-        content = re.sub(r"^```\s*", "", content, flags=re.MULTILINE)
-        return json.loads(content.strip())
+        return content
     except Exception as e:
-        print(f"Gemini JSON Error: {e}")
-        try:
-            print(f"Raw output: {content}")
-        except:
-            pass
         raise Exception(f"Failed to generate analysis: {str(e)}")
 
 def build_system_prompt(language: str, environment: str, verbosity: str, is_completion: bool = False, starter_code: str = "", output_format: str = "snippet", is_error_fix: bool = False) -> str:
@@ -216,7 +288,7 @@ The user is reporting an execution, compilation, or runtime error with the code 
 4. Ensure the new code has NO errors, handles boundary/edge cases safely, and respects all constraints.
 """
 
-    return f"""You are an elite competitive programming coach and AI software engineer. 
+    prompt = """You are an elite competitive programming coach and AI software engineer. 
 The user will provide a DSA problem, their target language ({language}), optionally user constraints/requirements, and optionally their attempt.
 
 You must return a raw JSON object with EXACTLY the following structure. ENSURE ALL CODE STRINGS ARE PROPERLY ESCAPED FOR JSON (e.g., escape double quotes as \\" and newlines as \\n):
@@ -224,12 +296,18 @@ You must return a raw JSON object with EXACTLY the following structure. ENSURE A
   "solutionCode": "Write the final optimal code in {language}. CRITICAL HUMANIZATION RULES: 1. Use short names (i, j, n, res, left, right). 2. NO docstrings. NO comments. NO type hints. 3. STRICT FORMATTING: Choose exactly ONE format based on the environment. NEVER mix 'class Solution' with 'sys.stdin'. 4. If it's a famous problem (e.g. Two Sum), pick a correct but slightly less ubiquitous approach to avoid looking like a textbook copy. 5. Include slight defensive checks (e.g. 'if not arr: return 0') to look realistic. {env_instruction}",
   "explanation": "Provide a clean, concise explanation of the optimal approach in plain, intuitive English. Explicitly address how the solution satisfies any user-specified constraints/requirements (e.g. O(N) time, O(1) space, no built-in sort).",
   "complexity": {{ "time": "O(...)", "space": "O(...)" }},
-  "driverCode": "Write the COMPLETE, EXECUTABLE code in {language} (including all imports/includes, the solutionCode, and a main execution block). The main block MUST run a comprehensive set of test cases (normal, boundary, edge, and stress cases). IMPORTANT: If testing an OA style flat script (where solutionCode reads from stdin), the driverCode's test runner MUST mock standard input (sys.stdin in Python, Scanner in Java, cin in C++) using the raw text format of the inputs (e.g. write plain space-separated or newline-separated values to the mocked stream), and MUST NOT write JSON-serialized objects (like dicts/lists stringified directly) into standard input, to prevent the solutionCode from throwing parsing errors. For each test case, execute the solution, compare actual vs expected, and build a JSON array of the results. The script MUST output the exact string '---TEST_RESULTS_JSON---' followed by the valid JSON array of objects: [{{\\"passed\\": true/false, \\"actual\\": \\"...\\", \\"expected\\": \\"...\\", \\"inputs\\": [...]}}]. Ensure the code catches exceptions. Do NOT print anything else to stdout."
+  "driverCode": "Write the COMPLETE, EXECUTABLE code in {language} (including all imports/includes, the solutionCode, and a main execution block). The main block MUST run a comprehensive set of test cases (normal, boundary, edge, and stress cases). For each test case, execute the solution, compare actual vs expected, and build a JSON array of the results. The script MUST output the exact string '---TEST_RESULTS_JSON---' followed by the valid JSON array of objects: [{{\\"passed\\": true/false, \\"actual\\": \\"...\\", \\"expected\\": \\"...\\", \\"inputs\\": [...]}}]. Ensure the code catches exceptions. Do NOT print anything else to stdout.\\nIMPORTANT LANGUAGE-SPECIFIC DRIVER RULES FOR OA STYLE (FLAT SCRIPTS READING FROM STDIN):\\n- Python: Wrap the solutionCode inside a `solve()` function. In `if __name__ == \\'__main__\\':`, iterate over test cases. For each case, redirect standard streams using `sys.stdin = io.StringIO(mock_input)` and `sys.stdout = io.StringIO()`. Call `solve()`, capture output with `sys.stdout.getvalue().strip()`, and restore `sys.stdin` and `sys.stdout`.\\n- C++: Wrap the flat solution logic inside a `void solve()` function. In `int main()`, iterate over test cases. For each, redirect std::cin using `std::cin.rdbuf(ss.rdbuf())` with `std::stringstream ss(mock_input)` and redirect std::cout using a `std::stringstream`. Call `solve()`, read the stdout stream, and restore buffers. Do NOT include any duplicate main() declarations.\\n- Java: Wrap the solution logic in a helper method inside the class. In `public static void main(String[] args)`, redirect System.in and System.out using ByteArrayInputStream and ByteArrayOutputStream before calling the helper solver method.\\n- JavaScript: Wrap the script logic in a function that takes a string input (representing stdin lines) and parses/executes it."
 }}
 {completion_instruction}
 {error_fix_instruction}
 IMPORTANT: Output ONLY valid JSON.
 """
+    return prompt.format(
+        language=language,
+        env_instruction=env_instruction,
+        completion_instruction=completion_instruction,
+        error_fix_instruction=error_fix_instruction
+    )
 
 @router.post("/extract-text")
 async def extract_text(req: ExtractTextRequest):
