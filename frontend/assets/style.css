@@ -4386,7 +4386,7 @@ body.standalone-workspace .workspace-close-btn {
 }
 
 /* Split-Pane Desktop Workspace Layout */
-@media (min-width: 1025px) {
+@media (min-width: 769px) {
   .workspace-layout {
     display: grid;
     grid-template-columns: 1.15fr 0.85fr;
