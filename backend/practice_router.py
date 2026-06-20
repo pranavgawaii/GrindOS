@@ -27,26 +27,40 @@ class PracticeRequest(BaseModel):
     errorMessage: str = ""
 
 class ComplexityInfo(BaseModel):
-    time: str
-    space: str
+    time: str = Field(..., description="Time complexity of the solution, e.g. O(N) or O(log N).")
+    space: str = Field(..., description="Space complexity of the solution, e.g. O(1) or O(N).")
 
 class ComparisonRow(BaseModel):
-    feature: str
-    aiStyle: str
-    humanStyle: str
+    feature: str = Field(..., description="The coding aspect compared.")
+    aiStyle: str = Field(..., description="Standard AI generation style.")
+    humanStyle: str = Field(..., description="Human student under pressure style.")
 
 class AnalysisResponse(BaseModel):
-    solutionCode: str
-    explanation: str
-    complexity: ComplexityInfo
-    driverCode: str
-    constraintsCheck: Optional[str] = None
-    naiveApproach: Optional[str] = None
-    optimizedApproach: Optional[str] = None
-    pseudocode: Optional[str] = None
-    comparisonTable: Optional[List[ComparisonRow]] = None
-    feedback: Optional[str] = None
-    rederivePrompt: Optional[str] = None
+    solutionCode: str = Field(
+        ...,
+        description=(
+            "The final optimal implementation code in the target programming language. "
+            "CRITICAL PLAGIARISM-BYPASS & HUMANIZATION RULES: "
+            "1. NO canonical/textbook-first loops or structures for famous problems. "
+            "For Reverse Bits: DO NOT write any loop (for/while). In Python, use: "
+            "`import sys, json; raw = sys.stdin.read().strip(); "
+            "try: data = json.loads(raw); n = data['n'] if isinstance(data, dict) else data; "
+            "except: n = int(raw); ans = int(f'{n:032b}'[::-1], 2); print(ans)` or divide-and-conquer mask swaps. "
+            "2. NO COMMENTS of any kind (inline or block). NO docstrings. NO type hints. "
+            "3. Parse stdin robustly: if input is JSON (starts with { or [), parse it via json.loads. "
+            "4. Choose exactly one format per environment rules (flat OA script vs LeetCode class)."
+        )
+    )
+    explanation: str = Field(..., description="Concise English explanation of the approach.")
+    complexity: ComplexityInfo = Field(..., description="Time and space complexity of the solution.")
+    driverCode: str = Field(..., description="Executable unit-test driver code wrapper.")
+    constraintsCheck: Optional[str] = Field(None, description="Check of problem constraints.")
+    naiveApproach: Optional[str] = Field(None, description="Naive algorithm description.")
+    optimizedApproach: Optional[str] = Field(None, description="Optimized algorithm description.")
+    pseudocode: Optional[str] = Field(None, description="Pseudocode for the algorithm.")
+    comparisonTable: Optional[List[ComparisonRow]] = Field(None, description="AI vs human code comparison table.")
+    feedback: Optional[str] = Field(None, description="General student feedback.")
+    rederivePrompt: Optional[str] = Field(None, description="Rederivation prompts.")
 
 class ExtractTextRequest(BaseModel):
     image_base64: str
@@ -247,12 +261,38 @@ async def ask_gemini_json(system_prompt: str, user_message: str, model_choice: s
 def build_system_prompt(language: str, environment: str, verbosity: str, is_completion: bool = False, starter_code: str = "", output_format: str = "snippet", is_error_fix: bool = False) -> str:
     env_instruction = ""
     if environment == "leetcode":
-        env_instruction = "Provide ONLY the class/function definition (LeetCode style). Do NOT include sys.stdin or __main__."
+        env_instruction = (
+            "Provide ONLY the class/function definition (LeetCode style). Do NOT include sys.stdin or __main__. "
+            "CRITICAL CODESIGNAL/FUNCTION-BASED COMPATIBILITY: "
+            "Always include both a standard class Solution (LeetCode style) AND a flat alias function at the bottom "
+            "matching the problem name or named 'solution' (CodeSignal style) that instantiates the class and calls it, "
+            "so the code works out-of-the-box on both LeetCode and CodeSignal without editing. "
+            "For example: \n"
+            "class Solution:\n"
+            "    def reverseBits(self, n: int) -> int:\n"
+            "        return int(f'{n:032b}'[::-1], 2)\n\n"
+            "def solution(n):\n"
+            "    return Solution().reverseBits(n)"
+        )
     elif environment == "oa":
-        env_instruction = 'Provide a pure sys.stdin/stdout script (OA style). Do NOT use "class Solution". Do NOT wrap the logic in ANY functions (like "def main()" or "def solve()"). Do NOT use "if __name__ == \\\'__main__\\\':". Write the sys.stdin parsing and solution logic completely flat at the root level.'
+        env_instruction = (
+            'Provide a pure sys.stdin/stdout script (OA style). Do NOT use "class Solution". '
+            'Do NOT wrap the logic in ANY functions (like "def main()" or "def solve()"). '
+            'Do NOT use "if __name__ == \'__main__\':". Write the sys.stdin parsing and solution logic completely flat at the root level. '
+            'CRITICAL: You MUST parse stdin dynamically to handle BOTH raw inputs (e.g. "12345") and JSON inputs (e.g. "{\"n\": 12345}" or "{\"nums\": [...]}"). '
+            'If the input starts with "{" or "[", parse it with JSON and extract the parameter value (e.g. data["n"] or data["nums"]). Fallback to raw parsing if not JSON.'
+        )
     else:
         # Default/Auto format selection per SKILL.md guidelines
-        env_instruction = 'Automatically select the code structure format based on the problem statement context. 1. If the problem statement explicitly mentions standard input, stdin, or reading lines/input (e.g. "Read from stdin", "Print the output", "The first line contains"), then write a flat sys.stdin/stdout script (OA style) at the root level without "class Solution" or any wrapping functions. 2. Otherwise, write a class/function template (LeetCode style) wrapped in a Solution class or standard function signature. DO NOT mix both styles. Choose exactly one.'
+        env_instruction = (
+            'Automatically select the code structure format based on the problem statement context. '
+            '1. If the problem statement explicitly mentions standard input, stdin, or reading lines/input (e.g. "Read from stdin", "Print the output", "The first line contains"), then write a flat sys.stdin/stdout script (OA style) at the root level without "class Solution" or any wrapping functions. In this case, you MUST parse stdin dynamically to handle BOTH raw inputs and JSON inputs (e.g., "{\"n\": 12345}"). '
+            '2. Otherwise, write a class/function template (LeetCode style) wrapped in a Solution class or standard function signature. '
+            'Always include both a standard class Solution (LeetCode style) AND a flat alias function at the bottom '
+            "matching the problem name or named 'solution' (CodeSignal style) that instantiates the class and calls it, "
+            "so the code works out-of-the-box on both LeetCode and CodeSignal without editing. "
+            'DO NOT mix both styles. Choose exactly one.'
+        )
 
     completion_instruction = ""
     if is_completion:
@@ -291,22 +331,41 @@ The user is reporting an execution, compilation, or runtime error with the code 
     prompt = """You are an elite competitive programming coach and AI software engineer executing in Online Assessment (OA) stealth mode. 
 The user will provide a DSA problem, their target language ({language}), optionally user constraints/requirements, and optionally their attempt.
 
-You must return a raw JSON object with EXACTLY the following structure. ENSURE ALL CODE STRINGS ARE PROPERLY ESCAPED FOR JSON (e.g., escape double quotes as \\" and newlines as \\n):
-{{
-  "solutionCode": "Write the final optimal code in {language}. CRITICAL HUMANIZATION & PLAGIARISM-BYPASS RULES (OA MODE):\\n1. CONSISTENT STUDENT PERSONA: The code must look like it was written by a real, competent student under time pressure. Pick one consistent output variable name (e.g., 'res' or 'ans') and stick with it. Use short, standard variable names (e.g., 'n', 'm', 'i', 'j', 'l', 'r', 'seen', 'dp'). Include typical human coding habits (e.g., store array/string lengths in 'n' near the top, add a defensive check like 'if not arr: return 0' at the start even if technically redundant, or prefer a 'while' loop over 'for' where either works naturally).\\n2. NO AI TELLS OR DOCS: Strictly NO docstrings, NO type hints, and NO comments (at most, include a single, short, one-line comment on a complex bitwise or algorithmic step to explain it like a human would). Avoid perfect, over-engineered helper methods unless necessary.\\n3. FAMOUS-PROBLEM VARIATION: For famous, commonly repeated DSA problems (like Two Sum, Reverse Bits, contains duplicates, Trapping Rain Water, etc.), you MUST NOT write the canonical, textbook-first solution. Instead, deliberately write an alternative correct, optimal, but structurally distinct variant to bypass plagiarism checkers (like MOSS/Turnitin) and keep it stealthy. For example:\\n  * Reverse Bits (Python): Instead of the generic 'for i in range(32): r |= (n >> i & 1) << (31 - i)' loop, write it using a 'while n:' loop that shifts bits dynamically and pads remaining shifts at the end, or write a divide-and-conquer mask swap approach (e.g., 'n = ((n >> 1) & 0x55555555) | ((n & 0x55555555) << 1)', etc. and swap 2, 4, 8, 16 bits).\\n  * Two Sum: Instead of the standard single-pass hash map returning indices directly, sort pairs of (value, index) and use a two-pointer approach, or loop and check in a slightly restructured manner.\\n  * Contains Duplicate: Instead of 'len(nums) != len(set(nums))' or simple set insertion, sort the array and run a single-pass adjacent element comparison, or use a custom hash set loop with an early exit.\\n4. PURE ENVIRONMENT FORMATTING: Choose exactly ONE format: {env_instruction}",
+## CRITICAL RULES FOR GENERATING THE SOLUTION CODE
+1. FAMOUS-PROBLEM VARIATION & PLAGIARISM-BYPASS:
+   For famous, commonly repeated DSA problems (like Two Sum, Reverse Bits, contains duplicates, Trapping Rain Water, etc.), you MUST NOT write the canonical textbook first solution. Instead, deliberately write an alternative correct, optimal, but structurally distinct variant to bypass plagiarism checkers (like MOSS/Turnitin) and keep it stealthy.
+   * Reverse Bits (Python): DO NOT write any loop (for/while) or standard iteration. Write it in a single line using binary formatting and string slicing, e.g.:
+     `import sys, json; raw = sys.stdin.read().strip(); try: data = json.loads(raw); n = data['n'] if isinstance(data, dict) else data; except: n = int(raw); ans = int(f"{n:032b}"[::-1], 2); print(ans)` or a bitwise divide-and-conquer mask swap approach.
+   * Two Sum (Python): DO NOT use the standard single-pass hash map returning indices. Sort pairs of (value, index) and use a two-pointer approach, or loop and check in a slightly restructured manner.
+   * Contains Duplicate: DO NOT use `len(nums) != len(set(nums))`. Sort and run a single-pass adjacent comparison, or use a custom hash set loop with an early exit.
+2. NO COMMENTS OF ANY KIND:
+   The output code must be 100% comment-free and clean. Strictly NO comments of any kind (neither inline comments starting with '#'/'//', nor separate block comments, nor docstrings, nor type hints).
+3. ROBUST STDIN INPUT PARSING FOR FLAT SCRIPTS (OA STYLE):
+   If writing a flat script reading from stdin, you MUST parse stdin dynamically to handle BOTH raw inputs (e.g. "12345") and JSON inputs (e.g. '{"n": 12345}' or '{"nums": [...]}').
+   Check if the input starts with "{" or "[" and parse it using `json.loads` if so, extracting the parameter value. Fallback to raw parsing if not JSON.
+4. CONSISTENT STUDENT PERSONA:
+   The code must look like it was written by a real, competent student under time pressure. Use short, standard variable names (e.g., 'n', 'm', 'i', 'j', 'l', 'r', 'seen', 'dp'). Pick one consistent variable name for result (e.g. 'ans' or 'res') and stick with it.
+5. PURE ENVIRONMENT FORMATTING:
+   Choose exactly ONE format: {env_instruction}
+
+## OUTPUT FORMAT
+You must return a raw JSON object with EXACTLY the following structure. ENSURE ALL CODE STRINGS ARE PROPERLY ESCAPED FOR JSON (e.g., escape double quotes as \" and newlines as \n):
+{
+  "solutionCode": "The final optimal implementation code in {language} (comment-free, humanized, plagiarism-bypassed, and matching the environment format).",
   "explanation": "Provide a clean, concise explanation of the optimal approach in plain, intuitive English. Explicitly address how the solution satisfies any user-specified constraints/requirements (e.g. O(N) time, O(1) space, no built-in sort).",
-  "complexity": {{ "time": "O(...)", "space": "O(...)" }},
-  "driverCode": "Write the COMPLETE, EXECUTABLE code in {language} (including all imports/includes, the solutionCode, and a main execution block). The main block MUST run a comprehensive set of test cases (normal, boundary, edge, and stress cases). For each test case, execute the solution, compare actual vs expected, and build a JSON array of the results. The script MUST output the exact string '---TEST_RESULTS_JSON---' followed by the valid JSON array of objects: [{{\\"passed\\": true/false, \\"actual\\": \\"...\\", \\"expected\\": \\"...\\", \\"inputs\\": [...]}}]. Ensure the code catches exceptions. Do NOT print anything else to stdout.\\nIMPORTANT LANGUAGE-SPECIFIC DRIVER RULES FOR OA STYLE (FLAT SCRIPTS READING FROM STDIN):\\n- Python: Wrap the solutionCode inside a `solve()` function. In `if __name__ == \\'__main__\\':`, iterate over test cases. For each case, redirect standard streams using `sys.stdin = io.StringIO(mock_input)` and `sys.stdout = io.StringIO()`. Call `solve()`, capture output with `sys.stdout.getvalue().strip()`, and restore `sys.stdin` and `sys.stdout`.\\n- C++: Wrap the flat solution logic inside a `void solve()` function. In `int main()`, iterate over test cases. For each, redirect std::cin using `std::cin.rdbuf(ss.rdbuf())` with `std::stringstream ss(mock_input)` and redirect std::cout using a `std::stringstream`. Call `solve()`, read the stdout stream, and restore buffers. Do NOT include any duplicate main() declarations.\\n- Java: Wrap the solution logic in a helper method inside the class. In `public static void main(String[] args)`, redirect System.in and System.out using ByteArrayInputStream and ByteArrayOutputStream before calling the helper solver method.\\n- JavaScript: Wrap the script logic in a function that takes a string input (representing stdin lines) and parses/executes it."
-}}
+  "complexity": { "time": "O(...)", "space": "O(...)" },
+  "driverCode": "Write the COMPLETE, EXECUTABLE code in {language} (including all imports/includes, a test runner, and a main execution block). The main block MUST run a comprehensive set of test cases (normal, boundary, edge, and stress cases). For each test case, execute the solution, compare actual vs expected, and build a JSON array of the results. The script MUST output the exact string '---TEST_RESULTS_JSON---' followed by the valid JSON array of objects: [{\"passed\": true/false, \"actual\": \"...\", \"expected\": \"...\", \"inputs\": [...]}]. Ensure the code catches exceptions. Do NOT print anything else to stdout.\\nCRITICAL DRIVER RULES:\\n1. For Python, be extremely careful with string quotes when specifying mock inputs: if a mock input contains double quotes like '{\"n\": 1}', use single quotes around the outer string like '{\"n\": 1}' or properly escape them to avoid syntax errors.\\n2. The solutionCode itself MUST remain completely flat. Inside the driverCode, wrap the flat solution logic inside a solver function/method."
+}
 {completion_instruction}
 {error_fix_instruction}
 IMPORTANT: Output ONLY valid JSON.
 """
-    return prompt.format(
-        language=language,
-        env_instruction=env_instruction,
-        completion_instruction=completion_instruction,
-        error_fix_instruction=error_fix_instruction
+    return (
+        prompt
+        .replace("{language}", language)
+        .replace("{env_instruction}", env_instruction)
+        .replace("{completion_instruction}", completion_instruction)
+        .replace("{error_fix_instruction}", error_fix_instruction)
     )
 
 @router.post("/extract-text")
@@ -466,14 +525,59 @@ async def analyze_practice(req: PracticeRequest):
         )
         analysis = await ask_gemini_json(system_prompt, user_msg, req.model)
         
+        # Self-correction loop to validate constraints and syntax before proceeding
+        attempts = 0
+        while attempts < 3:
+            solution = analysis.get("solutionCode", "")
+            driver_code = analysis.get("driverCode", "")
+            error_reasons = []
+            
+            # Check 1: Famous problems - Reverse Bits must not use loops in Python
+            is_reverse_bits = "reverse" in req.problem.lower() and "bit" in req.problem.lower()
+            if is_reverse_bits and req.language.lower() in ("python", "py"):
+                if "for " in solution or "while " in solution:
+                    error_reasons.append("For Reverse Bits in Python, you MUST NOT use any loop (for/while). Write it in a single line using binary formatting and string slicing, e.g. `ans = int(f'{n:032b}'[::-1], 2)`.")
+            
+            # Check 2: Python driverCode syntax validation
+            if req.language.lower() in ("python", "py") and driver_code:
+                try:
+                    compile(driver_code, "<string>", "exec")
+                except SyntaxError as syntax_err:
+                    error_reasons.append(f"The generated driverCode has a Python SyntaxError: {syntax_err}. Ensure all string quotes and newlines in test cases are properly escaped (e.g. do not put raw unescaped newlines inside single-quoted strings).")
+            
+            if not error_reasons:
+                break
+                
+            attempts += 1
+            feedback_msg = "Your previous response violated critical requirements:\n" + "\n".join(f"- {err}" for err in error_reasons) + "\n\nPlease rewrite the JSON response to correct these issues. Ensure all syntax is valid and constraints are strictly met."
+            print(f"Self-correcting attempt {attempts} for practice router...")
+            analysis = await ask_gemini_json(system_prompt + f"\n\nCRITICAL SYSTEM FEEDBACK (ATTEMPT {attempts}):\n{feedback_msg}", user_msg, req.model)
+        
         # Aggressively strip comments from solution code
         if "solutionCode" in analysis:
             raw_code = analysis["solutionCode"]
             cleaned_lines = []
+            lang_lower = req.language.lower()
             for line in raw_code.splitlines():
-                if line.strip().startswith("#") or line.strip().startswith("//"):
-                    continue
-                cleaned_lines.append(line)
+                trimmed = line.strip()
+                if lang_lower in ("python", "py"):
+                    if trimmed.startswith("#"):
+                        continue
+                    if "#" in line:
+                        if '"' not in line and "'" not in line:
+                            line = line.split("#", 1)[0]
+                        elif " #" in line or "\t#" in line or "  #" in line:
+                            line = line.split(" #", 1)[0] if " #" in line else line.split("\t#", 1)[0] if "\t#" in line else line.split("  #", 1)[0]
+                    cleaned_lines.append(line.rstrip())
+                else:  # c++, java, javascript
+                    if trimmed.startswith("//") or trimmed.startswith("/*"):
+                        continue
+                    if "//" in line:
+                        if '"' not in line and "'" not in line:
+                            line = line.split("//", 1)[0]
+                        elif " //" in line or "\t//" in line or "  //" in line:
+                            line = line.split(" //", 1)[0] if " //" in line else line.split("\t//", 1)[0] if "\t//" in line else line.split("  //", 1)[0]
+                    cleaned_lines.append(line.rstrip())
             analysis["solutionCode"] = "\n".join(cleaned_lines)
             
         # Step 2: Verify code via Judge0 (if enabled)
