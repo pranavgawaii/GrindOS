@@ -177,10 +177,28 @@ def build_system_prompt(language: str, environment: str, verbosity: str, is_comp
     if environment == "leetcode":
         env_instruction = "Provide a class/function template (LeetCode style) containing the core solution logic. At the top of the file, include necessary standard library imports/headers (e.g. '#include <vector>' or 'from typing import List'). At the bottom of the file, write a simple human-style main execution block (e.g., 'if __name__ == \"__main__\":' in Python, or a standard 'int main()' in C++) that initializes the class, calls the function with a sample test case, and prints the result to standard output so that it is instantly executable in a terminal."
     elif environment == "oa":
-        env_instruction = 'Provide a pure sys.stdin/stdout flat script (OA style). The script MUST parse standard space-separated or newline-separated values from standard input (stdin) using standard methods like input() or sys.stdin.read().split() and convert them to integers/strings (do NOT assume standard input contains JSON and do NOT use json.loads to parse stdin). Write the standard library imports, parsing logic, solution logic, and stdout prints flatly at the root level. Do NOT wrap the core logic inside a class or nested solve functions, and do NOT include any main guard block.'
+        env_instruction = (
+            "Provide a pure sys.stdin/stdout flat script (OA style) that writes all imports, parsing, solution, and stdout prints at the root level. "
+            "To be 100% robust and pass all test cases on various online assessment platforms, the parsing logic MUST be resilient. "
+            "Specifically for Python, read standard input and attempt to parse it as JSON using 'json.loads' inside a try-except block. "
+            "If it parses as a dictionary (e.g. {'n': 8456986}), extract the value (e.g., data.get('n', data.get('x', list(data.values())[0]))); "
+            "if it parses as a list or a single value, use it directly. "
+            "If the JSON parsing fails (throws an exception) or the input is empty/plain text, catch the exception and fall back to standard text-based parsing "
+            "methods (like sys.stdin.read().split() or sys.stdin.readline().strip() mapped to int/float/string). "
+            "This resilient approach allows the script to pass test cases on both JSON-passing sandboxes and standard raw-text terminals. "
+            "Do NOT wrap the core logic inside a class or nested solve functions, and do NOT include any main guard block."
+        )
     else:
         # Default/Auto format selection per SKILL.md guidelines
-        env_instruction = "Automatically select the code structure format based on the problem statement context. 1. If the problem statement explicitly mentions standard input, stdin, or reading lines/input, write a flat sys.stdin/stdout script (OA style) parsing standard space-separated or newline-separated values (do NOT use json.loads). 2. Otherwise, write a class/function template (LeetCode style) wrapped in a Solution class. In both cases, ensure the file has all standard imports/headers at the top."
+        env_instruction = (
+            "Automatically select the code structure format based on the problem statement context. "
+            "1. If the problem statement mentions standard input, stdin, or reading lines/input, write a flat sys.stdin/stdout script (OA style) "
+            "with resilient parsing logic: in Python, try to parse input as JSON using 'json.loads' inside a try-except block (if it's a dict like {'n': 8456986}, "
+            "extract the key value; if a list/integer, use it). If it fails or is raw text, fall back to standard text parsing (sys.stdin.read().split() "
+            "or sys.stdin.readline().strip()). This makes the script run perfectly on both JSON-input platforms and normal terminal streams. "
+            "2. Otherwise, write a class/function template (LeetCode style) wrapped in a Solution class. "
+            "In both cases, ensure the file has all standard imports/headers at the top."
+        )
 
     completion_instruction = ""
     if is_completion:
@@ -221,7 +239,7 @@ The user will provide a DSA problem, their target language ({language}), optiona
 
 You must return a raw JSON object with EXACTLY the following structure. ENSURE ALL CODE STRINGS ARE PROPERLY ESCAPED FOR JSON (e.g., escape double quotes as \\" and newlines as \\n):
 {{
-  "solutionCode": "Write the final optimal code in {language}. CRITICAL HUMANIZATION RULES: 1. Use compact competitive programming variable names (e.g., n, m, res, ans, l, r, mid, cur, adj, vis, dp, cnt) instead of long descriptive names. 2. Absolutely NO comments or docstrings explaining trivial steps in the code. 3. Avoid highly verbose AI structures; do not modularize small helper logic into separate functions unless it is complex. 4. Write standard, mathematically correct algorithms (e.g., standard binary search pointer updates and boundaries, correct bit manipulation loops). Do NOT write buggy or overly complex non-textbook variations just to look different. 5. Include small, natural defensive/boundary checks (e.g., 'if not arr: return 0') to mimic hand-written student code. 6. STRICT FORMATTING: Choose exactly ONE structure format per the following rules: {env_instruction}",
+  "solutionCode": "Write the final optimal code in {language}. CRITICAL HUMANIZATION RULES: 1. Use clean, elegant variable names that are concise but meaningful (e.g. n, m, res, ans, dp, cnt, loop index variables like i, j, or pointers like l, r or left, right). Do NOT use excessively verbose names (like indexLeftPointer), and do NOT use single-character variables to the point of being unreadable. 2. Absolutely NO comments or docstrings explaining steps in the code, as this is a major indicator of AI-generated code. 3. Avoid highly verbose AI structures; do not modularize small helper logic into separate functions unless it is complex. 4. Write standard, mathematically correct algorithms (e.g., standard binary search pointer updates and boundaries, correct bit manipulation loops). Do NOT write buggy or overly complex non-textbook variations just to look different. 5. Include small, natural defensive/boundary checks (e.g., 'if not arr: return 0') to mimic hand-written student code. 6. STRICT FORMATTING: Choose exactly ONE structure format per the following rules: {env_instruction}",
   "explanation": "Provide a clean, concise explanation of the optimal approach in plain, intuitive English. Explicitly address how the solution satisfies any user-specified constraints/requirements (e.g. O(N) time, O(1) space, no built-in sort).",
   "complexity": {{ "time": "O(...)", "space": "O(...)" }},
   "driverCode": "Write the COMPLETE, EXECUTABLE code in {language} (including all imports/includes, the solutionCode, and a main execution block). The main block MUST run a comprehensive set of test cases (normal, boundary, edge, and stress cases). For each test case, execute the solution, compare actual vs expected, and build a JSON array of the results. The script MUST output the exact string '---TEST_RESULTS_JSON---' followed by the valid JSON array of objects: [{{\\"passed\\": true/false, \\"actual\\": \\"...\\", \\"expected\\": \\"...\\", \\"inputs\\": [...]}}]. Ensure the code catches exceptions. Do NOT print anything else to stdout."
