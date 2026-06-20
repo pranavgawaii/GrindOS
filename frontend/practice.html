@@ -12,8 +12,8 @@
     rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="assets/style.css?v=21" />
-  <link rel="stylesheet" href="assets/mobile.css?v=21" />
+  <link rel="stylesheet" href="assets/style.css?v=22" />
+  <link rel="stylesheet" href="assets/mobile.css?v=22" />
 
   <link rel="icon" type="image/png" href="./logo.png">
   <link rel="apple-touch-icon" href="./logo.png">
@@ -492,6 +492,26 @@
     .hidden {
       display: none !important;
     }
+
+    /* Split-Pane Workspace Layout (Inlined to bypass stylesheet cache) */
+    .workspace-layout {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .workspace-left, .workspace-right {
+      width: 100%;
+      min-width: 0;
+      box-sizing: border-box;
+    }
+    @media (min-width: 769px) {
+      .workspace-layout {
+        display: grid;
+        grid-template-columns: 1.15fr 0.85fr;
+        gap: 28px;
+        align-items: start;
+      }
+    }
   </style>
 </head>
 
@@ -753,8 +773,8 @@
   </nav>
 
   <!-- External clerk library for auth injected by script.js -->
-  <script src="assets/script.js?v=21"></script>
-  <script src="assets/practice.js?v=20"></script>
+  <script src="assets/script.js?v=22"></script>
+  <script src="assets/practice.js?v=22"></script>
 </body>
 
 </html>
