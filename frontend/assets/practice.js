@@ -215,14 +215,17 @@ document.addEventListener('DOMContentLoaded', () => {
       tabs.push({ id: 'tab-next', label: '🎯 Next Steps' });
     }
     
-    tabs.forEach((t, i) => {
-      html += `<button class="tab-btn ${i === 0 ? 'active' : ''}" data-target="${t.id}">${t.label}</button>`;
+    // Default to 'tab-code' first if available
+    const defaultActiveTabId = tabs.find(t => t.id === 'tab-code') ? 'tab-code' : (tabs[0] ? tabs[0].id : '');
+    
+    tabs.forEach((t) => {
+      html += `<button class="tab-btn ${t.id === defaultActiveTabId ? 'active' : ''}" data-target="${t.id}">${t.label}</button>`;
     });
     html += `</div>`;
     
     // Tab 1: Breakdown
     if (tabs.find(t => t.id === 'tab-breakdown')) {
-      html += `<div id="tab-breakdown" class="tab-content ${tabs[0].id === 'tab-breakdown' ? 'active' : ''}" style="animation: slideUp 0.3s ease;">`;
+      html += `<div id="tab-breakdown" class="tab-content ${defaultActiveTabId === 'tab-breakdown' ? 'active' : ''}" style="animation: slideUp 0.3s ease;">`;
       if (data.constraintsCheck) html += `<h4 style="font-weight: 700; margin-bottom: 8px;">Constraints</h4><div style="margin-bottom: 24px; color: var(--text-2);">${marked.parse(data.constraintsCheck)}</div>`;
       if (data.complexity) {
         html += `<div style="margin-bottom: 24px; display: flex; gap: 8px; flex-wrap: wrap;">
@@ -238,7 +241,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Tab 2: Code
     if (tabs.find(t => t.id === 'tab-code')) {
-      html += `<div id="tab-code" class="tab-content ${tabs[0].id === 'tab-code' ? 'active' : ''}">`;
+      html += `<div id="tab-code" class="tab-content ${defaultActiveTabId === 'tab-code' ? 'active' : ''}">`;
       html += `
         <div class="code-showcase-card" style="background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-md); position: relative; margin-top: 10px;">
           <div class="code-card-header" style="padding: 16px 20px; background: var(--bg-2); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between;">
@@ -281,7 +284,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Tab 3: Verification
     if (tabs.find(t => t.id === 'tab-verify')) {
-      html += `<div id="tab-verify" class="tab-content ${tabs[0].id === 'tab-verify' ? 'active' : ''}">`;
+      html += `<div id="tab-verify" class="tab-content ${defaultActiveTabId === 'tab-verify' ? 'active' : ''}">`;
       
       let passedCount = 0;
       let totalCount = data.verification.length;
@@ -329,7 +332,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Tab 4: Comparison
     if (tabs.find(t => t.id === 'tab-compare')) {
-      html += `<div id="tab-compare" class="tab-content ${tabs[0].id === 'tab-compare' ? 'active' : ''}">`;
+      html += `<div id="tab-compare" class="tab-content ${defaultActiveTabId === 'tab-compare' ? 'active' : ''}">`;
       html += `
         <div class="comparison-card" style="background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px; box-shadow: var(--shadow-sm); margin-top: 10px; overflow-x: auto;">
           <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--text-1); margin-bottom: 16px;">🤖 AI vs Human Coding Style</h3>
@@ -358,7 +361,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Tab 5: Next Steps
     if (tabs.find(t => t.id === 'tab-next')) {
-      html += `<div id="tab-next" class="tab-content ${tabs[0].id === 'tab-next' ? 'active' : ''}">`;
+      html += `<div id="tab-next" class="tab-content ${defaultActiveTabId === 'tab-next' ? 'active' : ''}">`;
       html += `<div class="next-steps-card" style="background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px; box-shadow: var(--shadow-sm); margin-top: 10px;">`;
       if (data.feedback) html += `<h4 style="font-weight: 700; margin-bottom: 8px;">Feedback</h4><div style="margin-bottom: 20px; color: var(--text-2);">${marked.parse(data.feedback)}</div>`;
       if (data.rederivePrompt) html += `<h4 style="font-weight: 700; margin-bottom: 8px; margin-top: 20px;">Try it yourself</h4><div style="color: var(--text-2);">${marked.parse(data.rederivePrompt)}</div>`;
