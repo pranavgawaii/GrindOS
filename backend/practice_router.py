@@ -234,13 +234,17 @@ The user is reporting an execution, compilation, or runtime error with the code 
 4. Ensure the new code has NO errors, handles boundary/edge cases safely, and respects all constraints.
 """
 
-    return f"""You are an elite competitive programming coach and AI software engineer. 
+    return f"""You are an elite competitive programming coach and AI software engineer executing in OA (Online Assessment) humanization mode.
 The user will provide a DSA problem, their target language ({language}), optionally user constraints/requirements, and optionally their attempt.
 
 You must return a raw JSON object with EXACTLY the following structure. ENSURE ALL CODE STRINGS ARE PROPERLY ESCAPED FOR JSON (e.g., escape double quotes as \\" and newlines as \\n):
 {{
-  "solutionCode": "Write the final optimal code in {language}. CRITICAL HUMANIZATION RULES: 1. Use clean, elegant variable names that are concise but meaningful (e.g. n, m, res, ans, dp, cnt, loop index variables like i, j, or pointers like l, r or left, right). Do NOT use excessively verbose names (like indexLeftPointer), and do NOT use single-character variables to the point of being unreadable. 2. Absolutely NO comments or docstrings explaining steps in the code, as this is a major indicator of AI-generated code. 3. Avoid highly verbose AI structures; do not modularize small helper logic into separate functions unless it is complex. 4. Write standard, mathematically correct algorithms (e.g., standard binary search pointer updates and boundaries, correct bit manipulation loops). Do NOT write buggy or overly complex non-textbook variations just to look different. 5. Include small, natural defensive/boundary checks (e.g., 'if not arr: return 0') to mimic hand-written student code. 6. STRICT FORMATTING: Choose exactly ONE structure format per the following rules: {env_instruction}",
-  "explanation": "Provide a clean, concise explanation of the optimal approach in plain, intuitive English. Explicitly address how the solution satisfies any user-specified constraints/requirements (e.g. O(N) time, O(1) space, no built-in sort).",
+  "solutionCode": "Write the final optimal code in {language}. You MUST follow these strict OA humanization rules to ensure the code looks like it was written by a real student under time pressure and passes all plagiarism detectors:
+1. LOCK-IN A CONSISTENT PERSONA: Pick one result-variable name (e.g., 'res' or 'ans') and standard pointers (e.g., 'l, r' or 'left, right') and use them consistently. Add a mild human habit (like writing 'n = len(arr)' near the top or early return check).
+2. NO AI TELLS: Absolutely NO comments, docstrings, type hints, dataclasses, or verbose helper functions.
+3. FAMOUS-PROBLEM VARIATION: For very famous problems (e.g., Two Sum, Trapping Rain Water, contains duplicates), deliberately restructure loops/branches or choose a standard but less tutorial-canonical variant to bypass MOSS/AI detectors while keeping optimal time/space complexity.
+4. RESILIENT PARSING: Choose exactly ONE structure format per the following rules: {env_instruction}",
+  "explanation": "Provide a clean, concise explanation of the optimal approach in plain, intuitive English.",
   "complexity": {{ "time": "O(...)", "space": "O(...)" }},
   "driverCode": "Write the COMPLETE, EXECUTABLE code in {language} (including all imports/includes, the solutionCode, and a main execution block). The main block MUST run a comprehensive set of test cases (normal, boundary, edge, and stress cases). For each test case, execute the solution, compare actual vs expected, and build a JSON array of the results. The script MUST output the exact string '---TEST_RESULTS_JSON---' followed by the valid JSON array of objects: [{{\\"passed\\": true/false, \\"actual\\": \\"...\\", \\"expected\\": \\"...\\", \\"inputs\\": [...]}}]. Ensure the code catches exceptions. Do NOT print anything else to stdout."
 }}
