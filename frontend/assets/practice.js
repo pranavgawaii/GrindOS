@@ -132,6 +132,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const language = document.getElementById('language').value;
       const environment = document.getElementById('environment').value;
       const verbosity = document.getElementById('verbosity').value;
+      const namingStyleEl = document.getElementById('namingStyle');
+      const namingStyle = namingStyleEl ? namingStyleEl.value : 'short';
       const constraints = document.getElementById('constraints') ? document.getElementById('constraints').value.trim() : '';
       const verifyCode = document.getElementById('verifyCode') ? document.getElementById('verifyCode').checked : true;
       
@@ -166,6 +168,7 @@ document.addEventListener('DOMContentLoaded', () => {
             userAttempt: "",
             environment,
             verbosity,
+            namingStyle,
             verify_code: verifyCode,
             isCompletionMode,
             starterCode,
@@ -434,6 +437,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const language = document.getElementById('language').value;
         const environment = document.getElementById('environment').value;
         const verbosity = document.getElementById('verbosity').value;
+        const namingStyleEl = document.getElementById('namingStyle');
+        const namingStyle = namingStyleEl ? namingStyleEl.value : 'short';
         const constraints = document.getElementById('constraints') ? document.getElementById('constraints').value.trim() : '';
         const verifyCode = document.getElementById('verifyCode') ? document.getElementById('verifyCode').checked : true;
         
@@ -466,6 +471,7 @@ document.addEventListener('DOMContentLoaded', () => {
               errorMessage: errorVal,        // Pass the error message
               environment,
               verbosity,
+              namingStyle,
               verify_code: verifyCode,
               isCompletionMode,
               starterCode,

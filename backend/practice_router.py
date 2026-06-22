@@ -25,6 +25,7 @@ class PracticeRequest(BaseModel):
     attemptedFirst: bool = False
     model: str = "gemini"
     errorMessage: str = ""
+    namingStyle: str = "short"
 
 class ComplexityInfo(BaseModel):
     time: str = Field(..., description="Time complexity of the solution, e.g. O(N) or O(log N).")
@@ -155,7 +156,7 @@ async def ask_gemini_json(system_prompt: str, user_message: str, model_choice: s
             try:
                 client = genai.Client(api_key=api_key)
                 response = client.models.generate_content(
-                    model="gemini-2.5-flash",
+                    model="gemini-2.5-flash-lite",
                     contents=user_message,
                     config=types.GenerateContentConfig(
                         system_instruction=system_prompt,
@@ -258,7 +259,7 @@ async def ask_gemini_json(system_prompt: str, user_message: str, model_choice: s
     except Exception as e:
         raise Exception(f"Failed to generate analysis: {str(e)}")
 
-def build_system_prompt(language: str, environment: str, verbosity: str, is_completion: bool = False, starter_code: str = "", output_format: str = "snippet", is_error_fix: bool = False) -> str:
+def build_system_prompt(language: str, environment: str, verbosity: str, is_completion: bool = False, starter_code: str = "", output_format: str = "snippet", is_error_fix: bool = False, naming_style: str = "short") -> str:
     env_instruction = ""
     if environment == "leetcode":
         env_instruction = (
@@ -292,6 +293,25 @@ def build_system_prompt(language: str, environment: str, verbosity: str, is_comp
             "matching the problem name or named 'solution' (CodeSignal style) that instantiates the class and calls it, "
             "so the code works out-of-the-box on both LeetCode and CodeSignal without editing. "
             'DO NOT mix both styles. Choose exactly one.'
+        )
+
+    naming_style_instruction = ""
+    if naming_style == "descriptive":
+        naming_style_instruction = (
+            "4. DESCRIPTIVE NAMING PERSONA:\n"
+            "   You MUST use highly descriptive and meaningful variable and function/method names. "
+            "For example: use `studentDataIterator` instead of `i` or `idx`, `matchingIndexTracker` instead of `match` or `k`, "
+            "`targetSumDifference` instead of `diff`, `trappedWaterSum` instead of `ans` or `res`, "
+            "`leftBoundaryPointer` instead of `l` or `left`, and `rightBoundaryPointer` instead of `r` or `right`. "
+            "Every variable, loop counter, tracker, and parameter must have a long, readable, meaningful name. "
+            "Strictly AVOID short, cryptic competitive programming names (like `n`, `m`, `i`, `j`, `seen`, `dp`, `ans`, `res`)."
+        )
+    else:
+        naming_style_instruction = (
+            "4. CONSISTENT STUDENT PERSONA:\n"
+            "   The code must look like it was written by a real, competent student under time pressure. "
+            "Use short, standard variable names (e.g., 'n', 'm', 'i', 'j', 'l', 'r', 'seen', 'dp'). "
+            "Pick one consistent variable name for result (e.g. 'ans' or 'res') and stick with it."
         )
 
     completion_instruction = ""
@@ -343,8 +363,7 @@ The user will provide a DSA problem, their target language ({language}), optiona
 3. ROBUST STDIN INPUT PARSING FOR FLAT SCRIPTS (OA STYLE):
    If writing a flat script reading from stdin, you MUST parse stdin dynamically to handle BOTH raw inputs (e.g. "12345") and JSON inputs (e.g. '{"n": 12345}' or '{"nums": [...]}').
    Check if the input starts with "{" or "[" and parse it using `json.loads` if so, extracting the parameter value. Fallback to raw parsing if not JSON.
-4. CONSISTENT STUDENT PERSONA:
-   The code must look like it was written by a real, competent student under time pressure. Use short, standard variable names (e.g., 'n', 'm', 'i', 'j', 'l', 'r', 'seen', 'dp'). Pick one consistent variable name for result (e.g. 'ans' or 'res') and stick with it.
+{naming_style_instruction}
 5. PURE ENVIRONMENT FORMATTING:
    Choose exactly ONE format: {env_instruction}
 
@@ -354,7 +373,7 @@ You must return a raw JSON object with EXACTLY the following structure. ENSURE A
   "solutionCode": "The final optimal implementation code in {language} (comment-free, humanized, plagiarism-bypassed, and matching the environment format).",
   "explanation": "Provide a clean, concise explanation of the optimal approach in plain, intuitive English. Explicitly address how the solution satisfies any user-specified constraints/requirements (e.g. O(N) time, O(1) space, no built-in sort).",
   "complexity": { "time": "O(...)", "space": "O(...)" },
-  "driverCode": "Write the COMPLETE, EXECUTABLE code in {language} (including all imports/includes, a test runner, and a main execution block). The main block MUST run a comprehensive set of test cases (normal, boundary, edge, and stress cases). For each test case, execute the solution, compare actual vs expected, and build a JSON array of the results. The script MUST output the exact string '---TEST_RESULTS_JSON---' followed by the valid JSON array of objects: [{\"passed\": true/false, \"actual\": \"...\", \"expected\": \"...\", \"inputs\": [...]}]. Ensure the code catches exceptions. Do NOT print anything else to stdout.\\nCRITICAL DRIVER RULES:\\n1. For Python, be extremely careful with string quotes when specifying mock inputs: if a mock input contains double quotes like '{\"n\": 1}', use single quotes around the outer string like '{\"n\": 1}' or properly escape them to avoid syntax errors.\\n2. The solutionCode itself MUST remain completely flat. Inside the driverCode, wrap the flat solution logic inside a solver function/method."
+  "driverCode": "Write the COMPLETE, EXECUTABLE code in {language} (including all imports/includes, a test runner, and a main execution block). The main block MUST run a comprehensive set of test cases (normal, boundary, edge, and stress cases). For each test case, execute the solution, compare actual vs expected, and build a JSON array of the results. The script MUST output the exact string '---TEST_RESULTS_JSON---' followed by the valid JSON array of objects: [{\"passed\": true/false, \"actual\": \"...\", \"expected\": \"...\", \"inputs\": [...]}]. Ensure the code catches exceptions. Do NOT print anything else to stdout.\\nCRITICAL DRIVER RULES:\\n1. For Python, be extremely careful with string quotes when specifying mock inputs: if a mock input contains double quotes like '{\"n\": 1}', use single quotes around the outer string like '{\"n\": 1}' or properly escape them to avoid syntax errors.\\n2. The solutionCode itself MUST remain completely flat. Inside the driverCode, wrap the flat solution logic inside a solver function/method.\\n3. You MUST include all standard imports/headers required by both the solution and the driver (e.g. in Python: import sys, json, math, heapq, collections; in C++: #include <iostream>, <vector>, <unordered_map>, <unordered_set>, <queue>, <stack>, <algorithm>, <string>, <sstream>; in Java: import java.util.*, java.io.*).\\n4. DATA STRUCTURE DEFINITIONS: If the problem uses common custom structures, you MUST define them at the top of the driverCode:\\n   - Linked Lists: Define `class ListNode` (for singly linked lists) or `class Node` (for doubly linked lists or random pointer lists) with proper constructors.\\n   - Binary Trees / BST: Define `class TreeNode` (with val, left, right).\\n   - N-ary Trees / Graphs: Define `class Node` (with val, children, neighbors, etc. as appropriate for the problem type).\\n5. HELPER FUNCTIONS: For custom structures, you MUST write robust helper functions in the driverCode to construct them from array representations (e.g. level-order build_tree for binary trees handling nulls, build_list for linked lists) and serialize them back to basic serializable types (like list or dict) before printing the test results JSON. Never output a raw object memory address as 'actual' or 'expected'."
 }
 {completion_instruction}
 {error_fix_instruction}
@@ -366,6 +385,7 @@ IMPORTANT: Output ONLY valid JSON.
         .replace("{env_instruction}", env_instruction)
         .replace("{completion_instruction}", completion_instruction)
         .replace("{error_fix_instruction}", error_fix_instruction)
+        .replace("{naming_style_instruction}", naming_style_instruction)
     )
 
 @router.post("/extract-text")
@@ -389,7 +409,7 @@ async def extract_text(req: ExtractTextRequest):
         try:
             client = genai.Client(api_key=api_key)
             response = client.models.generate_content(
-                model="gemini-2.5-flash",
+                model="gemini-2.5-flash-lite",
                 contents=[
                     types.Part.from_bytes(
                         data=image_bytes,
@@ -521,7 +541,8 @@ async def analyze_practice(req: PracticeRequest):
             req.isCompletionMode, 
             req.starterCode, 
             req.completionOutputFormat,
-            is_error_fix=bool(req.errorMessage)
+            is_error_fix=bool(req.errorMessage),
+            naming_style=req.namingStyle
         )
         analysis = await ask_gemini_json(system_prompt, user_msg, req.model)
         
@@ -544,6 +565,19 @@ async def analyze_practice(req: PracticeRequest):
                     compile(driver_code, "<string>", "exec")
                 except SyntaxError as syntax_err:
                     error_reasons.append(f"The generated driverCode has a Python SyntaxError: {syntax_err}. Ensure all string quotes and newlines in test cases are properly escaped (e.g. do not put raw unescaped newlines inside single-quoted strings).")
+            
+            # Check 3: Naming style validation if descriptive is requested
+            if req.namingStyle == "descriptive":
+                short_vars = ["i", "j", "n", "m", "dp", "ans", "res"]
+                detected_short = []
+                for var in short_vars:
+                    if re.search(r'\b' + var + r'\b', solution):
+                        detected_short.append(f"`{var}`")
+                if detected_short:
+                    error_reasons.append(
+                        f"You chose the DESCRIPTIVE naming style, but the code still uses short variables: {', '.join(detected_short)}. "
+                        "You MUST rewrite these to be descriptive (e.g. elementIndex, targetSumDifference, totalWaterVolume, arrayLength)."
+                    )
             
             if not error_reasons:
                 break

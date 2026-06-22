@@ -15,14 +15,14 @@ async def ask_llm(system_prompt: str, user_message: str) -> str:
 
         client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
         response = client.models.generate_content(
-            model="gemini-2.5-flash",
+            model="gemini-2.5-flash-lite",
             contents=user_message,
             config=types.GenerateContentConfig(
                 system_instruction=system_prompt,
                 temperature=0.7,
             ),
         )
-        print("✅ Model used: Gemini 2.5 Flash")
+        print("✅ Model used: Gemini 2.5 Flash Lite")
         return response.text
     except Exception as e:
         print(f"❌ Gemini failed: {e}")
