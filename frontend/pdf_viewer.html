@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>• GrindOS Secure Viewer</title>
     <!-- Use Plus Jakarta Sans font to match GrindOS -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -972,7 +972,7 @@
 
                 elStatusMsg.textContent = `Connecting to GrindOS Network...`;
                 
-                const backendHost = window.location.hostname === '127.0.0.1' ? 'http://127.0.0.1:8000' : 'http://localhost:8000';
+                const backendHost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' ? 'http://localhost:8000' : '';
                 const apiUrl = `${backendHost}/api/practice/document/${docName}`;
                 
                 const response = await fetch(apiUrl);
@@ -990,7 +990,8 @@
                 if (window.innerWidth < 768) {
                     const firstPage = await pdfDoc.getPage(1);
                     const unscaled = firstPage.getViewport({scale: 1.0});
-                    scale = (window.innerWidth - 8) / unscaled.width;
+                    const containerWidth = document.getElementById('pdf-container').clientWidth;
+                    scale = (containerWidth - 8) / unscaled.width;
                 } else {
                     scale = 1.3;
                 }
