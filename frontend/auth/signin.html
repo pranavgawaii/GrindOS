@@ -182,20 +182,38 @@
     .cl-socialButtonsBlockButton {
       width: 100% !important;
     }
-    .cl-formFieldLabelRow { justify-content: flex-start !important; }
+    .cl-formFieldLabelRow { 
+      justify-content: center !important; 
+      text-align: center !important;
+      width: 100% !important;
+    }
+    .cl-formFieldLabel {
+      text-align: center !important;
+      width: 100% !important;
+    }
+    .cl-formFieldInfoText {
+      text-align: center !important;
+      width: 100% !important;
+      display: block !important;
+    }
     /* Hide ALL Clerk chrome — its header/logo (the duplicate "GrindOS"),
        footer, "Secured by Clerk", and the dev-mode badge. We supply our own. */
-    [class*="cl-header"],
     [class*="cl-logoBox"],
     [class*="cl-logoImage"],
-    [class*="cl-headerTitle"],
-    [class*="cl-headerSubtitle"],
     [class*="cl-footer"],
     [class*="cl-badge"],
     .cl-branding,
     a[href*="clerk.com"],
     a[href*="clerk.dev"] {
       display: none !important;
+    }
+    
+    /* Ensure the Verification step headers (which Clerk injects later) are centered */
+    [class*="cl-headerTitle"],
+    [class*="cl-headerSubtitle"] {
+      text-align: center !important;
+      display: block !important;
+      width: 100% !important;
     }
     .cl-formFieldInput {
       background: #ffffff !important;
@@ -246,6 +264,27 @@
 
     @media (max-width: 480px) {
       .auth-card { padding: 32px 24px; border-radius: 16px; }
+    }
+
+    /* BRUTE-FORCE CENTERING FOR ALL CLERK STEPS (INCLUDING OTP) */
+    #clerk-auth-container * {
+      text-align: center !important;
+    }
+    #clerk-auth-container .cl-formFieldInput {
+      text-align: left !important; /* Keep input text left-aligned */
+    }
+    #clerk-auth-container .cl-formFieldLabelRow,
+    #clerk-auth-container .cl-otpCodeFieldInputs,
+    #clerk-auth-container .cl-headerTitle,
+    #clerk-auth-container .cl-headerSubtitle,
+    #clerk-auth-container .cl-formFieldLabel,
+    #clerk-auth-container .cl-formFieldInfoText,
+    #clerk-auth-container .cl-identityPreview {
+      justify-content: center !important;
+      align-items: center !important;
+      text-align: center !important;
+      width: 100% !important;
+      margin: 0 auto !important;
     }
   </style>
   <link rel="stylesheet" href="../assets/mobile.css?v=21">
@@ -336,8 +375,12 @@
             },
             elements: {
               card: { boxShadow: 'none', background: 'transparent' },
-              headerTitle: { display: 'none' },
-              headerSubtitle: { display: 'none' }
+              formFieldLabelRow: { justifyContent: 'center' },
+              formFieldLabel: { textAlign: 'center', width: '100%', display: 'flex', justifyContent: 'center' },
+              formFieldInfoText: { textAlign: 'center', width: '100%', display: 'flex', justifyContent: 'center' },
+              otpCodeFieldInputs: { justifyContent: 'center' },
+              headerTitle: { textAlign: 'center', width: '100%' },
+              headerSubtitle: { textAlign: 'center', width: '100%' }
             }
           }
         };

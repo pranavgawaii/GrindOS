@@ -284,6 +284,7 @@ img { max-width: 100%; height: auto; display: block; }
 .topbar-nav a.company-nav,
 .topbar-nav a.tracker-nav,
 .topbar-nav a.resume-nav,
+.topbar-nav a.notes-nav,
 .topbar-nav a.test-nav {
   display: inline-block;
 }

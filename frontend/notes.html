@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Set default theme based on localStorage to prevent flash -->
+  <script>
+    (function () {
+      const saved = localStorage.getItem('GrindOS-theme');
+      if (saved) {
+        document.documentElement.classList.add(saved);
+      } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.documentElement.classList.add('dark');
+      }
+    })();
+  </script>
+  <title>Notes Library - GrindOS</title>
+  <link rel="icon" type="image/png" href="logo_cropped.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="assets/style.css?v=23" />
+  <link rel="stylesheet" href="assets/mobile.css?v=23" />
+
+  <link rel="icon" type="image/png" href="./logo.png">
+  <link rel="apple-touch-icon" href="./logo.png">
+
+  <!-- Clerk Auth -->
+  <script>window.__CLERK_PUBLISHABLE_KEY__ = 'pk_test_Z29yZ2VvdXMtamF3ZmlzaC0zMy5jbGVyay5hY2NvdW50cy5kZXYk';</script>
+  <script src="auth/clerk.js"></script>
+
+  <style>
+    .notes-dashboard {
+      max-width: 1040px;
+      margin: 100px auto 100px;
+      padding: 0 24px;
+    }
+    .notes-header-row {
+      margin-bottom: 32px;
+    }
+    .notes-title-area h2 {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--text-1);
+      margin-bottom: 8px;
+      letter-spacing: -0.02em;
+    }
+    .notes-title-area p {
+      color: var(--text-3);
+      font-size: 1.05rem;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="topbar">
+    <a href="dashboard.html" class="topbar-brand">
+      <img src="/logo.png" alt="GrindOS Logo" class="brand-logo"
+        style="width: 34px; height: 34px; object-fit: contain; border-radius: 4px; flex-shrink: 0; display: inline-block; vertical-align: middle; margin-right: 4px;">
+      <span class="brand-wordmark">GrindOS</span>
+    </a>
+    <nav class="topbar-nav">
+      <a href="dashboard.html" class="learn-nav">Learn</a>
+      <a href="notes.html" class="notes-nav active">Notes</a>
+      <a href="tracker.html" class="tracker-nav">Tracker</a>
+      <a href="practice.html" class="practice-nav">Practice</a>
+      <a href="resume-builder.html" class="resume-nav" style="display: inline-block;">Resume</a>
+    </nav>
+    <div class="topbar-right">
+      <button class="icon-btn" id="theme-toggle" aria-label="Toggle theme"><span class="theme-icon">☾</span></button>
+      <div id="clerk-user-widget"></div>
+    </div>
+  </header>
+
+  <!-- Mobile Sidebar Overlay -->
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+  <!-- Mobile Bottom Nav -->
+  <nav class="mobile-bottom-nav" id="mobile-bottom-nav">
+    <a href="dashboard.html" class="mobile-nav-item" id="mnav-learn">
+      <span class="mobile-nav-icon">
+        <svg viewBox="0 0 24 24" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+          <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+        </svg>
+      </span>
+      <span>Learn</span>
+    </a>
+    <a href="notes.html" class="mobile-nav-item active" id="mnav-notes">
+      <span class="mobile-nav-icon">
+        <svg viewBox="0 0 24 24" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none" stroke="currentColor">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="16" y1="13" x2="8" y2="13"></line>
+          <line x1="16" y1="17" x2="8" y2="17"></line>
+          <line x1="10" y1="9" x2="8" y2="9"></line>
+        </svg>
+      </span>
+      <span>Notes</span>
+    </a>
+    <a href="tracker.html" class="mobile-nav-item" id="mnav-tracker">
+      <span class="mobile-nav-icon">
+        <svg viewBox="0 0 24 24" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+        </svg>
+      </span>
+      <span>Tracker</span>
+    </a>
+    <a href="practice.html" class="mobile-nav-item" id="mnav-practice">
+      <span class="mobile-nav-icon">
+        <svg viewBox="0 0 24 24" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="16 18 22 12 16 6"></polyline>
+          <polyline points="8 6 2 12 8 18"></polyline>
+        </svg>
+      </span>
+      <span>Practice</span>
+    </a>
+    <a href="resume-builder.html" class="mobile-nav-item" id="mnav-resume" style="display: flex;">
+      <span class="mobile-nav-icon">
+        <svg viewBox="0 0 24 24" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="16" y1="13" x2="8" y2="13"></line>
+          <line x1="16" y1="17" x2="8" y2="17"></line>
+          <polyline points="10 9 9 9 8 9"></polyline>
+        </svg>
+      </span>
+      <span>Resume</span>
+    </a>
+  </nav>
+
+  <div class="notes-dashboard">
+    <div class="notes-header-row">
+      <div class="notes-title-area">
+        <h2>Interview Booklets Library</h2>
+        <p>Your secure vault of high-yield placement preparation notes. Designed to be read seamlessly within GrindOS.</p>
+      </div>
+    </div>
+
+    <div class="courses-grid">
+      
+      <!-- CN Booklet -->
+      <a href="pdf_viewer.html?doc=GrindOS_CN_Booklet.pdf" class="course-card">
+        <div class="course-card-top">
+          <div class="course-icon-wrap">
+            <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" style="color: var(--brand);">
+              <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+              <path d="M2 17l10 5 10-5M2 12l10 5 10-5"></path>
+            </svg>
+          </div>
+          <div class="course-card-body">
+            <div class="course-card-title">Computer Networks</div>
+            <div class="course-card-desc">Complete CN notes covering OSI, TCP/IP, routing protocols, and common interview questions.</div>
+          </div>
+        </div>
+        <div class="course-card-footer">
+          <div class="course-card-stats">
+            <span class="stat-chip">PDF Document</span>
+            <span class="stat-chip">GrindOS Exclusive</span>
+          </div>
+          <span class="course-card-cta">
+            Read Now
+            <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 4px;">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 19 12"></polyline>
+            </svg>
+          </span>
+        </div>
+      </a>
+
+      <!-- DBMS Booklet -->
+      <a href="pdf_viewer.html?doc=GrindOS_DBMS_Booklet.pdf" class="course-card">
+        <div class="course-card-top">
+          <div class="course-icon-wrap">
+            <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" style="color: var(--brand);">
+              <ellipse cx="9" cy="5" rx="5" ry="2.5"></ellipse>
+              <path d="M4 5v5c0 1.38 2.24 2.5 5 2.5s5-1.12 5-2.5V5"></path>
+              <path d="M4 10v5c0 1.38 2.24 2.5 5 2.5s5-1.12 5-2.5v-5"></path>
+              <ellipse cx="17" cy="14" rx="4" ry="2"></ellipse>
+              <path d="M13 14v4c0 1.1 1.79 2 4 2s4-.9 4-2v-4"></path>
+            </svg>
+          </div>
+          <div class="course-card-body">
+            <div class="course-card-title">Database Management</div>
+            <div class="course-card-desc">Master ER diagrams, normalization, ACID properties, transactions, and indexing.</div>
+          </div>
+        </div>
+        <div class="course-card-footer">
+          <div class="course-card-stats">
+            <span class="stat-chip">PDF Document</span>
+            <span class="stat-chip">GrindOS Exclusive</span>
+          </div>
+          <span class="course-card-cta">
+            Read Now
+            <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 4px;">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 19 12"></polyline>
+            </svg>
+          </span>
+        </div>
+      </a>
+
+      <!-- OS Booklet -->
+      <a href="pdf_viewer.html?doc=GrindOS_OS_Booklet.pdf" class="course-card">
+        <div class="course-card-top">
+          <div class="course-icon-wrap">
+            <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" style="color: var(--brand);">
+              <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+              <line x1="8" y1="21" x2="16" y2="21"></line>
+              <line x1="12" y1="17" x2="12" y2="21"></line>
+            </svg>
+          </div>
+          <div class="course-card-body">
+            <div class="course-card-title">Operating Systems</div>
+            <div class="course-card-desc">Core concepts: processes, threads, scheduling algorithms, memory management, and deadlocks.</div>
+          </div>
+        </div>
+        <div class="course-card-footer">
+          <div class="course-card-stats">
+            <span class="stat-chip">PDF Document</span>
+            <span class="stat-chip">GrindOS Exclusive</span>
+          </div>
+          <span class="course-card-cta">
+            Read Now
+            <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 4px;">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 19 12"></polyline>
+            </svg>
+          </span>
+        </div>
+      </a>
+
+      <!-- OOPS Booklet -->
+      <a href="pdf_viewer.html?doc=GrindOS_OOPS_Booklet.pdf" class="course-card">
+        <div class="course-card-top">
+          <div class="course-icon-wrap">
+            <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" style="color: var(--brand);">
+              <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+              <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+              <line x1="12" y1="22.08" x2="12" y2="12"></line>
+            </svg>
+          </div>
+          <div class="course-card-body">
+            <div class="course-card-title">Object-Oriented Programming</div>
+            <div class="course-card-desc">Pillars of OOP, design patterns, SOLID principles, and language-specific nuances.</div>
+          </div>
+        </div>
+        <div class="course-card-footer">
+          <div class="course-card-stats">
+            <span class="stat-chip">PDF Document</span>
+            <span class="stat-chip">GrindOS Exclusive</span>
+          </div>
+          <span class="course-card-cta">
+            Read Now
+            <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 4px;">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 19 12"></polyline>
+            </svg>
+          </span>
+        </div>
+      </a>
+
+      <!-- SQL Booklet -->
+      <a href="pdf_viewer.html?doc=GrindOS_SQL_Booklet.pdf" class="course-card">
+        <div class="course-card-top">
+          <div class="course-icon-wrap">
+            <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" style="color: var(--brand);">
+              <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path>
+              <line x1="4" y1="22" x2="4" y2="15"></line>
+            </svg>
+          </div>
+          <div class="course-card-body">
+            <div class="course-card-title">SQL Queries</div>
+            <div class="course-card-desc">Essential SQL commands, advanced joins, window functions, and query optimization.</div>
+          </div>
+        </div>
+        <div class="course-card-footer">
+          <div class="course-card-stats">
+            <span class="stat-chip">PDF Document</span>
+            <span class="stat-chip">GrindOS Exclusive</span>
+          </div>
+          <span class="course-card-cta">
+            Read Now
+            <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 4px;">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 19 12"></polyline>
+            </svg>
+          </span>
+        </div>
+      </a>
+
+      <!-- System Design Booklet -->
+      <a href="pdf_viewer.html?doc=GrindOS_SYSTEM_DESIGN_Booklet.pdf" class="course-card">
+        <div class="course-card-top">
+          <div class="course-icon-wrap">
+            <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" style="color: var(--brand);">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+              <polyline points="9 22 9 12 15 12 15 22"></polyline>
+            </svg>
+          </div>
+          <div class="course-card-body">
+            <div class="course-card-title">System Design</div>
+            <div class="course-card-desc">Scalability, microservices, load balancing, caching, and designing large-scale systems.</div>
+          </div>
+        </div>
+        <div class="course-card-footer">
+          <div class="course-card-stats">
+            <span class="stat-chip">PDF Document</span>
+            <span class="stat-chip">GrindOS Exclusive</span>
+          </div>
+          <span class="course-card-cta">
+            Read Now
+            <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 4px;">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 19 12"></polyline>
+            </svg>
+          </span>
+        </div>
+      </a>
+
+      <!-- Projects Booklet -->
+      <a href="pdf_viewer.html?doc=GrindOS_PROJECTS_Booklet.pdf" class="course-card">
+        <div class="course-card-top">
+          <div class="course-icon-wrap">
+            <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" style="color: var(--brand);">
+              <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+              <polyline points="2 17 12 22 22 17"></polyline>
+              <polyline points="2 12 12 17 22 12"></polyline>
+            </svg>
+          </div>
+          <div class="course-card-body">
+            <div class="course-card-title">Projects & Portfolio</div>
+            <div class="course-card-desc">Guide to building standout projects, GitHub presentation, and discussing projects in interviews.</div>
+          </div>
+        </div>
+        <div class="course-card-footer">
+          <div class="course-card-stats">
+            <span class="stat-chip">PDF Document</span>
+            <span class="stat-chip">GrindOS Exclusive</span>
+          </div>
+          <span class="course-card-cta">
+            Read Now
+            <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 4px;">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 19 12"></polyline>
+            </svg>
+          </span>
+        </div>
+      </a>
+
+    </div>
+  </div>
+
+  <script src="assets/script.js?v=23"></script>
+</body>
+
+</html>

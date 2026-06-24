@@ -592,9 +592,10 @@
     const topNav = document.querySelector('.topbar-nav');
     if (topNav) {
       const hasResumeNav = topNav.querySelector('.resume-nav');
-      if (!hasResumeNav) {
+      if (!hasResumeNav || !topNav.querySelector('.notes-nav')) {
         topNav.innerHTML = `
           <a href="${rootPath}dashboard.html" class="learn-nav">Learn</a>
+          <a href="${rootPath}notes.html" class="notes-nav">Notes</a>
           <a href="${rootPath}tracker.html" class="tracker-nav">Tracker</a>
           <a href="${rootPath}practice.html" class="practice-nav">Practice</a>
           <a href="${rootPath}resume-builder.html" class="resume-nav">Resume</a>
@@ -607,6 +608,8 @@
       // Apply active class based on current path
       if (path.includes('/courses/') || path.includes('dashboard.html')) {
         topNav.querySelector('.learn-nav')?.classList.add('active');
+      } else if (path.includes('notes.html')) {
+        topNav.querySelector('.notes-nav')?.classList.add('active');
       } else if (path.includes('practice.html')) {
         topNav.querySelector('.practice-nav')?.classList.add('active');
       } else if (path.includes('tracker')) {

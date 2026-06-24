@@ -667,3 +667,18 @@ async def analyze_practice(req: PracticeRequest):
         
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+@router.get("/document/{document_name}")
+async def get_document_url(document_name: str):
+    if not supabase:
+        raise HTTPException(status_code=500, detail="Supabase not configured")
+    try:
+        # Create a signed URL that expires in 120 seconds for reading
+        res = supabase.storage.from_("grindos-documents").create_signed_url(document_name, 120)
+        url = res.get("signedURL") if isinstance(res, dict) else str(res)
+        if not url:
+            raise Exception("Could not generate URL from Supabase response")
+        return {"url": url}
+    except Exception as e:
+        print(f"Failed to generate signed URL for {document_name}: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
