@@ -435,11 +435,11 @@
         /* Responsive Mobile View */
         @media (max-width: 768px) {
             .brand .title-text { 
-                font-size: 0.9rem;
+                font-size: 1rem;
             }
             .brand .title-text span {
                 display: inline-block;
-                max-width: 120px;
+                max-width: 180px;
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
@@ -448,15 +448,35 @@
                 width: 22px !important; 
                 height: 22px !important;
             }
-            .controls { gap: 6px; padding: 4px 8px; }
-            button { padding: 6px 8px; font-size: 0.85rem; }
-            .page-info { min-width: 60px; font-size: 0.8rem; }
-            .control-group { padding-left: 6px; margin-left: 2px; }
-            #twopage-btn, #fullscreen-btn { display: none; } /* Disable 2-page and fullscreen on mobile */
-            .floating-nav-btn { width: 40px; height: 40px; font-size: 1rem; }
-            .left-nav { left: 10px; }
-            .right-nav { right: 10px; }
-            #pdf-container { padding: 12px 4px; }
+            
+            /* Move controls to the bottom on mobile */
+            .controls { 
+                position: fixed !important;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                height: 70px;
+                background: var(--bg-lighter);
+                border-top: 1px solid var(--glass-border);
+                z-index: 1000;
+                padding: 0 16px !important;
+                padding-bottom: env(safe-area-inset-bottom) !important;
+                display: flex !important;
+                justify-content: center !important;
+                gap: 16px !important;
+                box-shadow: 0 -10px 30px rgba(0,0,0,0.5);
+            }
+            
+            button { padding: 8px 12px; font-size: 0.95rem; }
+            .page-info { min-width: 70px; font-size: 0.9rem; }
+            .control-group { padding-left: 8px; margin-left: 4px; border-left: 1px solid var(--glass-border); }
+            .control-group:first-child { border-left: none; padding-left: 0; margin-left: 0; }
+            
+            #twopage-btn, #fullscreen-btn { display: none !important; }
+            .floating-nav-btn { display: none !important; } /* Hide floating arrows on mobile since we have bottom arrows */
+            
+            #pdf-container { padding: 12px 4px 90px 4px; } /* Extra bottom padding so document isn't covered by bottom bar */
+            
             .sidebar { 
                 position: absolute; 
                 top: 0; bottom: 0; left: 0; 
