@@ -140,7 +140,7 @@ button,
 
   /* Float pill nav — shrink and reposition */
   .topbar {
-    top: 10px !important;
+    top: calc(10px + var(--safe-top)) !important;
     width: calc(100% - 20px) !important;
     padding: 0 16px !important;
     height: 52px !important;
@@ -665,7 +665,7 @@ button,
 
   /* Topbar on landing: adjust */
   .topbar {
-    top: 12px !important;
+    top: calc(12px + var(--safe-top)) !important;
     width: calc(100% - 24px) !important;
     padding: 0 16px !important;
     height: 52px !important;
