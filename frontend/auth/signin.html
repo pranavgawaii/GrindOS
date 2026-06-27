@@ -8,7 +8,7 @@
   <script defer src="/_vercel/insights/script.js"></script>
 
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>Sign In — GrindOS</title>
   <link rel="icon" type="image/png" href="/logo.png">
   <link rel="apple-touch-icon" href="/logo.png">
@@ -45,7 +45,7 @@
     async
     crossorigin="anonymous"
     data-clerk-publishable-key="pk_test_Z29yZ2VvdXMtamF3ZmlzaC0zMy5jbGVyay5hY2NvdW50cy5kZXYk"
-    src="https://cdn.jsdelivr.net/npm/@clerk/clerk-js@4/dist/clerk.browser.js"
+    src="https://cdn.jsdelivr.net/npm/@clerk/clerk-js@5/dist/clerk.browser.js"
     type="text/javascript"
     onload="initLogin()"
   ></script>
@@ -333,8 +333,8 @@
           publishableKey: 'pk_test_Z29yZ2VvdXMtamF3ZmlzaC0zMy5jbGVyay5hY2NvdW50cy5kZXYk',
           signInUrl: '/auth/signin.html',
           signUpUrl: '/auth/signin.html?mode=signup',
-          afterSignInUrl: '/dashboard.html',
-          afterSignUpUrl: '/dashboard.html',
+          signInFallbackRedirectUrl: '../dashboard.html',
+          signUpFallbackRedirectUrl: '../dashboard.html',
         });
 
         const urlParams = new URLSearchParams(window.location.search);
@@ -361,6 +361,8 @@
         container.innerHTML = '';
 
         const clerkConfig = {
+          routing: 'virtual',
+          fallbackRedirectUrl: '../dashboard.html',
           appearance: {
             variables: {
               colorPrimary: '#ea763f',
@@ -375,6 +377,8 @@
             },
             elements: {
               card: { boxShadow: 'none', background: 'transparent' },
+              cardBox: { boxShadow: 'none', background: 'transparent' },
+              rootBox: { boxShadow: 'none', background: 'transparent' },
               formFieldLabelRow: { justifyContent: 'center' },
               formFieldLabel: { textAlign: 'center', width: '100%', display: 'flex', justifyContent: 'center' },
               formFieldInfoText: { textAlign: 'center', width: '100%', display: 'flex', justifyContent: 'center' },
@@ -391,19 +395,8 @@
           window.Clerk.mountSignIn(container, clerkConfig);
         }
 
-        // Strip Clerk branding that uses hashed classes ("Secured by Clerk", dev badge).
-        const stripBranding = () => {
-          container.querySelectorAll('*').forEach(el => {
-            if (el.children.length) return;
-            const txt = (el.textContent || '').replace(/\s+/g, ' ').trim().toLowerCase();
-            if (txt === 'secured by' || txt.includes('secured by clerk') || txt === 'development mode') {
-              const wrap = el.closest('div') || el;
-              wrap.style.display = 'none';
-            }
-          });
-        };
-        stripBranding();
-        new MutationObserver(stripBranding).observe(container, { childList: true, subtree: true });
+        // Removed MutationObserver as it may hide the main auth layout by mistake.
+        // CSS already hides the badge.
 
         if (window.Clerk.user) {
           window.location.replace('/dashboard.html');
