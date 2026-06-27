@@ -1,0 +1,258 @@
+---
+
+# THE COMPLETE FRESHER PLAYBOOK
+### For Pranav. Everything in one place. Read top to bottom once, then execute.
+
+---
+
+## SECTION 1 — HONEST REALITY CHECK FIRST
+
+Before the plan, the truth.
+
+You have real things to show: PlacePro with 500+ actual users, Auren built solo in 6 days and live, Amazon MLSS shortlist from 100K+ applicants, Rovn in top 1K of 10K. That's not a bad profile. That's actually a good profile for a pre-final year student. Your actual gap isn't projects — it's DSA speed and CS theory verbal fluency. You can explain what you built but if someone asks "sort this array in O(n log n) and prove it," you might stall. That's the gap. Everything in this plan closes that.
+
+Your CGPA is 6.53. It clears the 6.5 floor for most companies. Stop worrying about it. Focus on things you can actually change.
+
+---
+
+## SECTION 2 — THE MASTER TIMELINE (Days, not weeks)
+
+Total honest estimate for someone starting from zero with your existing code background: **75 to 90 days** to be genuinely interview-ready for roles like Zensar AI Engineer, Cisco, mid-tier product companies. Not Google. Not Amazon SDE. But solid placements at companies that actually hire from Pune. Here's how those days break down:
+
+**Days 1–10 — Python fundamentals + OOPs**
+You already code in Python so this is revision + filling gaps. Don't skip it because you think you know it. You need to be able to write a Python class with inheritance from memory, explain MRO, and implement abstract classes. 10 days is enough if you actually sit and code daily.
+
+**Days 11–25 — Data Structures (the theory + implementation)**
+15 days. One structure every 1–2 days. Actually implement linked list, stack, queue, BST from scratch in Python. Don't just read. Code it. Then run it. This is where 90% of people go wrong — they watch a video and call it done. Write it.
+
+**Days 26–50 — DSA Problem Solving**
+25 days. This is the grind block. You pick a pattern (two pointers, sliding window, binary search, etc.) and you do 4–5 problems on it before moving. Use LeetCode. Easy first, then Medium. Track which problems you solved without looking at hints. That number matters more than total problems solved.
+
+**Days 51–65 — Core CS Theory**
+15 days. OS, DBMS, CN, System Design basics. 3–4 days each. These are verbal answers, not code. The goal is: someone asks you "what is a deadlock," and you answer in under 60 seconds with the right technical keywords, clearly, without sounding like you memorized a definition.
+
+**Days 66–75 — AI/ML fundamentals**
+10 days. Classical ML in the first 5 days. Neural networks and Transformers in the next 5. You already know a lot here practically — the goal is being able to explain the math and concepts clearly in an interview.
+
+**Days 76–90 — Interview prep + mock rounds**
+15 days. Behavioural answers rehearsed out loud, project deep-dives practised, resume polished, 2–3 mock interviews with someone who will actually be critical.
+
+---
+
+## SECTION 3 — HOW TO STUDY (And when to skip notes)
+
+Here's the blunt answer on notes: for most people, making notes is procrastination with extra steps. You spend 3 hours making a beautiful Notion page and retain 20% of it.
+
+Here's what actually works:
+
+For DSA — don't make notes. Just track which problems you solved, which ones you needed a hint for, and which ones you couldn't do. Keep a simple text file with problem name, date, verdict (solved clean / needed hint / couldn't do). Review that file once a week. Redo the problems you couldn't do after 7 days.
+
+For CS Theory (OS, DBMS, CN) — make notes but only as "what would I say out loud if someone asked me this." Not textbook definitions. Your own words. One page per topic maximum. If you can't summarise a topic in one page, you don't understand it yet.
+
+For AI/ML — you already have practical knowledge. Notes are useful here. Write concept → intuition → one-line formula → when to use. Keep it short. The goal is a cheatsheet you can revise in 20 minutes before an interview, not a textbook.
+
+For OOPs and Python — just code. Write a small project per concept. Best way to internalise OOPs is to build a mini banking system using classes. That one project covers encapsulation, inheritance, and polymorphism in one go.
+
+---
+
+## SECTION 4 — RESUME (What goes in, what doesn't, exactly)
+
+One page. Always. If it's going past one page, you're including things that don't need to be there.
+
+**Header**: Pranav Gawai — phone — email — github (pranavgawaii, double-i) — portfolio (pranavx.in) — LinkedIn
+
+**Education**: MIT School of Computing, MIT-ADT University. B.Tech CSE (AI/ML). Batch 2027. No CGPA unless they explicitly ask for it. If forced to include, include it (6.53 clears the floor for most places).
+
+**Experience**: CraftaStudio — Founder & Tech Lead — (dates). This is not a project. It's a company you're running. Treat it that way. Bullets should read like what a tech lead does: architecting systems, leading a team of five, making technology decisions, building the product.
+
+**Projects** (3 max, choose based on role type):
+- For AI Engineer roles: Auren first, then Mnemo, then PlacePro
+- For general SWE roles: PlacePro first, then Rovn, then Auren
+- For service company roles (Zensar etc): PlacePro first, Rovn second, Auren third
+
+Each project gets 2–3 bullets. First bullet is what it does and the scale (real users, live URL). Second bullet is the technical decision that's interesting. Third bullet is the outcome or metric. Never use words like "leveraged" or "utilized." Say what you did directly.
+
+Example of a bad bullet: "Leveraged pgvector to implement semantic search functionality"
+Example of a good bullet: "Built a memory retrieval API using pgvector cosine similarity with decay scoring — recent memories rank higher than old ones even at similar semantic distance"
+
+The second one tells you what it does and why the design decision was made. That's what gets questions in an interview. You want questions on things you know deeply.
+
+**Skills**: Python, TypeScript, JavaScript, Next.js, FastAPI, PostgreSQL, pgvector, LangGraph, Redis, Supabase, Clerk, Vercel, Railway. Group by category: Languages / Frontend / Backend / AI/ML / Infrastructure.
+
+**Achievements**: Amazon MLSS 2026 shortlist (100K+ applicants). Rovn top 1K of 10K. National Cybersecurity Hackathon 1st place. These three in exactly this order. MLSS is your strongest credibility signal — it's blind, merit-based, and the numbers are verifiable.
+
+**What to leave out**: CGPA debates, 10th/12th marks unless required, any project you can't explain technically in 5 minutes, tools you've only read about but never actually used.
+
+---
+
+## SECTION 5 — CODING PROFILES (What to maintain and how)
+
+**LeetCode** — this is your primary DSA platform. Target: 150 problems minimum before placements, with at least 80 being ones you solved clean without hints on first attempt. Your streak and problem count is visible to no one externally, so don't optimise for the number — optimise for the solve rate. Participate in weekly contests. Don't aim to win. Aim to submit at least 2 problems per contest. After 8–10 contests you'll get a feel for the pacing.
+
+**GitHub** — this is your real portfolio. Every project should have a proper README with what it does, the tech stack, how to run it locally, and a demo link if it's deployed. Add screenshots. Write the README like you're writing it for a senior engineer who's evaluating whether this project is real. Because that's exactly what interviewers do. A GitHub profile with 3 well-documented repos is worth more than 20 repos with a single commit and no README.
+
+Pin your top 6 repos. Keep the pinned repos as your best work only. If a repo is messy or incomplete and not representative of your skill, unpin it or make it private.
+
+Don't worry about contribution graph streaks. Worry about quality of what's in the repos.
+
+**LinkedIn** — your headline should not say "student." It should say what you do. Something like "Founder @ CraftaStudio | AI Engineer | Building with LLMs." The about section should be 3–4 sentences: who you are, what you build, what you're looking for. Add all live projects with links. Connect with everyone after every interview, every event, every hackathon.
+
+**Portfolio (pranavx.in)** — make sure it loads fast, the projects all have working live links, and there's a clear "contact" or "hire me" signal. Your portfolio is where you send people who want more than your resume. Keep it updated.
+
+---
+
+## SECTION 6 — CONTESTS AND CONTRIBUTION (How to actually do this)
+
+**Contests** — start with LeetCode weekly, not Codeforces. Codeforces is for competitive programming which is a different skill. LeetCode contests test interview-style DSA. Join every Sunday. Solve what you can. After the contest, look at the editorial for problems you couldn't solve and understand the approach. That's how you actually improve.
+
+After you're consistent at LeetCode Medium (solving 2 out of 4 in a contest), then try a Codeforces Div 3 round. Div 3 is designed for beginners.
+
+**Hackathons** — you already do these. Keep doing them. The signal isn't just winning — it's the project you shipped and whether it's on your resume. You got Rovn out of a hackathon. That one entry is worth more than 50 LeetCode Easy solves on a resume.
+
+**Open Source** — this one takes some setup but is worth it for mid-to-senior roles. Start by picking a library you already use (LangChain, FastAPI, pgvector's examples). Find open issues labeled "good first issue." Fix one. Submit a PR. Even getting one PR merged into a real open source project is a credible resume line. Most students never do this, so even one puts you ahead.
+
+For now, given your timeline, don't start open source cold. Complete your current projects first. Ship Specboard. Clean up Mnemo. Then do open source.
+
+---
+
+## SECTION 7 — INTERVIEW Q&A (Humanised, your voice)
+
+These answers are written as you. Not as a textbook. Not as "AI-generated response #47." As someone who has actually built things and knows what they're talking about.
+
+---
+
+**"Tell me about yourself"**
+
+"Okay so — I'm Pranav, pre-final year at MIT-ADT, Pune, CSE with an AI/ML specialisation. Graduating in 2027.
+
+I've been building things more than I've been studying, honestly. Right now I run CraftaStudio — it's a pre-launch AI SaaS I co-founded, where I'm also the tech lead. We're a team of five and we're building an architecture-first code generation platform. The core idea is you describe what you want to build and the system generates a dependency graph before it writes a single line of code, so the output actually makes structural sense.
+
+Outside of that I've shipped a few products independently. Auren is the one I talk about the most — it's an AI execution layer I built solo in about 6 days for a hackathon. It lets you give natural language instructions that actually get executed — sends emails, creates calendar events, interacts with GitHub — through LLM agents. It's live at tryauren.in.
+
+I also built PlacePro, a placement tracking platform that's actively used by 500+ students on my campus. That one I didn't build for a hackathon — I built it because the problem was real and no one had solved it.
+
+And I was shortlisted for Amazon ML Summer School 2026 from over a hundred thousand applicants. That was a blind selection, just a test, so I'm pretty proud of that one.
+
+I'm here because I want to work on AI engineering in a setting where the work actually ships to users. That's what drives me."
+
+---
+
+**"Walk me through one of your projects"**
+
+"I'll walk you through Auren because it's the most technically interesting one I've built.
+
+The problem I was solving: LLMs understand what you want, but they can't actually do anything. They can write an email but they can't send it. They can suggest a meeting time but they can't create the calendar event. Auren bridges that gap — it's the execution layer between your intent and actual actions.
+
+How it works: user types something like 'summarise my unread emails from this week and block two hours on Friday for the follow-ups.' Auren parses that, figures out it needs to read Gmail, read the calendar, create a calendar block, and it executes those as tool calls via the Corsair MCP — that's a Model Context Protocol integration that gives the LLM access to Gmail, Google Calendar, and GitHub APIs.
+
+The classification layer is where it gets interesting. Not every email needs action — most are noise. I used Claude Haiku as a lightweight classifier to separate actionable emails from newsletters, receipts, notifications. Haiku is fast and cheap, so running it on every email is actually feasible. Only actionable ones go to the main agent.
+
+One design decision I'm actually proud of: before any write action — sending an email, creating an event — the system stops and shows the user exactly what it's about to do and asks for confirmation. It's what I called HITL — human in the loop. It sounds obvious but most demos skip it, and it's the difference between a product someone trusts and a demo that scares people.
+
+Stack is Next.js 14, Supabase with pgvector for memory, OpenRouter as the LLM gateway, Clerk for auth. Built solo in 6 days. Live now."
+
+---
+
+**"What is RAG? Have you implemented it?"**
+
+"Yeah, I've built it twice so let me explain from how I think about it rather than the textbook definition.
+
+The core problem RAG solves is this: an LLM knows what it learned during training but it has no idea what's in your company's internal docs, your emails, your codebase. You can't fine-tune it every time something changes. RAG says — okay, at the time the user asks something, go retrieve the relevant information and hand it to the model as context. The model then answers based on what it just received, not just what it memorised.
+
+The pipeline has three parts. Indexing: you take your documents, break them into chunks, convert each chunk to a vector embedding using an embedding model, store those in a vector database. Retrieval: when someone asks a question, you embed that question too, then find chunks that are semantically closest to it using cosine similarity. Generation: you inject those chunks into the prompt and let the LLM generate a grounded answer.
+
+In Mnemo — my memory API — I added two layers on top of vanilla RAG. One is decay scoring: recent memories get a higher weight even if an older memory has slightly better cosine similarity. Because in most real use cases, what you said last week matters more than what you said six months ago. The second is contradiction detection: if a new memory conflicts with an existing one, the system flags it instead of silently storing both and confusing the model later.
+
+So yes, I've implemented it, and I've thought beyond the basic version."
+
+---
+
+**"Explain a Transformer to me"**
+
+"So before transformers we had RNNs, and the fundamental problem with RNNs was they processed sequences token by token, in order. Which means if you're reading a sentence and the important context is 50 words back, by the time you get to it the earlier information has basically faded out. The network forgets.
+
+The transformer's insight was: what if every word can look at every other word at the same time? That's what attention is. Each token asks 'how relevant is every other token to me right now?' and you get a weighted sum. You're not reading left to right — you're looking at the whole thing at once.
+
+Multi-head attention runs this process multiple times in parallel — each head learns to focus on different kinds of relationships. One head might focus on syntactic structure, another on semantic meaning. You run 8 or 12 heads, concatenate the outputs, and you've captured richer relationships than any single attention head could.
+
+Then there's positional encoding because the attention mechanism itself has no concept of order. You add a position vector to each token embedding to tell the model where in the sequence each token sits.
+
+The encoder builds a contextual representation of the input. The decoder generates the output, and it uses cross-attention to look at the encoder's representations while it's generating each output token.
+
+BERT uses just the encoder — it was trained on masked language modelling, so it learned to predict missing words. GPT uses just the decoder, trained to predict the next token. For most chat applications you're working with GPT-style decoder-only architectures."
+
+---
+
+**"What's the difference between fine-tuning, RAG, and prompt engineering?"**
+
+"They're three different levers and they're not interchangeable — each one solves a different problem.
+
+Prompt engineering is the cheapest and fastest. You don't touch the model at all. You just craft your input more carefully — add examples, structure your request, break complex tasks into steps. Zero-shot just tells the model what to do. Few-shot gives it 2–3 examples of the format you want. Chain-of-thought asks it to reason step by step before answering. Works well when the model already has the knowledge and you just need to steer the output.
+
+RAG is for when the model doesn't have the knowledge — or the knowledge changes frequently. You're not changing the model, you're giving it fresh information at the time of each query. I use this in Auren for email context and in Mnemo for persistent memory. The limitation is that retrieval quality matters a lot — if you retrieve the wrong chunks, the model will still sound confident while being wrong.
+
+Fine-tuning actually changes the model's weights using your labelled dataset. This is for when you need the model to write in a specific tone consistently, follow a very specific output format every time, or deeply understand a domain-specific vocabulary. It's expensive, you need GPU access, and you need a good dataset. For most startup use cases RAG is the right call. Fine-tuning makes sense after you've exhausted the other two and you have clear evidence they're not sufficient."
+
+---
+
+**"Explain OOPs. Can you give me examples?"**
+
+"Sure. OOPs is basically a way to organise code around objects instead of just functions running in sequence. The four pillars —
+
+Encapsulation is about bundling data and the functions that operate on it inside one unit, and deciding what the outside world gets to see. In Python you signal private stuff with an underscore prefix — it's convention, not hard enforcement. The benefit is you can change how something works internally without breaking everything that uses it.
+
+Inheritance is when one class gets the attributes and methods of another. Saves you from rewriting the same logic. Python supports multiple inheritance — one class can inherit from multiple parents — and uses something called MRO, Method Resolution Order, to figure out which parent's version of a method gets called when there's a conflict. It follows C3 linearisation.
+
+Polymorphism is the same method name doing different things depending on what object you're calling it on. In Python this is largely duck typing — if the object has the method, it works. You don't need explicit interfaces like in Java.
+
+Abstraction is hiding the implementation and just exposing what the user of your class needs. Python has an ABC module — Abstract Base Classes — where you can define methods that every subclass must implement. If a subclass doesn't implement a required abstract method, you get an error when you try to instantiate it."
+
+---
+
+**"What are ACID properties?"**
+
+"ACID is what makes database transactions reliable, especially when multiple things are happening at the same time or something crashes mid-operation.
+
+Atomicity is all or nothing. Classic example: you're transferring money between two bank accounts. The debit from account A and the credit to account B need to happen together. If the system crashes after the debit but before the credit, atomicity rolls the whole thing back. You don't end up with money disappearing.
+
+Consistency means the database goes from one valid state to another. Whatever rules and constraints exist — foreign keys, unique constraints, check constraints — they all hold after every transaction.
+
+Isolation is about concurrent transactions not interfering with each other. If two transactions are running at the same time, each one should see a consistent snapshot, not half-finished work from the other. Different isolation levels give you different trade-offs between correctness and performance.
+
+Durability means once a transaction says it committed, it's committed. Even if the machine crashes immediately after, the data is persisted to disk. It's not just in memory."
+
+---
+
+**"What is normalisation?"**
+
+"Normalisation is about organising your database so you're not storing the same information in multiple places, which causes problems when you try to update it.
+
+First Normal Form just says every cell in your table should hold one value, not a list. If you're storing comma-separated values in a single column, that's a 1NF violation.
+
+Second Normal Form builds on that by saying if you have a composite primary key, every non-key column needs to depend on the whole key, not just one part of it. Partial dependency is what it eliminates.
+
+Third Normal Form eliminates transitive dependency — which means non-key columns shouldn't depend on other non-key columns. If knowing the zip code tells you the city, and the city isn't part of the primary key, that's a transitive dependency. You'd split that into its own table.
+
+BCNF is slightly stricter than 3NF. It says every determinant — any column that uniquely determines another column — must be a candidate key.
+
+In real production systems you normalise to 3NF and then sometimes deliberately denormalise specific tables where you need faster reads. It's a trade-off."
+
+---
+
+**"What is a deadlock?"**
+
+"A deadlock is when two or more processes are stuck, each one waiting for a resource that another one is holding, and none of them can proceed because they're all waiting on each other.
+
+Four conditions have to all be true at the same time for a deadlock to happen. First, mutual exclusion — at least one resource can only be used by one process at a time. Second, hold and wait — a process is holding a resource and also waiting to get more. Third, no preemption — you can't forcibly take a resource away from a process, it has to release it voluntarily. Fourth, circular wait — you have a cycle where process A is waiting for process B which is waiting for process C which is waiting for process A.
+
+To prevent it you break one of those conditions. The most common approach is imposing a fixed ordering on resources — if all processes always request resources in the same order, you can never get a circular wait. The Banker's Algorithm is a more sophisticated approach where before granting a resource, the system checks whether the resulting state is still safe — meaning there's at least one sequence in which all processes can complete."
+
+---
+
+**"What's the difference between a process and a thread?"**
+
+"A process is an independent running program with its own memory space — its own heap, stack, code, data. Processes are isolated. If one crashes, it doesn't take down others because they're not sharing memory.
+
+A thread lives inside a process. Multiple threads within the same process share the heap and the code, but each thread has its own stack and its own registers. They're lighter than processes because you're not duplicating memory. Switching between threads is also cheaper than switching between processes.
+
+The trade-off is that because threads share memory, you can get race conditions — two threads reading and writing the same data at the same time in an undefined order. That's why you need synchronization like mutexes or semaphores."

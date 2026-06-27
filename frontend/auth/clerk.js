@@ -23,7 +23,7 @@ const CLERK_PUBLISHABLE_KEY = window.__CLERK_PUBLISHABLE_KEY__ || 'pk_test_Z29yZ
   // Inject Clerk script if not already loaded
   if (!window.Clerk) {
     const script = document.createElement('script');
-    script.src = `https://cdn.jsdelivr.net/npm/@clerk/clerk-js@4/dist/clerk.browser.js`;
+    script.src = `https://cdn.jsdelivr.net/npm/@clerk/clerk-js@5/dist/clerk.browser.js`;
     script.setAttribute('data-clerk-publishable-key', CLERK_PUBLISHABLE_KEY);
     script.async = true;
     script.onload = () => initClerk();
@@ -74,15 +74,11 @@ const CLERK_PUBLISHABLE_KEY = window.__CLERK_PUBLISHABLE_KEY__ || 'pk_test_Z29yZ
     const container = document.getElementById('clerk-user-widget');
     if (!container || !user) return;
 
-    const isDark = document.documentElement.classList.contains('dark');
-    const currentTheme = isDark ? 'dark' : 'light';
-
-    // Guard: only mount if theme actually changed or the button isn't mounted yet
-    if (container.dataset.renderedTheme === currentTheme && container.querySelector('.cl-userButtonTrigger')) {
+    // Guard: only mount if the button isn't mounted yet
+    if (container.querySelector('.cl-userButtonTrigger')) {
       return;
     }
 
-    container.dataset.renderedTheme = currentTheme;
     container.innerHTML = '';
     const afterSignOutUrl = window.location.origin + '/';
 
@@ -92,11 +88,11 @@ const CLERK_PUBLISHABLE_KEY = window.__CLERK_PUBLISHABLE_KEY__ || 'pk_test_Z29yZ
         variables: {
           colorPrimary: '#ea763f',
           colorBackground: 'transparent',
-          colorText: isDark ? '#fafafa' : '#18181b',
-          colorTextSecondary: isDark ? '#a1a1aa' : '#71717a',
-          colorInputBackground: isDark ? '#0f0f13' : '#ffffff',
-          colorInputText: isDark ? '#fafafa' : '#18181b',
-          colorBorder: isDark ? 'rgba(255,255,255,0.08)' : '#e2e0d8',
+          colorText: 'var(--text-1)',
+          colorTextSecondary: 'var(--text-3)',
+          colorInputBackground: 'var(--bg-2)',
+          colorInputText: 'var(--text-1)',
+          colorBorder: 'var(--border)',
           borderRadius: '10px',
           fontFamily: 'DM Sans, -apple-system, sans-serif',
         },
@@ -107,21 +103,16 @@ const CLERK_PUBLISHABLE_KEY = window.__CLERK_PUBLISHABLE_KEY__ || 'pk_test_Z29yZ
             border: '1.5px solid rgba(234,118,63,0.5)',
             borderRadius: '50%',
           },
-          userButtonPopoverCard: isDark ? {
-            background: 'rgba(15,15,18,0.95)',
+          userButtonPopoverCard: {
+            background: 'var(--bg-3)',
             backdropFilter: 'blur(20px)',
             WebkitBackdropFilter: 'blur(20px)',
-            border: '1px solid rgba(255,255,255,0.08)',
+            border: '1px solid var(--border)',
             boxShadow: '0 16px 40px rgba(0,0,0,0.5)',
-            borderRadius: '14px',
-          } : {
-            background: '#ffffff',
-            border: '1px solid #e2e0d8',
-            boxShadow: '0 8px 28px rgba(0,0,0,0.1)',
             borderRadius: '14px',
           },
           userButtonPopoverActionButton: {
-            color: isDark ? '#e4e4e7' : '#27272a',
+            color: 'var(--text-2)',
           },
           userButtonPopoverActionButtonText: { color: 'inherit' },
           userButtonPopoverActionButtonIconBox: { color: 'inherit' },
@@ -130,9 +121,4 @@ const CLERK_PUBLISHABLE_KEY = window.__CLERK_PUBLISHABLE_KEY__ || 'pk_test_Z29yZ
       }
     });
   }
-
-  // Re-render widget when theme toggles (light ↔ dark)
-  new MutationObserver(() => {
-    if (window.Clerk?.user) debouncedRenderUserWidget(window.Clerk.user);
-  }).observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
 })();

@@ -2007,7 +2007,7 @@
     const CLERK_PUBLISHABLE_KEY = 'pk_test_Z29yZ2VvdXMtamF3ZmlzaC0zMy5jbGVyay5hY2NvdW50cy5kZXYk';
     if (CLERK_PUBLISHABLE_KEY && CLERK_PUBLISHABLE_KEY !== 'PASTE_YOUR_PUBLISHABLE_KEY_HERE') {
       const script = document.createElement('script');
-      script.src = `https://cdn.jsdelivr.net/npm/@clerk/clerk-js@4/dist/clerk.browser.js`;
+      script.src = `https://cdn.jsdelivr.net/npm/@clerk/clerk-js@5/dist/clerk.browser.js`;
       script.setAttribute('data-clerk-publishable-key', CLERK_PUBLISHABLE_KEY);
       script.async = true;
       script.onload = async () => {

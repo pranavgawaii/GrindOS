@@ -3,6 +3,8 @@ import os
 import re
 import base64
 import httpx
+from collections import deque
+from datetime import datetime, timezone
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
 from typing import Optional, List, Dict, Any
@@ -10,6 +12,23 @@ from supabase import create_client, Client
 from judge0_router import execute_on_judge0, parse_driver_results
 
 router = APIRouter()
+
+# ── LLM Call History (last 10 entries) ──────────────────────────────────────
+_llm_call_log: deque = deque(maxlen=10)
+
+def _log_llm_call(provider: str, model: str, call_type: str = "analysis"):
+    """Record a successful LLM invocation."""
+    _llm_call_log.appendleft({
+        "timestamp": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "provider": provider,
+        "model": model,
+        "type": call_type,
+    })
+
+@router.get("/llm-history")
+async def get_llm_history():
+    """Return the last 10 LLM calls made by the backend."""
+    return {"history": list(_llm_call_log)}
 
 class PracticeRequest(BaseModel):
     problem: str
@@ -26,6 +45,9 @@ class PracticeRequest(BaseModel):
     model: str = "gemini"
     errorMessage: str = ""
     namingStyle: str = "short"
+    amazonMlMode: bool = False
+    mlSection: str = "dsa"
+    history: Optional[List[Dict[str, Any]]] = None
 
 class ComplexityInfo(BaseModel):
     time: str = Field(..., description="Time complexity of the solution, e.g. O(N) or O(log N).")
@@ -119,6 +141,7 @@ async def ask_gemini_json(system_prompt: str, user_message: str, model_choice: s
                         model=choice_info["anthropic"],
                         max_tokens=4000,
                         system=system_prompt,
+                        timeout=12.0,
                         messages=[{"role": "user", "content": user_message}]
                     )
                     try:
@@ -137,7 +160,8 @@ async def ask_gemini_json(system_prompt: str, user_message: str, model_choice: s
                     )
                     response = client.chat.completions.create(
                         model=choice_info["openrouter"],
-                        max_tokens=2000,
+                        max_tokens=800,
+                        timeout=8.0,
                         response_format={"type": "json_object"},
                         messages=[
                             {"role": "system", "content": system_prompt},
@@ -153,26 +177,28 @@ async def ask_gemini_json(system_prompt: str, user_message: str, model_choice: s
 
         # 2. Primary Gemini call via google-genai response_schema
         if api_key:
-            try:
-                client = genai.Client(api_key=api_key)
-                response = client.models.generate_content(
-                    model="gemini-2.5-flash-lite",
-                    contents=user_message,
-                    config=types.GenerateContentConfig(
-                        system_instruction=system_prompt,
-                        temperature=0.2,
-                        response_mime_type="application/json",
-                        response_schema=AnalysisResponse
-                    ),
-                )
+            gemini_models = ["gemini-2.5-flash-lite", "gemini-2.5-flash", "gemini-1.5-flash"]
+            for gem_model in gemini_models:
                 try:
-                    return _validate_and_dump(response.text)
-                except Exception as parse_err:
-                    print(f"Gemini response parsing failed: {parse_err}")
-            except Exception as e:
-                print(f"Gemini failed in analysis: {e}. Falling back to OpenRouter Gemini 2.5 Flash...")
+                    print(f"Trying Gemini model in analysis: {gem_model}...")
+                    client = genai.Client(api_key=api_key, http_options={"timeout": 10.0})
+                    response = client.models.generate_content(
+                        model=gem_model,
+                        contents=user_message,
+                        config=types.GenerateContentConfig(
+                            system_instruction=system_prompt,
+                            temperature=0.2,
+                            response_mime_type="application/json",
+                            response_schema=AnalysisResponse
+                        ),
+                    )
+                    if response.text:
+                        _log_llm_call("Google Gemini (Direct)", gem_model, "analysis")
+                        return _validate_and_dump(response.text)
+                except Exception as e:
+                    print(f"Gemini failed for model {gem_model} in analysis: {e}. Trying next...")
 
-        # 3. Fallback to OpenRouter Gemini 2.5 Flash (Paid, extremely cheap/reliable, using credits)
+        # 3. Fallback to OpenRouter Gemini 2.5 Flash (Paid, using credits)
         if openrouter_key:
             try:
                 import openai
@@ -182,7 +208,8 @@ async def ask_gemini_json(system_prompt: str, user_message: str, model_choice: s
                 )
                 response = client.chat.completions.create(
                     model="google/gemini-2.5-flash",
-                    max_tokens=2000,
+                    max_tokens=800,
+                    timeout=8.0,
                     response_format={"type": "json_object"},
                     messages=[
                         {"role": "system", "content": system_prompt},
@@ -190,7 +217,9 @@ async def ask_gemini_json(system_prompt: str, user_message: str, model_choice: s
                     ]
                 )
                 try:
-                    return _validate_and_dump(response.choices[0].message.content)
+                    result = _validate_and_dump(response.choices[0].message.content)
+                    _log_llm_call("OpenRouter (Paid)", "google/gemini-2.5-flash", "analysis")
+                    return result
                 except Exception as parse_err:
                     print(f"OpenRouter Gemini 2.5 Flash parsing failed: {parse_err}. Trying Groq Llama...")
             except Exception as e:
@@ -199,19 +228,24 @@ async def ask_gemini_json(system_prompt: str, user_message: str, model_choice: s
         # 4. Fallback to Groq Llama 3.3 70B
         try:
             from groq import Groq
-            groq_client = Groq(api_key=os.environ.get("GROQ_API_KEY", ""))
-            groq_response = groq_client.chat.completions.create(
-                model="llama-3.3-70b-versatile",
-                response_format={"type": "json_object"},
-                messages=[
-                    {"role": "system", "content": system_prompt},
-                    {"role": "user", "content": user_message}
-                ]
-            )
-            try:
-                return _validate_and_dump(groq_response.choices[0].message.content)
-            except Exception as parse_err:
-                print(f"Groq parsing failed: {parse_err}. Trying OpenRouter free models...")
+            groq_key = os.environ.get("GROQ_API_KEY", "")
+            if groq_key and not groq_key.startswith("get_from"):
+                groq_client = Groq(api_key=groq_key)
+                groq_response = groq_client.chat.completions.create(
+                    model="llama-3.3-70b-versatile",
+                    response_format={"type": "json_object"},
+                    timeout=8.0,
+                    messages=[
+                        {"role": "system", "content": system_prompt},
+                        {"role": "user", "content": user_message}
+                    ]
+                )
+                try:
+                    result = _validate_and_dump(groq_response.choices[0].message.content)
+                    _log_llm_call("Groq", "llama-3.3-70b-versatile", "analysis")
+                    return result
+                except Exception as parse_err:
+                    print(f"Groq parsing failed: {parse_err}. Trying OpenRouter free models...")
         except Exception as groq_err:
             print(f"Groq fallback failed: {groq_err}. Falling back to OpenRouter free tier...")
 
@@ -223,10 +257,11 @@ async def ask_gemini_json(system_prompt: str, user_message: str, model_choice: s
                 api_key=openrouter_key,
             )
             free_models = [
+                "openrouter/free",
+                "cognitivecomputations/dolphin-mistral-24b-venice-edition:free",
+                "meta-llama/llama-3.2-3b-instruct:free",
                 "qwen/qwen3-coder:free",
-                "google/gemma-4-31b-it:free",
-                "meta-llama/llama-3.3-70b-instruct:free",
-                "openrouter/free"
+                "google/gemma-4-31b-it:free"
             ]
             last_openrouter_err = None
             for fallback_model in free_models:
@@ -234,14 +269,20 @@ async def ask_gemini_json(system_prompt: str, user_message: str, model_choice: s
                     print(f"Trying OpenRouter free model: {fallback_model}...")
                     openrouter_response = openai_client.chat.completions.create(
                         model=fallback_model,
-                        max_tokens=2000,
+                        max_tokens=800,
+                        timeout=8.0,
+                        response_format={"type": "json_object"},
                         messages=[
                             {"role": "system", "content": system_prompt},
                             {"role": "user", "content": user_message}
                         ]
                     )
                     try:
-                        return _validate_and_dump(openrouter_response.choices[0].message.content)
+                        content_str = openrouter_response.choices[0].message.content
+                        if content_str:
+                            result = _validate_and_dump(content_str)
+                            _log_llm_call("OpenRouter (Free)", fallback_model, "analysis")
+                            return result
                     except Exception as parse_err:
                         print(f"OpenRouter free model {fallback_model} parsing failed: {parse_err}")
                         last_openrouter_err = parse_err
@@ -478,12 +519,14 @@ async def extract_text(req: ExtractTextRequest):
 async def execute_on_piston(code: str, language: str) -> list:
     PISTON_LANGUAGES = {
         "python": "python",
+        "python3": "python",
         "cpp": "c++",
         "java": "java",
         "javascript": "javascript"
     }
     PISTON_VERSIONS = {
         "python": "3.10.0",
+        "python3": "3.10.0",
         "cpp": "10.2.0",
         "java": "15.0.2",
         "javascript": "16.3.0"
@@ -521,9 +564,169 @@ async def execute_on_piston(code: str, language: str) -> list:
         print(f"Piston execution exception: {e}")
         return []
 
+MLSS_SKILL_FILES = {
+    "dsa": "SKILL_1_DSA.md",
+    "sql": "SKILL_2_SQL.md",
+    "mcq": "SKILL_3_MCQ.md",
+}
+MLSS_FILES_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "files")
+
+async def ask_mlss_chat(system_prompt: str, user_message: str) -> str:
+    """Call LLM for MLSS chat mode, returning plain text (not JSON)."""
+    import asyncio
+    from google import genai
+
+    api_key = os.environ.get("GEMINI_API_KEY", "")
+    openrouter_key = os.environ.get("OPENROUTER_API_KEY", "")
+
+    def _call():
+        if api_key:
+            gemini_models = ["gemini-2.5-flash-lite", "gemini-2.5-flash", "gemini-1.5-flash"]
+            for gem_model in gemini_models:
+                try:
+                    print(f"Trying Gemini model for MLSS: {gem_model}...")
+                    client = genai.Client(api_key=api_key, http_options={"timeout": 30.0})
+                    from google.genai import types
+                    response = client.models.generate_content(
+                        model=gem_model,
+                        contents=user_message,
+                        config=types.GenerateContentConfig(
+                            system_instruction=system_prompt,
+                            temperature=0.3,
+                        ),
+                    )
+                    if response.text:
+                        _log_llm_call("Google Gemini (Direct)", gem_model, "mlss-chat")
+                        return response.text
+                except Exception as e:
+                    print(f"Gemini MLSS chat failed for model {gem_model}: {e}")
+
+        if openrouter_key:
+            try:
+                import openai
+                client = openai.OpenAI(base_url="https://openrouter.ai/api/v1", api_key=openrouter_key)
+                print("Trying OpenRouter paid Gemini model for MLSS...")
+                resp = client.chat.completions.create(
+                    model="google/gemini-2.5-flash",
+                    max_tokens=512,
+                    timeout=10.0,
+                    messages=[
+                        {"role": "system", "content": system_prompt},
+                        {"role": "user", "content": user_message}
+                    ]
+                )
+                if resp.choices and resp.choices[0].message.content:
+                    _log_llm_call("OpenRouter (Paid)", "google/gemini-2.5-flash", "mlss-chat")
+                    return resp.choices[0].message.content
+            except Exception as e:
+                print(f"OpenRouter MLSS chat failed: {e}")
+        
+        groq_key = os.environ.get("GROQ_API_KEY", "")
+        if groq_key and not groq_key.startswith("get_from"):
+            try:
+                from groq import Groq
+                groq_client = Groq(api_key=groq_key)
+                gr = groq_client.chat.completions.create(
+                    model="llama-3.3-70b-versatile",
+                    timeout=8.0,
+                    messages=[
+                        {"role": "system", "content": system_prompt},
+                        {"role": "user", "content": user_message}
+                    ]
+                )
+                if gr.choices and gr.choices[0].message.content:
+                    _log_llm_call("Groq", "llama-3.3-70b-versatile", "mlss-chat")
+                    return gr.choices[0].message.content
+            except Exception as e:
+                print(f"Groq MLSS chat failed: {e}")
+
+        # Fallback to OpenRouter Free tier models if paid models failed/ran out of credits
+        if openrouter_key:
+            try:
+                import openai
+                client = openai.OpenAI(base_url="https://openrouter.ai/api/v1", api_key=openrouter_key)
+                free_models = [
+                    "openrouter/free",
+                    "cognitivecomputations/dolphin-mistral-24b-venice-edition:free",
+                    "meta-llama/llama-3.2-3b-instruct:free",
+                    "qwen/qwen3-coder:free",
+                    "google/gemma-4-31b-it:free"
+                ]
+                for fallback_model in free_models:
+                    try:
+                        print(f"Trying OpenRouter free model fallback for MLSS: {fallback_model}...")
+                        resp = client.chat.completions.create(
+                            model=fallback_model,
+                            max_tokens=512,
+                            timeout=10.0,
+                            messages=[
+                                {"role": "system", "content": system_prompt},
+                                {"role": "user", "content": user_message}
+                            ]
+                        )
+                        if resp.choices and resp.choices[0].message.content:
+                            _log_llm_call("OpenRouter (Free)", fallback_model, "mlss-chat")
+                            return resp.choices[0].message.content
+                    except Exception as e_free:
+                        print(f"OpenRouter free model {fallback_model} failed for MLSS: {e_free}")
+            except Exception as e:
+                print(f"OpenRouter fallback initialization failed: {e}")
+
+        raise Exception("All MLSS LLM providers (Gemini, OpenRouter Paid, Groq, and OpenRouter Free Fallbacks) failed.")
+
+    return await asyncio.to_thread(_call)
+
 @router.post("/analyze")
 async def analyze_practice(req: PracticeRequest):
-    
+
+    # ── AMAZONML Mode: load skill file & call chat LLM ──────────────────────
+    if req.amazonMlMode:
+        skill_file = MLSS_SKILL_FILES.get(req.mlSection, "SKILL_1_DSA.md")
+        skill_path = os.path.join(MLSS_FILES_DIR, skill_file)
+        try:
+            with open(skill_path, "r", encoding="utf-8") as f:
+                skill_content = f.read()
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=f"Failed to load MLSS skill file '{skill_file}': {e}")
+
+        system_prompt = skill_content
+
+        # Build user message with conversation history
+        history_text = ""
+        if req.history:
+            for turn in req.history:
+                role = turn.get("role", "user")
+                content = turn.get("content", "")
+                if role == "user":
+                    history_text += f"Student: {content}\n"
+                else:
+                    history_text += f"AI Copilot: {content}\n"
+
+        user_msg_parts = []
+        if history_text:
+            user_msg_parts.append(f"--- Conversation History ---\n{history_text}\n--- End History ---")
+        if req.problem:
+            user_msg_parts.append(f"Student Question/Problem:\n{req.problem}")
+        if req.userAttempt:
+            user_msg_parts.append(f"Student's Code Attempt:\n{req.userAttempt}")
+
+        user_msg = "\n\n".join(user_msg_parts) if user_msg_parts else "Hello, I need help."
+
+        try:
+            answer = await ask_mlss_chat(system_prompt, user_msg)
+            return {
+                "solutionCode": "",
+                "explanation": answer,
+                "complexity": {"time": "N/A", "space": "N/A"},
+                "driverCode": "",
+                "verification": [],
+                "mlssMode": True,
+                "mlSection": req.mlSection
+            }
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=str(e))
+    # ── End AMAZONML Mode ────────────────────────────────────────────────────
+
     user_msg = f"Problem Statement:\n{req.problem}\n\n"
     if req.constraints:
         user_msg += f"Constraints:\n{req.constraints}\n\n"
@@ -555,12 +758,12 @@ async def analyze_practice(req: PracticeRequest):
             
             # Check 1: Famous problems - Reverse Bits must not use loops in Python
             is_reverse_bits = "reverse" in req.problem.lower() and "bit" in req.problem.lower()
-            if is_reverse_bits and req.language.lower() in ("python", "py"):
+            if is_reverse_bits and req.language.lower() in ("python", "python3", "py"):
                 if "for " in solution or "while " in solution:
                     error_reasons.append("For Reverse Bits in Python, you MUST NOT use any loop (for/while). Write it in a single line using binary formatting and string slicing, e.g. `ans = int(f'{n:032b}'[::-1], 2)`.")
             
             # Check 2: Python driverCode syntax validation
-            if req.language.lower() in ("python", "py") and driver_code:
+            if req.language.lower() in ("python", "python3", "py") and driver_code:
                 try:
                     compile(driver_code, "<string>", "exec")
                 except SyntaxError as syntax_err:
@@ -594,7 +797,7 @@ async def analyze_practice(req: PracticeRequest):
             lang_lower = req.language.lower()
             for line in raw_code.splitlines():
                 trimmed = line.strip()
-                if lang_lower in ("python", "py"):
+                if lang_lower in ("python", "python3", "py"):
                     if trimmed.startswith("#"):
                         continue
                     if "#" in line:

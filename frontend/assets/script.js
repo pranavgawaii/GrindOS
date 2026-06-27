@@ -1537,6 +1537,7 @@
     }
 
     // ── Premium Floating AI Chat Panel Injection ──────────────────────────
+    if (!window.location.pathname.includes('practice.html')) {
     // 1. Inject Dynamic Style Tag
     const styleTag = document.createElement('style');
     styleTag.textContent = `
@@ -2189,6 +2190,7 @@
         appendMessage('assistant', 'AI features require the local backend. Run:\ncd backend && uvicorn main:app --reload', true);
       }
     });
+    }
 
     // ── Unified Calendar Event & Focus Timer Engine ───────────────────────────
     let timerCheckInterval = null;

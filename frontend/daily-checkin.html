@@ -1,0 +1,2535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <script>
+    (function() {
+      const saved = localStorage.getItem('GrindOS-theme');
+      if (saved) {
+        document.documentElement.classList.add(saved);
+      } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.documentElement.classList.add('dark');
+      }
+    })();
+  </script>
+  <title>Daily Check In & Notes — GrindOS</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <link rel="icon" type="image/png" href="/logo.png">
+  <style>
+    /* Notebook specific styles */
+    
+*{box-sizing:border-box;margin:0;padding:0}
+.nb-wrap{padding:1rem 0 2rem;font-family:var(--font-sans,sans-serif)}
+.nb-tabs{display:flex;gap:6px;margin-bottom:1.25rem;flex-wrap:wrap}
+.nb-tab{padding:6px 14px;border-radius:20px;font-size:13px;cursor:pointer;border:0.5px solid var(--border);color:var(--text-secondary);background:var(--surface-1);transition:all 0.15s}
+.nb-tab.active{background:var(--text-primary);color:var(--surface-2);border-color:var(--text-primary)}
+.nb-page{display:none}
+.nb-page.active{display:block}
+.page-frame{background:var(--surface-2);border:0.5px solid var(--border);border-radius:12px;overflow:hidden}
+.page-top{background:var(--surface-1);border-bottom:0.5px solid var(--border);padding:0.8rem 1.1rem;display:flex;align-items:center;gap:10px}
+.page-dot{width:10px;height:10px;border-radius:50%}
+.page-subject{font-size:12px;font-weight:500;color:var(--text-secondary)}
+.page-title{font-size:16px;font-weight:500;color:var(--text-primary)}
+.page-date{font-size:11px;color:var(--text-muted);margin-left:auto}
+.ruled{background:var(--surface-2);padding:1rem 1.25rem;position:relative}
+.ruled::before{content:'';position:absolute;left:2.5rem;top:0;bottom:0;width:1px;background:var(--border)}
+.line{display:flex;align-items:flex-start;gap:0;border-bottom:0.5px solid var(--border);padding:7px 0 7px 0;min-height:34px;position:relative}
+.line-num{font-size:10px;color:var(--text-muted);width:2rem;flex-shrink:0;padding-top:2px;text-align:right;padding-right:6px}
+.line-content{flex:1;padding-left:0.75rem;font-size:13.5px;line-height:1.55;color:var(--text-primary)}
+.line.blank .line-content{min-height:18px}
+.hl-purple{color:#534AB7;font-weight:500}
+.hl-coral{color:#993C1D;font-weight:500}
+.hl-teal{color:#0F6E56;font-weight:500}
+.hl-amber{color:#854F0B;font-weight:500}
+.hl-blue{color:#185FA5;font-weight:500}
+.indent{padding-left:1.2rem}
+.arrow{color:var(--text-muted);margin-right:4px}
+.sticky{background:#FAEEDA;border:0.5px solid #EF9F27;border-radius:8px;padding:0.75rem 0.9rem;margin:1rem 1.1rem 0.5rem;position:relative}
+.sticky-title{font-size:11px;font-weight:500;color:#633806;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.05em}
+.sticky p{font-size:13px;color:#854F0B;line-height:1.55}
+.warn-box{background:#FCEBEB;border:0.5px solid #F09595;border-radius:8px;padding:0.65rem 0.9rem;margin:0.75rem 1.1rem 0}
+.warn-box p{font-size:13px;color:#791F1F;line-height:1.55}
+.tip-strip{display:flex;flex-direction:column;gap:0}
+.tip-row{display:flex;align-items:flex-start;gap:10px;padding:0.65rem 1.1rem;border-bottom:0.5px solid var(--border)}
+.tip-row:last-child{border-bottom:none}
+.tip-icon{font-size:16px;flex-shrink:0;margin-top:1px}
+.tip-text{font-size:13px;color:var(--text-secondary);line-height:1.55}
+.tip-text b{font-weight:500;color:var(--text-primary)}
+.tracker-head{display:grid;grid-template-columns:3fr 1.5fr 1fr 1fr;gap:0;border-bottom:0.5px solid var(--border-strong);padding:0.5rem 1.1rem;background:var(--surface-1)}
+.tracker-head span{font-size:11px;font-weight:500;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em}
+.tracker-row{display:grid;grid-template-columns:3fr 1.5fr 1fr 1fr;gap:0;padding:0.6rem 1.1rem;border-bottom:0.5px solid var(--border);align-items:center}
+.tracker-row:last-child{border-bottom:none}
+.tname{font-size:13px;color:var(--text-primary)}
+.tpat{font-size:12px;color:var(--text-secondary)}
+.tbadge{font-size:11px;padding:2px 8px;border-radius:12px;font-weight:500;width:fit-content}
+.clean{background:#EAF3DE;color:#27500A}
+.hint{background:#FAEEDA;color:#633806}
+.fail{background:#FCEBEB;color:#791F1F}
+.tdate{font-size:12px;color:var(--text-muted)}
+.section-divider{font-size:11px;font-weight:500;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.06em;padding:0.75rem 1.1rem 0.4rem;border-top:0.5px solid var(--border)}
+
+    
+    /* Checkin specific styles */
+    #checkin-input:focus {
+        outline: none;
+        border-color: var(--brand);
+        box-shadow: 0 0 0 3px var(--brand-glow), inset 0 2px 4px rgba(0,0,0,0.02) !important;
+    }
+    #submit-checkin:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px var(--brand-glow) !important;
+    }
+  </style>
+  <script src="auth/clerk.js"></script>
+</head>
+<body>
+
+  <header class="topbar">
+    <a href="dashboard.html" class="topbar-brand">
+      <img src="/logo.png" alt="GrindOS Logo" class="brand-logo"
+        style="width: 34px; height: 34px; object-fit: contain; border-radius: 4px; flex-shrink: 0; display: inline-block; vertical-align: middle; margin-right: 4px;">
+      <span class="brand-wordmark">GrindOS</span>
+    </a>
+    <nav class="topbar-nav">
+      <a href="dashboard.html" class="learn-nav">Learn</a>
+      <a href="notes.html" class="notes-nav">Notes</a>
+      <a href="tracker.html" class="tracker-nav">Tracker</a>
+      <a href="practice.html" class="practice-nav">Practice</a>
+      <a href="resume-builder.html" class="resume-nav">Resume</a>
+      
+    </nav>
+    <div class="topbar-right">
+      <button class="icon-btn" id="theme-toggle" aria-label="Toggle theme"><span class="theme-icon">☾</span></button>
+      <div id="clerk-user-widget"></div>
+    </div>
+  </header>
+
+  <!-- Mobile Bottom Nav -->
+  <nav class="mobile-bottom-nav" id="mobile-bottom-nav">
+    <a href="dashboard.html" class="mobile-nav-item" id="mnav-learn">
+      <span class="mobile-nav-icon">
+        <svg viewBox="0 0 24 24" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+      </span>
+      <span>Learn</span>
+    </a>
+    <a href="notes.html" class="mobile-nav-item" id="mnav-notes">
+      <span class="mobile-nav-icon">
+        <svg viewBox="0 0 24 24" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><line x1="10" y1="9" x2="8" y2="9"></line></svg>
+      </span>
+      <span>Notes</span>
+    </a>
+    <a href="tracker.html" class="mobile-nav-item" id="mnav-tracker">
+      <span class="mobile-nav-icon">
+        <svg viewBox="0 0 24 24" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+      </span>
+      <span>Tracker</span>
+    </a>
+    <a href="practice.html" class="mobile-nav-item" id="mnav-practice">
+      <span class="mobile-nav-icon">
+        <svg viewBox="0 0 24 24" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+      </span>
+      <span>Practice</span>
+    </a>
+    <a href="resume-builder.html" class="mobile-nav-item" id="mnav-resume" style="display: flex;">
+      <span class="mobile-nav-icon">
+        <svg viewBox="0 0 24 24" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+      </span>
+      <span>Resume</span>
+    </a>
+    <a href="daily-checkin.html" class="mobile-nav-item active" id="mnav-checkin">
+      <span class="mobile-nav-icon">
+        <svg viewBox="0 0 24 24" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none" stroke="currentColor"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+      </span>
+      <span>Check In</span>
+    </a>
+  </nav>
+
+  <div class="dashboard" style="max-width: 1200px; margin: 0 auto; padding-top: 80px; padding-bottom: 80px;">
+        
+<style>
+/* Ultra Premium Checklist Redesign */
+.checklist-master-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 1rem;
+    padding-bottom: 120px;
+}
+
+.tracker-hero {
+    text-align: center;
+    margin-bottom: 3rem;
+    padding: 2rem 0;
+}
+.tracker-hero h1 {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: var(--text-1);
+    margin-bottom: 0.5rem;
+    background: linear-gradient(135deg, var(--text-1), var(--text-3));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.tracker-hero p {
+    font-size: 1.1rem;
+    color: var(--text-3);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.tracker-card {
+    background: rgba(255, 255, 255, 0.015);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    position: relative;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+    backdrop-filter: blur(20px);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.dark .tracker-card {
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+.tracker-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+}
+.tracker-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--brand), #ff9a66);
+    opacity: 0.8;
+}
+
+.block-header-new {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    padding-bottom: 1rem;
+}
+.block-title-new {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text-1);
+    letter-spacing: 0.02em;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 0;
+}
+.block-title-new .icon-box {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: rgba(255, 94, 0, 0.1);
+    color: var(--brand);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.block-badge-new {
+    background: rgba(255, 94, 0, 0.1);
+    color: var(--brand);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    border: 1px solid rgba(255, 94, 0, 0.2);
+}
+
+.task-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+.task-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 12px 16px;
+    border-radius: 12px;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+    position: relative;
+}
+.task-item:hover {
+    background: rgba(255, 255, 255, 0.03);
+    border-color: rgba(255, 255, 255, 0.05);
+}
+.task-item.subtopic {
+    margin-left: 2.5rem;
+}
+.task-item.subtopic::before {
+    content: '';
+    position: absolute;
+    left: -1rem;
+    top: -10px;
+    bottom: 50%;
+    width: 2px;
+    background: rgba(255, 255, 255, 0.1);
+    border-bottom-left-radius: 6px;
+}
+.task-item.subtopic::after {
+    content: '';
+    position: absolute;
+    left: -1rem;
+    top: 50%;
+    width: 1rem;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.task-checkbox-label {
+    display: contents;
+    cursor: pointer;
+}
+.task-checkbox {
+    display: none;
+}
+.task-custom-check {
+    width: 22px;
+    height: 22px;
+    border-radius: 6px;
+    border: 2px solid var(--text-4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    flex-shrink: 0;
+    margin-top: 2px;
+    background: transparent;
+}
+.task-checkbox:checked + .task-custom-check {
+    background: var(--brand);
+    border-color: var(--brand);
+    box-shadow: 0 0 12px rgba(255, 94, 0, 0.4);
+}
+.task-checkbox:checked + .task-custom-check::after {
+    content: '\2713';
+    color: white;
+    font-size: 14px;
+    font-weight: 900;
+}
+
+.task-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+.task-title {
+    font-size: 0.95rem;
+    color: var(--text-1);
+    font-weight: 500;
+    line-height: 1.5;
+    transition: color 0.2s;
+}
+.task-item.subtopic .task-title {
+    font-size: 0.9rem;
+    color: var(--text-2);
+}
+.task-checkbox:checked ~ .task-content .task-title {
+    color: var(--text-4);
+    text-decoration: line-through;
+}
+.task-num {
+    color: var(--brand);
+    font-weight: 700;
+    margin-right: 6px;
+}
+
+/* Floating Progress Bar */
+.floating-progress {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(20, 20, 20, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 100px;
+    padding: 12px 24px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.05) inset;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    z-index: 1000;
+    width: 90%;
+    max-width: 600px;
+}
+.fp-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+}
+.fp-text {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-2);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    display: flex;
+    justify-content: space-between;
+}
+.fp-text span {
+    color: var(--text-1);
+}
+.fp-bar-bg {
+    width: 100%;
+    height: 8px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 4px;
+    overflow: hidden;
+}
+.fp-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--brand), #ff9a66);
+    border-radius: 4px;
+    width: 0%;
+    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 0 10px var(--brand-glow);
+}
+.fp-save-btn {
+    background: var(--brand);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 100px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s;
+}
+.fp-save-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px var(--brand-glow);
+}
+</style>
+
+        
+        
+<style>
+/* Ultra Premium Accordion Checklist */
+.checklist-master-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 1rem;
+    padding-bottom: 120px;
+}
+.tracker-hero {
+    text-align: center;
+    margin-bottom: 3rem;
+    padding: 2rem 0;
+}
+.tracker-hero h1 {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: var(--text-1);
+    margin-bottom: 0.5rem;
+}
+.tracker-hero p {
+    font-size: 1.1rem;
+    color: var(--text-3);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Accordion Card */
+.acc-card {
+    background: var(--surface-1);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+    transition: border-color 0.2s;
+}
+.acc-card:hover {
+    border-color: var(--border-strong);
+}
+.acc-header {
+    padding: 1.25rem 1.5rem;
+    background: var(--surface-2);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+}
+.acc-header-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+.acc-num {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    background: var(--surface-0);
+    border: 1px solid var(--border-strong);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; color: var(--text-1);
+}
+.acc-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-1);
+}
+.acc-days {
+    font-size: 0.85rem;
+    color: var(--text-3);
+    margin-top: 4px;
+}
+.acc-chevron {
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    color: var(--text-3);
+}
+.acc-card.open .acc-chevron {
+    transform: rotate(180deg);
+}
+
+.acc-body {
+    display: none; /* hidden by default */
+    padding: 1.5rem;
+    border-top: 1px solid var(--border);
+}
+.acc-card.open .acc-body {
+    display: block;
+}
+
+/* Checklist items */
+.task-list { display: flex; flex-direction: column; gap: 4px; margin-bottom: 2rem; }
+.task-item {
+    display: flex; align-items: flex-start; gap: 14px;
+    padding: 10px 14px; border-radius: 8px;
+    cursor: pointer; transition: background 0.2s;
+}
+.task-item:hover { background: var(--surface-0); }
+.task-item.subtopic { margin-left: 2rem; }
+.task-checkbox { display: none; }
+.task-custom-check {
+    width: 20px; height: 20px; border-radius: 5px;
+    border: 2px solid var(--text-4);
+    display: flex; align-items: center; justify-content: center;
+    margin-top: 2px; flex-shrink: 0;
+}
+.task-checkbox:checked + .task-custom-check {
+    background: var(--text-1); border-color: var(--text-1);
+}
+.task-checkbox:checked + .task-custom-check::after {
+    content: '\2713'; color: var(--bg); font-size: 14px; font-weight: bold;
+}
+.task-title { font-size: 0.95rem; color: var(--text-1); flex: 1; line-height: 1.5; }
+.task-checkbox:checked ~ .task-title { color: var(--text-4); text-decoration: line-through; }
+.task-num { font-weight: 700; margin-right: 6px; color: var(--text-2); }
+
+/* Tips & Resources */
+.acc-meta {
+    display: flex; flex-direction: column; gap: 1.25rem;
+    padding-top: 1.5rem; border-top: 1px solid var(--border-light);
+}
+.meta-section h4 {
+    font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em;
+    color: var(--text-muted); margin-bottom: 0.75rem;
+}
+.info-box {
+    padding: 1rem; border-radius: 8px; font-size: 0.9rem; line-height: 1.6;
+    margin-bottom: 0.5rem;
+}
+.box-note { background: rgba(245, 166, 35, 0.1); border: 1px solid rgba(245, 166, 35, 0.2); color: var(--text-1); }
+.box-note b { color: #f5a623; }
+.box-tip { background: rgba(46, 213, 115, 0.1); border: 1px solid rgba(46, 213, 115, 0.2); color: var(--text-1); }
+.box-tip b { color: #2ed573; }
+.res-links { display: flex; flex-direction: column; gap: 8px; }
+.res-links a {
+    display: flex; align-items: center; gap: 8px;
+    padding: 10px 14px; background: var(--surface-0); border: 1px solid var(--border);
+    border-radius: 8px; color: var(--text-1); text-decoration: none; font-size: 0.9rem;
+    transition: border-color 0.2s;
+}
+.res-links a:hover { border-color: var(--text-3); }
+
+/* Clean Progress Bar */
+.floating-progress {
+    position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%);
+    background: var(--surface-2); border: 1px solid var(--border-strong);
+    border-radius: 100px; padding: 12px 24px; display: flex; align-items: center; gap: 24px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3); z-index: 1000; width: 90%; max-width: 600px;
+}
+.fp-stats { flex: 1; }
+.fp-text { font-size: 0.85rem; font-weight: 600; color: var(--text-2); margin-bottom: 6px; display: flex; justify-content: space-between;}
+.fp-bar-bg { width: 100%; height: 6px; background: var(--surface-0); border-radius: 3px; overflow: hidden; }
+.fp-bar-fill { height: 100%; background: var(--text-1); border-radius: 3px; width: 0%; transition: width 0.3s; }
+.fp-save-btn {
+    background: var(--text-1); color: var(--bg); border: none; padding: 10px 20px;
+    border-radius: 100px; font-weight: 600; cursor: pointer;
+}
+</style>
+
+        
+        
+<style>
+/* Live Tracking Accordion Checklist */
+.checklist-master-container { max-width: 900px; margin: 0 auto; padding: 0 1rem; padding-bottom: 120px; }
+.tracker-hero { text-align: center; margin-bottom: 3rem; padding: 2rem 0; }
+.tracker-hero h1 { font-size: 2.2rem; font-weight: 800; color: var(--text-1); margin-bottom: 0.5rem; }
+.tracker-hero p { font-size: 1.1rem; color: var(--text-3); max-width: 600px; margin: 0 auto; }
+
+.acc-card { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 1.5rem; overflow: hidden; transition: border-color 0.2s; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+.acc-card:hover { border-color: var(--border-strong); }
+.acc-header { padding: 1.25rem 1.5rem; background: var(--surface-2); display: flex; justify-content: space-between; align-items: center; cursor: pointer; user-select: none; }
+.acc-header-left { display: flex; flex-direction: column; gap: 4px; }
+.acc-title { font-size: 1.15rem; font-weight: 700; color: var(--text-1); letter-spacing: 0.02em; }
+.acc-date-pill { display: inline-flex; align-items: center; gap: 6px; font-size: 0.8rem; color: var(--brand); font-weight: 600; padding: 4px 10px; background: rgba(255, 94, 0, 0.1); border-radius: 20px; border: 1px solid rgba(255, 94, 0, 0.2); width: fit-content; margin-top: 4px;}
+.acc-chevron { transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); color: var(--text-3); }
+.acc-card.open .acc-chevron { transform: rotate(180deg); }
+
+.acc-body { display: none; padding: 1.5rem; border-top: 1px solid var(--border); }
+.acc-card.open .acc-body { display: block; }
+
+.task-list { display: flex; flex-direction: column; gap: 4px; margin-bottom: 2rem; }
+.task-item { display: flex; align-items: flex-start; gap: 14px; padding: 10px 14px; border-radius: 8px; cursor: pointer; transition: background 0.2s; }
+.task-item:hover { background: var(--surface-0); }
+.task-item.subtopic { margin-left: 2.5rem; }
+.task-checkbox { display: none; }
+.task-custom-check { width: 20px; height: 20px; border-radius: 5px; border: 2px solid var(--text-4); display: flex; align-items: center; justify-content: center; margin-top: 2px; flex-shrink: 0; }
+.task-checkbox:checked + .task-custom-check { background: var(--text-1); border-color: var(--text-1); }
+.task-checkbox:checked + .task-custom-check::after { content: '\2713'; color: var(--bg); font-size: 14px; font-weight: bold; }
+.task-content { flex: 1; display: flex; align-items: center; justify-content: space-between; gap: 1rem;}
+.task-title { font-size: 0.95rem; color: var(--text-1); line-height: 1.5; }
+.task-checkbox:checked ~ .task-content .task-title { color: var(--text-4); text-decoration: line-through; }
+.task-num { font-weight: 700; margin-right: 6px; color: var(--brand); }
+.task-due { font-size: 0.75rem; color: var(--text-muted); font-weight: 600; white-space: nowrap; }
+
+.acc-meta { display: flex; flex-direction: column; gap: 1.25rem; padding-top: 1.5rem; border-top: 1px solid var(--border-light); }
+.meta-section h4 { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin-bottom: 0.75rem; }
+.info-box { padding: 1rem; border-radius: 8px; font-size: 0.9rem; line-height: 1.6; margin-bottom: 0.5rem; }
+.box-note { background: rgba(245, 166, 35, 0.1); border: 1px solid rgba(245, 166, 35, 0.2); color: var(--text-1); }
+.box-note b { color: #f5a623; }
+.box-tip { background: rgba(46, 213, 115, 0.1); border: 1px solid rgba(46, 213, 115, 0.2); color: var(--text-1); }
+.box-tip b { color: #2ed573; }
+.res-links { display: flex; flex-direction: column; gap: 8px; }
+.res-links a { display: flex; align-items: center; gap: 8px; padding: 10px 14px; background: var(--surface-0); border: 1px solid var(--border); border-radius: 8px; color: var(--text-1); text-decoration: none; font-size: 0.9rem; transition: border-color 0.2s; }
+.res-links a:hover { border-color: var(--text-3); }
+
+/* Floating Progress Bar */
+.floating-progress { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%); background: var(--surface-2); border: 1px solid var(--border-strong); border-radius: 100px; padding: 12px 24px; display: flex; align-items: center; gap: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.4); z-index: 1000; width: 90%; max-width: 600px; backdrop-filter: blur(10px); }
+.fp-stats { flex: 1; }
+.fp-text { font-size: 0.85rem; font-weight: 600; color: var(--text-2); margin-bottom: 6px; display: flex; justify-content: space-between;}
+.fp-bar-bg { width: 100%; height: 6px; background: var(--surface-0); border-radius: 3px; overflow: hidden; }
+.fp-bar-fill { height: 100%; background: var(--text-1); border-radius: 3px; width: 0%; transition: width 0.3s; }
+.fp-save-btn { background: var(--text-1); color: var(--bg); border: none; padding: 10px 20px; border-radius: 100px; font-weight: 600; cursor: pointer; }
+</style>
+
+        
+        
+<style>
+/* Metrics Matrix */
+.metrics-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 2.5rem; }
+.metric-box { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 1.25rem; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.1); position: relative; overflow: hidden;}
+.metric-box::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2px; background: var(--brand); opacity: 0.5; }
+.metric-val { font-size: 1.8rem; font-weight: 800; color: var(--text-1); line-height: 1; margin-bottom: 4px; }
+.metric-lbl { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); font-weight: 600;}
+.overdue-val { color: #ff4757 !important; }
+.overdue-box::before { background: #ff4757; opacity: 1; }
+
+.checklist-master-container { max-width: 900px; margin: 0 auto; padding: 0 1rem; padding-bottom: 120px; text-align: left; }
+.tracker-hero { margin-bottom: 2rem; padding: 1rem 0; text-align: center; }
+.tracker-hero h1 { font-size: 2rem; font-weight: 800; color: var(--text-1); margin-bottom: 0.5rem; }
+
+/* Accordions */
+.acc-card { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 1.5rem; overflow: hidden; transition: border-color 0.2s; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+.acc-header { padding: 1.25rem 1.5rem; background: var(--surface-2); display: flex; justify-content: space-between; align-items: center; cursor: pointer; user-select: none; }
+.acc-header-left { display: flex; flex-direction: column; gap: 4px; text-align: left; }
+.acc-title { font-size: 1.15rem; font-weight: 700; color: var(--text-1); letter-spacing: 0.02em; }
+.acc-date-pill { display: inline-flex; align-items: center; gap: 6px; font-size: 0.8rem; color: var(--brand); font-weight: 600; padding: 4px 10px; background: rgba(255, 94, 0, 0.1); border-radius: 20px; border: 1px solid rgba(255, 94, 0, 0.2); width: fit-content; margin-top: 4px;}
+.acc-chevron { transition: transform 0.3s; color: var(--text-3); }
+.acc-card.open .acc-chevron { transform: rotate(180deg); }
+.acc-body { display: none; padding: 1.5rem; border-top: 1px solid var(--border); }
+.acc-card.open .acc-body { display: block; }
+
+/* Checklist - Left Aligned explicitly */
+.task-list { display: flex; flex-direction: column; gap: 4px; margin-bottom: 2rem; text-align: left; }
+.task-item { display: flex; align-items: flex-start; justify-content: flex-start; gap: 14px; padding: 10px 14px; border-radius: 8px; cursor: pointer; transition: background 0.2s; text-align: left; width: 100%; box-sizing: border-box;}
+.task-item:hover { background: var(--surface-0); }
+.task-item.subtopic { margin-left: 2.5rem; width: calc(100% - 2.5rem); position: relative; }
+.task-item.subtopic::before { content: ''; position: absolute; left: -14px; top: -10px; bottom: 50%; width: 2px; background: var(--border); border-bottom-left-radius: 4px;}
+.task-item.subtopic::after { content: ''; position: absolute; left: -14px; top: 50%; width: 14px; height: 2px; background: var(--border); }
+
+.task-checkbox { display: none; }
+.task-custom-check { width: 20px; height: 20px; border-radius: 5px; border: 2px solid var(--text-4); display: flex; align-items: center; justify-content: center; margin-top: 2px; flex-shrink: 0; background: transparent; transition: all 0.2s;}
+.task-checkbox:checked + .task-custom-check { background: var(--text-1); border-color: var(--text-1); }
+.task-checkbox:checked + .task-custom-check::after { content: '\2713'; color: var(--bg); font-size: 14px; font-weight: bold; }
+
+.task-content { flex: 1; display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; text-align: left;}
+.task-title-wrap { display: flex; align-items: flex-start; text-align: left;}
+.task-title { font-size: 0.95rem; color: var(--text-1); line-height: 1.5; text-align: left; }
+.task-checkbox:checked ~ .task-content .task-title { color: var(--text-4); text-decoration: line-through; }
+.task-num { font-weight: 700; margin-right: 6px; color: var(--brand); }
+
+/* Overdue Badge */
+.task-due { font-size: 0.75rem; font-weight: 600; padding: 2px 8px; border-radius: 12px; white-space: nowrap; margin-top: 2px; display: inline-flex; align-items: center;}
+.due-normal { color: var(--text-muted); background: var(--surface-0); border: 1px solid var(--border); }
+.due-overdue { color: #ff4757; background: rgba(255, 71, 87, 0.1); border: 1px solid rgba(255, 71, 87, 0.2); }
+.task-checkbox:checked ~ .task-content .task-due { opacity: 0.5; text-decoration: line-through;}
+
+/* Meta */
+.acc-meta { display: flex; flex-direction: column; gap: 1.25rem; padding-top: 1.5rem; border-top: 1px solid var(--border-light); text-align: left;}
+.meta-section h4 { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin-bottom: 0.75rem; text-align: left;}
+.info-box { padding: 1rem; border-radius: 8px; font-size: 0.9rem; line-height: 1.6; margin-bottom: 0.5rem; text-align: left;}
+.box-note { background: rgba(245, 166, 35, 0.1); border: 1px solid rgba(245, 166, 35, 0.2); color: var(--text-1); }
+.box-note b { color: #f5a623; }
+.box-tip { background: rgba(46, 213, 115, 0.1); border: 1px solid rgba(46, 213, 115, 0.2); color: var(--text-1); }
+.box-tip b { color: #2ed573; }
+.res-links { display: flex; flex-direction: column; gap: 8px; }
+.res-links a { display: flex; align-items: center; gap: 8px; padding: 10px 14px; background: var(--surface-0); border: 1px solid var(--border); border-radius: 8px; color: var(--text-1); text-decoration: none; font-size: 0.9rem; transition: border-color 0.2s; text-align: left;}
+.res-links a:hover { border-color: var(--text-3); }
+
+/* Floating Progress - No Button */
+.floating-progress { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%); background: var(--surface-2); border: 1px solid var(--border-strong); border-radius: 100px; padding: 14px 28px; display: flex; align-items: center; width: 90%; max-width: 500px; box-shadow: 0 10px 30px rgba(0,0,0,0.4); z-index: 1000; backdrop-filter: blur(10px); }
+.fp-stats { flex: 1; display: flex; flex-direction: column; gap: 6px; }
+.fp-text { font-size: 0.85rem; font-weight: 600; color: var(--text-2); display: flex; justify-content: space-between;}
+.fp-bar-bg { width: 100%; height: 8px; background: var(--surface-0); border-radius: 4px; overflow: hidden; }
+.fp-bar-fill { height: 100%; background: var(--text-1); border-radius: 4px; width: 0%; transition: width 0.3s; }
+</style>
+
+        <style>
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&display=swap');
+
+/* Metrics Matrix */
+.metrics-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:2.5rem;}
+.metric-box{background:var(--surface-1);border:1px solid var(--border);border-radius:12px;padding:1.2rem 1rem;display:flex;flex-direction:column;gap:4px;position:relative;overflow:hidden;}
+.metric-box::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--border-strong);}
+.overdue-box::after{background:#ff4757;}
+.metric-val{font-size:2rem;font-weight:800;color:var(--text-1);line-height:1;}
+.metric-lbl{font-size:0.75rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);font-weight:600;}
+.overdue-val{color:#ff4757!important;}
+.days-left-val{color:var(--brand)!important;}
+
+/* Tracker Container */
+.checklist-master-container{max-width:900px;margin:0 auto;padding:0 1rem 120px;}
+.tracker-hero{margin-bottom:2rem;}
+.tracker-hero h1{font-size:1.8rem;font-weight:800;color:var(--text-1);}
+.tracker-hero p{font-size:0.9rem;color:var(--text-3);margin-top:4px;}
+
+/* Accordion */
+.acc-card{background:var(--surface-1);border:1px solid var(--border);border-radius:12px;margin-bottom:1rem;overflow:hidden;transition:border-color .2s;box-shadow:0 2px 12px rgba(0,0,0,0.08);}
+.acc-card:hover{border-color:var(--border-strong);}
+.acc-header{padding:1rem 1.25rem;background:var(--surface-2);display:flex;align-items:center;gap:14px;cursor:pointer;user-select:none;}
+.acc-block-num{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:0.8rem;font-weight:800;color:#fff;flex-shrink:0;}
+.acc-header-info{flex:1;display:flex;flex-direction:column;gap:3px;align-items:flex-start;}
+.acc-title{font-size:0.92rem;font-weight:700;color:var(--text-1);text-align:left;text-transform:uppercase;letter-spacing:0.04em;}
+.acc-meta-row{display:flex;align-items:center;gap:10px;}
+.acc-date-info{font-size:0.75rem;color:var(--text-3);font-weight:500;}
+.acc-badge{font-size:0.68rem;padding:2px 7px;border-radius:10px;background:rgba(245,166,35,0.15);color:#b87d00;border:1px solid rgba(245,166,35,0.2);font-weight:600;}
+.acc-chevron{flex-shrink:0;color:var(--text-3);transition:transform .25s;}
+.acc-card.open .acc-chevron{transform:rotate(180deg);}
+.acc-body{display:none;border-top:1px solid var(--border);}
+.acc-card.open .acc-body{display:block;}
+
+/* Topic Rows */
+.topic-rows{display:flex;flex-direction:column;}
+.topic-row-item{display:grid;grid-template-columns:36px 1fr auto;gap:12px;align-items:start;padding:0.85rem 1.25rem;border-bottom:1px solid var(--border-light);cursor:pointer;transition:background .15s;}
+.topic-row-item:last-child{border-bottom:none;}
+.topic-row-item:hover{background:var(--surface-0);}
+.topic-row-item.checked{opacity:0.6;}
+.topic-check-area{display:flex;align-items:center;justify-content:center;padding-top:2px;}
+.topic-checkbox{display:none;}
+.topic-check-box{width:20px;height:20px;border-radius:5px;border:2px solid var(--text-4);display:flex;align-items:center;justify-content:center;transition:all .15s;flex-shrink:0;}
+.topic-checkbox:checked + .topic-check-box{background:var(--text-1);border-color:var(--text-1);}
+.topic-checkbox:checked + .topic-check-box::after{content:'✓';color:var(--bg);font-size:13px;font-weight:800;}
+.topic-body{display:flex;flex-direction:column;gap:3px;text-align:left;}
+.topic-name{font-size:0.9rem;font-weight:600;color:var(--text-1);text-align:left;line-height:1.4;}
+.topic-checkbox:checked ~ .topic-body .topic-name{text-decoration:line-through;color:var(--text-4);}
+.topic-sub-text{font-size:0.8rem;color:var(--text-3);line-height:1.5;text-align:left;}
+.topic-q-text{font-size:0.78rem;color:var(--brand);margin-top:4px;line-height:1.5;text-align:left;font-style:italic;}
+.topic-meta{display:flex;flex-direction:column;align-items:flex-end;gap:4px;}
+.topic-num-badge{font-size:0.72rem;color:var(--text-muted);font-weight:700;}
+.topic-due{font-size:0.72rem;font-weight:600;padding:2px 8px;border-radius:10px;white-space:nowrap;}
+.due-normal{color:var(--text-muted);background:var(--surface-0);border:1px solid var(--border);}
+.due-overdue{color:#ff4757;background:rgba(255,71,87,.1);border:1px solid rgba(255,71,87,.25);}
+
+/* Floating Pill */
+.fp-pill{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);background:var(--surface-2);border:1px solid var(--border-strong);border-radius:100px;padding:12px 28px;display:flex;align-items:center;width:90%;max-width:500px;box-shadow:0 8px 30px rgba(0,0,0,.35);z-index:1000;backdrop-filter:blur(12px);}
+.fp-info{flex:1;}
+.fp-row{display:flex;justify-content:space-between;font-size:.82rem;font-weight:600;color:var(--text-2);margin-bottom:6px;}
+.fp-track{height:6px;background:var(--surface-0);border-radius:3px;overflow:hidden;}
+.fp-fill{height:100%;background:var(--text-1);border-radius:3px;width:0%;transition:width .3s;}
+</style>
+<div class="checklist-master-container" id="checklist-master">
+  <div class="tracker-hero">
+    <h1>Roadmap Tracker</h1>
+    <p>51 topics · Revised plan · Grind ends Sep 12, 2026 · 12-day mock buffer</p>
+    <a href="interview_qa.html" style="display:inline-flex; align-items:center; gap:8px; background:rgba(255,94,0,0.15); border:1px solid rgba(255,94,0,0.3); color:#ff5e00; padding:8px 16px; border-radius:100px; text-decoration:none; font-weight:600; font-size:0.9rem; margin-top:12px; transition:all 0.2s;" onmouseover="this.style.background='rgba(255,94,0,0.25)'" onmouseout="this.style.background='rgba(255,94,0,0.15)'">
+        <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><path d="M12 2a10 10 0 1 0 10 10H12V2z"></path><path d="M12 12 2.1 12"></path><path d="M12 12l8.5 8.5"></path></svg>
+        Interview Q&A Bank
+    </a>
+  </div>
+  <div class="metrics-grid">
+    <div class="metric-box">
+      <span class="metric-val" id="m-total">51</span>
+      <span class="metric-lbl">Total Topics</span>
+    </div>
+    <div class="metric-box">
+      <span class="metric-val" id="m-done">0</span>
+      <span class="metric-lbl">Completed</span>
+    </div>
+    <div class="metric-box">
+      <span class="metric-val days-left-val" id="m-days">78</span>
+      <span class="metric-lbl">Days to Sep 12</span>
+    </div>
+    <div class="metric-box overdue-box">
+      <span class="metric-val overdue-val" id="m-overdue">0</span>
+      <span class="metric-lbl">Overdue ⚠</span>
+    </div>
+  </div>
+  <div>
+    <div class="acc-card" onclick="toggleAcc(this)">
+      <div class="acc-header" onclick="this.parentElement.classList.toggle('expanded')">
+        <div class="acc-block-num" style="background:var(--text-1); color:var(--bg);">1</div>
+        <div class="acc-header-info">
+          <span class="acc-title">Python Foundation</span>
+          <div class="acc-meta-row">
+            <span class="acc-date-info">Jun 26 → Jul 03 · 7 days</span>
+            
+          </div>
+        </div>
+        <div class="acc-chevron">
+          <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+      </div>
+      <div class="acc-body">
+        <div class="topic-rows">
+        <label class="topic-row-item" onclick="event.stopPropagation()">
+          <div class="topic-check-area">
+            <input type="checkbox" class="topic-checkbox" id="t-1" data-due="2026-06-27">
+            <div class="topic-check-box"></div>
+          </div>
+          <div class="topic-body">
+            <span class="topic-name">Variables, types, loops, conditionals</span>
+            <span class="topic-sub-text">if/else, for, while, type casting, input/output</span>
+            
+          </div>
+          <div class="topic-meta">
+            <span class="topic-num-badge">#1</span>
+            <span class="topic-due due-normal" id="badge-1">Jun 27</span>
+          </div>
+        </label>
+        <label class="topic-row-item" onclick="event.stopPropagation()">
+          <div class="topic-check-area">
+            <input type="checkbox" class="topic-checkbox" id="t-2" data-due="2026-06-28">
+            <div class="topic-check-box"></div>
+          </div>
+          <div class="topic-body">
+            <span class="topic-name">Functions + scope + comprehensions</span>
+            <span class="topic-sub-text">*args, **kwargs, default args, lambda, map, filter, list comp</span>
+            
+          </div>
+          <div class="topic-meta">
+            <span class="topic-num-badge">#2</span>
+            <span class="topic-due due-normal" id="badge-2">Jun 28</span>
+          </div>
+        </label>
+        <label class="topic-row-item" onclick="event.stopPropagation()">
+          <div class="topic-check-area">
+            <input type="checkbox" class="topic-checkbox" id="t-3" data-due="2026-06-29">
+            <div class="topic-check-box"></div>
+          </div>
+          <div class="topic-body">
+            <span class="topic-name">Data structures built-in</span>
+            <span class="topic-sub-text">List, tuple, set, dict — operations, methods, when each is right</span>
+            
+          </div>
+          <div class="topic-meta">
+            <span class="topic-num-badge">#3</span>
+            <span class="topic-due due-normal" id="badge-3">Jun 29</span>
+          </div>
+        </label>
+        <label class="topic-row-item" onclick="event.stopPropagation()">
+          <div class="topic-check-area">
+            <input type="checkbox" class="topic-checkbox" id="t-4" data-due="2026-06-30">
+            <div class="topic-check-box"></div>
+          </div>
+          <div class="topic-body">
+            <span class="topic-name">Strings + file handling + exceptions</span>
+            <span class="topic-sub-text">slicing, f-strings, open/read/write, try/except/finally, context manager</span>
+            
+          </div>
+          <div class="topic-meta">
+            <span class="topic-num-badge">#4</span>
+            <span class="topic-due due-normal" id="badge-4">Jun 30</span>
+          </div>
+        </label>
+        <label class="topic-row-item" onclick="event.stopPropagation()">
+          <div class="topic-check-area">
+            <input type="checkbox" class="topic-checkbox" id="t-5" data-due="2026-07-01">
+            <div class="topic-check-box"></div>
+          </div>
+          <div class="topic-body">
+            <span class="topic-name">Modules, stdlib, decorators intro</span>
+            <span class="topic-sub-text">os, sys, datetime, collections, @property basics</span>
+            
+          </div>
+          <div class="topic-meta">
+            <span class="topic-num-badge">#5</span>
+            <span class="topic-due due-normal" id="badge-5">Jul 01</span>
+          </div>
+        </label>
+        <label class="topic-row-item" onclick="event.stopPropagation()">
+          <div class="topic-check-area">
+            <input type="checkbox" class="topic-checkbox" id="t-6" data-due="2026-07-03">
+            <div class="topic-check-box"></div>
+          </div>
+          <div class="topic-body">
+            <span class="topic-name">Mini project: build banking system</span>
+            <span class="topic-sub-text">Account class, deposit/withdraw, balance check — no OOP yet, pure Python functions</span>
+            
+          </div>
+          <div class="topic-meta">
+            <span class="topic-num-badge">#6</span>
+            <span class="topic-due due-normal" id="badge-6">Jul 03</span>
+          </div>
+        </label></div>
+      </div>
+    </div>
+    <div class="acc-card" onclick="toggleAcc(this)">
+      <div class="acc-header" onclick="this.parentElement.classList.toggle('expanded')">
+        <div class="acc-block-num" style="background:var(--text-1); color:var(--bg);">2</div>
+        <div class="acc-header-info">
+          <span class="acc-title">Object Oriented Programming</span>
+          <div class="acc-meta-row">
+            <span class="acc-date-info">Jul 03 → Jul 09 · 6 days</span>
+            
+          </div>
+        </div>
+        <div class="acc-chevron">
+          <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+      </div>
+      <div class="acc-body">
+        <div class="topic-rows">
+        <label class="topic-row-item" onclick="event.stopPropagation()">
+          <div class="topic-check-area">
+            <input type="checkbox" class="topic-checkbox" id="t-7" data-due="2026-07-04">
+            <div class="topic-check-box"></div>
+          </div>
+          <div class="topic-body">
+            <span class="topic-name">Classes, objects, __init__, self</span>
+            <span class="topic-sub-text">Rebuild banking system with classes now</span>
+            
+          </div>
+          <div class="topic-meta">
+            <span class="topic-num-badge">#7</span>
+            <span class="topic-due due-normal" id="badge-7">Jul 04</span>
+          </div>
+        </label>
+        <label class="topic-row-item" onclick="event.stopPropagation()">
+          <div class="topic-check-area">
+            <input type="checkbox" class="topic-checkbox" id="t-8" data-due="2026-07-05">
+            <div class="topic-check-box"></div>
+          </div>
+          <div class="topic-body">
+            <span class="topic-name">Encapsulation + inheritance</span>
+            <span class="topic-sub-text">private attrs, @property, single/multiple/multilevel, MRO, super()</span>
+            
+          </div>
+          <div class="topic-meta">
+            <span class="topic-num-badge">#8</span>
+            <span class="topic-due due-normal" id="badge-8">Jul 05</span>
+          </div>
+        </label>
+        <label class="topic-row-item" onclick="event.stopPropagation()">
+          <div class="topic-check-area">
+            <input type="checkbox" class="topic-checkbox" id="t-9" data-due="2026-07-06">
+            <div class="topic-check-box"></div>
+          </div>
+          <div class="topic-body">
+            <span class="topic-name">Polymorphism + abstraction</span>
+            <span class="topic-sub-text">method overriding, duck typing, ABC module, abstract methods</span>
+            
+          </div>
+          <div class="topic-meta">
+            <span class="topic-num-badge">#9</span>
+            <span class="topic-due due-normal" id="badge-9">Jul 06</span>
+          </div>
+        </label>
+        <label class="topic-row-item" onclick="event.stopPropagation()">
+          <div class="topic-check-area">
+            <input type="checkbox" class="topic-checkbox" id="t-10" data-due="2026-07-07">
+            <div class="topic-check-box"></div>
+          </div>
+          <div class="topic-body">
+            <span class="topic-name">Dunder methods + class/static methods</span>
+            <span class="topic-sub-text">__str__, __repr__, __len__, __eq__, @classmethod, @staticmethod</span>
+            
+          </div>
+          <div class="topic-meta">
+            <span class="topic-num-badge">#10</span>
+            <span class="topic-due due-normal" id="badge-10">Jul 07</span>
+          </div>
+        </label>
+        <label class="topic-row-item" onclick="event.stopPropagation()">
+          <div class="topic-check-area">
+            <input type="checkbox" class="topic-checkbox" id="t-11" data-due="2026-07-08">
+            <div class="topic-check-box"></div>
+          </div>
+          <div class="topic-body">
+            <span class="topic-name">Decorators deep dive</span>
+            <span class="topic-sub-text">Write your own decorator, @wraps, chaining decorators</span>
+            
+          </div>
+          <div class="topic-meta">
+            <span class="topic-num-badge">#11</span>
+            <span class="topic-due due-normal" id="badge-11">Jul 08</span>
+          </div>
+        </label>
+        <label class="topic-row-item" onclick="event.stopPropagation()">
+          <div class="topic-check-area">
+            <input type="checkbox" class="topic-checkbox" id="t-12" data-due="2026-07-09">
+            <div class="topic-check-box"></div>
+          </div>
+          <div class="topic-body">
+            <span class="topic-name">OOP checkpoint — upgrade banking system</span>
+            <span class="topic-sub-text">Add SavingsAccount (inheritance), abstract Account base, __str__ for display</span>
+            
+          </div>
+          <div class="topic-meta">
+            <span class="topic-num-badge">#12</span>
+            <span class="topic-due due-normal" id="badge-12">Jul 09</span>
+          </div>
+        </label></div>
+      </div>
+    </div>
+    <div class="acc-card" onclick="toggleAcc(this)">
+      <div class="acc-header" onclick="this.parentElement.classList.toggle('expanded')">
+        <div class="acc-block-num" style="background:var(--text-1); color:var(--bg);">3</div>
+        <div class="acc-header-info">
+          <span class="acc-title">Data Structures (implement from scratch)</span>
+          <div class="acc-meta-row">
+            <span class="acc-date-info">Jul 09 → Jul 25 · 16 days</span>
+            
+          </div>
+        </div>
+        <div class="acc-chevron">
+          <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+      </div>
+      <div class="acc-body">
+        <div class="topic-rows">
+        <label class="topic-row-item" onclick="event.stopPropagation()">
+          <div class="topic-check-area">
+            <input type="checkbox" class="topic-checkbox" id="t-13" data-due="2026-07-11">
+            <div class="topic-check-box"></div>
+          </div>
+          <div class="topic-body">
+            <span class="topic-name">Arrays + strings</span>
+            <span class="topic-sub-text">in-place ops, string immutability, two-pointer intro, pattern matching</span>
+            
+          </div>
+          <div class="topic-meta">
+            <span class="topic-num-badge">#13</span>
+            <span class="topic-due due-normal" id="badge-13">Jul 11</span>
+          </div>
+        </label>
+        <label class="topic-row-item" onclick="event.stopPropagation()">
+          <div class="topic-check-area">
+            <input type="checkbox" class="topic-checkbox" id="t-14" data-due="2026-07-13">
+            <div class="topic-check-box"></div>
+          </div>
+          <div class="topic-body">
+            <span class="topic-name">Stack + queue</span>
+            <span class="topic-sub-text">LIFO/FIFO, implement both using list and deque, circular queue, bracket matching</span>
+            
+          </div>
+          <div class="topic-meta">
+            <span class="topic-num-badge">#14</span>
+            <span class="topic-due due-normal" id="badge-14">Jul 13</span>
+          </div>
+        </label>
+        <label class="topic-row-item" onclick="event.stopPropagation()">
+          <div class="topic-check-area">
+            <input type="checkbox" class="topic-checkbox" id="t-15" data-due="2026-07-15">
+            <div class="topic-check-box"></div>
+          </div>
+          <div class="topic-body">
+            <span class="topic-name">Linked list (implement fully)</span>
+            <span class="topic-sub-text">Node class, singly + doubly, insert/delete/reverse from scratch</span>
+            
+          </div>
+          <div class="topic-meta">
+            <span class="topic-num-badge">#15</span>
+            <span class="topic-due due-normal" id="badge-15">Jul 15</span>
+          </div>
+        </label>
+        <label class="topic-row-item" onclick="event.stopPropagation()">
+          <div class="topic-check-area">
+            <input type="checkbox" class="topic-checkbox" id="t-16" data-due="2026-07-17">
+            <div class="topic-check-box"></div>
+          </div>
+          <div class="topic-body">
+            <span class="topic-name">HashMap + set</span>
+            <span class="topic-sub-text">collision handling, chaining vs open addressing, O(1) amortised, set operations</span>
+            
+          </div>
+          <div class="topic-meta">
+            <span class="topic-num-badge">#16</span>
+            <span class="topic-due due-normal" id="badge-16">Jul 17</span>
+          </div>
+        </label>
+        <label class="topic-row-item" onclick="event.stopPropagation()">
+          <div class="topic-check-area">
+            <input type="checkbox" class="topic-checkbox" id="t-17" data-due="2026-07-20">
+            <div class="topic-check-box"></div>
+          </div>
+          <div class="topic-body">
+            <span class="topic-name">Binary tree + BST</span>
+            <span class="topic-sub-text">TreeNode class, inorder/preorder/postorder, height, diameter, BST insert/delete/validate</span>
+            
+          </div>
+          <div class="topic-meta">
+            <span class="topic-num-badge">#17</span>
+            <span class="topic-due due-normal" id="badge-17">Jul 20</span>
+          </div>
+        </label>
+        <label class="topic-row-item" onclick="event.stopPropagation()">
+          <div class="topic-check-area">
+            <input type="checkbox" class="topic-checkbox" id="t-18" data-due="2026-07-22">
+            <div class="topic-check-box"></div>
+          </div>
+          <div class="topic-body">
+            <span class="topic-name">Heap + priority queue</span>
+            <span class="topic-sub-text">min-heap, max-heap, heapq module, heappush/heappop, top-K pattern</span>
+            
+          </div>
+          <div class="topic-meta">
+            <span class="topic-num-badge">#18</span>
+            <span class="topic-due due-normal" id="badge-18">Jul 22</span>
+          </div>
+        </label>
+        <label class="topic-row-item" onclick="event.stopPropagation()">
+          <div class="topic-check-area">
+            <input type="checkbox" class="topic-checkbox" id="t-19" data-due="2026-07-24">
+            <div class="topic-check-box"></div>
+          </div>
+          <div class="topic-body">
+            <span class="topic-name">Graphs (BFS + DFS implement both)</span>
+            <span class="topic-sub-text">adjacency list, adjacency matrix, BFS (queue), DFS (stack/recursion), cycle detection</span>
+            
+          </div>
+          <div class="topic-meta">
+            <span class="topic-num-badge">#19</span>
+            <span class="topic-due due-normal" id="badge-19">Jul 24</span>
+          </div>
+        </label>
+        <label class="topic-row-item" onclick="event.stopPropagation()">
+          <div class="topic-check-area">
+            <input type="checkbox" class="topic-checkbox" id="t-20" data-due="2026-07-25">
+            <div class="topic-check-box"></div>
+          </div>
+          <div class="topic-body">
+            <span class="topic-name">Trie</span>
+            <span class="topic-sub-text">TrieNode class, insert + search + startsWith from scratch</span>
+            
+          </div>
+          <div class="topic-meta">
+            <span class="topic-num-badge">#20</span>
+            <span class="topic-due due-normal" id="badge-20">Jul 25</span>
+          </div>
+        </label></div>
+      </div>
+    </div>
+    <div class="acc-card" onclick="toggleAcc(this)">
+      <div class="acc-header" onclick="this.parentElement.classList.toggle('expanded')">
+        <div class="acc-block-num" style="background:var(--text-1); color:var(--bg);">4</div>
+        <div class="acc-header-info">
+          <span class="acc-title">DSA Problem Patterns (the real grind)</span>
+          <div class="acc-meta-row">
+            <span class="acc-date-info">Jul 25 → Aug 18 · 24 days</span>
+            
+          </div>
+        </div>
+        <div class="acc-chevron">
+          <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+      </div>
+      <div class="acc-body">
+        <div class="topic-rows">
+        <label class="topic-row-item" onclick="event.stopPropagation()">
+          <div class="topic-check-area">
+            <input type="checkbox" class="topic-checkbox" id="t-21" data-due="2026-07-27">
+            <div class="topic-check-box"></div>
+          </div>
+          <div class="topic-body">
+            <span class="topic-name">Two pointers</span>
+            <span class="topic-sub-text">pair sum, remove duplicates, container with most water, 3Sum</span>
+            
+          </div>
+          <div class="topic-meta">
+            <span class="topic-num-badge">#21</span>
+            <span class="topic-due due-normal" id="badge-21">Jul 27</span>
+          </div>
+        </label>
+        <label class="topic-row-item" onclick="event.stopPropagation()">
+          <div class="topic-check-area">
+            <input type="checkbox" class="topic-checkbox" id="t-22" data-due="2026-07-29">
+            <div class="topic-check-box"></div>
+          </div>
+          <div class="topic-body">
+            <span class="topic-name">Sliding window</span>
+            <span class="topic-sub-text">max sum subarray, longest substring no repeat, minimum window substring</span>
+            
+          </div>
+          <div class="topic-meta">
+            <span class="topic-num-badge">#22</span>
+            <span class="topic-due due-normal" id="badge-22">Jul 29</span>
+          </div>
+        </label>
+        <label class="topic-row-item" onclick="event.stopPropagation()">
+          <div class="topic-check-area">
+            <input type="checkbox" class="topic-checkbox" id="t-23" data-due="2026-07-31">
+            <div class="topic-check-box"></div>
+          </div>
+          <div class="topic-body">
+            <span class="topic-name">Binary search</span>
+            <span class="topic-sub-text">classic, search rotated array, first/last position, binary search on answer</span>
+            
+          </div>
+          <div class="topic-meta">
+            <span class="topic-num-badge">#23</span>
+            <span class="topic-due due-normal" id="badge-23">Jul 31</span>
+          </div>
+        </label>
+        <label class="topic-row-item" onclick="event.stopPropagation()">
+          <div class="topic-check-area">
+            <input type="checkbox" class="topic-checkbox" id="t-24" data-due="2026-08-02">
+            <div class="topic-check-box"></div>
+          </div>
+          <div class="topic-body">
+            <span class="topic-name">Sorting algorithms</span>
+            <span class="topic-sub-text">Merge sort + quick sort — write both from scratch. Know time complexity proof.</span>
+            
+          </div>
+          <div class="topic-meta">
+            <span class="topic-num-badge">#24</span>
+            <span class="topic-due due-normal" id="badge-24">Aug 02</span>
+          </div>
+        </label>
+        <label class="topic-row-item" onclick="event.stopPropagation()">
+          <div class="topic-check-area">
+            <input type="checkbox" class="topic-checkbox" id="t-25" data-due="2026-08-04">
+            <div class="topic-check-box"></div>
+          </div>
+          <div class="topic-body">
+            <span class="topic-name">Recursion + call stack</span>
+            <span class="topic-sub-text">base case, recursion tree, factorial, fibonacci, print all paths</span>
+            
+          </div>
+          <div class="topic-meta">
+            <span class="topic-num-badge">#25</span>
+            <span class="topic-due due-normal" id="badge-25">Aug 04</span>
+          </div>
+        </label>
+        <label class="topic-row-item" onclick="event.stopPropagation()">
+          <div class="topic-check-area">
+            <input type="checkbox" class="topic-checkbox" id="t-26" data-due="2026-08-07">
+            <div class="topic-check-box"></div>
+          </div>
+          <div class="topic-body">
+            <span class="topic-name">Backtracking</span>
+            <span class="topic-sub-text">permutations, combinations, subsets, N-Queens — understand prune + explore pattern</span>
+            
+          </div>
+          <div class="topic-meta">
+            <span class="topic-num-badge">#26</span>
+            <span class="topic-due due-normal" id="badge-26">Aug 07</span>
+          </div>
+        </label>
+        <label class="topic-row-item" onclick="event.stopPropagation()">
+          <div class="topic-check-area">
+            <input type="checkbox" class="topic-checkbox" id="t-27" data-due="2026-08-10">
+            <div class="topic-check-box"></div>
+          </div>
+          <div class="topic-body">
+            <span class="topic-name">Dynamic programming — basics</span>
+            <span class="topic-sub-text">memorization (top-down) vs tabulation (bottom-up), Fibonacci DP, climbing stairs, house robber</span>
+            
+          </div>
+          <div class="topic-meta">
+            <span class="topic-num-badge">#27</span>
+            <span class="topic-due due-normal" id="badge-27">Aug 10</span>
+          </div>
+        </label>
+        <label class="topic-row-item" onclick="event.stopPropagation()">
+          <div class="topic-check-area">
+            <input type="checkbox" class="topic-checkbox" id="t-28" data-due="2026-08-13">
+            <div class="topic-check-box"></div>
+          </div>
+          <div class="topic-body">
+            <span class="topic-name">DP patterns — knapsack + sequences</span>
+            <span class="topic-sub-text">0/1 knapsack, coin change, LCS, LIS, matrix chain, edit distance</span>
+            
+          </div>
+          <div class="topic-meta">
+            <span class="topic-num-badge">#28</span>
+            <span class="topic-due due-normal" id="badge-28">Aug 13</span>
+          </div>
+        </label>
+        <label class="topic-row-item" onclick="event.stopPropagation()">
+          <div class="topic-check-area">
+            <input type="checkbox" class="topic-checkbox" id="t-29" data-due="2026-08-15">
+            <div class="topic-check-box"></div>
+          </div>
+          <div class="topic-body">
+            <span class="topic-name">Greedy</span>
+            <span class="topic-sub-text">activity selection, interval scheduling, fractional knapsack, Huffman</span>
+            
+          </div>
+          <div class="topic-meta">
+            <span class="topic-num-badge">#29</span>
+            <span class="topic-due due-normal" id="badge-29">Aug 15</span>
+          </div>
+        </label>
+        <label class="topic-row-item" onclick="event.stopPropagation()">
+          <div class="topic-check-area">
+            <input type="checkbox" class="topic-checkbox" id="t-30" data-due="2026-08-17">
+            <div class="topic-check-box"></div>
+          </div>
+          <div class="topic-body">
+            <span class="topic-name">Graph algorithms</span>
+            <span class="topic-sub-text">Dijkstra, topological sort, union-find, Kruskal/Prim (MST basics)</span>
+            
+          </div>
+          <div class="topic-meta">
+            <span class="topic-num-badge">#30</span>
+            <span class="topic-due due-normal" id="badge-30">Aug 17</span>
+          </div>
+        </label>
+        <label class="topic-row-item" onclick="event.stopPropagation()">
+          <div class="topic-check-area">
+            <input type="checkbox" class="topic-checkbox" id="t-31" data-due="2026-08-18">
+            <div class="topic-check-box"></div>
+          </div>
+          <div class="topic-body">
+            <span class="topic-name">Bit manipulation + math</span>
+            <span class="topic-sub-text">XOR tricks, count set bits, subsets, GCD/LCM, prime sieve, modular arithmetic</span>
+            
+          </div>
+          <div class="topic-meta">
+            <span class="topic-num-badge">#31</span>
+            <span class="topic-due due-normal" id="badge-31">Aug 18</span>
+          </div>
+        </label></div>
+      </div>
+    </div>
+    <div class="acc-card" onclick="toggleAcc(this)">
+      <div class="acc-header" onclick="this.parentElement.classList.toggle('expanded')">
+        <div class="acc-block-num" style="background:var(--text-1); color:var(--bg);">5</div>
+        <div class="acc-header-info">
+          <span class="acc-title">Core CS Theory — OS, DBMS, CN, System Design</span>
+          <div class="acc-meta-row">
+            <span class="acc-date-info">Aug 18 → Sep 01 · 14 days</span>
+            
+          </div>
+        </div>
+        <div class="acc-chevron">
+          <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+      </div>
+      <div class="acc-body">
+        <div class="topic-rows">
+        <label class="topic-row-item" onclick="event.stopPropagation()">
+          <div class="topic-check-area">
+            <input type="checkbox" class="topic-checkbox" id="t-32" data-due="2026-08-20">
+            <div class="topic-check-box"></div>
+          </div>
+          <div class="topic-body">
+            <span class="topic-name">OS — processes and threads</span>
+            <span class="topic-sub-text">process vs thread, PCB, context switching, CPU scheduling (FCFS, SJF, Round Robin)</span>
+            
+          </div>
+          <div class="topic-meta">
+            <span class="topic-num-badge">#32</span>
+            <span class="topic-due due-normal" id="badge-32">Aug 20</span>
+          </div>
+        </label>
+        <label class="topic-row-item" onclick="event.stopPropagation()">
+          <div class="topic-check-area">
+            <input type="checkbox" class="topic-checkbox" id="t-33" data-due="2026-08-22">
+            <div class="topic-check-box"></div>
+          </div>
+          <div class="topic-body">
+            <span class="topic-name">OS — deadlock + synchronisation</span>
+            <span class="topic-sub-text">4 conditions, banker's algorithm, semaphore, mutex, race condition</span>
+            
+          </div>
+          <div class="topic-meta">
+            <span class="topic-num-badge">#33</span>
+            <span class="topic-due due-normal" id="badge-33">Aug 22</span>
+          </div>
+        </label>
+        <label class="topic-row-item" onclick="event.stopPropagation()">
+          <div class="topic-check-area">
+            <input type="checkbox" class="topic-checkbox" id="t-34" data-due="2026-08-24">
+            <div class="topic-check-box"></div>
+          </div>
+          <div class="topic-body">
+            <span class="topic-name">OS — memory management</span>
+            <span class="topic-sub-text">paging, segmentation, virtual memory, page replacement (LRU, FIFO, optimal)</span>
+            
+          </div>
+          <div class="topic-meta">
+            <span class="topic-num-badge">#34</span>
+            <span class="topic-due due-normal" id="badge-34">Aug 24</span>
+          </div>
+        </label>
+        <label class="topic-row-item" onclick="event.stopPropagation()">
+          <div class="topic-check-area">
+            <input type="checkbox" class="topic-checkbox" id="t-35" data-due="2026-08-26">
+            <div class="topic-check-box"></div>
+          </div>
+          <div class="topic-body">
+            <span class="topic-name">DBMS — ER, normalisation</span>
+            <span class="topic-sub-text">ER diagrams, 1NF/2NF/3NF/BCNF with examples, functional dependency</span>
+            
+          </div>
+          <div class="topic-meta">
+            <span class="topic-num-badge">#35</span>
+            <span class="topic-due due-normal" id="badge-35">Aug 26</span>
+          </div>
+        </label>
+        <label class="topic-row-item" onclick="event.stopPropagation()">
+          <div class="topic-check-area">
+            <input type="checkbox" class="topic-checkbox" id="t-36" data-due="2026-08-28">
+            <div class="topic-check-box"></div>
+          </div>
+          <div class="topic-body">
+            <span class="topic-name">DBMS — SQL deep dive</span>
+            <span class="topic-sub-text">JOINs, GROUP BY, HAVING, window functions, indexes (clustered vs non-clustered)</span>
+            
+          </div>
+          <div class="topic-meta">
+            <span class="topic-num-badge">#36</span>
+            <span class="topic-due due-normal" id="badge-36">Aug 28</span>
+          </div>
+        </label>
+        <label class="topic-row-item" onclick="event.stopPropagation()">
+          <div class="topic-check-area">
+            <input type="checkbox" class="topic-checkbox" id="t-37" data-due="2026-08-29">
+            <div class="topic-check-box"></div>
+          </div>
+          <div class="topic-body">
+            <span class="topic-name">DBMS — transactions, ACID, stored procs</span>
+            <span class="topic-sub-text">ACID properties, isolation levels, transactions, triggers, views</span>
+            
+          </div>
+          <div class="topic-meta">
+            <span class="topic-num-badge">#37</span>
+            <span class="topic-due due-normal" id="badge-37">Aug 29</span>
+          </div>
+        </label>
+        <label class="topic-row-item" onclick="event.stopPropagation()">
+          <div class="topic-check-area">
+            <input type="checkbox" class="topic-checkbox" id="t-38" data-due="2026-08-31">
+            <div class="topic-check-box"></div>
+          </div>
+          <div class="topic-body">
+            <span class="topic-name">Computer networks — OSI + protocols</span>
+            <span class="topic-sub-text">OSI 7 layers, TCP vs UDP, TCP 3-way handshake, HTTP/HTTPS, DNS, IP</span>
+            
+          </div>
+          <div class="topic-meta">
+            <span class="topic-num-badge">#38</span>
+            <span class="topic-due due-normal" id="badge-38">Aug 31</span>
+          </div>
+        </label>
+        <label class="topic-row-item" onclick="event.stopPropagation()">
+          <div class="topic-check-area">
+            <input type="checkbox" class="topic-checkbox" id="t-39" data-due="2026-09-01">
+            <div class="topic-check-box"></div>
+          </div>
+          <div class="topic-body">
+            <span class="topic-name">System design basics</span>
+            <span class="topic-sub-text">client-server, monolith vs microservices, load balancing, caching (Redis), message queues, URL shortener design</span>
+            
+          </div>
+          <div class="topic-meta">
+            <span class="topic-num-badge">#39</span>
+            <span class="topic-due due-normal" id="badge-39">Sep 01</span>
+          </div>
+        </label></div>
+      </div>
+    </div>
+    <div class="acc-card" onclick="toggleAcc(this)">
+      <div class="acc-header" onclick="this.parentElement.classList.toggle('expanded')">
+        <div class="acc-block-num" style="background:var(--text-1); color:var(--bg);">6</div>
+        <div class="acc-header-info">
+          <span class="acc-title">Web Dev Gap-Fill (you already know most of this)</span>
+          <div class="acc-meta-row">
+            <span class="acc-date-info">Sep 01 → Sep 05 · 4 days</span>
+            
+          </div>
+        </div>
+        <div class="acc-chevron">
+          <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+      </div>
+      <div class="acc-body">
+        <div class="topic-rows">
+        <label class="topic-row-item" onclick="event.stopPropagation()">
+          <div class="topic-check-area">
+            <input type="checkbox" class="topic-checkbox" id="t-40" data-due="2026-09-02">
+            <div class="topic-check-box"></div>
+          </div>
+          <div class="topic-body">
+            <span class="topic-name">HTML/CSS + JS fundamentals</span>
+            <span class="topic-sub-text">box model, flexbox, closures, event loop, promises, async/await — verbal fluency only</span>
+            
+          </div>
+          <div class="topic-meta">
+            <span class="topic-num-badge">#40</span>
+            <span class="topic-due due-normal" id="badge-40">Sep 02</span>
+          </div>
+        </label>
+        <label class="topic-row-item" onclick="event.stopPropagation()">
+          <div class="topic-check-area">
+            <input type="checkbox" class="topic-checkbox" id="t-41" data-due="2026-09-03">
+            <div class="topic-check-box"></div>
+          </div>
+          <div class="topic-body">
+            <span class="topic-name">React hooks + Next.js patterns</span>
+            <span class="topic-sub-text">useEffect, useCallback, useMemo, SSR vs SSG vs ISR — you've built with this, just articulate it</span>
+            
+          </div>
+          <div class="topic-meta">
+            <span class="topic-num-badge">#41</span>
+            <span class="topic-due due-normal" id="badge-41">Sep 03</span>
+          </div>
+        </label>
+        <label class="topic-row-item" onclick="event.stopPropagation()">
+          <div class="topic-check-area">
+            <input type="checkbox" class="topic-checkbox" id="t-42" data-due="2026-09-04">
+            <div class="topic-check-box"></div>
+          </div>
+          <div class="topic-body">
+            <span class="topic-name">REST API design + backend patterns</span>
+            <span class="topic-sub-text">HTTP methods, status codes, middleware, auth patterns (JWT, OAuth) — you built this in Auren</span>
+            
+          </div>
+          <div class="topic-meta">
+            <span class="topic-num-badge">#42</span>
+            <span class="topic-due due-normal" id="badge-42">Sep 04</span>
+          </div>
+        </label>
+        <label class="topic-row-item" onclick="event.stopPropagation()">
+          <div class="topic-check-area">
+            <input type="checkbox" class="topic-checkbox" id="t-43" data-due="2026-09-05">
+            <div class="topic-check-box"></div>
+          </div>
+          <div class="topic-body">
+            <span class="topic-name">Git advanced + deployment</span>
+            <span class="topic-sub-text">rebase vs merge, squash, cherry-pick, Vercel/Railway env vars, CI/CD basics</span>
+            
+          </div>
+          <div class="topic-meta">
+            <span class="topic-num-badge">#43</span>
+            <span class="topic-due due-normal" id="badge-43">Sep 05</span>
+          </div>
+        </label></div>
+      </div>
+    </div>
+    <div class="acc-card" onclick="toggleAcc(this)">
+      <div class="acc-header" onclick="this.parentElement.classList.toggle('expanded')">
+        <div class="acc-block-num" style="background:var(--text-1); color:var(--bg);">7</div>
+        <div class="acc-header-info">
+          <span class="acc-title">AI/ML Track (you have a head start here)</span>
+          <div class="acc-meta-row">
+            <span class="acc-date-info">Sep 05 → Sep 12 · 7 days</span>
+            
+          </div>
+        </div>
+        <div class="acc-chevron">
+          <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+      </div>
+      <div class="acc-body">
+        <div class="topic-rows">
+        <label class="topic-row-item" onclick="event.stopPropagation()">
+          <div class="topic-check-area">
+            <input type="checkbox" class="topic-checkbox" id="t-44" data-due="2026-09-06">
+            <div class="topic-check-box"></div>
+          </div>
+          <div class="topic-body">
+            <span class="topic-name">Math foundation — verbal only</span>
+            <span class="topic-sub-text">gradient intuition, Bayes theorem, variance, covariance — no deep calc, just explain clearly</span>
+            
+          </div>
+          <div class="topic-meta">
+            <span class="topic-num-badge">#44</span>
+            <span class="topic-due due-normal" id="badge-44">Sep 06</span>
+          </div>
+        </label>
+        <label class="topic-row-item" onclick="event.stopPropagation()">
+          <div class="topic-check-area">
+            <input type="checkbox" class="topic-checkbox" id="t-45" data-due="2026-09-07">
+            <div class="topic-check-box"></div>
+          </div>
+          <div class="topic-body">
+            <span class="topic-name">Classical ML algorithms</span>
+            <span class="topic-sub-text">Linear Reg, Logistic Reg, Decision Tree, Random Forest, SVM, KNN, K-Means, Naive Bayes</span>
+            
+          </div>
+          <div class="topic-meta">
+            <span class="topic-num-badge">#45</span>
+            <span class="topic-due due-normal" id="badge-45">Sep 07</span>
+          </div>
+        </label>
+        <label class="topic-row-item" onclick="event.stopPropagation()">
+          <div class="topic-check-area">
+            <input type="checkbox" class="topic-checkbox" id="t-46" data-due="2026-09-07">
+            <div class="topic-check-box"></div>
+          </div>
+          <div class="topic-body">
+            <span class="topic-name">Evaluation metrics</span>
+            <span class="topic-sub-text">accuracy, precision, recall, F1, ROC-AUC, confusion matrix — when to use each</span>
+            
+          </div>
+          <div class="topic-meta">
+            <span class="topic-num-badge">#46</span>
+            <span class="topic-due due-normal" id="badge-46">Sep 07</span>
+          </div>
+        </label>
+        <label class="topic-row-item" onclick="event.stopPropagation()">
+          <div class="topic-check-area">
+            <input type="checkbox" class="topic-checkbox" id="t-47" data-due="2026-09-08">
+            <div class="topic-check-box"></div>
+          </div>
+          <div class="topic-body">
+            <span class="topic-name">Neural networks + backprop</span>
+            <span class="topic-sub-text">feedforward, activations (ReLU/sigmoid/softmax), loss functions, optimisers, dropout, batch norm</span>
+            
+          </div>
+          <div class="topic-meta">
+            <span class="topic-num-badge">#47</span>
+            <span class="topic-due due-normal" id="badge-47">Sep 08</span>
+          </div>
+        </label>
+        <label class="topic-row-item" onclick="event.stopPropagation()">
+          <div class="topic-check-area">
+            <input type="checkbox" class="topic-checkbox" id="t-48" data-due="2026-09-09">
+            <div class="topic-check-box"></div>
+          </div>
+          <div class="topic-body">
+            <span class="topic-name">Transformers + attention mechanism</span>
+            <span class="topic-sub-text">self-attention, multi-head attention, positional encoding, BERT vs GPT, encoder vs decoder</span>
+            
+          </div>
+          <div class="topic-meta">
+            <span class="topic-num-badge">#48</span>
+            <span class="topic-due due-normal" id="badge-48">Sep 09</span>
+          </div>
+        </label>
+        <label class="topic-row-item" onclick="event.stopPropagation()">
+          <div class="topic-check-area">
+            <input type="checkbox" class="topic-checkbox" id="t-49" data-due="2026-09-10">
+            <div class="topic-check-box"></div>
+          </div>
+          <div class="topic-body">
+            <span class="topic-name">RAG + vector DBs + embeddings</span>
+            <span class="topic-sub-text">RAG pipeline, pgvector, cosine similarity, HNSW — you built this in Mnemo, just articulate it clearly</span>
+            
+          </div>
+          <div class="topic-meta">
+            <span class="topic-num-badge">#49</span>
+            <span class="topic-due due-normal" id="badge-49">Sep 10</span>
+          </div>
+        </label>
+        <label class="topic-row-item" onclick="event.stopPropagation()">
+          <div class="topic-check-area">
+            <input type="checkbox" class="topic-checkbox" id="t-50" data-due="2026-09-11">
+            <div class="topic-check-box"></div>
+          </div>
+          <div class="topic-body">
+            <span class="topic-name">LLM agents + prompt engineering</span>
+            <span class="topic-sub-text">tool calling, ReAct pattern, zero/few-shot, chain-of-thought, LangGraph basics</span>
+            
+          </div>
+          <div class="topic-meta">
+            <span class="topic-num-badge">#50</span>
+            <span class="topic-due due-normal" id="badge-50">Sep 11</span>
+          </div>
+        </label>
+        <label class="topic-row-item" onclick="event.stopPropagation()">
+          <div class="topic-check-area">
+            <input type="checkbox" class="topic-checkbox" id="t-51" data-due="2026-09-12">
+            <div class="topic-check-box"></div>
+          </div>
+          <div class="topic-body">
+            <span class="topic-name">MLOps basics</span>
+            <span class="topic-sub-text">training pipeline, FastAPI inference, model drift, Docker containerisation</span>
+            
+          </div>
+          <div class="topic-meta">
+            <span class="topic-num-badge">#51</span>
+            <span class="topic-due due-normal" id="badge-51">Sep 12</span>
+          </div>
+        </label></div>
+      </div>
+    </div></div>
+</div>
+<div class="fp-pill">
+  <div class="fp-info">
+    <div class="fp-row"><span>Overall Mastery</span><span id="fp-pct">0%</span></div>
+    <div class="fp-track"><div class="fp-fill" id="fp-bar"></div></div>
+  </div>
+</div>
+<script>
+function toggleAcc(el) { el.classList.toggle('open'); }
+function syncProgress() {
+  const all = document.querySelectorAll('.topic-checkbox');
+  const today = new Date(); today.setHours(0,0,0,0);
+  let done = 0, overdue = 0;
+  all.forEach(cb => {
+    const checked = cb.checked;
+    if (checked) done++;
+    const due = cb.getAttribute('data-due');
+    const num = cb.id.split('-')[1];
+    const badge = document.getElementById('badge-' + num);
+    if (badge && due) {
+      const d = new Date(due);
+      if (!checked && d < today) {
+        overdue++;
+        badge.className = 'topic-due due-overdue';
+        badge.textContent = 'Overdue!';
+      } else {
+        badge.className = 'topic-due due-normal';
+        badge.textContent = d.toLocaleDateString('en-US', {month:'short', day:'numeric'});
+      }
+    }
+  });
+  document.getElementById('m-done').textContent = done;
+  // Days to Sep 12
+  const end = new Date('2026-09-12'); const now = new Date(); now.setHours(0,0,0,0);
+  const dLeft = Math.max(0, Math.ceil((end - now) / 86400000));
+  document.getElementById('m-days').textContent = dLeft;
+  document.getElementById('m-overdue').textContent = overdue;
+  const pct = all.length ? Math.round(done/all.length*100) : 0;
+  document.getElementById('fp-pct').textContent = pct + '%';
+  document.getElementById('fp-bar').style.width = pct + '%';
+}
+document.querySelectorAll('.topic-checkbox').forEach(cb => {
+  const saved = localStorage.getItem('grindos-r-' + cb.id);
+  if (saved === '1') cb.checked = true;
+  cb.addEventListener('change', e => {
+    localStorage.setItem('grindos-r-' + cb.id, e.target.checked ? '1' : '0');
+    syncProgress();
+  });
+});
+window.addEventListener('DOMContentLoaded', syncProgress);
+</script>
+
+
+
+
+    
+    
+
+<style>
+/* === Notion-Style Notebook Redesign === */
+.nb-master-container {
+    display: flex;
+    height: 780px;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    background: var(--surface-1);
+    box-shadow: 0 8px 40px rgba(0,0,0,0.15);
+    margin-top: 2rem;
+}
+.nb-sidebar {
+    width: 260px;
+    flex-shrink: 0;
+    background: var(--surface-2);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+}
+.nb-sidebar-head {
+    padding: 1.5rem 1.25rem 1rem;
+    border-bottom: 1px solid var(--border);
+}
+.nb-sidebar-head h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-1);
+    margin: 0 0 4px;
+}
+.nb-sidebar-head small {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+}
+.nb-tabs-v {
+    padding: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    overflow-y: auto;
+    flex: 1;
+}
+.nb-tab {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.92rem;
+    font-weight: 500;
+    color: var(--text-2);
+    transition: all 0.15s;
+    text-align: left;
+    border: none;
+    background: none;
+    width: 100%;
+}
+.nb-tab:hover { background: var(--surface-0); color: var(--text-1); }
+.nb-tab.active { background: rgba(255,94,0,0.1); color: var(--brand); font-weight: 600; }
+.nb-tab-icon { width: 20px; height: 20px; flex-shrink: 0; opacity: 0.6; }
+.nb-tab.active .nb-tab-icon { opacity: 1; }
+
+.nb-content-pane {
+    flex: 1;
+    overflow-y: auto;
+    background: var(--bg);
+}
+.nb-page {
+    display: none;
+    padding: 3.5rem 4rem;
+    max-width: 720px;
+}
+.nb-page.active {
+    display: block;
+    animation: nbFadeIn 0.25s ease;
+}
+@keyframes nbFadeIn { from { opacity:0; transform: translateY(8px); } to { opacity:1; transform: none; } }
+
+/* Typography inside notes */
+.page-frame { background: transparent !important; border: none !important; box-shadow: none !important; padding: 0 !important; }
+.page-top {
+    margin-bottom: 2.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border);
+}
+.page-subject {
+    font-size: 0.78rem !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.08em !important;
+    color: var(--brand) !important;
+    font-weight: 700 !important;
+    margin-bottom: 8px !important;
+}
+.page-dot { display: none !important; }
+.page-title {
+    font-size: 2.2rem !important;
+    font-weight: 800 !important;
+    color: var(--text-1) !important;
+    letter-spacing: -0.04em !important;
+    line-height: 1.2 !important;
+    margin: 0 0 6px !important;
+}
+.page-date {
+    font-size: 0.85rem !important;
+    color: var(--text-3) !important;
+}
+.ruled {
+    background: transparent !important;
+    background-image: none !important;
+    padding: 0 !important;
+}
+.line {
+    border-bottom: none !important;
+    padding: 2px 0 !important;
+    margin-bottom: 2px !important;
+}
+.line.blank { margin-bottom: 12px !important; }
+.line-num { display: none !important; }
+.line-content {
+    font-family: 'Inter', system-ui, sans-serif !important;
+    font-size: 1rem !important;
+    line-height: 1.75 !important;
+    color: var(--text-2) !important;
+    display: block !important;
+}
+.hl-purple, .hl-blue, .hl-coral, .hl-teal {
+    display: block !important;
+    font-size: 1.2rem !important;
+    font-weight: 700 !important;
+    color: var(--text-1) !important;
+    margin-top: 2rem !important;
+    margin-bottom: 0.5rem !important;
+    padding-bottom: 6px !important;
+    border-bottom: 1px solid var(--border) !important;
+}
+.arrow {
+    color: var(--brand) !important;
+    font-weight: bold !important;
+    margin-right: 10px !important;
+    font-size: 1rem !important;
+}
+.indent {
+    padding-left: 1.5rem !important;
+    position: relative !important;
+}
+.sticky {
+    background: rgba(255,94,0,0.05) !important;
+    border-left: 3px solid var(--brand) !important;
+    border-top: none !important;
+    border-right: none !important;
+    border-bottom: none !important;
+    border-radius: 0 8px 8px 0 !important;
+    padding: 1.25rem 1.5rem !important;
+    margin-top: 2.5rem !important;
+    box-shadow: none !important;
+    transform: none !important;
+}
+.sticky-title {
+    font-size: 0.85rem !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+    color: var(--brand) !important;
+    margin-bottom: 6px !important;
+}
+.sticky p { color: var(--text-2) !important; font-size: 0.95rem !important; line-height: 1.6 !important; }
+.warn-box {
+    background: rgba(255,60,60,0.08) !important;
+    border: 1px solid rgba(255,60,60,0.2) !important;
+    border-radius: 8px !important;
+    padding: 1.25rem !important;
+    margin-top: 2rem !important;
+    color: var(--text-1) !important;
+}
+</style>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&display=swap');
+
+/* Notebook Container */
+.nb-master-container {
+  display: flex;
+  height: 820px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--surface-1);
+  box-shadow: 0 8px 40px rgba(0,0,0,.12);
+  margin-top: 1.5rem;
+}
+.nb-sidebar {
+  width: 220px;
+  flex-shrink: 0;
+  background: var(--surface-2);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+}
+.nb-sidebar-head {
+  padding: 1.25rem 1rem 1rem;
+  border-bottom: 1px solid var(--border);
+}
+.nb-sidebar-head h3 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-1);
+  margin: 0 0 3px;
+}
+.nb-sidebar-head small {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+.nb-tabs-v {
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  overflow-y: auto;
+  flex: 1;
+}
+.nb-tab {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 10px;
+  border-radius: 7px;
+  cursor: pointer;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--text-2);
+  transition: all .15s;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+}
+.nb-tab:hover { background: var(--surface-0); color: var(--text-1); }
+.nb-tab.active { background: rgba(255,94,0,.1); color: var(--brand); font-weight: 600; }
+
+/* Content Pane */
+.nb-content-pane {
+  flex: 1;
+  overflow-y: auto;
+  background: var(--bg);
+  position: relative;
+}
+.nb-page { display: none; height: 100%; }
+.nb-page.active { display: block; animation: nbIn .2s ease; }
+@keyframes nbIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:none} }
+
+/* Notebook Paper Style */
+.notebook-paper {
+  min-height: 100%;
+  background: var(--bg);
+  background-image:
+    linear-gradient(var(--border-light) 1px, transparent 1px);
+  background-size: 100% 36px;
+  background-position: 0 52px;
+  padding: 0;
+  position: relative;
+}
+.notebook-paper::before {
+  content: '';
+  position: absolute;
+  left: 68px;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: rgba(255, 100, 100, 0.25);
+}
+
+/* Page Header */
+.nb-page-header {
+  padding: 1.25rem 1.5rem 0.75rem 5rem;
+  border-bottom: 2px solid var(--border);
+  margin-bottom: 0;
+  background: var(--bg);
+}
+.nb-page-subject {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--brand);
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.nb-page-title {
+  font-family: 'Caveat', cursive;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-1);
+  line-height: 1.2;
+}
+
+/* Content Lines */
+.nb-lines {
+  padding: 1rem 1.5rem 2rem 5rem;
+}
+.nb-line {
+  font-family: 'Caveat', cursive;
+  font-size: 1.25rem;
+  line-height: 2.25rem;
+  color: var(--text-1);
+  display: block;
+  min-height: 36px;
+}
+.nb-blank { min-height: 36px; display: block; }
+.nb-heading {
+  font-family: 'Caveat', cursive;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text-1);
+  line-height: 2.25rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 0;
+  display: block;
+}
+.nb-sub {
+  font-family: 'Caveat', cursive;
+  font-size: 1.15rem;
+  color: var(--text-2);
+  line-height: 2.25rem;
+  padding-left: 1.5rem;
+  display: block;
+}
+.nb-arrow { color: var(--brand); margin-right: 6px; font-weight: 700; }
+.nb-trap {
+  font-family: 'Caveat', cursive;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #ff4757;
+  line-height: 2.25rem;
+  display: block;
+}
+.nb-note {
+  font-family: 'Caveat', cursive;
+  font-size: 1.1rem;
+  color: var(--brand);
+  line-height: 2.25rem;
+  display: block;
+  padding-left: 1.5rem;
+  border-left: 3px solid rgba(255,94,0,0.3);
+  margin: 4px 0;
+}
+
+/* Sticky Note */
+.nb-sticky {
+  background: rgba(255, 220, 100, 0.15);
+  border: 1px solid rgba(255, 200, 50, 0.3);
+  border-radius: 0 8px 8px 0;
+  border-left: 4px solid rgba(255, 200, 50, 0.6);
+  padding: 0.75rem 1rem;
+  margin: 1rem 1.5rem 1rem 4.5rem;
+  font-family: 'Caveat', cursive;
+  font-size: 1.15rem;
+  color: var(--text-1);
+  line-height: 1.7;
+}
+.nb-sticky-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #b87d00;
+  font-weight: 700;
+  margin-bottom: 4px;
+  font-family: system-ui, sans-serif;
+}
+
+.nb-master-container {
+  display: flex; height: 820px;
+  background: rgba(25, 27, 33, 0.4) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  border: 1px solid rgba(255,255,255,0.08) !important;
+  border-radius: 16px !important;
+  overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.2) !important;
+  margin-top: 1.5rem;
+}
+.nb-sidebar {
+  background: rgba(0,0,0,0.2) !important;
+  border-right: 1px solid rgba(255,255,255,0.05) !important;
+}
+/* Ensure the page inside still looks like a notebook */
+.notebook-paper {
+  background-color: transparent !important; 
+  /* The lines are still rendered, but background is transparent to show glass */
+}
+.nb-page-header { background-color: transparent !important; border-bottom: 2px solid rgba(255,255,255,0.1) !important; }
+.nb-heading { border-bottom: 1px solid rgba(255,255,255,0.1) !important; }
+</style>
+<div class="nb-master-container">
+  <div class="nb-sidebar">
+    <div class="nb-sidebar-head">
+      <h3>Interview Notes</h3>
+      <small>Only what you need to pass</small>
+    </div>
+    <div class="nb-tabs-v">
+      
+        <div class="nb-tab active" onclick="switchTab('os')">
+          <span style="font-size:1.1rem">📋</span> Deadlock
+        </div>
+        <div class="nb-tab" onclick="switchTab('dbms')">
+          <span style="font-size:1.1rem">🗃️</span> SQL + Joins
+        </div>
+        <div class="nb-tab" onclick="switchTab('tips')">
+          <span style="font-size:1.1rem">💡</span> Tips, tricks & what not to do
+        </div>
+        <div class="nb-tab" onclick="switchTab('playbook')">
+          <span style="font-size:1.1rem">📖</span> Everything in one place
+        </div>
+    </div>
+  </div>
+  <div class="nb-content-pane">
+    <div id="tab-os" class="nb-page active">
+    <div class="notebook-paper">
+        <div class="nb-page-header">
+            <div class="nb-page-subject">Core CS · OS</div>
+            <div class="nb-page-title">Deadlock — my one-pager</div>
+        </div>
+        <div class="nb-lines">
+            <span class='nb-heading'>WHAT IS IT?</span>
+<span class='nb-sub'><span class='nb-arrow'>→</span></span>
+<span class='nb-blank'></span>
+<span class='nb-heading'>4 CONDITIONS</span>
+<span class='nb-heading'>1. Mutual Exclusion</span>
+<span class='nb-heading'>2. Hold and Wait</span>
+<span class='nb-heading'>3. No Preemption</span>
+<span class='nb-heading'>4. Circular Wait</span>
+<span class='nb-blank'></span>
+<span class='nb-heading'>HOW TO PREVENT</span>
+<span class='nb-sub'><span class='nb-arrow'>→</span></span>
+<span class='nb-sub'><span class='nb-arrow'>→</span></span>
+<span class='nb-sub'><span class='nb-arrow'>→</span></span>
+<span class='nb-blank'></span>
+<span class='nb-heading'>REAL WORLD ANALOGY</span>
+<span class='nb-sub'><span class='nb-arrow'>→</span></span>
+<span class='nb-blank'></span>
+<span class='nb-heading'>INTERVIEW TRAP:</span>
+<span class='nb-sub'><span class='nb-arrow'>→</span></span>
+<span class='nb-sub'><span class='nb-arrow'>→</span></span>
+<span class='nb-blank'></span>
+<span class='nb-heading'>60 SEC ANSWER TEMPLATE:</span>
+<span class='nb-line'>"Deadlock is when processes are stuck waiting on each other in a cycle.</span>
+<span class='nb-line'>Four conditions must hold. [name all four]. You prevent it by breaking one —</span>
+<span class='nb-line'>most practically, fixed resource ordering eliminates circular wait."</span>
+
+        </div>
+        
+    </div></div>
+<div id="tab-dbms" class="nb-page">
+    <div class="notebook-paper">
+        <div class="nb-page-header">
+            <div class="nb-page-subject">Core CS · DBMS</div>
+            <div class="nb-page-title">SQL + Joins — my one-pager</div>
+        </div>
+        <div class="nb-lines">
+            <span class='nb-heading'>SQL ORDER OF EXECUTION</span>
+<span class='nb-line'>FROM → JOIN → WHERE → GROUP BY → HAVING → SELECT → ORDER BY → LIMIT</span>
+<span class='nb-blank'></span>
+<span class='nb-heading'>JOINS</span>
+<span class='nb-line'>INNER JOIN → only matching rows in both tables</span>
+<span class='nb-line'>LEFT JOIN  → all from left + matches from right (NULL if no match)</span>
+<span class='nb-line'>RIGHT JOIN → all from right + matches from left</span>
+<span class='nb-line'>FULL OUTER → everything from both, NULLs where no match</span>
+<span class='nb-blank'></span>
+<span class='nb-heading'>MUST KNOW QUERIES</span>
+<span class='nb-line'>2nd highest salary: SELECT MAX(salary) FROM emp WHERE salary &lt; (SELECT MAX(salary) FROM emp)</span>
+<span class='nb-line'>Duplicates: SELECT name, COUNT(*) FROM emp GROUP BY name HAVING COUNT(*) &gt; 1</span>
+<span class='nb-line'>Dept avg: SELECT dept, AVG(salary) FROM emp GROUP BY dept ORDER BY AVG(salary) DESC</span>
+<span class='nb-blank'></span>
+<span class='nb-heading'>ACID</span>
+<span class='nb-sub'><span class='nb-arrow'>→</span></span>
+<span class='nb-sub'><span class='nb-arrow'>→</span></span>
+<span class='nb-blank'></span>
+<span class='nb-heading'>INTERVIEW TRAP:</span>
+<span class='nb-sub'><span class='nb-arrow'>→</span></span>
+<span class='nb-sub'><span class='nb-arrow'>→</span></span>
+<span class='nb-blank'></span>
+<span class='nb-heading'>MY LINK TO PROJECTS:</span>
+<span class='nb-sub'><span class='nb-arrow'>→</span></span>
+
+        </div>
+        
+    </div></div>
+<div id="tab-tips" class="nb-page">
+    <div class="notebook-paper">
+        <div class="nb-page-header">
+            <div class="nb-page-subject">Interview Prep</div>
+            <div class="nb-page-title">Tips, tricks & what not to do</div>
+        </div>
+        <div class="nb-lines">
+            
+        </div>
+        
+    </div></div>
+<div id="tab-playbook" class="nb-page">
+    <div class="notebook-paper">
+        <div class="nb-page-header">
+            <div class="nb-page-subject">Fresher Playbook</div>
+            <div class="nb-page-title">Everything in one place</div>
+        </div>
+        <div class="nb-lines">
+            <span class='nb-heading'>---</span>
+<span class='nb-blank'></span>
+<span class='nb-heading'># THE COMPLETE FRESHER PLAYBOOK</span>
+<span class='nb-heading'>### For Pranav. Everything in one place. Read top to bottom once, then execute.</span>
+<span class='nb-blank'></span>
+<span class='nb-heading'>---</span>
+<span class='nb-blank'></span>
+<span class='nb-heading'>## SECTION 1 — HONEST REALITY CHECK FIRST</span>
+<span class='nb-blank'></span>
+<span class='nb-line'>Before the plan, the truth.</span>
+<span class='nb-blank'></span>
+<span class='nb-line'>You have real things to show: PlacePro with 500+ actual users, Auren built solo in 6 days and live, Amazon MLSS shortlist from 100K+ applicants, Rovn in top 1K of 10K. That's not a bad profile. That's actually a good profile for a pre-final year student. Your actual gap isn't projects — it's DSA speed and CS theory verbal fluency. You can explain what you built but if someone asks "sort this array in O(n log n) and prove it," you might stall. That's the gap. Everything in this plan closes that.</span>
+<span class='nb-blank'></span>
+<span class='nb-line'>Your CGPA is 6.53. It clears the 6.5 floor for most companies. Stop worrying about it. Focus on things you can actually change.</span>
+<span class='nb-blank'></span>
+<span class='nb-heading'>---</span>
+<span class='nb-blank'></span>
+<span class='nb-heading'>## SECTION 2 — THE MASTER TIMELINE (Days, not weeks)</span>
+<span class='nb-blank'></span>
+<span class='nb-line'>Total honest estimate for someone starting from zero with your existing code background: 75 to 90 days to be genuinely interview-ready for roles like Zensar AI Engineer, Cisco, mid-tier product companies. Not Google. Not Amazon SDE. But solid placements at companies that actually hire from Pune. Here's how those days break down:</span>
+<span class='nb-blank'></span>
+<span class='nb-heading'>Days 1–10 — Python fundamentals + OOPs</span>
+<span class='nb-line'>You already code in Python so this is revision + filling gaps. Don't skip it because you think you know it. You need to be able to write a Python class with inheritance from memory, explain MRO, and implement abstract classes. 10 days is enough if you actually sit and code daily.</span>
+<span class='nb-blank'></span>
+<span class='nb-heading'>Days 11–25 — Data Structures (the theory + implementation)</span>
+<span class='nb-line'>15 days. One structure every 1–2 days. Actually implement linked list, stack, queue, BST from scratch in Python. Don't just read. Code it. Then run it. This is where 90% of people go wrong — they watch a video and call it done. Write it.</span>
+<span class='nb-blank'></span>
+<span class='nb-heading'>Days 26–50 — DSA Problem Solving</span>
+<span class='nb-line'>25 days. This is the grind block. You pick a pattern (two pointers, sliding window, binary search, etc.) and you do 4–5 problems on it before moving. Use LeetCode. Easy first, then Medium. Track which problems you solved without looking at hints. That number matters more than total problems solved.</span>
+<span class='nb-blank'></span>
+<span class='nb-heading'>Days 51–65 — Core CS Theory</span>
+<span class='nb-line'>15 days. OS, DBMS, CN, System Design basics. 3–4 days each. These are verbal answers, not code. The goal is: someone asks you "what is a deadlock," and you answer in under 60 seconds with the right technical keywords, clearly, without sounding like you memorized a definition.</span>
+<span class='nb-blank'></span>
+<span class='nb-heading'>Days 66–75 — AI/ML fundamentals</span>
+<span class='nb-line'>10 days. Classical ML in the first 5 days. Neural networks and Transformers in the next 5. You already know a lot here practically — the goal is being able to explain the math and concepts clearly in an interview.</span>
+<span class='nb-blank'></span>
+<span class='nb-heading'>Days 76–90 — Interview prep + mock rounds</span>
+<span class='nb-line'>15 days. Behavioural answers rehearsed out loud, project deep-dives practised, resume polished, 2–3 mock interviews with someone who will actually be critical.</span>
+<span class='nb-blank'></span>
+<span class='nb-heading'>---</span>
+<span class='nb-blank'></span>
+<span class='nb-heading'>## SECTION 3 — HOW TO STUDY (And when to skip notes)</span>
+<span class='nb-blank'></span>
+<span class='nb-line'>Here's the blunt answer on notes: for most people, making notes is procrastination with extra steps. You spend 3 hours making a beautiful Notion page and retain 20% of it.</span>
+<span class='nb-blank'></span>
+<span class='nb-line'>Here's what actually works:</span>
+<span class='nb-blank'></span>
+<span class='nb-line'>For DSA — don't make notes. Just track which problems you solved, which ones you needed a hint for, and which ones you couldn't do. Keep a simple text file with problem name, date, verdict (solved clean / needed hint / couldn't do). Review that file once a week. Redo the problems you couldn't do after 7 days.</span>
+<span class='nb-blank'></span>
+<span class='nb-line'>For CS Theory (OS, DBMS, CN) — make notes but only as "what would I say out loud if someone asked me this." Not textbook definitions. Your own words. One page per topic maximum. If you can't summarise a topic in one page, you don't understand it yet.</span>
+<span class='nb-blank'></span>
+<span class='nb-line'>For AI/ML — you already have practical knowledge. Notes are useful here. Write concept → intuition → one-line formula → when to use. Keep it short. The goal is a cheatsheet you can revise in 20 minutes before an interview, not a textbook.</span>
+<span class='nb-blank'></span>
+<span class='nb-line'>For OOPs and Python — just code. Write a small project per concept. Best way to internalise OOPs is to build a mini banking system using classes. That one project covers encapsulation, inheritance, and polymorphism in one go.</span>
+<span class='nb-blank'></span>
+<span class='nb-heading'>---</span>
+<span class='nb-blank'></span>
+<span class='nb-heading'>## SECTION 4 — RESUME (What goes in, what doesn't, exactly)</span>
+<span class='nb-blank'></span>
+<span class='nb-line'>One page. Always. If it's going past one page, you're including things that don't need to be there.</span>
+<span class='nb-blank'></span>
+<span class='nb-heading'>Header</span>
+<span class='nb-blank'></span>
+<span class='nb-heading'>Education</span>
+<span class='nb-blank'></span>
+<span class='nb-heading'>Experience</span>
+<span class='nb-blank'></span>
+<span class='nb-heading'>Projects</span>
+<span class='nb-line'>- For AI Engineer roles: Auren first, then Mnemo, then PlacePro</span>
+<span class='nb-line'>- For general SWE roles: PlacePro first, then Rovn, then Auren</span>
+<span class='nb-line'>- For service company roles (Zensar etc): PlacePro first, Rovn second, Auren third</span>
+<span class='nb-blank'></span>
+<span class='nb-line'>Each project gets 2–3 bullets. First bullet is what it does and the scale (real users, live URL). Second bullet is the technical decision that's interesting. Third bullet is the outcome or metric. Never use words like "leveraged" or "utilized." Say what you did directly.</span>
+<span class='nb-blank'></span>
+<span class='nb-line'>Example of a bad bullet: "Leveraged pgvector to implement semantic search functionality"</span>
+<span class='nb-line'>Example of a good bullet: "Built a memory retrieval API using pgvector cosine similarity with decay scoring — recent memories rank higher than old ones even at similar semantic distance"</span>
+<span class='nb-blank'></span>
+<span class='nb-line'>The second one tells you what it does and why the design decision was made. That's what gets questions in an interview. You want questions on things you know deeply.</span>
+<span class='nb-blank'></span>
+<span class='nb-heading'>Skills</span>
+<span class='nb-blank'></span>
+<span class='nb-heading'>Achievements</span>
+<span class='nb-blank'></span>
+<span class='nb-heading'>What to leave out</span>
+<span class='nb-blank'></span>
+<span class='nb-heading'>---</span>
+<span class='nb-blank'></span>
+<span class='nb-heading'>## SECTION 5 — CODING PROFILES (What to maintain and how)</span>
+<span class='nb-blank'></span>
+<span class='nb-heading'>LeetCode</span>
+<span class='nb-blank'></span>
+<span class='nb-heading'>GitHub</span>
+<span class='nb-blank'></span>
+<span class='nb-line'>Pin your top 6 repos. Keep the pinned repos as your best work only. If a repo is messy or incomplete and not representative of your skill, unpin it or make it private.</span>
+<span class='nb-blank'></span>
+<span class='nb-line'>Don't worry about contribution graph streaks. Worry about quality of what's in the repos.</span>
+<span class='nb-blank'></span>
+<span class='nb-heading'>LinkedIn</span>
+<span class='nb-blank'></span>
+<span class='nb-heading'>Portfolio (pranavx.in)</span>
+<span class='nb-blank'></span>
+<span class='nb-heading'>---</span>
+<span class='nb-blank'></span>
+<span class='nb-heading'>## SECTION 6 — CONTESTS AND CONTRIBUTION (How to actually do this)</span>
+<span class='nb-blank'></span>
+<span class='nb-heading'>Contests</span>
+<span class='nb-blank'></span>
+<span class='nb-line'>After you're consistent at LeetCode Medium (solving 2 out of 4 in a contest), then try a Codeforces Div 3 round. Div 3 is designed for beginners.</span>
+<span class='nb-blank'></span>
+<span class='nb-heading'>Hackathons</span>
+<span class='nb-blank'></span>
+<span class='nb-heading'>Open Source</span>
+<span class='nb-blank'></span>
+<span class='nb-line'>For now, given your timeline, don't start open source cold. Complete your current projects first. Ship Specboard. Clean up Mnemo. Then do open source.</span>
+<span class='nb-blank'></span>
+<span class='nb-heading'>---</span>
+<span class='nb-blank'></span>
+<span class='nb-heading'>## SECTION 7 — INTERVIEW Q&amp;A (Humanised, your voice)</span>
+<span class='nb-blank'></span>
+<span class='nb-line'>These answers are written as you. Not as a textbook. Not as "AI-generated response #47." As someone who has actually built things and knows what they're talking about.</span>
+<span class='nb-blank'></span>
+<span class='nb-heading'>---</span>
+<span class='nb-blank'></span>
+<span class='nb-heading'>"Tell me about yourself"</span>
+<span class='nb-blank'></span>
+<span class='nb-line'>"Okay so — I'm Pranav, pre-final year at MIT-ADT, Pune, CSE with an AI/ML specialisation. Graduating in 2027.</span>
+<span class='nb-blank'></span>
+<span class='nb-line'>I've been building things more than I've been studying, honestly. Right now I run CraftaStudio — it's a pre-launch AI SaaS I co-founded, where I'm also the tech lead. We're a team of five and we're building an architecture-first code generation platform. The core idea is you describe what you want to build and the system generates a dependency graph before it writes a single line of code, so the output actually makes structural sense.</span>
+<span class='nb-blank'></span>
+<span class='nb-line'>Outside of that I've shipped a few products independently. Auren is the one I talk about the most — it's an AI execution layer I built solo in about 6 days for a hackathon. It lets you give natural language instructions that actually get executed — sends emails, creates calendar events, interacts with GitHub — through LLM agents. It's live at tryauren.in.</span>
+<span class='nb-blank'></span>
+<span class='nb-line'>I also built PlacePro, a placement tracking platform that's actively used by 500+ students on my campus. That one I didn't build for a hackathon — I built it because the problem was real and no one had solved it.</span>
+<span class='nb-blank'></span>
+<span class='nb-line'>And I was shortlisted for Amazon ML Summer School 2026 from over a hundred thousand applicants. That was a blind selection, just a test, so I'm pretty proud of that one.</span>
+<span class='nb-blank'></span>
+<span class='nb-line'>I'm here because I want to work on AI engineering in a setting where the work actually ships to users. That's what drives me."</span>
+<span class='nb-blank'></span>
+<span class='nb-heading'>---</span>
+<span class='nb-blank'></span>
+<span class='nb-heading'>"Walk me through one of your projects"</span>
+<span class='nb-blank'></span>
+<span class='nb-line'>"I'll walk you through Auren because it's the most technically interesting one I've built.</span>
+<span class='nb-blank'></span>
+<span class='nb-line'>The problem I was solving: LLMs understand what you want, but they can't actually do anything. They can write an email but they can't send it. They can suggest a meeting time but they can't create the calendar event. Auren bridges that gap — it's the execution layer between your intent and actual actions.</span>
+<span class='nb-blank'></span>
+<span class='nb-line'>How it works: user types something like 'summarise my unread emails from this week and block two hours on Friday for the follow-ups.' Auren parses that, figures out it needs to read Gmail, read the calendar, create a calendar block, and it executes those as tool calls via the Corsair MCP — that's a Model Context Protocol integration that gives the LLM access to Gmail, Google Calendar, and GitHub APIs.</span>
+<span class='nb-blank'></span>
+<span class='nb-line'>The classification layer is where it gets interesting. Not every email needs action — most are noise. I used Claude Haiku as a lightweight classifier to separate actionable emails from newsletters, receipts, notifications. Haiku is fast and cheap, so running it on every email is actually feasible. Only actionable ones go to the main agent.</span>
+<span class='nb-blank'></span>
+<span class='nb-line'>One design decision I'm actually proud of: before any write action — sending an email, creating an event — the system stops and shows the user exactly what it's about to do and asks for confirmation. It's what I called HITL — human in the loop. It sounds obvious but most demos skip it, and it's the difference between a product someone trusts and a demo that scares people.</span>
+<span class='nb-blank'></span>
+<span class='nb-line'>Stack is Next.js 14, Supabase with pgvector for memory, OpenRouter as the LLM gateway, Clerk for auth. Built solo in 6 days. Live now."</span>
+<span class='nb-blank'></span>
+<span class='nb-heading'>---</span>
+<span class='nb-blank'></span>
+<span class='nb-heading'>"What is RAG? Have you implemented it?"</span>
+<span class='nb-blank'></span>
+<span class='nb-line'>"Yeah, I've built it twice so let me explain from how I think about it rather than the textbook definition.</span>
+<span class='nb-blank'></span>
+<span class='nb-line'>The core problem RAG solves is this: an LLM knows what it learned during training but it has no idea what's in your company's internal docs, your emails, your codebase. You can't fine-tune it every time something changes. RAG says — okay, at the time the user asks something, go retrieve the relevant information and hand it to the model as context. The model then answers based on what it just received, not just what it memorised.</span>
+<span class='nb-blank'></span>
+<span class='nb-line'>The pipeline has three parts. Indexing: you take your documents, break them into chunks, convert each chunk to a vector embedding using an embedding model, store those in a vector database. Retrieval: when someone asks a question, you embed that question too, then find chunks that are semantically closest to it using cosine similarity. Generation: you inject those chunks into the prompt and let the LLM generate a grounded answer.</span>
+<span class='nb-blank'></span>
+<span class='nb-line'>In Mnemo — my memory API — I added two layers on top of vanilla RAG. One is decay scoring: recent memories get a higher weight even if an older memory has slightly better cosine similarity. Because in most real use cases, what you said last week matters more than what you said six months ago. The second is contradiction detection: if a new memory conflicts with an existing one, the system flags it instead of silently storing both and confusing the model later.</span>
+<span class='nb-blank'></span>
+<span class='nb-line'>So yes, I've implemented it, and I've thought beyond the basic version."</span>
+<span class='nb-blank'></span>
+<span class='nb-heading'>---</span>
+<span class='nb-blank'></span>
+<span class='nb-heading'>"Explain a Transformer to me"</span>
+<span class='nb-blank'></span>
+<span class='nb-line'>"So before transformers we had RNNs, and the fundamental problem with RNNs was they processed sequences token by token, in order. Which means if you're reading a sentence and the important context is 50 words back, by the time you get to it the earlier information has basically faded out. The network forgets.</span>
+<span class='nb-blank'></span>
+<span class='nb-line'>The transformer's insight was: what if every word can look at every other word at the same time? That's what attention is. Each token asks 'how relevant is every other token to me right now?' and you get a weighted sum. You're not reading left to right — you're looking at the whole thing at once.</span>
+<span class='nb-blank'></span>
+<span class='nb-line'>Multi-head attention runs this process multiple times in parallel — each head learns to focus on different kinds of relationships. One head might focus on syntactic structure, another on semantic meaning. You run 8 or 12 heads, concatenate the outputs, and you've captured richer relationships than any single attention head could.</span>
+<span class='nb-blank'></span>
+<span class='nb-line'>Then there's positional encoding because the attention mechanism itself has no concept of order. You add a position vector to each token embedding to tell the model where in the sequence each token sits.</span>
+<span class='nb-blank'></span>
+<span class='nb-line'>The encoder builds a contextual representation of the input. The decoder generates the output, and it uses cross-attention to look at the encoder's representations while it's generating each output token.</span>
+<span class='nb-blank'></span>
+<span class='nb-line'>BERT uses just the encoder — it was trained on masked language modelling, so it learned to predict missing words. GPT uses just the decoder, trained to predict the next token. For most chat applications you're working with GPT-style decoder-only architectures."</span>
+<span class='nb-blank'></span>
+<span class='nb-heading'>---</span>
+<span class='nb-blank'></span>
+<span class='nb-heading'>"What's the difference between fine-tuning, RAG, and prompt engineering?"</span>
+<span class='nb-blank'></span>
+<span class='nb-line'>"They're three different levers and they're not interchangeable — each one solves a different problem.</span>
+<span class='nb-blank'></span>
+<span class='nb-line'>Prompt engineering is the cheapest and fastest. You don't touch the model at all. You just craft your input more carefully — add examples, structure your request, break complex tasks into steps. Zero-shot just tells the model what to do. Few-shot gives it 2–3 examples of the format you want. Chain-of-thought asks it to reason step by step before answering. Works well when the model already has the knowledge and you just need to steer the output.</span>
+<span class='nb-blank'></span>
+<span class='nb-line'>RAG is for when the model doesn't have the knowledge — or the knowledge changes frequently. You're not changing the model, you're giving it fresh information at the time of each query. I use this in Auren for email context and in Mnemo for persistent memory. The limitation is that retrieval quality matters a lot — if you retrieve the wrong chunks, the model will still sound confident while being wrong.</span>
+<span class='nb-blank'></span>
+<span class='nb-line'>Fine-tuning actually changes the model's weights using your labelled dataset. This is for when you need the model to write in a specific tone consistently, follow a very specific output format every time, or deeply understand a domain-specific vocabulary. It's expensive, you need GPU access, and you need a good dataset. For most startup use cases RAG is the right call. Fine-tuning makes sense after you've exhausted the other two and you have clear evidence they're not sufficient."</span>
+<span class='nb-blank'></span>
+<span class='nb-heading'>---</span>
+<span class='nb-blank'></span>
+<span class='nb-heading'>"Explain OOPs. Can you give me examples?"</span>
+<span class='nb-blank'></span>
+<span class='nb-line'>"Sure. OOPs is basically a way to organise code around objects instead of just functions running in sequence. The four pillars —</span>
+<span class='nb-blank'></span>
+<span class='nb-line'>Encapsulation is about bundling data and the functions that operate on it inside one unit, and deciding what the outside world gets to see. In Python you signal private stuff with an underscore prefix — it's convention, not hard enforcement. The benefit is you can change how something works internally without breaking everything that uses it.</span>
+<span class='nb-blank'></span>
+<span class='nb-line'>Inheritance is when one class gets the attributes and methods of another. Saves you from rewriting the same logic. Python supports multiple inheritance — one class can inherit from multiple parents — and uses something called MRO, Method Resolution Order, to figure out which parent's version of a method gets called when there's a conflict. It follows C3 linearisation.</span>
+<span class='nb-blank'></span>
+<span class='nb-line'>Polymorphism is the same method name doing different things depending on what object you're calling it on. In Python this is largely duck typing — if the object has the method, it works. You don't need explicit interfaces like in Java.</span>
+<span class='nb-blank'></span>
+<span class='nb-line'>Abstraction is hiding the implementation and just exposing what the user of your class needs. Python has an ABC module — Abstract Base Classes — where you can define methods that every subclass must implement. If a subclass doesn't implement a required abstract method, you get an error when you try to instantiate it."</span>
+<span class='nb-blank'></span>
+<span class='nb-heading'>---</span>
+<span class='nb-blank'></span>
+<span class='nb-heading'>"What are ACID properties?"</span>
+<span class='nb-blank'></span>
+<span class='nb-line'>"ACID is what makes database transactions reliable, especially when multiple things are happening at the same time or something crashes mid-operation.</span>
+<span class='nb-blank'></span>
+<span class='nb-line'>Atomicity is all or nothing. Classic example: you're transferring money between two bank accounts. The debit from account A and the credit to account B need to happen together. If the system crashes after the debit but before the credit, atomicity rolls the whole thing back. You don't end up with money disappearing.</span>
+<span class='nb-blank'></span>
+<span class='nb-line'>Consistency means the database goes from one valid state to another. Whatever rules and constraints exist — foreign keys, unique constraints, check constraints — they all hold after every transaction.</span>
+<span class='nb-blank'></span>
+<span class='nb-line'>Isolation is about concurrent transactions not interfering with each other. If two transactions are running at the same time, each one should see a consistent snapshot, not half-finished work from the other. Different isolation levels give you different trade-offs between correctness and performance.</span>
+<span class='nb-blank'></span>
+<span class='nb-line'>Durability means once a transaction says it committed, it's committed. Even if the machine crashes immediately after, the data is persisted to disk. It's not just in memory."</span>
+<span class='nb-blank'></span>
+<span class='nb-heading'>---</span>
+<span class='nb-blank'></span>
+<span class='nb-heading'>"What is normalisation?"</span>
+<span class='nb-blank'></span>
+<span class='nb-line'>"Normalisation is about organising your database so you're not storing the same information in multiple places, which causes problems when you try to update it.</span>
+<span class='nb-blank'></span>
+<span class='nb-line'>First Normal Form just says every cell in your table should hold one value, not a list. If you're storing comma-separated values in a single column, that's a 1NF violation.</span>
+<span class='nb-blank'></span>
+<span class='nb-line'>Second Normal Form builds on that by saying if you have a composite primary key, every non-key column needs to depend on the whole key, not just one part of it. Partial dependency is what it eliminates.</span>
+<span class='nb-blank'></span>
+<span class='nb-line'>Third Normal Form eliminates transitive dependency — which means non-key columns shouldn't depend on other non-key columns. If knowing the zip code tells you the city, and the city isn't part of the primary key, that's a transitive dependency. You'd split that into its own table.</span>
+<span class='nb-blank'></span>
+<span class='nb-line'>BCNF is slightly stricter than 3NF. It says every determinant — any column that uniquely determines another column — must be a candidate key.</span>
+<span class='nb-blank'></span>
+<span class='nb-line'>In real production systems you normalise to 3NF and then sometimes deliberately denormalise specific tables where you need faster reads. It's a trade-off."</span>
+<span class='nb-blank'></span>
+<span class='nb-heading'>---</span>
+<span class='nb-blank'></span>
+<span class='nb-heading'>"What is a deadlock?"</span>
+<span class='nb-blank'></span>
+<span class='nb-line'>"A deadlock is when two or more processes are stuck, each one waiting for a resource that another one is holding, and none of them can proceed because they're all waiting on each other.</span>
+<span class='nb-blank'></span>
+<span class='nb-line'>Four conditions have to all be true at the same time for a deadlock to happen. First, mutual exclusion — at least one resource can only be used by one process at a time. Second, hold and wait — a process is holding a resource and also waiting to get more. Third, no preemption — you can't forcibly take a resource away from a process, it has to release it voluntarily. Fourth, circular wait — you have a cycle where process A is waiting for process B which is waiting for process C which is waiting for process A.</span>
+<span class='nb-blank'></span>
+<span class='nb-line'>To prevent it you break one of those conditions. The most common approach is imposing a fixed ordering on resources — if all processes always request resources in the same order, you can never get a circular wait. The Banker's Algorithm is a more sophisticated approach where before granting a resource, the system checks whether the resulting state is still safe — meaning there's at least one sequence in which all processes can complete."</span>
+<span class='nb-blank'></span>
+<span class='nb-heading'>---</span>
+<span class='nb-blank'></span>
+<span class='nb-heading'>"What's the difference between a process and a thread?"</span>
+<span class='nb-blank'></span>
+<span class='nb-line'>"A process is an independent running program with its own memory space — its own heap, stack, code, data. Processes are isolated. If one crashes, it doesn't take down others because they're not sharing memory.</span>
+<span class='nb-blank'></span>
+<span class='nb-line'>A thread lives inside a process. Multiple threads within the same process share the heap and the code, but each thread has its own stack and its own registers. They're lighter than processes because you're not duplicating memory. Switching between threads is also cheaper than switching between processes.</span>
+<span class='nb-blank'></span>
+<span class='nb-line'>The trade-off is that because threads share memory, you can get race conditions — two threads reading and writing the same data at the same time in an undefined order. That's why you need synchronization like mutexes or semaphores."</span>
+<span class='nb-blank'></span>
+
+        </div>
+        
+    </div></div>
+
+  </div>
+</div></div>
+
+  </div>
+</div>
+
+<script>
+function switchTab(tabId) {
+    document.querySelectorAll('.nb-page').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.nb-tab').forEach(el => el.classList.remove('active'));
+    
+    const page = document.getElementById('tab-' + tabId);
+    if(page) page.classList.add('active');
+    
+    const tabs = document.querySelectorAll('.nb-tab');
+    tabs.forEach(tab => {
+        if(tab.getAttribute('onclick') && tab.getAttribute('onclick').includes(tabId)) {
+            tab.classList.add('active');
+        }
+    });
+}
+</script>
+
+  <script src="assets/script.js?v=21"></script>
+</body>
+</html>

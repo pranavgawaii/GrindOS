@@ -11,7 +11,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
     rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
   <link rel="stylesheet" href="assets/style.css?v=22" />
   <link rel="stylesheet" href="assets/mobile.css?v=22" />
 
@@ -191,8 +191,515 @@
 
     /* Results Section */
     .results-container {
-      display: none;
+      display: block;
       animation: slideUp 0.5s ease;
+    }
+    
+    /* Premium Styled Dropdowns */
+    .form-group select {
+      appearance: none;
+      -webkit-appearance: none;
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%27http%3D%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%2724%27%20height%3D%2724%27%20viewBox%3D%270%200%2024%2024%27%20fill%3D%27none%27%20stroke%3D%27%23a1a1aa%27%20stroke-width%3D%272%27%20stroke-linecap%3D%27round%27%20stroke-linejoin%3D%27round%27%3E%3Cpolyline%20points%3D%276%209%2012%2015%2018%209%27%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E") !important;
+      background-repeat: no-repeat !important;
+      background-position: right 14px center !important;
+      background-size: 16px !important;
+      padding-right: 40px !important;
+      cursor: pointer;
+    }
+    .form-group select option {
+      background: var(--bg-2);
+      color: var(--text-1);
+    }
+    
+    #oaModeToggle, #amazonMlModeToggle {
+      background: var(--bg-2) !important;
+      border: 0.5px solid var(--border) !important;
+      color: var(--text-3) !important;
+      padding: 7px 14px !important;
+      border-radius: 20px !important;
+      font-size: 0.85rem !important;
+      font-weight: 600 !important;
+      cursor: pointer !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 7px !important;
+      transition: all 0.15s !important;
+      outline: none !important;
+      font-family: var(--font-sans) !important;
+      letter-spacing: 0.01em !important;
+      box-shadow: none !important;
+    }
+    #oaModeToggle:hover, #amazonMlModeToggle:hover {
+      border-color: var(--text-3) !important;
+      color: var(--text-1) !important;
+      background: var(--bg-3) !important;
+    }
+    #oaModeToggle.active, #amazonMlModeToggle.active {
+      background: var(--bg-3) !important;
+      border-color: var(--text-2) !important;
+      color: var(--text-1) !important;
+    }
+    #amazonMlModeToggle .mlss-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--text-4);
+      transition: background 0.15s;
+    }
+    #amazonMlModeToggle.active .mlss-dot {
+      background: #4ade80;
+    }
+
+    /* MLSS Input Panel */
+    #mlssInputPanel { display: none; }
+    #mlssInputPanel.visible {
+      display: block;
+      animation: slideUp 0.2s ease;
+    }
+
+    .mlss-panel-card {
+      background: var(--card);
+      border: 0.5px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .dark .mlss-panel-card {
+      background: #2c2d35; /* Lighter premium dark shade, not too dark! */
+    }
+
+    /* Section Tabs — pill-style like tracker tabs */
+    .mlss-section-tabs {
+      display: flex;
+      gap: 8px;
+      padding: 12px 16px;
+      background: transparent;
+      flex-wrap: wrap;
+      justify-content: center; /* Center the tabs! */
+    }
+    .mlss-section-tab {
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      cursor: pointer;
+      border: 0.5px solid var(--border);
+      color: var(--text-2);
+      background: var(--bg-3);
+      transition: all 0.15s;
+      outline: none;
+      font-family: var(--font-sans);
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .mlss-section-tab .tab-icon { font-size: 14px; }
+    .mlss-section-tab:hover {
+      border-color: var(--text-2);
+      color: var(--text-1);
+    }
+    .dark .mlss-section-tab {
+      background: rgba(255, 255, 255, 0.06);
+      color: #e4e4e7;
+      border-color: #3f3f46;
+    }
+    .dark .mlss-section-tab:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: #fafafa;
+      border-color: #52525b;
+    }
+    .mlss-section-tab.active {
+      background: var(--text-1);
+      color: var(--bg);
+      border-color: var(--text-1);
+      font-weight: 600;
+    }
+
+    /* Question Input area */
+    .mlss-input-body { padding: 16px; }
+    .mlss-field-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--text-3);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 6px;
+    }
+    #mlssQuestionInput {
+      width: 100%;
+      min-height: 160px;
+      background: var(--bg-2);
+      border: 0.5px solid var(--border);
+      color: var(--text-1);
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-family: var(--font-sans);
+      font-size: 0.88rem;
+      line-height: 1.6;
+      resize: vertical;
+      outline: none;
+      transition: border-color 0.15s;
+      box-sizing: border-box;
+    }
+    .dark #mlssQuestionInput {
+      background: #18181b;
+      border-color: #3f3f46;
+    }
+    #mlssQuestionInput:focus {
+      border-color: var(--text-3);
+    }
+    .dark #mlssQuestionInput:focus {
+      border-color: #52525b;
+    }
+    #mlssQuestionInput::placeholder { color: rgba(0, 0, 0, 0.45); }
+    .dark #mlssQuestionInput::placeholder { color: rgba(255, 255, 255, 0.45); }
+
+    /* Code Stub */
+    #mlssCodeStubWrapper { display: none; margin-top: 12px; }
+    .mlss-stub-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+    .mlss-stub-toggle {
+      background: none;
+      border: 0.5px solid var(--border);
+      color: var(--text-3);
+      padding: 3px 10px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: var(--font-sans);
+      transition: all 0.15s;
+    }
+    .mlss-stub-toggle:hover, .mlss-stub-toggle.active {
+      border-color: var(--text-2);
+      color: var(--text-1);
+      background: var(--bg-3);
+    }
+    #mlssCodeStubArea {
+      display: none;
+      background: var(--bg);
+      border: 0.5px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    #mlssCodeStubArea.open { display: flex; }
+    #mlssCodeGutter {
+      padding: 10px 8px;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      line-height: 1.5;
+      color: var(--text-4);
+      text-align: right;
+      user-select: none;
+      border-right: 0.5px solid var(--border);
+      background: var(--bg-2);
+      min-width: 38px;
+      box-sizing: border-box;
+      overflow: hidden;
+      align-self: stretch;
+    }
+    #mlssCodeStub {
+      flex: 1;
+      min-height: 120px;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      line-height: 1.5;
+      background: transparent;
+      border: none;
+      color: var(--text-1);
+      padding: 10px 12px;
+      resize: vertical;
+      outline: none;
+      box-sizing: border-box;
+      overflow-y: auto;
+    }
+
+    /* Send Button */
+    .mlss-send-btn {
+      width: 100%;
+      margin-top: 12px;
+      background: var(--text-1);
+      color: var(--bg);
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: opacity 0.15s;
+      font-family: var(--font-sans);
+    }
+    .mlss-send-btn:hover { opacity: 0.88; }
+    .mlss-send-btn:active { opacity: 0.75; }
+    .mlss-send-btn:disabled { opacity: 0.65; cursor: not-allowed; }
+
+    /* Spinner for loading state */
+    .mlss-spinner {
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(255, 255, 255, 0.25);
+      border-top-color: currentColor;
+      border-radius: 50%;
+      display: inline-block;
+      animation: spin 0.8s linear infinite;
+    }
+
+    /* Mode status strip */
+    .mlss-status-strip {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border-bottom: 0.5px solid var(--border);
+      background: var(--bg-2);
+    }
+    .mlss-status-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: #4ade80;
+      flex-shrink: 0;
+    }
+    .mlss-status-text {
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--text-3);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    /* Hidden legacy chips */
+    #mlssSectionSelector { display: none !important; }
+
+    /* === Chat Panel === */
+    #mlssChatPanel {
+      display: none;
+      flex-direction: column;
+      height: calc(100vh - 230px);
+      min-height: 520px;
+    }
+    #mlssChatPanel.visible { display: flex; }
+
+    .mlss-chat-box {
+      flex: 1;
+      background: var(--card);
+      border: 0.5px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .dark .mlss-chat-box {
+      background: #2c2d35; /* Lighter premium dark shade, not too dark! */
+    }
+    .mlss-chat-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 16px;
+      background: var(--bg-2);
+      border-bottom: 0.5px solid var(--border);
+    }
+    .mlss-chat-header .amazon-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: #4ade80;
+      flex-shrink: 0;
+    }
+    .mlss-chat-header .chat-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-1);
+    }
+    .mlss-chat-header .chat-subtitle {
+      font-size: 0.72rem;
+      color: var(--text-3);
+      margin-left: 1px;
+    }
+    .mlss-section-label-pill {
+      margin-left: auto;
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: var(--text-3);
+      background: var(--bg-3);
+      padding: 3px 10px;
+      border-radius: 20px;
+      border: 0.5px solid var(--border);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .mlss-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      min-height: 150px;
+    }
+    .mlss-messages::-webkit-scrollbar { width: 6px; }
+    .mlss-messages::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+    .chat-msg {
+      max-width: 86%;
+      padding: 10px 13px;
+      border-radius: 10px;
+      font-size: 0.855rem;
+      line-height: 1.65;
+      word-break: break-word;
+      animation: slideUp 0.18s ease;
+    }
+    .chat-msg.user {
+      align-self: flex-end;
+      background: var(--bg-3);
+      border: 0.5px solid var(--border);
+      color: var(--text-1);
+      border-bottom-right-radius: 3px;
+    }
+    .chat-msg.ai {
+      align-self: flex-start;
+      background: var(--bg-2);
+      border: 0.5px solid var(--border);
+      color: var(--text-2);
+      border-bottom-left-radius: 3px;
+    }
+    .chat-msg.ai h1, .chat-msg.ai h2, .chat-msg.ai h3, .chat-msg.ai h4 {
+      color: var(--text-1); font-size: 0.9rem; margin: 10px 0 4px; font-weight: 700;
+    }
+    .chat-msg.ai p { margin: 4px 0; }
+    .chat-msg.ai ul, .chat-msg.ai ol { padding-left: 16px; margin: 4px 0; }
+    .chat-msg.ai li { margin: 2px 0; }
+    .chat-msg.ai strong { color: var(--text-1); font-weight: 700; }
+    .chat-msg.ai pre {
+      background: var(--bg);
+      border: 0.5px solid var(--border);
+      border-radius: 6px;
+      padding: 10px 12px;
+      overflow-x: auto;
+      margin: 8px 0;
+    }
+    .chat-msg.ai code:not(pre code) {
+      background: var(--bg-3);
+      border: 0.5px solid var(--border);
+      border-radius: 3px;
+      padding: 1px 4px;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--text-1);
+    }
+    .chat-msg.ai pre code {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--text-2);
+    }
+    .chat-msg.typing {
+      align-self: flex-start;
+      background: var(--bg-2);
+      border: 0.5px solid var(--border);
+      padding: 12px 16px;
+    }
+    .typing-dots span {
+      display: inline-block;
+      width: 5px; height: 5px;
+      background: var(--text-3);
+      border-radius: 50%;
+      margin: 0 2px;
+      animation: typingBounce 1.1s ease-in-out infinite;
+    }
+    .typing-dots span:nth-child(2) { animation-delay: 0.18s; }
+    .typing-dots span:nth-child(3) { animation-delay: 0.36s; }
+    @keyframes typingBounce {
+      0%, 100% { transform: translateY(0); opacity: 0.3; }
+      50% { transform: translateY(-4px); opacity: 1; }
+    }
+
+    .mlss-chat-input-row {
+      display: flex;
+      gap: 8px;
+      padding: 10px 12px;
+      border-top: 0.5px solid var(--border);
+      background: var(--bg-2);
+    }
+    #mlssChatInput {
+      flex: 1;
+      background: var(--bg);
+      border: 0.5px solid var(--border);
+      color: var(--text-1);
+      border-radius: 6px;
+      padding: 9px 13px;
+      font-size: 0.855rem;
+      font-family: var(--font-sans);
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    .dark #mlssChatInput {
+      background: #18181b;
+      border-color: #3f3f46;
+    }
+    #mlssChatInput:focus { border-color: var(--text-3); }
+    .dark #mlssChatInput:focus { border-color: #52525b; }
+    #mlssChatInput::placeholder { color: rgba(0, 0, 0, 0.45); }
+    .dark #mlssChatInput::placeholder { color: rgba(255, 255, 255, 0.45); }
+    #mlssChatSendBtn {
+      background: var(--text-1);
+      border: none;
+      color: var(--bg);
+      border-radius: 6px;
+      width: 36px; height: 36px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.15s;
+      flex-shrink: 0;
+    }
+    #mlssChatSendBtn:hover { opacity: 0.8; }
+    #mlssChatSendBtn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+    /* Mobile */
+    @media (max-width: 768px) {
+      .practice-container {
+        margin: 60px auto 30px !important;
+        padding: 0 12px !important;
+      }
+      #mlssChatPanel {
+        height: calc(100vh - 160px) !important;
+        min-height: 400px !important;
+      }
+      .mlss-panel-card { border-radius: 10px; }
+      .chat-msg { max-width: 94%; }
+      .mlss-messages { padding: 12px; }
+      .mlss-section-tabs {
+        padding: 6px 8px !important;
+        gap: 6px !important;
+      }
+      .mlss-section-tab {
+        padding: 4px 10px !important;
+        font-size: 11px !important;
+      }
+    }
+
+
+
+
+    @keyframes cursor-blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+    .cursor-blink {
+      animation: cursor-blink 1.2s infinite;
+      display: inline-block;
+      width: 8px;
+      height: 15px;
+      background: var(--brand);
+      vertical-align: middle;
+      margin-left: 2px;
     }
 
     .result-section {
@@ -507,7 +1014,7 @@
     @media (min-width: 769px) {
       .workspace-layout {
         display: grid;
-        grid-template-columns: 1.15fr 0.85fr;
+        grid-template-columns: 1fr 1fr;
         gap: 28px;
         align-items: start;
       }
@@ -530,6 +1037,7 @@
       <a href="tracker.html" class="tracker-nav">Tracker</a>
       <a href="practice.html" class="practice-nav active">Practice</a>
       <a href="resume-builder.html" class="resume-nav" style="display: inline-block;">Resume</a>
+      
     </nav>
     <div class="topbar-right">
       <button class="icon-btn theme-toggle" id="theme-toggle" aria-label="Toggle Dark Mode" style="margin-right: 12px;">
@@ -556,10 +1064,16 @@
 
   <!-- Sandbox Workspace View (Default Landing) -->
   <div class="practice-container" style="max-width: 1300px; margin: 100px auto 120px; padding: 0 24px;">
+    <!-- Top Workspace Controls -->
+    <div style="margin-bottom: 24px; display: flex; align-items: center; justify-content: flex-end;">
+      <button id="resetSessionBtn" class="hidden" style="background: none; border: none; color: var(--brand); font-size: 0.85rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-sans); outline: none;">
+        <i class="ti ti-rotate"></i> Start New Session
+      </button>
+    </div>
     <div class="practice-header">
       <h1>OA Practice <span>Copilot</span></h1>
       <p>Master your coding assessments with real-time AI assistance</p>
-      <div style="margin-top: 20px; margin-bottom: 30px; text-align: center;">
+      <div style="margin-top: 20px; margin-bottom: 30px; display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap;">
         <a href="lens.html"
           style="background: var(--card); border: 1px solid var(--border); color: var(--brand); padding: 8px 16px; border-radius: 20px; font-weight: 600; font-size: 0.95rem; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: all 0.2s; box-shadow: 0 4px 12px rgba(139, 92, 246, 0.15);">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -569,11 +1083,92 @@
           </svg>
           Open GrindOS Lens
         </a>
+        <button id="oaModeToggle" style="background: var(--surface-1); border: 1px solid var(--border); color: var(--text-secondary); padding: 8px 16px; border-radius: 20px; font-size: 0.95rem; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: all 0.2s; outline: none; font-family: var(--font-sans);">
+          <i class="ti ti-terminal" style="font-size:16px;"></i>
+          <span>OA Mode: OFF</span>
+        </button>
+        <button id="amazonMlModeToggle">
+          <span class="mlss-dot"></span>
+          <span>MLSS: OFF</span>
+        </button>
       </div>
     </div>
 
-    <div class="workspace-layout">
+    <!-- MLSS Section Chips (hidden, legacy) -->
+    <div id="mlssSectionSelector" style="display:none;"></div>
+
+    <!-- Section Tabs: MCQ first, then DSA, then SQL (always centered above the panels) -->
+    <div class="mlss-section-tabs" id="mlssSectionTabsInner" style="display: none; justify-content: center; margin-bottom: 24px;">
+      <button class="mlss-section-tab active" data-section="mcq" id="mlssTabMcq">
+        <i class="ti ti-math-function tab-icon"></i>
+        <span>MCQ / Math</span>
+      </button>
+      <button class="mlss-section-tab" data-section="dsa" id="mlssTabDsa">
+        <i class="ti ti-code tab-icon"></i>
+        <span>DSA</span>
+      </button>
+      <button class="mlss-section-tab" data-section="sql" id="mlssTabSql">
+        <i class="ti ti-database tab-icon"></i>
+        <span>SQL</span>
+      </button>
+    </div>
+
+    <div id="mlssChatPanel" style="max-width: 800px; margin: 0 auto 30px; width: 100%;">
+      <div class="mlss-chat-box">
+        <div class="mlss-chat-header">
+          <div class="amazon-dot"></div>
+          <div style="flex:1;">
+            <div class="chat-title">MLSS AI Copilot</div>
+            <div class="chat-subtitle">Ask anything, get precise answers</div>
+          </div>
+          <span class="mlss-section-label-pill" id="mlssSectionLabel">DSA</span>
+          <!-- LLM History Button -->
+          <div style="position:relative; margin-left: 8px;" id="llmHistoryWrapper">
+            <button id="llmHistoryBtn" title="Last 10 LLM calls" onclick="toggleLlmHistory()" style="background: rgba(99,102,241,0.12); border: 1px solid rgba(99,102,241,0.3); color: #a5b4fc; border-radius: 6px; padding: 5px 11px; font-size: 0.72rem; font-weight: 700; cursor: pointer; font-family: var(--font-sans); display: flex; align-items: center; gap: 6px; transition: all 0.18s; letter-spacing: 0.04em; white-space: nowrap;">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+              LLM LOG
+            </button>
+            <div id="llmHistoryDropdown" style="display:none; position:absolute; top: calc(100% + 8px); right: 0; width: 340px; background: var(--bg-2, #16172a); border: 1px solid rgba(99,102,241,0.25); border-radius: 12px; box-shadow: 0 20px 60px rgba(0,0,0,0.5); z-index: 9999; overflow: hidden;">
+              <div style="padding: 12px 16px; border-bottom: 1px solid rgba(99,102,241,0.15); display: flex; align-items: center; justify-content: space-between;">
+                <span style="font-size: 0.75rem; font-weight: 700; color: #a5b4fc; letter-spacing: 0.08em; text-transform: uppercase;">Last 10 LLM Calls</span>
+                <button onclick="refreshLlmHistory()" style="background: none; border: none; color: #a5b4fc; cursor: pointer; font-size: 0.72rem; font-weight: 600; font-family: var(--font-sans); padding: 2px 8px; border-radius: 4px; transition: background 0.15s;" onmouseover="this.style.background='rgba(99,102,241,0.2)'" onmouseout="this.style.background='none'">↻ Refresh</button>
+              </div>
+              <div id="llmHistoryList" style="max-height: 300px; overflow-y: auto; padding: 8px 0;">
+                <div style="padding: 20px 16px; text-align: center; color: var(--text-4, #555); font-size: 0.8rem;">Click Refresh to load history</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="mlss-messages" id="mlssChatMessages">
+          <!-- Welcome message injected by JS -->
+        </div>
+
+        <!-- Code Stub (shown for DSA inside the chat block) -->
+        <div id="mlssCodeStubWrapper" style="padding: 12px 16px; border-top: 0.5px solid var(--border); display: none; background: var(--bg-2);">
+          <div class="mlss-stub-header" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+            <span class="mlss-field-label" style="margin:0; font-size: 0.7rem; font-weight: 700; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.08em;">Half-Written Code</span>
+            <button class="mlss-stub-toggle" id="mlssStubToggle" style="background: none; border: 0.5px solid var(--border); color: var(--text-3); padding: 3px 10px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; cursor: pointer; font-family: var(--font-sans); transition: all 0.15s;">+ Add Code</button>
+          </div>
+          <div id="mlssCodeStubArea" style="display: none; background: var(--bg); border: 0.5px solid var(--border); border-radius: 8px; overflow: hidden;">
+            <div id="mlssCodeGutter" style="padding: 10px 8px; font-family: var(--font-mono); font-size: 0.85rem; line-height: 1.5; color: var(--text-4); text-align: right; user-select: none; border-right: 0.5px solid var(--border); background: var(--bg-2); min-width: 38px; box-sizing: border-box; overflow: hidden; align-self: stretch;">1</div>
+            <textarea id="mlssCodeStub" placeholder="Paste your partial code here..." style="flex: 1; min-height: 120px; font-family: var(--font-mono); font-size: 0.85rem; line-height: 1.5; background: transparent; border: none; color: var(--text-1); padding: 10px 12px; resize: vertical; outline: none; box-sizing: border-box; overflow-y: auto;"></textarea>
+          </div>
+        </div>
+
+        <!-- Chat Input Row -->
+        <div class="mlss-chat-input-row" style="display: flex; gap: 8px; padding: 12px; border-top: 0.5px solid var(--border); background: var(--bg-2); align-items: flex-end;">
+          <textarea id="mlssChatInput" placeholder="Paste your MCQ, DSA problem, SQL query, or ask anything..." rows="1" style="flex: 1; background: var(--bg); border: 0.5px solid var(--border); color: var(--text-1); border-radius: 6px; padding: 9px 13px; font-size: 0.855rem; font-family: var(--font-sans); outline: none; transition: border-color 0.15s; resize: none; max-height: 160px; box-sizing: border-box; line-height: 1.5;"></textarea>
+          <button id="mlssChatSendBtn" title="Send" style="background: var(--text-1); border: none; color: var(--bg); border-radius: 6px; width: 36px; height: 36px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: opacity 0.15s; flex-shrink: 0;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="workspace-layout" id="mainWorkspaceLayout">
       <!-- Left Pane: Inputs & Configurations -->
+
       <div class="workspace-left">
         <div class="input-card">
           <!-- Main Settings: Language & Model selection -->
@@ -625,7 +1220,7 @@
             </summary>
             <div style="padding: 16px; border-top: 1px solid var(--border); background: var(--card); display: flex; flex-direction: column; gap: 16px;">
               <div class="side-by-side-row" style="display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end;">
-                <div class="form-group" style="flex: 1; min-width: 140px; margin-bottom: 0;">
+                <div class="form-group hidden" style="flex: 1; min-width: 140px; margin-bottom: 0;">
                   <label for="environment">Environment Context</label>
                   <select id="environment" style="padding: 10px 12px; font-size: 0.9rem; width: 100%;">
                     <option value="leetcode" selected>LeetCode Style (Class/Function)</option>
@@ -686,13 +1281,18 @@
                     <option value="full" selected>The full completed file</option>
                   </select>
                 </div>
-                <textarea id="starterCode" placeholder="Paste starter code stub or function skeleton here if you only need to fill in the blank/missing part..." style="width: 100%; min-height: 120px; font-family: var(--font-mono); font-size: 0.9rem; line-height: 1.5; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); color: var(--text-1); padding: 10px 12px; resize: vertical; outline: none; transition: border-color 0.2s;"></textarea>
+                <div style="display: flex; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; position: relative;">
+                  <div id="starterCodeGutter" style="padding: 10px 8px; font-family: var(--font-mono); font-size: 0.9rem; line-height: 1.5; color: var(--text-4); text-align: right; user-select: none; border-right: 1px solid var(--border); background: rgba(0, 0, 0, 0.1); min-width: 35px; box-sizing: border-box; overflow: hidden; height: 120px;">
+                    1
+                  </div>
+                  <textarea id="starterCode" placeholder="Paste starter code stub or function skeleton here..." style="flex: 1; min-height: 120px; font-family: var(--font-mono); font-size: 0.9rem; line-height: 1.5; background: transparent; border: none; color: var(--text-1); padding: 10px 12px; resize: vertical; outline: none; margin: 0; box-sizing: border-box; overflow-y: auto; height: 120px;"></textarea>
+                </div>
               </div>
             </div>
           </details>
 
           <!-- Run test cases switch (Premium Switch Toggle) -->
-          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; padding: 14px 16px; background: rgba(255, 255, 255, 0.01); border: 1px solid var(--border); border-radius: var(--radius-lg);">
+          <div id="codeVerificationWrapper" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; padding: 14px 16px; background: rgba(255, 255, 255, 0.01); border: 1px solid var(--border); border-radius: var(--radius-lg);">
             <div style="display: flex; flex-direction: column; gap: 4px;">
               <span style="font-weight: 600; font-size: 0.9rem; color: var(--text-2); user-select: none;">Code Verification</span>
               <span style="font-size: 0.78rem; color: var(--text-3); user-select: none;">Run code test cases via Judge0 sandbox</span>
@@ -716,21 +1316,31 @@
       </div>
 
       <!-- Right Pane: AI Solutions & Explanations -->
-      <div class="workspace-right">
+      <div class="workspace-right" id="mainWorkspaceRight">
         <div class="loading-spinner" id="loading">
           <div class="spinner"></div>
-          <p>Generating optimal solution & verification tests...</p>
+          <p id="loadingMsg">Generating optimal solution &amp; verification tests...</p>
         </div>
 
+        <!-- Normal Results Panel (hidden when AMAZONML Mode is ON) -->
         <div class="results-container" id="results">
-          <div style="background: var(--card); border: 1px dashed var(--border); border-radius: 16px; padding: 60px 40px; text-align: center; color: var(--text-3); box-shadow: var(--shadow-sm); display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 480px; transition: all 0.3s ease;">
-            <div style="width: 80px; height: 80px; border-radius: 50%; background: var(--brand-light); display: flex; align-items: center; justify-content: center; margin-bottom: 24px; color: var(--brand); box-shadow: 0 8px 24px rgba(234, 118, 63, 0.15);">
-              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path>
-              </svg>
+          <div style="background: #09090b; border: 1px solid var(--border); border-radius: 12px; padding: 24px; min-height: 480px; font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-3); box-shadow: var(--shadow-sm); display: flex; flex-direction: column; gap: 12px; line-height: 1.6; text-align: left; box-sizing: border-box;">
+            <div style="display: flex; align-items: center; gap: 6px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); padding-bottom: 8px; margin-bottom: 12px; user-select: none;">
+              <span style="width: 10px; height: 10px; border-radius: 50%; background: #ef4444; display: inline-block;"></span>
+              <span style="width: 10px; height: 10px; border-radius: 50%; background: #fbbf24; display: inline-block;"></span>
+              <span style="width: 10px; height: 10px; border-radius: 50%; background: #22c55e; display: inline-block;"></span>
+              <span style="color: var(--text-4); font-size: 0.75rem; margin-left: 8px;">oa-copilot-terminal</span>
             </div>
-            <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--text-1); margin-bottom: 8px; font-family: var(--font-sans);">Awaiting Input</h3>
-            <p style="font-size: 0.95rem; font-weight: 500; color: var(--text-3); max-width: 320px; line-height: 1.5;">Configure options on the left, paste your problem statement, and click "Analyze & Solve".</p>
+            <div><span style="color: var(--brand);">$</span> grindos --status</div>
+            <div style="color: var(--text-2);">Awaiting problem input on the left pane...</div>
+            <div><span style="color: var(--brand);">$</span> cat instructions.txt</div>
+            <div style="color: var(--text-4); white-space: pre-line;">
+1. Paste the problem description or stuck code attempt.
+2. Provide any optional starter code or constraints.
+3. Click "Analyze &amp; Solve" (or press Cmd+Enter) to generate verification script.
+            </div>
+            <div><span style="color: var(--brand);">$</span> <span class="cursor-blink"></span></div>
+          </div>
         </div>
       </div>
     </div>
@@ -789,6 +1399,12 @@
         </svg>
       </span>
       <span>Resume</span>
+        </a>
+    <a href="daily-checkin.html" class="mobile-nav-item" id="mnav-checkin">
+      <span class="mobile-nav-icon">
+        <svg viewBox="0 0 24 24" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none" stroke="currentColor"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+      </span>
+      <span>Check In</span>
     </a>
   </nav>
 

@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="100%" height="100%">
+  <!-- Background -->
+  <rect width="800" height="500" fill="#FBF3EC" />
+  
+  <style>
+    .font { font-family: monospace; font-weight: 300; font-size: 14px; fill: #1A1A1A; }
+    .label { font-family: monospace; font-weight: 300; font-size: 12px; fill: #E8593C; }
+    .box { fill: none; stroke: #1A1A1A; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; }
+    .box-accent { fill: #E8593C; stroke: #E8593C; stroke-width: 1; }
+    .accent-text { fill: #FBF3EC; font-weight: bold; }
+    .arrow { fill: none; stroke: #1A1A1A; stroke-width: 1; stroke-dasharray: 4 4; }
+  </style>
+
+  <!-- Title/Header -->
+  <text x="100" y="80" class="label" style="font-size:16px;">The Unbreakable LLM Cascade</text>
+  <path class="arrow" style="stroke-dasharray: none;" d="M 100 90 L 320 90" />
+
+  <!-- Node 1: FastAPI Core -->
+  <path class="box" d="M 100 220 Q 102 218 120 221 L 200 219 Q 203 220 202 240 L 199 260 Q 198 263 180 262 L 102 261 Q 98 260 100 240 Z" />
+  <text x="115" y="245" class="font">FastAPI Router</text>
+
+  <!-- Arrow to Gemini -->
+  <path class="arrow" d="M 210 240 Q 250 235 280 240" />
+  <polygon points="280,240 275,237 275,243" fill="#1A1A1A" />
+  <text x="230" y="235" class="label">try</text>
+
+  <!-- Node 2: Gemini -->
+  <path class="box-accent" d="M 290 220 Q 292 218 310 221 L 390 219 Q 393 220 392 240 L 389 260 Q 388 263 370 262 L 292 261 Q 288 260 290 240 Z" />
+  <text x="315" y="245" class="font accent-text">Gemini 2.5</text>
+
+  <!-- Arrow to Groq -->
+  <path class="arrow" d="M 400 240 Q 440 235 470 240" />
+  <polygon points="470,240 465,237 465,243" fill="#1A1A1A" />
+  <text x="410" y="235" class="label">fallback</text>
+
+  <!-- Node 3: Groq -->
+  <path class="box" d="M 480 220 Q 482 218 500 221 L 580 219 Q 583 220 582 240 L 579 260 Q 578 263 560 262 L 482 261 Q 478 260 480 240 Z" />
+  <text x="505" y="245" class="font">Groq Llama</text>
+
+  <!-- Arrow to OpenRouter -->
+  <path class="arrow" d="M 590 240 Q 630 235 660 240" />
+  <polygon points="660,240 655,237 655,243" fill="#1A1A1A" />
+  <text x="600" y="235" class="label">fallback</text>
+
+  <!-- Node 4: OpenRouter -->
+  <path class="box" d="M 670 220 Q 672 218 690 221 L 770 219 Q 773 220 772 240 L 769 260 Q 768 263 750 262 L 672 261 Q 668 260 670 240 Z" />
+  <text x="685" y="245" class="font">OpenRouter</text>
+
+  <!-- Context Profile Injection -->
+  <path class="box" d="M 290 100 Q 292 98 310 101 L 390 99 Q 393 100 392 120 L 389 140 Q 388 143 370 142 L 292 141 Q 288 140 290 120 Z" />
+  <text x="300" y="125" class="font">pranav_profile</text>
+  
+  <path class="arrow" style="stroke-dasharray: none;" d="M 340 150 Q 345 180 340 210" />
+  <polygon points="340,210 337,205 343,205" fill="#1A1A1A" />
+  <text x="350" y="180" class="label">inject</text>
+
+</svg>

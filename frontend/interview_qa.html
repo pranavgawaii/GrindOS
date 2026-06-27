@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <script>
+    (function () {
+      const saved = localStorage.getItem('GrindOS-theme');
+      if (saved) document.documentElement.classList.add(saved);
+      else if (window.matchMedia('(prefers-color-scheme: dark)').matches) document.documentElement.classList.add('dark');
+    })();
+  </script>
+  <title>Interview Q&A Bank · GrindOS</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  <link rel="stylesheet" href="assets/style.css?v=21">
+  <link rel="icon" type="image/png" href="/logo.png">
+  <script src="auth/clerk.js"></script>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{padding-bottom:80px}
+
+    /* ── Page wrapper ── */
+    .qa-page{max-width:880px;margin:0 auto;padding:120px 24px 60px}
+
+    /* ── Hero bar ── */
+    .qa-hero{display:flex;align-items:center;gap:14px;margin-bottom:28px;padding:14px 20px;background:var(--surface-1);border:1px solid var(--border);border-radius:14px}
+    .qa-hero-icon{width:40px;height:40px;border-radius:10px;background:var(--surface-2);border:1px solid var(--border-strong);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .qa-hero-icon i{font-size:20px;color:var(--brand)}
+    .qa-hero-title{font-size:1.1rem;font-weight:700;color:var(--text-primary);line-height:1.2}
+    .qa-hero-sub{font-size:0.8rem;color:var(--text-muted);margin-top:3px}
+
+    /* ── Search ── */
+    .qa-search-wrap{position:relative;margin-bottom:20px}
+    .qa-search-wrap i{position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:18px;color:var(--text-muted);pointer-events:none}
+    .qa-search{width:100%;padding:12px 14px 12px 42px;border-radius:10px;border:1px solid var(--border);background:var(--surface-1);color:var(--text-primary);font-size:14px;outline:none;transition:border-color .2s}
+    .qa-search:focus{border-color:var(--brand)}
+
+    /* ── Role Tabs ── */
+    .qa-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:24px}
+    .qa-tab{padding:6px 16px;border-radius:20px;font-size:13px;cursor:pointer;border:0.5px solid var(--border);color:var(--text-secondary);background:var(--surface-1);transition:all .15s;white-space:nowrap;font-weight:500}
+    .qa-tab.on{background:var(--text-primary);color:var(--surface-2);border-color:var(--text-primary)}
+    .qa-tab:hover:not(.on){border-color:var(--text-muted)}
+
+    /* ── Accordion ── */
+    .acc-block{margin-bottom:8px;border:0.5px solid var(--border);border-radius:12px;overflow:hidden;background:var(--surface-1)}
+    .acc-header{padding:14px 18px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none;background:var(--surface-2);gap:12px}
+    .acc-header:hover{background:var(--surface-1)}
+    .acc-title{font-size:13.5px;font-weight:600;color:var(--text-primary)}
+    .acc-count{font-size:11px;color:var(--text-muted);font-weight:500;background:var(--surface-0);padding:2px 8px;border-radius:20px;border:1px solid var(--border);white-space:nowrap}
+    .acc-icon{font-size:16px;color:var(--text-muted);transition:transform .2s;flex-shrink:0}
+    .acc-block.open .acc-icon{transform:rotate(180deg)}
+    .acc-content{display:none;border-top:0.5px solid var(--border)}
+    .acc-block.open .acc-content{display:block}
+
+    /* ── Q Row ── */
+    .q-row{border-bottom:0.5px solid var(--border);cursor:pointer;transition:background .1s}
+    .q-row:last-child{border-bottom:none}
+    .q-row:hover .q-head{background:var(--surface-2)}
+    .q-head{display:flex;align-items:center;gap:10px;padding:12px 18px}
+    .q-num{font-size:11px;color:var(--text-muted);min-width:20px;font-weight:600;flex-shrink:0}
+    .q-title{font-size:13px;color:var(--text-primary);flex:1;line-height:1.4}
+    .q-chevron{font-size:14px;color:var(--text-muted);transition:transform .2s;flex-shrink:0}
+    .q-row.open .q-chevron{transform:rotate(180deg)}
+    .q-row.open .q-title{color:var(--brand)}
+
+    /* ── Answer panel ── */
+    .q-details{display:none;padding:4px 18px 18px 48px}
+    .q-row.open .q-details{display:block}
+    .q-ans-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted);margin-bottom:6px}
+    .q-ans{font-size:13.5px;color:var(--text-secondary);line-height:1.7;margin-bottom:14px}
+    .q-tip{background:rgba(255,94,0,0.05);border:1px solid rgba(255,94,0,0.18);border-radius:8px;padding:12px 16px;display:flex;gap:12px;align-items:flex-start}
+    .q-tip-icon{font-size:18px;flex-shrink:0;margin-top:1px}
+    .q-tip-body{font-size:13px;color:var(--text-primary);line-height:1.55}
+    .q-tip-body b{color:var(--brand);font-weight:700;text-transform:uppercase;font-size:10.5px;letter-spacing:.05em;display:block;margin-bottom:3px}
+
+    /* ── No results ── */
+    .no-results{text-align:center;color:var(--text-muted);padding:48px 0;font-size:14px}
+  </style>
+</head>
+<body>
+
+  <header class="topbar">
+    <a href="dashboard.html" class="topbar-brand">
+      <img src="/logo.png" alt="GrindOS Logo" class="brand-logo" style="width:34px;height:34px;object-fit:contain;border-radius:4px;flex-shrink:0;display:inline-block;vertical-align:middle;margin-right:4px;">
+      <span class="brand-wordmark">GrindOS</span>
+    </a>
+    <nav class="topbar-nav">
+      <a href="dashboard.html" class="learn-nav">Learn</a>
+      <a href="notes.html" class="notes-nav">Notes</a>
+      <a href="tracker.html" class="tracker-nav active">Tracker</a>
+      <a href="practice.html" class="practice-nav">Practice</a>
+      <a href="resume-builder.html" class="resume-nav">Resume</a>
+    </nav>
+    <div class="topbar-right">
+      <button class="icon-btn" id="theme-toggle" aria-label="Toggle theme"><span class="theme-icon">☾</span></button>
+      <div id="clerk-user-widget"></div>
+    </div>
+  </header>
+
+  <div class="qa-page">
+
+    <!-- Hero -->
+    <div class="qa-hero">
+      <div class="qa-hero-icon"><i class="ti ti-brain"></i></div>
+      <div>
+        <div class="qa-hero-title">Interview Q&amp;A Bank</div>
+        <div class="qa-hero-sub">Role-wise fresher questions · Humanised answers · Premium strategies</div>
+      </div>
+    </div>
+
+    <!-- Search -->
+    <div class="qa-search-wrap">
+      <i class="ti ti-search"></i>
+      <input class="qa-search" id="qaSearch" type="text" placeholder="Search any question, topic or role…" oninput="filterQA()">
+    </div>
+
+    <!-- Role Tabs -->
+    <div class="qa-tabs">
+      <div class="qa-tab on" onclick="switchTab('common')">Common</div>
+      <div class="qa-tab" onclick="switchTab('behavioural')">Behavioural</div>
+      <div class="qa-tab" onclick="switchTab('python')">Python / AI Dev</div>
+      <div class="qa-tab" onclick="switchTab('fullstack')">Full Stack</div>
+      <div class="qa-tab" onclick="switchTab('data')">Data Engineering</div>
+      <div class="qa-tab" onclick="switchTab('system')">System Design</div>
+    </div>
+
+    <div id="qaContent"></div>
+
+  </div>
+
+  <script>
+  /* ══════════════════════════════════════════════
+     DATA  —  format: { tab, section, q, a, tip }
+  ══════════════════════════════════════════════ */
+  const ALL = [
+
+    /* ─── COMMON ─────────────────────────────── */
+    { tab:'common', sec:'About You', q:'Tell me about yourself.',
+      a:`I'm Pranav, a final-year engineering student who's been heads-down building real products for the past year and a half. I built Mnemo — an AI flashcard app using spaced-repetition — and CraftaStudio, an agency platform that handles client projects end-to-end. Most of my work lives in Python and FastAPI on the backend, React on the front, and I've been getting deep into AI pipelines lately. I'm not just learning to get a job — I'm building things I'd actually use.`,
+      tip:`Never open with your college or your marks. Open with what you built. Interviewers check out when you say "I'm from X college." They stay in when you say "I built a product."` },
+
+    { tab:'common', sec:'About You', q:'Why should we hire you?',
+      a:`Because I don't just know the theory — I've shipped things. Every concept I've learned, I've applied in a real project. I understand how to debug production bugs, how to design APIs that don't break, and how to take a vague requirement and turn it into something that works. And I'm still learning fast.`,
+      tip:`This isn't the time to be humble. Be specific. Say "I built X using Y and it did Z." Never say generic things like "I'm hardworking and passionate."` },
+
+    { tab:'common', sec:'About You', q:'What are your strengths?',
+      a:`My strongest strength is that I ship fast without cutting corners on quality. I'm good at breaking a complex feature into small deliverable chunks. I've done it across multiple projects — I go from "I have an idea" to "it's working and deployed" relatively quickly. Second, I'm genuinely curious — I don't stop at getting something to work. I want to know why it works.`,
+      tip:`Give two strengths max. One technical, one process/mindset. And always back each with evidence from your actual work.` },
+
+    { tab:'common', sec:'About You', q:'What are your weaknesses?',
+      a:`I sometimes go too deep into a problem when I should ask for help earlier. I'd spend two hours on a bug before reaching out. I've been actively working on this — now I give myself a 30-minute hard limit before I ping someone or check the docs more systematically.`,
+      tip:`Pick a real weakness. Then show that you're actively fixing it. Interviewers see through fake weaknesses like "I work too hard."` },
+
+    { tab:'common', sec:'About You', q:'Where do you see yourself in 5 years?',
+      a:`Honestly — I want to be the person on a team who owns a critical system end-to-end. Not just writing code but understanding the full product, the scaling decisions, the trade-offs. I want to go from someone who builds features to someone who shapes how a product is architected. This role is a step in that direction.`,
+      tip:`Don't say "senior developer" robotically. Talk about ownership and impact. Companies want people who grow, not just people who climb titles.` },
+
+    { tab:'common', sec:'About You', q:'Why do you want this role / company?',
+      a:`I looked at what your team is building and it directly overlaps with the problems I've been working on — [mention actual product]. I'm not applying because I need a job. I'm applying because this is the kind of environment where I'd actually level up fast, and where my current skills are immediately useful.`,
+      tip:`Do 10 minutes of actual research before every interview. One specific thing about the company. One specific product decision they made. Say it.` },
+
+    { tab:'common', sec:'Fresher Common', q:'What projects have you worked on?',
+      a:`My main project is CraftaStudio — a full-stack agency platform. Users can submit project briefs, I match them with our team, and everything from proposals to invoicing happens on the platform. On the backend it's FastAPI and PostgreSQL, React on the front. I also built Mnemo, an AI-powered flashcard app with spaced repetition — it uses a modified SM-2 algorithm to calculate review intervals.`,
+      tip:`Always describe your project in 3 sentences: What it does. What tech you used. What was the hardest problem you solved in it.` },
+
+    { tab:'common', sec:'Fresher Common', q:'What is the difference between OOP and procedural programming?',
+      a:`Procedural code is just a series of instructions that run top to bottom. OOP wraps data and the functions that act on that data into objects. The big win is that objects model real-world things — so your code is easier to reason about, reuse, and extend. Python supports both, but OOP shines when you have complex interacting entities.`,
+      tip:`Follow up by saying: "In Python, everything is actually an object — even functions and integers." That instantly signals deeper knowledge.` },
+
+    { tab:'common', sec:'Fresher Common', q:'Explain the SDLC.',
+      a:`Software Development Life Cycle is the process a team follows to go from idea to shipped product. It's: Requirements → Design → Implementation → Testing → Deployment → Maintenance. Agile compresses this into short sprints so you're always delivering and getting feedback rather than building for months and discovering you built the wrong thing.`,
+      tip:`Mention Agile vs Waterfall. Agile = iterative. Waterfall = all-at-once. Most modern companies use Agile. Saying you know the difference matters.` },
+
+    { tab:'common', sec:'Fresher Common', q:'What is version control and why does Git matter?',
+      a:`Version control tracks every change to your code over time so you can undo mistakes, see who changed what, and collaborate without overwriting each other. Git is the industry standard. The key concepts are commits, branches, merges, and rebases. I use it daily — every project I work on has a Git history from day one.`,
+      tip:`If you've used GitHub, say so. Mention that you've done pull requests or code reviews — even on your own projects. It signals professional habits.` },
+
+
+    /* ─── BEHAVIOURAL ─────────────────────────── */
+    { tab:'behavioural', sec:'Conflict & Teamwork', q:'Tell me about a time you disagreed with a teammate.',
+      a:`On one of my projects, a teammate wanted to use a NoSQL database for everything to "keep it simple." I disagreed — some parts of our data were clearly relational and NoSQL would make querying painful later. Instead of arguing, I wrote a quick side-by-side comparison and showed him specific queries that would be ugly in Mongo but clean in SQL. He came around. We ended up using Postgres for the core and Redis for caching.`,
+      tip:`STAR format: Situation → Task → Action → Result. Always end with what happened. Interviewers want to see that disagreements get resolved, not just expressed.` },
+
+    { tab:'behavioural', sec:'Conflict & Teamwork', q:'Give an example of working under pressure.',
+      a:`During a freelance project, the client needed a feature in 24 hours that I'd estimated would take three days. Instead of panicking, I stripped it to the MVP — the absolute minimum that would satisfy their requirement. Built that in 18 hours, shipped it, then added the polish over the next two days. They were happy with the early version and trusted me more because of it.`,
+      tip:`Show that pressure made you smarter, not just faster. Talk about prioritisation, not just working more hours.` },
+
+    { tab:'behavioural', sec:'Conflict & Teamwork', q:'Describe a time you failed at something.',
+      a:`I once shipped a feature without proper testing because I was rushing to meet a deadline. It broke an existing flow and I had to rollback and fix it the next day — costing about 6 hours of extra work. I now always write at least one integration test before marking anything as done, no matter how simple it seems.`,
+      tip:`The failure doesn't matter as much as what you learned. Interviewers will disqualify you if you say "I can't think of a failure." That's a red flag.` },
+
+    { tab:'behavioural', sec:'Conflict & Teamwork', q:'How do you handle feedback?',
+      a:`I actually like specific feedback because vague feedback is useless. When I get a code review that says "this is messy," I ask for a specific example. Then I fix it and ask them to check again. I don't take it personally — code review is about the code, not me.`,
+      tip:`Say that you distinguish between feedback on your work and feedback on you. Then give an example of feedback that changed how you code.` },
+
+    { tab:'behavioural', sec:'Self Management', q:'How do you prioritise tasks when everything is urgent?',
+      a:`I use a simple matrix — impact vs effort. High impact, low effort tasks go first. I also ask: what breaks if I don't do this today? That filters out a lot of fake urgency. If two things genuinely compete, I tell my manager and ask for a call to align.`,
+      tip:`Never say "I just do what's assigned." Show that you think, not just execute.` },
+
+    { tab:'behavioural', sec:'Self Management', q:'What motivates you?',
+      a:`Building things that actually work. There's a specific feeling when something I made solves a real problem for someone — it doesn't matter how small the project is. I also genuinely enjoy the debugging process — finding out why something broke and fixing it cleanly is satisfying in a weird way.`,
+      tip:`Don't say "money" even if that's true. Say something honest and product-oriented. Interviewers want to hire people who care about the craft.` },
+
+
+    /* ─── PYTHON / AI DEV ─────────────────────── */
+    { tab:'python', sec:'Python Core', q:'What is the GIL and does it affect your code?',
+      a:`The GIL — Global Interpreter Lock — means only one thread runs Python bytecode at a time, even on multi-core machines. It mostly affects CPU-bound multithreading. For IO-bound tasks like API calls or file reads, threads still help because the GIL is released during IO. For true CPU parallelism in Python, you use multiprocessing, not threading.`,
+      tip:`Saying "GIL is a lock that prevents parallelism" is basic. Add: "It's why data scientists use multiprocessing pools and why FastAPI uses async IO instead of threads for concurrency." That's senior-level awareness.` },
+
+    { tab:'python', sec:'Python Core', q:'Explain list vs tuple vs set vs dict — when do you use each?',
+      a:`List: ordered, mutable, allows duplicates — use for sequences you'll modify. Tuple: ordered, immutable, faster — use for fixed data or function return values. Set: unordered, no duplicates, O(1) lookup — use when you need membership testing. Dict: key-value, O(1) average access — use for mapping and lookups. In Python 3.7+ dicts preserve insertion order too.`,
+      tip:`Add the time complexities: list lookup is O(n), set/dict lookup is O(1) average. That's the single most useful thing to know about choosing between them.` },
+
+    { tab:'python', sec:'Python Core', q:'What is a generator and when should you use one?',
+      a:`A generator is a function that yields values one at a time instead of returning a full list. It's lazy — it only computes the next value when asked. You use it when you're working with large datasets you don't want in memory all at once. Think: processing a 10 million row CSV line by line without loading all of it into RAM.`,
+      tip:`Show that you know the syntax: using yield instead of return. Then say: "I use generators in my data pipelines to avoid memory spikes when processing large files."` },
+
+    { tab:'python', sec:'Python Core', q:'What are decorators and how do you write one?',
+      a:`A decorator is a function that wraps another function to modify or extend it without changing its code. Under the hood, @my_decorator on a function is exactly the same as writing func = my_decorator(func). I've used them for logging, timing, and auth checks — instead of copy-pasting the same try/except block into every route, I wrap routes in a decorator.`,
+      tip:`If they ask you to write one live: define outer(func), then define inner(*args, **kwargs), call func inside, return inner. Don't forget functools.wraps to preserve the original function's name.` },
+
+    { tab:'python', sec:'Python Core', q:'Explain *args and **kwargs.',
+      a:`*args lets a function accept any number of positional arguments as a tuple. **kwargs accepts any number of keyword arguments as a dict. You use them when you don't know in advance how many arguments a function will receive — like when you're writing a wrapper or a utility function that needs to pass arguments through.`,
+      tip:`Give a real use case: "I used **kwargs in a base API handler class so subclasses could pass custom parameters without me having to update the base class signature every time."` },
+
+    { tab:'python', sec:'OOP', q:'What are dunder/magic methods? Give examples.',
+      a:`Dunder methods — double underscore — are special methods that Python calls automatically in certain situations. __init__ runs when you create an object. __str__ defines what print(obj) shows. __len__ lets you call len(obj). __eq__ defines == behavior. You can make custom objects behave like built-in types by implementing these.`,
+      tip:`Mention __enter__ and __exit__ for context managers. "I used these to build a database connection manager that auto-closes connections even if an exception occurs."` },
+
+    { tab:'python', sec:'OOP', q:'Explain inheritance vs composition.',
+      a:`Inheritance is "is-a" — a Dog is an Animal, so it inherits Animal's methods. Composition is "has-a" — a Car has an Engine. Composition is generally preferred because inheritance creates tight coupling. If you change the parent class, every child breaks. With composition, you swap out components independently. I follow the principle: "Favour composition over inheritance."`,
+      tip:`Say: "In my projects I use inheritance for shared interface contracts and composition for behaviour injection." That shows you apply it, not just know the definition.` },
+
+    { tab:'python', sec:'FastAPI & APIs', q:'How does FastAPI handle async requests?',
+      a:`FastAPI uses Python's asyncio event loop. When you define a route with async def, FastAPI runs it in the event loop, freeing the thread to handle other requests while waiting for IO — like a database query or an external API call. For CPU-heavy operations, you still want to offload to a thread pool using run_in_executor, otherwise you'll block the event loop.`,
+      tip:`Add: "I've built async FastAPI services where the entire chain — from route to DB query — is async using asyncpg or SQLAlchemy async. The throughput improvement over sync Flask was significant."` },
+
+    { tab:'python', sec:'FastAPI & APIs', q:'What is Pydantic and why does FastAPI use it?',
+      a:`Pydantic is a data validation library. You define a schema as a Python class, and Pydantic automatically validates incoming data, raises errors if something is wrong, and converts types. FastAPI uses it for request body validation — you define a model, FastAPI parses the request JSON into it, and if anything doesn't match, it returns a 422 with a detailed error before your code even runs.`,
+      tip:`Mention: "Pydantic v2 uses Rust under the hood for parsing, making it extremely fast." That's a detail that shows you follow the ecosystem.` },
+
+    { tab:'python', sec:'AI / ML', q:'How does your AI flashcard app (Mnemo) use spaced repetition?',
+      a:`Mnemo uses a modified SM-2 algorithm. Every card has an ease factor and an interval. When you review a card, you rate how well you remembered it. Based on that rating, the algorithm calculates the next review date — easy cards get pushed further out, hard cards come back sooner. The goal is to show you a card at the exact moment you're about to forget it — maximising retention with minimum reviews.`,
+      tip:`Always connect your project to the technical question. This answer signals that you implemented a real algorithm, not just plugged in a library. That's a big differentiator in interviews.` },
+
+    { tab:'python', sec:'AI / ML', q:'What is RAG and when would you use it over fine-tuning?',
+      a:`RAG — Retrieval-Augmented Generation — injects relevant documents into the LLM's prompt at inference time. Fine-tuning updates the model's weights. You use RAG when your knowledge changes frequently — like product docs or internal data. Fine-tuning makes sense when you want the model to learn a specific output format or tone that doesn't change. RAG is also cheaper and faster to update.`,
+      tip:`Compare them to studying: RAG is an open-book exam — you look it up as you go. Fine-tuning is memorising before the exam. Use this analogy in the interview.` },
+
+    { tab:'python', sec:'AI / ML', q:'How do you evaluate an AI model you\'ve built?',
+      a:`It depends on the task. For classification I look at precision, recall, and F1 — accuracy alone is misleading on imbalanced datasets. For generation I'd use BLEU or ROUGE for text similarity, plus human evaluation for quality. For my recommendation or retrieval systems I look at hit rate and NDCG. And always: I test on data the model has never seen.`,
+      tip:`Mention at least one metric your project uses. "For Mnemo, I track how often users actually remember a card on the second review — that's my real-world recall metric, more meaningful than accuracy."` },
+
+
+    /* ─── FULL STACK ──────────────────────────── */
+    { tab:'fullstack', sec:'JavaScript & React', q:'What is the event loop in JavaScript?',
+      a:`JavaScript is single-threaded, meaning it can only do one thing at a time. The event loop is the mechanism that handles async operations. When you call setTimeout or fetch, that gets handed to the browser's Web APIs. Once it's done, the callback gets pushed to the task queue. The event loop continuously checks if the call stack is empty — if it is, it picks the next callback from the queue and runs it.`,
+      tip:`Add: "Microtasks like Promise callbacks go into the microtask queue, which is always drained before the macrotask queue — that's why .then() callbacks always run before setTimeout callbacks."` },
+
+    { tab:'fullstack', sec:'JavaScript & React', q:'What is the difference between useEffect and useLayoutEffect?',
+      a:`Both run after a render, but at different times. useEffect runs asynchronously after the browser has painted — so the user sees the update first, then your effect runs. useLayoutEffect runs synchronously before the browser paints — useful when your effect modifies the DOM and you don't want the user to see a flash. In 99% of cases, useEffect is what you want.`,
+      tip:`"I use useLayoutEffect only when measuring DOM elements before they appear on screen — like positioning a tooltip relative to its target."` },
+
+    { tab:'fullstack', sec:'JavaScript & React', q:'Explain React reconciliation and the Virtual DOM.',
+      a:`When state changes, React creates a new virtual DOM — a lightweight in-memory representation of the UI. It then diffs the new virtual DOM against the previous one. Only the actual DOM nodes that changed get updated. This is far more efficient than re-rendering the whole page. The diffing algorithm is O(n) because React makes smart assumptions — like same-type nodes at the same position are the same component.`,
+      tip:`Mention keys: "That's why React needs stable keys in lists — to correctly identify which items changed, added, or removed during reconciliation."` },
+
+    { tab:'fullstack', sec:'JavaScript & React', q:'What is useMemo and useCallback, and when do you actually need them?',
+      a:`useMemo caches the result of a computation. useCallback caches a function reference. You need them when you're passing values or functions to a child component wrapped in React.memo — without them, a new reference is created on every render, causing unnecessary re-renders of the child. The mistake most beginners make is using them everywhere, which actually makes things slower. Only optimise when you can measure a problem.`,
+      tip:`"Profile first, optimise second" is the rule. Say it in the interview. It shows maturity.` },
+
+    { tab:'fullstack', sec:'Backend & APIs', q:'What is the difference between REST and GraphQL?',
+      a:`REST gives you fixed endpoints — each endpoint returns a specific shape of data. GraphQL lets the client specify exactly what fields it needs in a single request. REST is simpler and more cacheable. GraphQL solves over-fetching and under-fetching — you don't get data you didn't ask for, and you don't need to make three requests to assemble one view. I'd use REST for simple CRUD APIs and GraphQL when the frontend has highly variable data requirements.`,
+      tip:`Mention: "REST has better HTTP caching support. GraphQL responses are typically POST requests, which don't cache by default — you need to add a caching layer like Apollo Client."` },
+
+    { tab:'fullstack', sec:'Backend & APIs', q:'PUT vs PATCH — what\'s the actual difference?',
+      a:`PUT replaces the entire resource. If you PUT a user object and forget to include their email, the email is gone. PATCH only updates the fields you send — everything else stays. In practice, most "REST" APIs incorrectly use PUT for partial updates. The correct semantic is: PUT for full replacement, PATCH for partial updates.`,
+      tip:`Add: "PUT is idempotent — send the same request 100 times, you get the same result. PATCH can be but isn't always idempotent. Interviewers love when you say 'idempotent.'"` },
+
+    { tab:'fullstack', sec:'CSS & Performance', q:'What is the CSS box model?',
+      a:`Every HTML element is a box. From inside out: content, padding, border, margin. By default, width only applies to the content area — add padding and border and the box gets bigger. That's why I always set box-sizing: border-box globally — it makes width include padding and border, which is how everyone intuitively thinks about sizing.`,
+      tip:`"box-sizing: border-box is the first line in every CSS reset I write. It removes one of the most common sources of layout bugs."` },
+
+    { tab:'fullstack', sec:'CSS & Performance', q:'How do you optimise a slow frontend?',
+      a:`First, profile it — don't guess. Chrome DevTools Performance tab shows where the time goes. Common fixes: lazy load images and routes, code-split large bundles, reduce re-renders with React.memo or useMemo, move heavy computations off the main thread with Web Workers, and use a CDN for static assets. I also audit bundle size with tools like webpack-bundle-analyzer.`,
+      tip:`"Measure first, optimise second" applies here too. Saying this saves you from sounding like someone who adds useMemo everywhere without knowing why.` },
+
+
+    /* ─── DATA ENGINEERING ────────────────────── */
+    { tab:'data', sec:'SQL & Databases', q:'Explain ACID properties.',
+      a:`ACID stands for Atomicity — a transaction either fully completes or fully fails, no partial writes. Consistency — the database goes from one valid state to another, all constraints hold. Isolation — concurrent transactions don't interfere with each other. Durability — once a transaction commits, it survives crashes. These properties are what make relational databases trustworthy for financial or critical data.`,
+      tip:`Pair it with: "NoSQL databases often relax some of these — especially Consistency and Isolation — in exchange for higher availability and horizontal scalability. That's the CAP theorem trade-off."` },
+
+    { tab:'data', sec:'SQL & Databases', q:'What is the difference between WHERE and HAVING?',
+      a:`WHERE filters rows before grouping happens. HAVING filters the grouped results. You cannot use aggregate functions like COUNT or SUM in WHERE — that's why HAVING exists. SQL execution order: FROM → WHERE → GROUP BY → HAVING → SELECT → ORDER BY.`,
+      tip:`Memorise the SQL execution order. It comes up constantly. It also explains why you can't use a SELECT alias in a WHERE clause — WHERE runs before SELECT.` },
+
+    { tab:'data', sec:'SQL & Databases', q:'What is a database index and when should you add one?',
+      a:`An index is a data structure — usually a B-tree — that the database maintains alongside your table to speed up queries on specific columns. Without an index, a query scans every row — O(n). With an index on the right column, it's O(log n). The trade-off: indexes slow down inserts and updates because the index must also be updated. Add indexes on columns you frequently filter, join, or sort by. Don't add them everywhere.`,
+      tip:`"I added an index on user_id in a messages table and a query that was taking 4 seconds dropped to 40ms." A concrete number from experience is worth more than any definition.` },
+
+    { tab:'data', sec:'SQL & Databases', q:'What are SQL joins — explain all four.',
+      a:`INNER JOIN: only rows that have a match in both tables. LEFT JOIN: all rows from left table, matching rows from right — nulls where no match. RIGHT JOIN: opposite of LEFT. FULL OUTER JOIN: all rows from both tables — nulls where no match on either side. I use LEFT JOIN most frequently — when I want all records from the main table regardless of whether a related record exists.`,
+      tip:`Draw it out if it's a whiteboard round. Venn diagrams stick in the interviewer's memory. Also mention: "Self join is when you join a table with itself — useful for hierarchical data like employee-manager relationships."` },
+
+    { tab:'data', sec:'Python for Data', q:'What is the difference between Pandas apply and vectorised operations?',
+      a:`Pandas apply runs a Python function row by row — it's basically a Python for-loop under the hood, which is slow. Vectorised operations like df['col'] * 2 use NumPy under the hood and operate on the entire column at once in optimised C code. Vectorised can be 10-100x faster. Rule: avoid apply whenever a vectorised equivalent exists.`,
+      tip:`"I refactored a data cleaning step that used apply into a vectorised operation and reduced processing time from 8 minutes to 40 seconds on a 2 million row dataset."` },
+
+    { tab:'data', sec:'Python for Data', q:'Explain the difference between ETL and ELT.',
+      a:`ETL: Extract → Transform → Load. You transform data before loading it into the data warehouse. Classic approach when compute was expensive in the warehouse. ELT: Extract → Load → Transform. Load raw data first, then transform inside the warehouse using its compute power. Modern cloud warehouses like BigQuery and Snowflake make ELT practical because compute is cheap and scalable.`,
+      tip:`"With ELT you keep raw data, which means you can re-transform it later if your business rules change. ETL loses the original data. That's why ELT is preferred in most modern data stacks."` },
+
+    { tab:'data', sec:'Python for Data', q:'What is a data pipeline and how have you built one?',
+      a:`A data pipeline is a series of steps that move data from a source to a destination, transforming it along the way. I've built simple pipelines using Python scripts that pull from an API, clean the data with Pandas, and load it into Postgres. For scheduling I've used cron jobs. The key things I pay attention to: idempotency — running it twice shouldn't break anything — and error handling — failed steps should retry and alert, not silently drop data.`,
+      tip:`Mention the word "idempotency." It's the single most impressive word you can use in a data engineering conversation as a fresher.` },
+
+
+    /* ─── SYSTEM DESIGN (FRESHER LEVEL) ──────── */
+    { tab:'system', sec:'Fundamentals', q:'What is horizontal vs vertical scaling?',
+      a:`Vertical scaling means adding more power to the same machine — more CPU, more RAM. Simple, but there's a hardware ceiling and it's a single point of failure. Horizontal scaling means adding more machines and distributing the load. It's more complex — you need load balancers and you have to handle state carefully — but it's how every large system scales. Cloud systems are designed for horizontal scaling.`,
+      tip:`"Vertical scaling is like buying a bigger truck. Horizontal scaling is like buying more trucks." Simple analogies win in system design rounds.` },
+
+    { tab:'system', sec:'Fundamentals', q:'What is a load balancer and how does it work?',
+      a:`A load balancer sits in front of your servers and distributes incoming requests across them. This prevents any single server from being overwhelmed. Round-robin is the simplest strategy — each server gets a request in turn. More advanced strategies route based on server health, response time, or session affinity. Load balancers also handle health checks — if a server goes down, traffic is rerouted automatically.`,
+      tip:`Add: "Load balancers also enable zero-downtime deployments — you take servers out of rotation one at a time, update them, then bring them back."` },
+
+    { tab:'system', sec:'Fundamentals', q:'What is caching and when should you use it?',
+      a:`Caching stores frequently accessed data in fast memory — like Redis or Memcached — so you don't hit the database on every request. Use it when you have data that's expensive to compute and doesn't change often. The trade-off is cache invalidation — when the underlying data changes, you need to update or expire the cache. Stale data is worse than slow data in some systems.`,
+      tip:`"There are only two hard problems in computer science: cache invalidation and naming things." Drop this quote casually. It's a well-known joke that signals you understand the actual complexity.` },
+
+    { tab:'system', sec:'Fundamentals', q:'What is a message queue and why would you use one?',
+      a:`A message queue decouples producers — who generate tasks — from consumers — who process them. Instead of Service A calling Service B directly, A drops a message in the queue and B picks it up when it's ready. Benefits: B can process at its own pace, failures are retried, and you can add more consumers to scale. I've used this pattern to handle email notifications — the web server queues the email, a background worker sends it, so the user gets an instant response without waiting for the email to send.`,
+      tip:`Name-drop: RabbitMQ, Kafka, AWS SQS, Celery. Even if you've only used one, mentioning the landscape shows awareness.` },
+
+    { tab:'system', sec:'Design Scenarios', q:'How would you design a URL shortener?',
+      a:`Core flow: user sends long URL → generate a short 6-7 character code → store the mapping in a database → on redirect, look up the code and do a 301 redirect. For the ID generation I'd use base62 encoding of an auto-increment ID, or a hash with collision handling. The read path is much heavier than the write path, so I'd add a Redis cache in front of the DB. For scale: the DB shards by short code, CDN caches popular redirects.`,
+      tip:`Always end with: "What's the expected QPS? That drives the architecture decisions." Asking a clarifying question in system design is always the right move.` },
+
+    { tab:'system', sec:'Design Scenarios', q:'How would you design a notification system?',
+      a:`Users should get notifications via email, push, or SMS. The core is a notification service that receives events from other services — new message, payment confirmed, etc. — and routes them to the right delivery channel. I'd use a message queue to buffer events so spikes don't crash the system. Each channel has its own worker pool. I'd store notification history in a DB so users can see past notifications even after the push is gone.`,
+      tip:`"Idempotency is critical — if the same event triggers a notification twice, the user should not get two emails." Mentioning idempotency in system design instantly impresses interviewers.` },
+  ];
+
+  /* ── State ── */
+  let activeTab = 'common';
+  let searchQuery = '';
+
+  /* ── Render ── */
+  function render() {
+    const content = document.getElementById('qaContent');
+    let data = ALL.filter(d => d.tab === activeTab);
+
+    if (searchQuery) {
+      const q = searchQuery.toLowerCase();
+      data = ALL.filter(d =>
+        d.q.toLowerCase().includes(q) ||
+        d.a.toLowerCase().includes(q) ||
+        d.sec.toLowerCase().includes(q)
+      );
+    }
+
+    if (!data.length) {
+      content.innerHTML = `<div class="no-results"><i class="ti ti-search-off" style="font-size:32px;display:block;margin-bottom:8px;"></i>No questions found for "${searchQuery}"</div>`;
+      return;
+    }
+
+    const sections = {};
+    data.forEach(d => {
+      if (!sections[d.sec]) sections[d.sec] = [];
+      sections[d.sec].push(d);
+    });
+
+    let html = '';
+    Object.entries(sections).forEach(([sec, qs]) => {
+      let rows = '';
+      qs.forEach((d, i) => {
+        const id = `q-${sec.replace(/\s/g,'-')}-${i}`;
+        rows += `
+        <div class="q-row" id="${id}" onclick="toggleQ('${id}')">
+          <div class="q-head">
+            <span class="q-num">${i+1}</span>
+            <span class="q-title">${d.q}</span>
+            <i class="ti ti-chevron-down q-chevron"></i>
+          </div>
+          <div class="q-details" onclick="event.stopPropagation()">
+            <div class="q-ans-label">How to answer it</div>
+            <div class="q-ans">${d.a}</div>
+            <div class="q-tip">
+              <span class="q-tip-icon">💡</span>
+              <div class="q-tip-body"><b>Premium Strategy</b>${d.tip}</div>
+            </div>
+          </div>
+        </div>`;
+      });
+
+      html += `
+      <div class="acc-block open">
+        <div class="acc-header" onclick="toggleAcc(this)">
+          <span class="acc-title">${sec}</span>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span class="acc-count">${qs.length} Q</span>
+            <i class="ti ti-chevron-down acc-icon"></i>
+          </div>
+        </div>
+        <div class="acc-content">${rows}</div>
+      </div>`;
+    });
+
+    content.innerHTML = html;
+  }
+
+  function toggleQ(id) {
+    const el = document.getElementById(id);
+    el.classList.toggle('open');
+  }
+
+  function toggleAcc(header) {
+    header.parentElement.classList.toggle('open');
+  }
+
+  function switchTab(tab) {
+    activeTab = tab;
+    searchQuery = '';
+    document.getElementById('qaSearch').value = '';
+    document.querySelectorAll('.qa-tab').forEach((t, i) => {
+      const tabs = ['common','behavioural','python','fullstack','data','system'];
+      t.classList.toggle('on', tabs[i] === tab);
+    });
+    render();
+  }
+
+  function filterQA() {
+    searchQuery = document.getElementById('qaSearch').value.trim();
+    render();
+  }
+
+
+  /* ── Init ── */
+  render();
+  </script>
+
+  <script src="assets/script.js?v=21"></script>
+</body>
+</html>

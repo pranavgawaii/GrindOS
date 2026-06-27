@@ -1,0 +1,411 @@
+Alright Pranav, here's the full guide. Assuming you're starting from zero — no context, no prior prep. Sequence-wise, strategy-wise, everything. Then all interview Q&As at the end written as if you're speaking them.
+
+---
+
+# COMPLETE GUIDE: DEV + DSA + AI/ML + INTERVIEW PREP
+### From zero to interview-ready. Sequence matters. Follow it in order.
+
+---
+
+## PART 1 — THE SEQUENCE (What to learn, in what order)
+
+The logic is simple: foundation first, then depth, then interview polish. Never start with interview questions before you know the concepts — you'll just memorize without understanding and get exposed the moment they probe one level deeper.
+
+---
+
+### BLOCK 1 — PROGRAMMING FOUNDATION (Week 1-2)
+
+This is your base. Everything else sits on top of this.
+
+1. Python basics — variables, data types, type casting, input/output
+2. Conditionals and loops — if/else, for, while, nested loops
+3. Functions — defining, calling, return values, default args, *args, **kwargs
+4. Lists, tuples, sets, dictionaries — operations, methods, when to use which
+5. String manipulation — slicing, split, join, replace, format, f-strings
+6. File handling — open, read, write, append, context manager (with block)
+7. Exception handling — try/except/finally, raising custom exceptions
+8. List comprehensions — one-liners, filtering, nested comprehensions
+9. Lambda functions — syntax, map(), filter(), reduce()
+10. Modules and imports — standard library: os, sys, math, datetime, collections
+
+Don't move to OOPs without being able to write clean functions without googling.
+
+---
+
+### BLOCK 2 — OBJECT ORIENTED PROGRAMMING (Week 2-3)
+
+The single most asked topic in every tech interview. If OOPs is weak, you will get rejected.
+
+11. Classes and objects — what they are, how to define, __init__, self
+12. Encapsulation — private vs public attributes, getters/setters
+13. Inheritance — single, multiple, multilevel, method resolution order (MRO)
+14. Polymorphism — method overriding, duck typing in Python
+15. Abstraction — abstract classes, ABC module, abstract methods
+16. Magic/Dunder methods — __str__, __repr__, __len__, __eq__, __add__
+17. Class methods vs static methods vs instance methods — @classmethod, @staticmethod
+18. Decorators — how they work, writing your own, @property
+
+---
+
+### BLOCK 3 — DATA STRUCTURES (Week 3-5)
+
+This is where DSA starts. Learn the structure first, then the problems.
+
+19. Arrays and lists — indexing, traversal, in-place operations
+20. Strings — immutability, comparison, pattern problems
+21. Stack — LIFO, implementation using list, use cases (undo, brackets)
+22. Queue — FIFO, deque from collections, circular queue
+23. Linked List — singly, doubly, traversal, insertion, deletion (implement from scratch)
+24. Hash Map / Dictionary — collision, hashing, when O(1) breaks
+25. Set — union, intersection, difference, deduplication
+26. Trees — binary tree, traversals (inorder/preorder/postorder), height, diameter
+27. Binary Search Tree — insert, delete, search, balanced vs unbalanced
+28. Heap — min-heap, max-heap, heapq in Python, priority queue
+29. Graph — adjacency matrix vs list, BFS, DFS, cycle detection
+30. Trie — structure, insert, search (important for string problems)
+
+---
+
+### BLOCK 4 — ALGORITHMS + DSA PROBLEM PATTERNS (Week 5-8)
+
+Now you solve problems. Topic by topic, not randomly.
+
+31. Two Pointers — pair sum, remove duplicates, container with most water
+32. Sliding Window — max sum subarray, longest substring without repeat
+33. Binary Search — classic, search in rotated array, find first/last position
+34. Sorting — bubble, selection, merge sort (write it), quick sort (write it), Python sort internals
+35. Recursion — factorial, fibonacci, print all paths, understanding call stack
+36. Backtracking — N-Queens, permutations, combinations, subsets
+37. Dynamic Programming basics — memoization vs tabulation, fibonacci DP, climbing stairs
+38. DP medium — longest common subsequence, 0/1 knapsack, coin change
+39. Greedy — activity selection, job sequencing, fractional knapsack
+40. Graph algorithms — Dijkstra (shortest path), topological sort, union-find
+41. Bit manipulation — XOR tricks, count set bits, subsets using bits
+42. Math problems — GCD/LCM, prime sieve, modular arithmetic
+
+Practice minimum 2-3 problems per pattern before moving to next. LeetCode is the platform. Easy first, then Medium.
+
+---
+
+### BLOCK 5 — CORE CS THEORY (Week 6-8, parallel with DSA)
+
+These get asked in every tech round, especially at service companies like Zensar.
+
+43. Operating Systems
+- Process vs thread
+- CPU scheduling: FCFS, SJF, Round Robin, Priority (know the algorithm and formula)
+- Deadlock: conditions (Mutual Exclusion, Hold & Wait, No Preemption, Circular Wait), prevention, banker's algorithm
+- Memory management: paging, segmentation, virtual memory, page replacement (LRU, FIFO, optimal)
+- Semaphores and mutex
+
+44. DBMS
+- ER diagrams, entities, relationships
+- Normalization: 1NF, 2NF, 3NF, BCNF with examples
+- SQL: SELECT, WHERE, GROUP BY, HAVING, ORDER BY
+- JOINs: INNER, LEFT, RIGHT, FULL OUTER — write queries from scratch
+- Indexes — clustered vs non-clustered
+- Transactions and ACID properties
+- Stored procedures, triggers, views
+
+45. Computer Networks
+- OSI model — 7 layers, what happens at each layer, exam: "what layer does HTTP work on"
+- TCP vs UDP — connection, handshake, use cases
+- HTTP vs HTTPS — SSL/TLS, certificates
+- DNS — how domain resolution works
+- IP addressing basics, subnetting intuition
+- REST API — what it is, HTTP methods (GET, POST, PUT, DELETE, PATCH), status codes
+
+46. System Design basics (for L2 and senior roles)
+- Client-server architecture
+- Monolith vs microservices
+- Load balancing concept
+- Caching (Redis) — what it solves, cache eviction
+- Message queues (Kafka, RabbitMQ) — why they exist
+- REST vs GraphQL
+- How would you design a URL shortener (most asked beginner system design)
+
+---
+
+### BLOCK 6 — WEB DEVELOPMENT (Week 7-9, if relevant to role)
+
+47. HTML/CSS fundamentals — semantic HTML, box model, flexbox, grid
+48. JavaScript — variables (let/const/var), functions, arrow functions, closures, promises, async/await, event loop
+49. DOM manipulation — querySelector, addEventListener, fetch API
+50. React basics — components, props, state, useEffect, hooks
+51. Node.js + Express — server setup, routing, middleware, REST API creation
+52. Databases with backend — connecting PostgreSQL or MongoDB with your Node/Python server
+53. Git and GitHub — init, add, commit, push, pull, branch, merge, rebase, PR workflow
+54. Deployment basics — what Vercel does, what Railway does, environment variables, .env
+
+---
+
+### BLOCK 7 — AI/ML TRACK (Week 8-12, for AI Engineer roles specifically)
+
+55. Math foundation
+- Linear algebra: vectors, matrices, matrix multiplication, eigenvalues
+- Probability: conditional probability, Bayes theorem, distributions (normal, binomial)
+- Statistics: mean, median, variance, standard deviation, covariance, correlation
+- Calculus: what gradient means intuitively, partial derivatives for backprop
+
+56. Classical ML
+- Supervised vs unsupervised vs reinforcement learning
+- Linear Regression — cost function, gradient descent, MSE
+- Logistic Regression — sigmoid, binary cross entropy, classification
+- Decision Trees — information gain, gini impurity, overfitting
+- Random Forests — bagging, why it beats single tree
+- SVM — margin, kernel trick, hyperplane
+- K-Nearest Neighbors — distance metrics, when to use
+- K-Means Clustering — algorithm, elbow method
+- Naive Bayes — conditional independence assumption, text classification
+- Evaluation: accuracy, precision, recall, F1, ROC-AUC, confusion matrix
+
+57. Neural Networks
+- Perceptron — weights, bias, activation
+- Feedforward network — layers, forward pass
+- Backpropagation — chain rule, gradient flow
+- Activation functions — ReLU, sigmoid, tanh, softmax, when to use which
+- Loss functions — MSE, cross entropy, when to use
+- Optimizers — SGD, Adam, learning rate
+- Overfitting solutions — dropout, batch normalization, regularization (L1/L2), early stopping
+- CNNs — convolution, pooling, receptive field, used for images
+- RNNs and LSTMs — sequence data, vanishing gradient problem
+
+58. Transformers and LLMs (most critical for AI Engineer roles)
+- Attention mechanism — what it solves vs RNNs
+- Self-attention and multi-head attention — intuition
+- Transformer architecture — encoder, decoder, positional encoding
+- BERT vs GPT — masked LM vs causal LM
+- Fine-tuning vs prompt engineering vs RAG — when to use which
+- RAG (Retrieval Augmented Generation) — embedding, vector DB, retrieval, generation
+- Vector databases — what pgvector is, cosine similarity, HNSW indexing
+- Embeddings — what they are, how text becomes vectors
+- LLM API usage — OpenAI, Claude, Groq, prompt structure, system prompts, temperature
+- Prompt engineering — zero-shot, few-shot, chain-of-thought, ReAct
+- LangChain/LangGraph basics — chains, agents, tool use
+- Agents — what an LLM agent is, tool calling, memory
+
+59. MLOps basics
+- What a training pipeline looks like
+- Model serving — FastAPI + model inference
+- Model monitoring — drift, performance degradation
+- Docker basics — containerizing a Python ML app
+
+---
+
+## PART 2 — INTERVIEW Q&A (Written as you speaking them)
+
+This is your voice. Smart, direct, self-aware, zero fluff. You're not overselling — you're just being accurate about what you've built.
+
+---
+
+### OPENING — "Tell me about yourself"
+
+"Sure. I'm Pranav Gawai, pre-final year CSE AI/ML student at MIT-ADT University, Pune, graduating in 2027. I'm also the founder and tech lead of CraftaStudio, an AI-native SaaS platform I've been building with a team of five over the past year.
+
+Beyond academics, I've shipped multiple production products — PlacePro, which is live at placepro.in and actively used by 500+ students on my campus for placement tracking. Auren, an AI execution layer I built solo in 6 days for a hackathon, which handles Gmail, Calendar, and GitHub integrations via LLM agents. And Mnemo, a memory API built on pgvector with cosine similarity, decay scoring, and contradiction detection.
+
+I was also shortlisted for Amazon ML Summer School 2026 from over 100,000 applicants, which I'm genuinely proud of because that's a blind selection — just your test score.
+
+I'm here because I want to work on real AI engineering problems and this role aligns directly with what I've already been building."
+
+---
+
+### "Walk me through one of your projects in depth"
+
+"I'll talk about Auren since it's the most technically interesting.
+
+The core problem was: LLMs are great at understanding intent but they can't take action. So I built Auren as an execution layer. The user writes a natural language request — like 'summarize my unread emails and create a calendar block for the meeting mentioned' — and Auren breaks that into tool calls.
+
+The tech stack: Next.js 14 frontend, Supabase with pgvector for memory, Clerk for auth, and OpenRouter as the LLM gateway using Claude Haiku for email classification. For integrations I used the Corsair MCP — Gmail, Calendar, GitHub. I built a Human-in-the-loop confirmation pattern so before any write action (sending email, creating event), the user gets a confirmation step. That was a deliberate design decision to keep trust high.
+
+The interesting engineering challenge was the email classification pipeline. I had to figure out which emails needed action and which were noise. I used Haiku as a lightweight classifier — it's fast and cheap — and routed only actionable emails through the main agent.
+
+I built this solo in 6 days and it's live at tryauren.in."
+
+---
+
+### "What is RAG and how does it work?"
+
+"RAG stands for Retrieval Augmented Generation. The core idea is: instead of relying on what the LLM memorized during training, you retrieve relevant context at query time and inject it into the prompt.
+
+The pipeline has three parts. First, indexing — you take your documents, chunk them, convert each chunk into an embedding using a model like text-embedding-3-small, and store those vectors in a vector database like pgvector or Pinecone. Second, retrieval — when the user asks a question, you convert that query into an embedding too, then do a cosine similarity search to find the most relevant chunks. Third, generation — you pass those retrieved chunks as context into the LLM prompt and let it generate a grounded answer.
+
+I've implemented this in both Auren and Mnemo. In Mnemo specifically, I added a decay scoring layer on top of cosine similarity so more recent memories are weighted higher, and a contradiction detection step that flags if a new memory conflicts with an existing one."
+
+---
+
+### "What is a vector database and why do we use it?"
+
+"A regular database stores structured data and lets you filter by exact values. A vector database stores high-dimensional numerical vectors — embeddings — and lets you search by semantic similarity. The key operation is approximate nearest neighbor search.
+
+When you embed text, semantically similar text ends up close together in vector space. So 'how to cook pasta' and 'pasta recipe' will be near each other even though they share no exact words. That's something a SQL LIKE query cannot do.
+
+I use pgvector — it's a PostgreSQL extension that adds vector types and operators. The index type I use is HNSW — Hierarchical Navigable Small World — which gives you sub-linear search time even on large datasets."
+
+---
+
+### "Explain the Transformer architecture"
+
+"The Transformer came out of the 'Attention Is All You Need' paper from Google in 2017. The key insight was: you don't need RNNs to process sequences. Attention alone is enough.
+
+The architecture has an encoder and decoder. The encoder takes input tokens, converts them to embeddings, adds positional encoding so the model knows token order, and then passes them through multi-head self-attention layers followed by feedforward layers. Self-attention lets every token attend to every other token — so it captures long-range dependencies that RNNs struggled with.
+
+The decoder does the same but adds one extra step — cross-attention, which lets each output token attend to the encoder's representations.
+
+BERT uses only the encoder, trained with masked language modeling. GPT uses only the decoder, trained to predict the next token. For chat models you mostly deal with GPT-style architectures."
+
+---
+
+### "What is the difference between fine-tuning, prompt engineering, and RAG?"
+
+"These are three different levers to make an LLM do what you want.
+
+Prompt engineering is the lightest — you craft your input carefully, maybe add examples in the prompt, structure it as chain-of-thought or few-shot. No training required. Best for general-purpose tasks where the model already has the knowledge.
+
+RAG gives the model access to external knowledge at inference time. You don't change the model weights — you just inject relevant context into the prompt. Best when the model lacks specific domain knowledge or your data changes frequently.
+
+Fine-tuning actually updates the model's weights using your dataset. The model learns your style, your format, your specific vocabulary. Best when you need consistent output format, domain-specific behavior, or you have lots of labeled examples. It's expensive and requires GPU access.
+
+For most startup use cases, RAG is the right choice. Fine-tuning makes sense when you've already exhausted prompt engineering and RAG."
+
+---
+
+### "What is OOP? Explain with Python examples"
+
+"OOP stands for Object Oriented Programming. It's a paradigm where you model real-world entities as objects that have attributes (data) and methods (behavior).
+
+Four pillars.
+
+Encapsulation — wrapping data and the methods that operate on it inside a class, and controlling access. In Python, you prefix with underscore for convention-based privacy. Not enforced at language level like Java but respected by convention.
+
+Inheritance — a class can inherit from another class and reuse its attributes and methods. Python supports multiple inheritance. MRO (Method Resolution Order) using C3 linearization determines which parent's method gets called.
+
+Polymorphism — same method name, different behavior. In Python this is mostly duck typing — if it has the method, it works. You don't need explicit interfaces.
+
+Abstraction — hiding implementation details and exposing only what's necessary. Python's ABC module lets you define abstract classes with abstract methods that subclasses must implement."
+
+---
+
+### "What are ACID properties in DBMS?"
+
+"ACID is a set of properties that guarantee database transactions are reliable.
+
+Atomicity — a transaction is all or nothing. If you're transferring money between accounts, either both the debit and credit happen, or neither does.
+
+Consistency — the database must go from one valid state to another. No rules are violated after a transaction commits.
+
+Isolation — concurrent transactions don't interfere with each other. Each transaction sees a consistent snapshot.
+
+Durability — once a transaction commits, it stays committed even if the system crashes. It's written to disk, not just in memory.
+
+SQL databases are ACID-compliant by default. NoSQL databases often trade some of these (especially isolation and consistency) for scalability and speed."
+
+---
+
+### "Explain normalisation"
+
+"Normalization is the process of organizing a database to reduce redundancy and avoid anomalies — insert, update, and delete anomalies.
+
+First Normal Form (1NF): every column has atomic values. No arrays or repeating groups inside a cell.
+
+Second Normal Form (2NF): 1NF plus every non-key column must depend on the entire primary key, not just part of it. This matters for composite primary keys.
+
+Third Normal Form (3NF): 2NF plus no transitive dependency. Non-key columns should not depend on other non-key columns.
+
+BCNF (Boyce-Codd Normal Form): stricter version of 3NF. Every determinant must be a candidate key.
+
+In practice, most production databases normalize to 3NF and sometimes denormalize deliberately for read performance."
+
+---
+
+### "What is deadlock? When does it occur?"
+
+"A deadlock is a state where two or more processes are stuck, each waiting for a resource held by the other, so none of them can proceed.
+
+Four conditions must all be true simultaneously for a deadlock to occur. Mutual exclusion — at least one resource is non-shareable. Hold and wait — a process holding one resource is waiting for another. No preemption — resources can't be forcibly taken from a process. Circular wait — there's a cycle of processes each waiting on the next.
+
+To prevent deadlock you break one of these conditions. Common strategies: impose a fixed resource ordering to break circular wait, use resource allocation graphs, or use the Banker's Algorithm which checks before granting a resource whether the system will remain in a safe state."
+
+---
+
+### "What is the difference between process and thread?"
+
+"A process is an independent program in execution. It has its own memory space — stack, heap, code, data. Processes are isolated from each other. If one crashes, others are unaffected.
+
+A thread is the smallest unit of execution within a process. Threads in the same process share memory — they share the heap and the code segment, but each has its own stack and registers. That shared memory is what makes threads faster to communicate but also harder to program safely — you need synchronization to avoid race conditions.
+
+Context switching between threads is cheaper than between processes because threads share the same memory space."
+
+---
+
+### "Write a query: find the second highest salary from an Employee table"
+
+"There are two clean ways.
+
+First approach using subquery:
+SELECT MAX(salary) FROM Employee WHERE salary < (SELECT MAX(salary) FROM Employee);
+
+Second approach using DENSE_RANK or LIMIT:
+SELECT salary FROM Employee ORDER BY salary DESC LIMIT 1 OFFSET 1;
+
+The subquery approach works across all SQL dialects. The LIMIT/OFFSET approach works in MySQL and PostgreSQL. If duplicates matter, use DENSE_RANK in a window function."
+
+---
+
+### "Tell me about a time you faced a technical challenge and how you solved it"
+
+"When I was building Auren, I hit a real problem with Google OAuth. The app integrates with Gmail so it needs elevated OAuth scopes — specifically the Gmail modify scope. Google's Trust and Safety team flagged it as sensitive and put it under review.
+
+The issue was our app description didn't clearly justify why we needed that scope level. The verification process asks you to explain the user benefit in non-technical terms. I had to rewrite the scope justification, record a demo video showing exactly how the scope was being used, and wait for their active review queue.
+
+The lesson was that third-party API integration isn't just a code problem — there's a compliance and trust layer that you have to design for upfront. I now think about OAuth scope minimization from day one of a project."
+
+---
+
+### "What is your weakness?"
+
+"I have a tendency to start new projects before finishing existing ones. I've built enough things to recognize the pattern in myself — the ideation phase is exciting, and I can move fast, but sometimes that speed means I'm already thinking about the next thing before shipping the current one.
+
+I'm actively working on this. For Specboard, my current hackathon project, I set a rule: no new features after 48 hours before the deadline. Only polish and ship. That constraint has helped."
+
+---
+
+### "Why do you want to join Zensar specifically?"
+
+"Honestly, I'm interested in the AI Engineer track. The role sits at the intersection of AI application development and real client delivery — that's not theoretical, it's where engineering decisions get pressure-tested against actual scale and user expectations.
+
+I've built AI products in hackathon settings where the feedback loop is fast. What Zensar offers is exposure to enterprise-scale constraints — latency, reliability, security, multi-team coordination. Those are the problems that make an AI engineer actually good, not just someone who can call an API.
+
+I also know some seniors from my college who came through Zensar and went on to convert PPOs. That trajectory is what I'm building toward."
+
+---
+
+### "Where do you see yourself in 5 years?"
+
+"In five years I want to be the kind of engineer who can own an AI product end-to-end — from architecture decisions to deployment to iterating based on real user data. Not just writing code but understanding why the product is built a certain way.
+
+Short term, I'm using every opportunity — internship, hackathons, open source — to build that depth. CraftaStudio taught me what it means to lead a team and ship under constraints. An internship at a company like Zensar would add the dimension of working within a larger engineering org, with real clients and real stakes."
+
+---
+
+### "Do you have any questions for us?"
+
+Always ask questions. It signals seriousness. Here are three, pick two based on the conversation:
+
+"What does the day-to-day of an AI Engineer intern look like here? Is it more research and experimentation, or implementation and delivery for a specific client?"
+
+"The role description mentions GenAI and LLM integration — are there internal tools or frameworks the team has built, or is it more greenfield work where I'd be building from scratch?"
+
+"For interns who perform well, what does the PPO conversion timeline look like, and is the conversion typically to the same team or do you move around?"
+
+---
+
+## PART 3 — HOW TO CARRY YOURSELF IN THE ROOM
+
+Don't be loud about your projects. Just be accurate. The difference between someone who sounds like they're selling and someone who sounds confident is specificity. Replace "I built an AI platform" with "I built a pgvector memory API with cosine similarity and decay scoring." Specificity is credibility.
+
+When you don't know something, say "I haven't implemented that but I understand the concept — here's what I know about it" and then say what you know. Never bluff. Interviewers probe bluffs and that's how candidates fall apart.
+
+Before every interview, rehearse your intro out loud. Not in your head. Actually say it. Thirty seconds of clean confident delivery of who you are is worth more than twenty perfect answers in a nervous whisper.
+
+You've built real things. LiveURL. Real users. That's your differentiator. Lead with that.
